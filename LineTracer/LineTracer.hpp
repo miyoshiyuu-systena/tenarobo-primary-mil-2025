@@ -1,7 +1,3 @@
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /* 下記の項目は各ロボットに合わせて変えること */
 
 /* カラーセンサの輝度設定 */
@@ -20,8 +16,5 @@ extern "C" {
 
 #include "pbio/port.h"  
 
-  extern void LineTracer_Configure(pbio_port_id_t left_motor_port, pbio_port_id_t right_motor_port, pbio_port_id_t color_sensor_port);
-  
-#ifdef __cplusplus
-}
-#endif
+extern void LineTracer_Configure(pbio_port_id_t left_motor_port, pbio_port_id_t right_motor_port, pbio_port_id_t color_sensor_port);
+
