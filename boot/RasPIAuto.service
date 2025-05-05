@@ -2,6 +2,7 @@
 Description = This is Auto Program Execution using system-management-service of Raspberry PI. The program which descibes robot behavior is executed simultaneously when RasPI boots.
 After=local-fs.target
 ConditionPathExists=/opt/RasPIAuto/bin
+
 [Service]
 ExecStart=/opt/RasPIAuto/bin/autoexec.sh
 Restart=no
