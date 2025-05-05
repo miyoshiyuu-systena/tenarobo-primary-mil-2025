@@ -1,3 +1,3 @@
 #!/bin/sh
-cd /work/RasPike-ART/sdk/workspace
+cd /home/work/RasPike-ART/sdk/workspace
 make start
