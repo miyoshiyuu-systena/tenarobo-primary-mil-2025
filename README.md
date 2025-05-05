@@ -197,8 +197,8 @@ SPIKE のメインボタンを長押しして、電源を切る。
 doc
 ┗　design
 ┗　course-analysis
-app.cpp
-app.hpp
+app.c
+app.h
 app.cfg
 README.md
 ```
