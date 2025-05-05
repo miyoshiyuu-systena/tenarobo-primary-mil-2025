@@ -4,10 +4,6 @@ ET ロボコン 2025 に向けた制御ソフトの開発
 
 目的はmada。
 
-- [ET ロボコン HP](https://www.etrobo.jp/)
-
-- [ET ロボコン提供開発環境](https://github.com/ETrobocon/RasPike-ART)
-
 # 構成
 
 ```
