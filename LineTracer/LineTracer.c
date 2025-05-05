@@ -1,5 +1,5 @@
-#include "app.hpp"
-#include "LineTracer.hpp"
+#include "app.h"
+#include "LineTracer.h"
 #include <stdio.h>
 
 #include "spike/pup/motor.h"

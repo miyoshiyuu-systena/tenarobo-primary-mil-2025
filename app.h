@@ -1,5 +1,6 @@
-#ifndef APP_HPP
-#define APP_HPP
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #include "spikeapi.h"
   
@@ -22,4 +23,6 @@ extern void tracer_task(intptr_t exinf);
 
 #endif /* TOPPERS_MACRO_ONLY */
 
-#endif // APP_HPP
+#ifdef __cplusplus
+}
+#endif
