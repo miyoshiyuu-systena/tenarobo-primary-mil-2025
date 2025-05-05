@@ -1,3 +1,7 @@
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "spikeapi.h"
   
 /* タスク優先度 */
@@ -18,3 +22,7 @@ extern void main_task(intptr_t exinf);
 extern void tracer_task(intptr_t exinf);
 
 #endif /* TOPPERS_MACRO_ONLY */
+
+#ifdef __cplusplus
+}
+#endif
