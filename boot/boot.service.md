@@ -108,3 +108,146 @@ mada
 
 # 設定方法
 
+自動実行は一度設定すれば、起動するたびに施行する。
+
+## 0. このディレクトリへ移動
+
+ctrl + alt + tを打ち込んで、ターミナルを開く。
+
+さらに、このディレクトリまで移動する（pwd, ls, cdコマンドを使用せよ）。
+
+以降、カレントディレクトリは以降のようになっていることを想定する。（pwdコマンドで確認）
+
+```
+/home/ユーザー名/work/RasPike-ART/sdk/workspace/tenarobo-primarly-mil-2025/boot
+```
+
+てなろぼメンバーのRasPIは、ユーザー名: milになっている。
+
+## 1. サービスファイルの配置
+
+引き続きターミナルにて、以下のコマンドを実行する。
+
+```
+sudo cp RasPIAuto.service /etc/systemd/system
+```
+
+これによって、systemdサービスにサービスファイルRasPIAuto.serviceをコピーした。
+
+さらに、以下のコマンドを実行する。
+
+```
+sudo chown root:root /etc/systemd/system/RasPIAuto.service
+sudo chmod 644 /etc/systemd/system/RasPIAuto.service
+```
+
+これによって、rootユーザーへサービスファイルの実行権限を与えた。
+
+## 2. シェルスクリプトの配置
+
+引き続きターミナルにて、以下のコマンドを実行する。
+
+```
+sudo mkdir -p /opt/RasPIAuto/bin
+sudo chmod 755 /opt/RasPIAuto/bin
+sudo cp autoexec.sh /opt/RasPIAuto/bin
+```
+
+これによって、systemdサービスのアクセスする場所にシェルスクリプトautoexec.shをコピーした。
+
+このシェルスクリプトは、(1)プロジェクトのあるディレクトリに移動して、(2)プログラム実行する、という操作を記述する。
+
+引き続きターミナルにて、以下のコマンドを実行する。
+
+```
+sudo chown root:root /opt/RasPiSample/bin/autoexec.sh
+sudo chmod 755 /opt/RasPiSample/bin/autoexec.sh
+```
+
+これによって、rootユーザーへシェルスクリプトの実行権限を与えた。
+
+> ### ヒント
+>
+> (1)の操作は、RasPIのプロジェクトディレクトリの場所によって失敗する可能性がある。
+>
+> うまくいかない場合は、autoexec.shを編集して、自身のプロジェクトのディレクトリを指定すべし。
+
+## 3. systemdにサービスファイル更新を通知
+
+引き続きターミナルにて、以下のコマンドを実行する。
+
+```
+sudo systemctl daemon-reload
+```
+
+## 4. 自動起動の有効化
+
+引き続きターミナルにて、以下のコマンドを実行する。
+
+```
+sudo systemctl enable RasPIAuto.service
+```
+
+これで有効化された。
+
+以下のコマンドを実行して、
+
+```
+sudo systemctl enable RasPIAuto.service
+```
+
+Loaded: の行に、
+
+```
+/etc/systemd/system/RasPIAuto.service; enabled;vendor preset: disabled
+```
+
+と出てくれば完了。
+
+> vendor preset: のところは、ちょっとよく分からない・・・。
+
+## 5. 動作確認
+
+いったん再起動なしで、動作確認する。
+
+> プロジェクトのターゲットイメージを把握しておく。
+> 
+> ~/work/RasPike-ART/sdk/workspaceにて、最後にmake img=コマンドを実行したときのプログラムで動き出すことになる。
+
+RasPIに、SPIKEなど周辺モジュールを適切に取り付ける。
+
+SPIKEのメインボタンを押して、∞マークになっていることを確認する。
+
+以下のコマンドを実行する。
+
+```
+sudo systemctl start RasPIAuto.service
+```
+
+ロボットの運転が確認出来る。
+
+以下のコマンドを実行する。
+
+```
+sudo systemctl status RasPIAuto.service
+```
+
+Active: の行に、「active (running)」と出てきたら完璧。
+
+プログラム上で標準入出力を使用している場合、ここにメッセージが表示される。
+
+以下のコマンドを実行する。
+
+```
+sudo systemctl stop RasPiAuto.service
+```
+
+これによりRasPI側のプログラムは停止する（SPIKEへの指示は出ているのか、ロボットは動いたままのことがあるので、SPIKEのメインボタンを押して停止する。）
+
+もう一度statusコマンドを実行すると、Active: の行に「active（dead）」と出てくる。
+
+---
+
+ここまで出来たらRasPIを再起動して、起動と同時にロボットが動くことを確認する。
+
+SPIKEのメインボタンを押して、∞マークにしないといけないことに注意。
