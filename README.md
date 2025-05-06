@@ -8,15 +8,17 @@ ET ロボコン 2025 に向けた制御ソフトの開発
 
 ```
 doc
-┗　development
-┗　design
-┗　course-analysis
-boot                            起動時自動実行に関するファイル
+┗　development.md（開発手引き）
+┗　contest-analysis（競技分析）
+┗　design（設計）
+asset（画像）
+┗　・・・
+boot（起動時自動実行）
 ┗　・・・
 app.c
-app.h
-app.cfg
-README.md
+app.h（メインメソッドの定義）
+app.cfg（TOPPERS/ASP3のためのタスク定義）
+README.md（本書）
 ```
 
 # 関連
