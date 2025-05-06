@@ -11,8 +11,8 @@ doc
 ┗　development
 ┗　design
 ┗　course-analysis
-boot
-└　RasPIAuto.service
+boot                            起動時自動実行に関するファイル
+┗　・・・
 app.c
 app.h
 app.cfg
