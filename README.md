@@ -11,6 +11,8 @@ doc
 ┗　development
 ┗　design
 ┗　course-analysis
+boot                            起動時自動実行に関するファイル
+┗　・・・
 app.c
 app.h
 app.cfg
@@ -24,3 +26,4 @@ README.md
 | 1 | ETロボコンHP | https://www.etrobo.jp/ |
 | 2 | ET ロボコン提供開発環境 | https://github.com/ETrobocon/RasPike-ART |
 | 3 | 開発環境セットアップ | [development.md](doc/development.md) |
+| 4 | RasPI起動時プログラム実行 | [boot.service.md](boot/boot.service.md) |

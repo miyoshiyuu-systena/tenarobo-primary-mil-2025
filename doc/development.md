@@ -96,7 +96,14 @@ aarch64
 
 Raspberry PI にて ctrl + alt + t を入力し、ターミナルを起動する。
 
-ターミナルから適当なフォルダに移動して（ls、pwd、cd フォルダ名、といったコマンドを駆使する）、以下のコマンドを実行する。
+最初はホームディレクトリ（~/）が開くので、以下のコマンドでworkフォルダを生成し、移動する。
+
+```
+mkdir work
+cd work
+```
+
+さらに以下のコマンドを実行して、プロジェクトをダウンロードする。
 
 ```
 git clone --recursive https://github.com/ETrobocon/RasPike-ART.git
