@@ -27,5 +27,6 @@ README.md（本書）
 | -- | -- | -- |
 | 1 | ETロボコンHP | https://www.etrobo.jp/ |
 | 2 | ET ロボコン提供開発環境 | https://github.com/ETrobocon/RasPike-ART |
-| 3 | 開発環境セットアップ | [dev/README.md](dev/README.md) |
-| 4 | RasPI起動時プログラム実行 | [boot/README.md](boot/README.md) |
+| 3 | RasPI開発環境セットアップ | [dev/onRasPI.md](dev/onRasPI.md) |
+| 4 | myPC開発環境セットアップ | [dev/README.md](dev/README.md) |
+| 5 | RasPI起動時プログラム実行 | [boot/README.md](boot/README.md) |
