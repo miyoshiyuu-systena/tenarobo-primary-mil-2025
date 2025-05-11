@@ -7,13 +7,15 @@
 # 構成
 
 ```
-doc
-┗　development.md（開発手引き）
-┗　contest-analysis（競技分析）
-┗　design（設計）
 asset（画像）
 ┗　・・・
 boot（起動時自動実行）
+┗　・・・
+dev（開発手引き）
+┗　・・・
+design（設計）
+┗　・・・
+contest-analysis（競技分析）
 ┗　・・・
 app.c
 app.h（メインメソッドの定義）
