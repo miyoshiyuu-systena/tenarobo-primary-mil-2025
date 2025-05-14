@@ -2,8 +2,16 @@
 #include "LineTracer.h"
 #include <stdio.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "spike/pup/motor.h"
 #include "spike/pup/colorsensor.h"
+
+#ifdef __cplusplus
+}
+#endif
 
 /* 関数プロトタイプ宣言 */
 static int16_t steering_amount_calculation(void);
