@@ -17,7 +17,7 @@ design（設計）
 ┗　・・・
 contest-analysis（競技分析）
 ┗　・・・
-app.c
+app.cpp
 app.h（メインメソッドの定義）
 app.cfg（TOPPERS/ASP3のためのタスク定義）
 README.md（本書）
