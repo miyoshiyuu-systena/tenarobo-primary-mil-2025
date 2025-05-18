@@ -9,7 +9,7 @@ extern "C" {
 #define     INIT_PRIORITY       (TMIN_APP_TPRI + 1)
 #define     PERC_PRIORITY       (TMIN_APP_TPRI + 2)
 #define     DRIV_PRIORITY       (TMIN_APP_TPRI + 3)
-#define     DECI_PRIORITY       (TMIN_APP_TPRI + 4)
+#define     MAIN_PRIORITY       (TMIN_APP_TPRI + 4)
 
 #ifndef     STACK_SIZE
 #define     STACK_SIZE          (4096)
