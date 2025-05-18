@@ -1,23 +1,38 @@
 #include "app.h"
 #include <stdio.h>
-#include "LineTracer.h"
+#include "InitTask.h"
+#include "PerceptionTask.h"
+#include "DrivingTask.h"
 
-/* センサーポートの定義 */
-static const pbio_port_id_t
-  color_sensor_port    = PBIO_PORT_ID_E,
-  left_motor_port      = PBIO_PORT_ID_C,
-  right_motor_port     = PBIO_PORT_ID_B; 
+//  メイン処理の実行周期(150ms)
+const int16_t main_cycle_delay = 150;
 
-/* メインタスク(起動時にのみ関数コールされる) */
-void main_task(intptr_t unused) {
+/**
+ * メイン処理
+ * @param   exinf     拡張情報
+ */
+void    main_task(intptr_t exinf)   {
+    while(1) {
+        /**
+         * 通信部 -> 制御部データコピー
+         */
+        //  TODO    miyoshi: 通信部 -> 制御部データコピー
 
-  /* LineTracerに構成を渡す */
-  LineTracer_Configure(left_motor_port,right_motor_port,color_sensor_port);
-  printf("Start Line Trace!!\n");
-    
-  /* ライントレースタスクの起動 */
-  sta_cyc(LINE_TRACER_TASK_CYC);
+        /**
+         * 意思決定
+         */
+        //  TODO    miyoshi: 意思決定
 
-  /* タスク終了 */
-  ext_tsk();
+        /**
+         * 制御部 -> 通信部データコピー
+         */
+        //  TODO    miyoshi: 制御部 -> 通信部データコピー
+
+        /**
+         * 待機
+         */
+        dly_tsk(main_cycle_delay);
+    }
+    //  タスク終了
+    ext_tsk();
 }
