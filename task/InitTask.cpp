@@ -20,6 +20,11 @@ void    init_task(intptr_t exinf)   {
      */
     //  TODO miyoshi: 駆動系インスタンスの生成
 
-    //  タスク終了
+    // タスクの開始
+    sta_tsk(PREC_TASK);
+    sta_tsk(DRIV_TASK);
+    sta_tsk(MAIN_TASK);
+
+    // タスク終了
     ext_tsk();
 }
