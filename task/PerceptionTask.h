@@ -2,6 +2,8 @@
 extern "C" {
 #endif
 
+#include    "spikeapi.h"
+
 #ifndef TOPPERS_MACRO_ONLY
 
 extern void perception_task(intptr_t exinf);
