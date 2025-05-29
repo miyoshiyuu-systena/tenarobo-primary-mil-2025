@@ -7,13 +7,15 @@ APPL_COBJS += \
 APPL_LIBS += -lm
 
 APPL_CXXOBJS +=\
-LineTracer.o\
+DrivingTask.o\
+InitTask.o\
+PerceptionTask.o\
 
 SRCLANG := c++
 
-APPL_DIRS += $(mkfile_path)LineTracer
+APPL_DIRS += $(mkfile_path)task
 
 INCLUDES += \
-	-I$(mkfile_path)LineTracer\
+	-I$(mkfile_path)task\
 
 COPTS += -std=gnu++11
