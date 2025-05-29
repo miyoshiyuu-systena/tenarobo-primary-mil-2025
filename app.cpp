@@ -6,7 +6,7 @@
 #include "DrivingTask.h"
 
 //  メイン処理の実行周期(1s)
-const int16_t main_cycle_delay = 1000;
+const int16_t main_cycle_delay = (1000 * 1000);
 
 /**
  * メイン処理
