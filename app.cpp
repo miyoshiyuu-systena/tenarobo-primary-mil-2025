@@ -32,7 +32,7 @@ void    main_task(intptr_t exinf)   {
         /**
          * 待機
          */
-        sys_log(LOG_NOTICE, "Main_Task is running");
+        syslog(LOG_NOTICE, "Main_Task is running");
         dly_tsk(main_cycle_delay);
     }
     //  タスク終了

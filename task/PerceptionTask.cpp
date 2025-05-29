@@ -28,7 +28,7 @@ void    perception_task(intptr_t exinf)   {
         /**
          * 待機
          */
-        sys_log(LOG_WARNING, "Perception_Task is running");        
+        syslog(LOG_WARNING, "Perception_Task is running");        
         dly_tsk(perception_cycle_delay);
     }
     //  タスク終了
