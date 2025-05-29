@@ -4,8 +4,8 @@
 #include "PerceptionTask.h"
 #include "DrivingTask.h"
 
-//  メイン処理の実行周期(150ms)
-const int16_t main_cycle_delay = 150;
+//  メイン処理の実行周期(1s)
+const int16_t main_cycle_delay = 1000;
 
 /**
  * メイン処理

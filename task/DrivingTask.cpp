@@ -1,7 +1,7 @@
 #include    "DrivingTask.h"
 
-//  駆動指示の実行周期(200ms)
-const int16_t driving_cycle_delay = 200;
+//  駆動指示の実行周期(3s)
+const int16_t driving_cycle_delay = 2000;
 
 /**
  * 駆動指示

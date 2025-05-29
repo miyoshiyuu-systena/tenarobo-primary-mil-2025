@@ -1,7 +1,7 @@
 #include    "PerceptionTask.h"
 
-//  知覚処理の実行周期(100ms)
-const int16_t perception_cycle_delay = 100;
+//  知覚処理の実行周期(5s)
+const int16_t perception_cycle_delay = 5000;
 
 /**
  * 知覚処理
