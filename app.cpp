@@ -1,5 +1,6 @@
 #include "app.h"
 #include <stdio.h>
+#include "syssvc/syslog.h"
 #include "InitTask.h"
 #include "PerceptionTask.h"
 #include "DrivingTask.h"
@@ -31,6 +32,7 @@ void    main_task(intptr_t exinf)   {
         /**
          * 待機
          */
+        sys_log(LOG_NOTICE, "Main_Task is running");
         dly_tsk(main_cycle_delay);
     }
     //  タスク終了

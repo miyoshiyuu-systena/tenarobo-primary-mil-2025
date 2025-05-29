@@ -1,3 +1,4 @@
+#include    "syssvc/syslog.h"
 #include    "DrivingTask.h"
 
 //  駆動指示の実行周期(3s)
@@ -27,6 +28,7 @@ void    driving_task(intptr_t exinf)   {
         /**
          * 待機
          */
+        sys_log(LOG_ERROR, "Driving_Task is running");
         dly_tsk(driving_cycle_delay);
     }
 
