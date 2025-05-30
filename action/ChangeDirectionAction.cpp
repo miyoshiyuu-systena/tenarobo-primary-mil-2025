@@ -35,13 +35,13 @@ ActionCall changeDirectionActionFactory(
             } else {
                 device->twinWheelDrive.rightPivotTurn(45);
             }
-            dly_tsk(200 * 1000);
+            dly_tsk(150 * 1000);
 
             /**
              * 一時停止し、カメラの手ぶれなしで画像を取得する機会を与える
              */
             device->twinWheelDrive.stop();
-            dly_tsk(200 * 1000);
+            dly_tsk(150 * 1000);
 
             /**
              * XXX
