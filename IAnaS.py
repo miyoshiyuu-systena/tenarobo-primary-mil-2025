@@ -187,8 +187,8 @@ def get_target_circle_center(image):
     image3 = cv2.GaussianBlur(image, (5, 5), 0)
     cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/2_blur.png", image3)
 
-    # image4 = cv2.inRange(image3, (95, 50, 50), (125, 255, 255))
-    image4 = cv2.inRange(image3, (50, 50, 95), (255, 255, 125))
+    # image4 = cv2.inRange(image3, (50, 50, 95), (255, 255, 125))
+    image4 = cv2.inRange(image3, (50, 50, 40), (255, 255, 100))
     cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/2_binary.png", image4)
 
     contours, _ = cv2.findContours(image4, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -259,7 +259,6 @@ def get_target_circle_center(image):
                             cv2.line(image, (x - 5, y - 5), (x + 5, y + 5), (255, 255, 127), 2)
                             cv2.line(image, (x + 5, y - 5), (x - 5, y + 5), (255, 255, 127), 2)
                             cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/2_target.png", image)
-                            print(x, y)
                         break
 
                     # 玉ねぎの皮みたいに
