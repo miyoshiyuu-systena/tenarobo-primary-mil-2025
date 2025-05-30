@@ -10,7 +10,7 @@
 enum AnalysisCommand {
     DO_NOTHING = 0,
     FRONT_STRAIGHT = 1,
-    ON_RIGHT_EDGE = 2,
+    TARGET_CIRCLE_IN_DISPLAY = 2,
     ON_LEFT_EDGE = 3,
     GATE_IN_FRONT = 4,
     RED_BOTTLE_IN_FRONT = 5,
@@ -24,7 +24,7 @@ enum AnalysisCommand {
  */
 struct AnalysisResultPacket {
     uint8_t front_straight : 1;
-    uint8_t on_right_edge : 1;
+    uint8_t target_circle_in_display : 1;
     uint8_t on_left_edge : 1;
     uint8_t gate_in_front : 1;
     uint8_t red_bottle_in_front : 1;
@@ -76,11 +76,11 @@ public:
     bool responseFrontStraight();
 
     /**
-     * 右端に乗っているかどうか,分析結果を読み取る
+     * 画面内にターゲットサークルがあるかどうか,分析結果を読み取る
      * 事前にrequest(enum AnalysisCommand command)を実行しておく必要がある
-     * @return 右端に乗っているかどうか
+     * @return 画面内にターゲットサークルがあるかどうか
      */
-    bool responseOnRightEdge();
+    bool responseTargetCircleInDisplay();
 
     /**
      * 左端に乗っているかどうか,分析結果を読み取る

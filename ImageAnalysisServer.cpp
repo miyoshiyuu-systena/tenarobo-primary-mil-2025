@@ -144,10 +144,10 @@ bool ImageAnalysisServer::responseFrontStraight() {
     return result;
 }
 
-bool ImageAnalysisServer::responseOnRightEdge() {
+bool ImageAnalysisServer::responseTargetCircleInDisplay() {
     sem_wait(sem_analysis_result);
     AnalysisResultPacket* shared_result = static_cast<AnalysisResultPacket*>(shm_analysis_result_ptr);
-    bool result = shared_result->on_right_edge;
+    bool result = shared_result->target_circle_in_display;
     sem_post(sem_analysis_result);
     return result;
 }

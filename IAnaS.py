@@ -32,8 +32,8 @@ class ANALYSIS_COMMAND(Enum):
     ## 前方に直線がある
     front_straight = 1
 
-    ## ラインの右縁に乗っている
-    on_right_edge = 2
+    ## 画面内にターゲットサークルがある
+    target_circle_in_display = 2
 
     ## ラインの左縁に乗っている
     on_left_edge = 3
@@ -49,7 +49,7 @@ class ANALYSIS_COMMAND(Enum):
 
 # 分析結果パケット
 #  bit0: 前方に直線がある
-#  bit1: ラインの右縁に乗っている
+#  bit1: 画面内にターゲットサークルがある
 #  bit2: ラインの左縁に乗っている
 #  bit3: 正面にゲートがある
 #  bit4: 正面に赤いペットボトルがある
@@ -59,7 +59,7 @@ class ANALYSIS_COMMAND(Enum):
 #
 # ↑　このデータの配置を考慮して実装する
 FRONT_STRAIGHT_MASK             = 1 << 0 # 前方に直線がある
-ON_RIGHT_EDGE_MASK              = 1 << 1 # ラインの右縁に乗っている 
+TARGET_CIRCLE_IN_DISPLAY_MASK   = 1 << 1 # 画面内にターゲットサークルがある
 ON_LEFT_EDGE_MASK               = 1 << 2 # ラインの左縁に乗っている
 GATE_IN_FRONT_MASK              = 1 << 3 # 正面にゲートがある
 RED_BOTTLE_IN_FRONT_MASK        = 1 << 4 # 正面に赤いペットボトルがある
@@ -135,7 +135,7 @@ def is_gate_in_front(image):
 
     # ゲートの中心位置を計算
     center_index = (left_post_index + right_post_index) // 2
-    print(f"center_index: {center_index}")
+    print(f"center_index: {center_index}, is_gate_in_front: {((image.shape[1] * 2 // 5) <= center_index) and (center_index <= (image.shape[1] * 3 // 5))}")
 
     # ゲートの中心位置が画像の中央付近にあるかどうかを返す
     return ((image.shape[1] * 2 // 5) <= center_index) and (center_index <= (image.shape[1] * 3 // 5))
@@ -183,7 +183,99 @@ def is_front_straight(row_image):
 
     return is_front_straight
 
+def get_target_circle_center(image):
+    image3 = cv2.GaussianBlur(image, (5, 5), 0)
+    cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/2_blur.png", image3)
 
+    # image4 = cv2.inRange(image3, (95, 50, 50), (125, 255, 255))
+    image4 = cv2.inRange(image3, (50, 50, 95), (255, 255, 125))
+    cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/2_binary.png", image4)
+
+    contours, _ = cv2.findContours(image4, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    image5 = cv2.cvtColor(image3, cv2.COLOR_RGB2GRAY)
+
+    target_x = -1
+    target_y = -1
+
+    for contour in contours:
+        ## 輪郭の面積
+        area = cv2.contourArea(contour)
+
+        if area > 2:
+            ## 小さすぎるものは除外（面積1はモメントの計算で0になり、0除算のエラーを起こすことがあるので、諦める）
+            ## 重心
+            m = cv2.moments(contour)
+
+            if m['m00'] != 0:
+                ## ちゃんとモメントが得られたものはターゲットサークルの判定に進む
+                x, y= m['m10']/m['m00'] , m['m01']/m['m00']
+
+                # 座標を四捨五入する
+                x = round(x)
+                y = round(y)
+
+                if y < (image.shape[0] // 6):
+                    continue
+
+                ## 重心の周辺に輪っかがあることを調べる
+                ## この方法は縁の端っこが画面外の時は検出できない
+                ## 円に一番近い内側の1つの円だけに注目する
+                ## 2, 3重円を検出しようとすると、画面外の問題で検出ハードルが上がってしまう（誤検出は減るだろうね）
+                scan = 1
+                left_peak = 0
+                right_peak = 0
+                prev_left_bright = image5[y, x]
+                prev_prev_left_bright = image5[y, x]
+                prev_right_bright = image5[y, x]
+                prev_prev_right_bright = image5[y, x]
+                while (True):
+                    left = x - scan
+                    right = x + scan
+                    if (left < 0) or (right >= image5.shape[1]):
+                        # 画面外は諦める
+                        break
+
+                    if left_peak == 0:
+                        # まだ左のピークを探索中
+                        # uint8のアンダーフローを防ぐためint型にキャスト
+                        diff_left = (int(image5[y, left]) - int(prev_left_bright)) + (int(prev_left_bright) - int(prev_prev_left_bright))
+                        if diff_left < -3:
+                            left_peak = left
+
+                    if right_peak == 0:
+                        # まだ右のピークを探索中
+                        # uint8のアンダーフローを防ぐためint型にキャスト
+                        diff_right = (int(image5[y, right]) - int(prev_right_bright)) + (int(prev_right_bright) - int(prev_prev_right_bright))
+                        if diff_right < -3:
+                            right_peak = right
+
+                    if (left_peak != 0) and (right_peak != 0):
+                        # 重心の左右の円の縁を検出
+                        if (((right_peak - x) * 0.9) < (x - left_peak)) and ((x - left_peak) < ((right_peak - x) * 1.1)):
+                            # 重心を中心として正円がまとわりついている
+                            # これはターゲットサークルに違いない
+                            target_x = x
+                            target_y = y
+                            cv2.line(image, (x - 5, y - 5), (x + 5, y + 5), (255, 255, 127), 2)
+                            cv2.line(image, (x + 5, y - 5), (x - 5, y + 5), (255, 255, 127), 2)
+                            cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/2_target.png", image)
+                            print(x, y)
+                        break
+
+                    # 玉ねぎの皮みたいに
+                    # 内側から1枚ずつ円を探してみる
+                    scan = scan + 1
+                    # 前回の明るさを記録する
+                    prev_prev_left_bright = prev_left_bright
+                    prev_left_bright = image5[y, left]
+                    prev_prev_right_bright = prev_right_bright
+                    prev_right_bright = image5[y, right]
+
+    return target_x, target_y
+
+def is_target_circle_in_display(image):
+    target_x, target_y = get_target_circle_center(image)
+    return target_x != -1 and target_y != -1
 
 def main():
     # 画像の共有メモリ・セマフォの取得
@@ -217,6 +309,8 @@ def main():
             command_bytes = shm_analysis_command_map[:4]
             command = struct.unpack('<i', command_bytes)[0]
             sem_analysis_command.release()
+
+            command = ANALYSIS_COMMAND.target_circle_in_display.value#デバッグ
 
             if (count % 100 == 0):
                 print("IAnaS: 分析", command, "を実行しています")
@@ -257,9 +351,15 @@ def main():
                 shm_analysis_result_map[:] = struct.pack(format_string, result)
                 sem_analysis_result.release()
 
-            elif (command == ANALYSIS_COMMAND.on_right_edge.value):
+            elif (command == ANALYSIS_COMMAND.target_circle_in_display.value):
                 result = 0
-                result |= ON_RIGHT_EDGE_MASK
+                target_circle_detected = is_target_circle_in_display(image)
+                if target_circle_detected:
+                    result |= TARGET_CIRCLE_IN_DISPLAY_MASK
+                else:
+                    result &= ~TARGET_CIRCLE_IN_DISPLAY_MASK
+
+                print(result)
 
                 sem_analysis_result.acquire()
                 # !!!!フォーマットが変わったときここも変更すること
@@ -321,7 +421,7 @@ def main():
                 print("IAnaS: 開発者はインターフェースを見直して下さい")
 
             count += 1
-            time.sleep(0.05) # 0.05sごとに画像を分析
+            time.sleep(0.1) # 0.1sごとに画像を分析
 
     finally:
         shm_image_map.close()
