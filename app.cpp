@@ -9,6 +9,7 @@
 #include "PivotTurnAction.h"
 #include "SpinTurnAction.h"
 #include "LaneChangeAction.h"
+#include "ChangeDirectionAction.h"
 #include "SinpleLaneChangeAction.h"
 #include "StopAction.h"
 #include "Device.h"
@@ -20,10 +21,10 @@
 #include "BlueFloorCloser.h"
 #include "BlackFloorCloser.h"
 #include "StraightCloser.h"
+#include "GateFrontCloser.h"
 #include "CurveCloser.h"
 #include "TimedCloser.h"
 #include "OnRightEdgeCloser.h"
-#include "ImageAnalysisServer.h"
 
 using namespace spikeapi;
 
@@ -48,15 +49,40 @@ void main_task(intptr_t exinf)   {
     // ロガーインスタンスの取得
     Logger& logger = Logger::getInstance();
 
-    ImageAnalysisServer::getInstance().request(AnalysisCommand::FRONT_STRAIGHT);
-    while (true) {
-        if (ImageAnalysisServer::getInstance().responseFrontStraight()) {
-            std::cout << "front straight" << std::endl;
-        } else {
-            std::cout << "0" << std::endl;
-        }
-        dly_tsk(1000 * 1000);
-    }
+    bool is_clockwise = true;
+
+    ActionNode* root = new ActionNode(
+        "action_root: 背中のボタンを押すまで忠犬ハチ公！！！",
+        &device,
+        hachikouActionFactory(
+            1.0f,
+            10
+        ),
+        0
+    );
+
+    ActionNode* action1 = new ActionNode(
+        "action1: ゲート検知",
+        &device,
+        changeDirectionActionFactory(
+            is_clockwise,
+            {
+                gateFrontCloserGenerator()
+            }
+        ),
+        0
+    );
+    root->setNext(action1);
+
+    ActionNode* current = root;
+    ActionNode* next = nullptr;
+
+    do {
+        current->execute();
+        next = current->getNext();
+        delete current;
+        current = next;
+    } while (current != nullptr);
 
     // 最終的なログファイル書き込み
     logger.writeLogsToFile();

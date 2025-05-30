@@ -78,9 +78,20 @@ RESERVED7_MASK                  = 1 << 7 # 予約
 format_string = "<B"
 
 def is_gate_in_front(image):
+    # 画像をグレースケールに変換
     image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/0_gray.png", image)
+
+    # ガウシアンぼかし
+    # 周辺のピクセルを取り込んでごちゃ混ぜにする
+    # これによってノイズを軽減する
     image = cv2.GaussianBlur(image, (5, 151), 0)
+    cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/0_blur.png", image)
+
+    # 二値化
+    # 明るいところを255、暗いところを0に変換する
     image = cv2.inRange(image, 0, 127)
+    cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/0_binary.png", image)
 
     is_left_post_start_found = False
     is_left_post_end_found = False
@@ -131,7 +142,7 @@ def is_gate_in_front(image):
 def is_front_straight(image):
     ## 画像をグレースケールに変換
     image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/0_gray.png", image)
+    cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/1_gray.png", image)
 
     ## ガウシアンぼかし
     ## 周辺のピクセルを取り込んでごちゃ混ぜにする
@@ -142,7 +153,7 @@ def is_front_straight(image):
     ## エッジ検出
     ## エッジを検出する
     image = cv2.Canny(image, 100, 200)
-    cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/2_canny.png", image)
+    cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/1_canny.png", image)
 
     ## ハフ変換
     ## 直線を検出する
@@ -176,7 +187,7 @@ def is_front_straight(image):
             cv2.line(_image, (x1, y1), (x2, y2), (255, 0, 0), 4)
             is_front_straight = True
     
-    cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/3_hough.png", _image)
+    cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/1_hough.png", _image)
     return is_front_straight
 
 
