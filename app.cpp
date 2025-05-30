@@ -52,16 +52,16 @@ void main_task(intptr_t exinf)   {
     while (true) {
 
         device.twinWheelDrive.leftSpinTurn(90);
-        dly_tsk(250 * 1000);
+        dly_tsk(250 * 1000);//500msの方がいいかもだが、1sタイムロスする
         
         device.twinWheelDrive.rightSpinTurn(90);
-        dly_tsk(250 * 1000);
+        dly_tsk(250 * 1000);//500msの方がいいかもだが、1sタイムロスする
 
         device.twinWheelDrive.rightSpinTurn(90);
-        dly_tsk(250 * 1000);
+        dly_tsk(250 * 1000);//500msの方がいいかもだが、1sタイムロスする
         
         device.twinWheelDrive.leftSpinTurn(90);
-        dly_tsk(250 * 1000);
+        dly_tsk(250 * 1000);//500msの方がいいかもだが、1sタイムロスする
 
         device.twinWheelDrive.stop();
         dly_tsk(1000 * 1000);
