@@ -15,7 +15,8 @@ enum AnalysisCommand {
     GATE_IN_FRONT = 4,
     RED_BOTTLE_IN_FRONT = 5,
     BLUE_BOTTLE_IN_FRONT = 6,
-    ANALYSIS_COMMAND_MAX = 7
+    TARGET_CIRCLE_XY = 7,
+    ANALYSIS_COMMAND_MAX = 8
 };
 
 /**
@@ -109,6 +110,13 @@ public:
      * @return 青いペットボトルがあるかどうか
      */
     bool responseBlueBottleInFront();
+
+    /**
+     * ターゲットサークルの座標を読み取る
+     * 事前にrequest(enum AnalysisCommand command)を実行しておく必要がある
+     * @return ターゲットサークルの座標
+     */
+    void responseTargetCircleXY(uint16_t& x, uint16_t& y);
 
 private:
     ImageAnalysisServer();

@@ -183,3 +183,11 @@ bool ImageAnalysisServer::responseBlueBottleInFront() {
     sem_post(sem_analysis_result);
     return result;
 }
+
+void ImageAnalysisServer::responseTargetCircleXY(uint16_t& x, uint16_t& y) {
+    sem_wait(sem_analysis_result);
+    AnalysisResultPacket* shared_result = static_cast<AnalysisResultPacket*>(shm_analysis_result_ptr);
+    x = shared_result->target_circle_x;
+    y = shared_result->target_circle_y;
+    sem_post(sem_analysis_result);
+}
