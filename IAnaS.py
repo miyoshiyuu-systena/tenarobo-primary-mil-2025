@@ -87,7 +87,7 @@ RESERVED7_MASK                  = 1 << 7 # 予約
 # https://docs.python.org/ja/3.13/library/struct.html
 
 #### 画像分析の種類を増やすたびに、C++側と合わせてここを変更すること
-format_string = "<BHHHHH"
+format_string = "<BHHHH"
 
 def is_gate_in_front(image):
     # 画像をグレースケールに変換
