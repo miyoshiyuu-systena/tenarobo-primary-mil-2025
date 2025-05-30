@@ -289,8 +289,41 @@ def is_target_circle_in_display(image):
     return target_x != -1 and target_y != -1
 
 def get_blue_bottle_center(image):
-    ## TODO: 未開発
-    pass
+    image2 = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    image3 = cv2.GaussianBlur(image2, (5, 5), 0)
+    image4 = cv2.inRange(image3, (95, 50, 50), (125, 255, 255))
+
+    contours, _ = cv2.findContours(image4, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    bottle_index = 0
+    bottle_area = 0
+    for i, contour in enumerate(contours):
+        area = cv2.contourArea(contour)
+        if bottle_area < area:
+            bottle_index = i
+            bottle_area = area
+            # 最も大きいものをペットボトルとする
+            ## 確かに大会の会場にある青いものの中でもペットボトルのラベルは大きい方だが
+            ## 本当は良くなくて
+            ## ペットボトルには青いラベルがついているだけでなく
+            ## ラベルは正面から見れば四角形に見えるし
+            ## ペットボトル特有の形状があるし
+            ## 白いキャップも付いている
+            ## いろんな分析を統合して、ペットボトルの偽陽性を減らしたい
+
+    m = cv2.moments(contours[bottle_index])
+    # モーメントが0の場合、ペットボトルではないと判断する
+    # モーメントが0でない場合、ペットボトルと判断し、重心を計算する
+    if bottle_area > 0 and m['m00'] != 0:
+        x = round(m['m10'] / m['m00'])
+        y = round(m['m01'] / m['m00'])
+        return x, y
+
+    return -1, -1
+
+def is_blue_bottle_in_front(image):
+    x, y = get_blue_bottle_center(image)
+    return x != -1 and y != -1
+
 
 def main():
     # 画像の共有メモリ・セマフォの取得
@@ -415,13 +448,12 @@ def main():
                 sem_analysis_result.release()
 
             elif (command == ANALYSIS_COMMAND.blue_bottle_in_front.value):
-                ### mada
-                ### mada
-                ### mada
-                ### mada
-                ### mada
                 result = 0
-                result |= BLUE_BOTTLE_IN_FRONT_MASK
+                blue_bottle_detected = is_blue_bottle_in_front(image)
+                if blue_bottle_detected:
+                    result |= BLUE_BOTTLE_IN_FRONT_MASK
+                else:
+                    result &= ~BLUE_BOTTLE_IN_FRONT_MASK
 
                 sem_analysis_result.acquire()
                 # !!!!フォーマットが変わったときここも変更すること
