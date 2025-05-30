@@ -89,6 +89,41 @@ void main_task(intptr_t exinf)   {
     );
     action1->setNext(action2);
 
+    ActionNode* action3 = new ActionNode(
+        "action3: ゲートを探す",
+        &device,
+        changeDirectionActionFactory(
+            is_clockwise,
+            {
+                gateFrontCloserGenerator()
+            }
+        ),
+        0
+    );
+    action2->setNext(action3);
+
+    ActionNode* action4 = new ActionNode(
+        "action4: ゲートを通過する",
+        &device,
+        goStraightActionFactory(
+            250.0f,
+            10,
+            {},
+            {
+                runDistanceCloserGenerator(760.0f)
+            }
+        ),
+        0
+    );
+    action3->setNext(action4);
+
+    ActionNode* action5 = new ActionNode(
+        "action5: 停止する",
+        &device,
+        stopActionFactory(),
+        0
+    );
+    action4->setNext(action5);
     
     ActionNode* current = root;
     ActionNode* next = nullptr;
