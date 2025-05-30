@@ -24,6 +24,7 @@
 #include "CurveCloser.h"
 #include "TimedCloser.h"
 #include "OnRightEdgeCloser.h"
+#include "ImageAnalysisServer.h"
 
 using namespace spikeapi;
 
@@ -47,6 +48,17 @@ void main_task(intptr_t exinf)   {
 
     // ロガーインスタンスの取得
     Logger& logger = Logger::getInstance();
+
+    ImageAnalysisServer::getInstance().request(AnalysisCommand::GATE_IN_FRONT);
+    while (true) {
+        if (ImageAnalysisServer::getInstance().responseGateInFront()) {
+            std::cout << "gate in front" << std::endl;
+            break;
+        } else {
+            std::cout << "0" << std::endl;
+        }
+        dly_tsk(1000 * 1000);
+    }
 
     // 最終的なログファイル書き込み
     logger.writeLogsToFile();
