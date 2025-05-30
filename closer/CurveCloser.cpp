@@ -22,7 +22,7 @@ CurveCloser::~CurveCloser()
 
 void CurveCloser::init()
 {
-    ImageAnalysisServer::getInstance()->request(FRONT_STRAIGHT);
+    ImageAnalysisServer::getInstance().request(FRONT_STRAIGHT);
 }
 
 int CurveCloser::getSeqCountIsCurveMax()
@@ -35,7 +35,7 @@ bool CurveCloser::isClosed()
     /**
      * ここで画像分析サーバーから分析結果を受け取る
      */
-    bool isFrontStraight = ImageAnalysisServer::getInstance()->responseFrontStraight();
+    bool isFrontStraight = ImageAnalysisServer::getInstance().responseFrontStraight();
 
     if (!isFrontStraight) {
         mSeqCountIsCurve++;

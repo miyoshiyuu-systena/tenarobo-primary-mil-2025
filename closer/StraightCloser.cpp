@@ -1,6 +1,7 @@
 #include "StraightCloser.h"
 #include "config.h"
 #include <cmath>
+#include "ImageAnalysisServer.h"
 
 ICloserGenerator straightCloserGenerator() {
     return [](Device*& device) {
@@ -30,8 +31,8 @@ int StraightCloser::getSeqCountIsStraightMax()
 
 bool StraightCloser::isClosed()
 {
-    ImageAnalysisServer::getInstance()->request(FRONT_STRAIGHT);
-    bool isFrontStraight = ImageAnalysisServer::getInstance()->responseFrontStraight();
+    ImageAnalysisServer::getInstance().request(FRONT_STRAIGHT);
+    bool isFrontStraight = ImageAnalysisServer::getInstance().responseFrontStraight();
 
     if (isFrontStraight) {
         mSeqCountIsStraight++;

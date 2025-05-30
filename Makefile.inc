@@ -13,7 +13,6 @@ APPL_CXXOBJS +=\
 	BlueFloorCloser.o\
 	CurveCloser.o\
 	StraightCloser.o\
-	StraightStrictCloser.o\
 	OnRightEdgeCloser.o\
 	OnLeftEdgeCloser.o\
 	TimedCloser.o\
