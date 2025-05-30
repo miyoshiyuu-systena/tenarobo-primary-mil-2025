@@ -206,8 +206,8 @@ def get_target_circle_center(image):
     contours, _ = cv2.findContours(image4, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     image5 = cv2.cvtColor(image3, cv2.COLOR_RGB2GRAY)
 
-    target_x = -1
-    target_y = -1
+    target_x = 0
+    target_y = 0
 
     for contour in contours:
         ## 輪郭の面積
@@ -286,7 +286,7 @@ def get_target_circle_center(image):
 
 def is_target_circle_in_display(image):
     target_x, target_y = get_target_circle_center(image)
-    return target_x != -1 and target_y != -1
+    return target_x != 0 and target_y != 0
 
 def get_blue_bottle_center(image):
     image2 = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
@@ -318,11 +318,11 @@ def get_blue_bottle_center(image):
         y = round(m['m01'] / m['m00'])
         return x, y
 
-    return -1, -1
+    return 0, 0
 
 def is_blue_bottle_in_front(image):
     x, y = get_blue_bottle_center(image)
-    return x != -1 and y != -1
+    return x != 0 and y != 0
 
 
 def main():
