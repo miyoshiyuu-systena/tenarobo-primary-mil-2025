@@ -48,60 +48,39 @@ void main_task(intptr_t exinf)   {
 
     // ロガーインスタンスの取得
     Logger& logger = Logger::getInstance();
+    
+    bool is_clockwise = true;
 
-    while (true) {
+    ActionNode* root = new ActionNode(
+        "action0: 背中のボタンを押すまで忠犬ハチ公！！！",
+        &device,
+        hachikouActionFactory(
+            1.0f,
+            10
+        ),
+        0
+    );
 
-        device.twinWheelDrive.leftSpinTurn(90);
-        dly_tsk(250 * 1000);//500msの方がいいかもだが、1sタイムロスする
-        
-        device.twinWheelDrive.rightSpinTurn(90);
-        dly_tsk(250 * 1000);//500msの方がいいかもだが、1sタイムロスする
+    ActionNode* action1 = new ActionNode(
+        "action1: オラオラ！ぶっ飛ばすぜ！！",
+        &device,
+        oraOraActionFactory(
+            is_clockwise,
+            {}
+        ),
+        0
+    );
+    root->setNext(action1);
+    
+    ActionNode* current = root;
+    ActionNode* next = nullptr;
 
-        device.twinWheelDrive.rightSpinTurn(90);
-        dly_tsk(250 * 1000);//500msの方がいいかもだが、1sタイムロスする
-        
-        device.twinWheelDrive.leftSpinTurn(90);
-        dly_tsk(250 * 1000);//500msの方がいいかもだが、1sタイムロスする
-
-        device.twinWheelDrive.stop();
-        dly_tsk(1000 * 1000);
-
-    }
-
-    // bool is_clockwise = true;
-
-    // ActionNode* root = new ActionNode(
-    //     "action_root: 背中のボタンを押すまで忠犬ハチ公！！！",
-    //     &device,
-    //     hachikouActionFactory(
-    //         1.0f,
-    //         10
-    //     ),
-    //     0
-    // );
-
-    // ActionNode* action1 = new ActionNode(
-    //     "action1: ゲート検知",
-    //     &device,
-    //     changeDirectionActionFactory(
-    //         is_clockwise,
-    //         {
-    //             gateFrontCloserGenerator()
-    //         }
-    //     ),
-    //     0
-    // );
-    // root->setNext(action1);
-
-    // ActionNode* current = root;
-    // ActionNode* next = nullptr;
-
-    // do {
-    //     current->execute();
-    //     next = current->getNext();
-    //     delete current;
-    //     current = next;
-    // } while (current != nullptr);
+    do {
+        current->execute();
+        next = current->getNext();
+        delete current;
+        current = next;
+    } while (current != nullptr);
 
     // 最終的なログファイル書き込み
     logger.writeLogsToFile();
