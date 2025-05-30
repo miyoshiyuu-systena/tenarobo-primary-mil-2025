@@ -31,6 +31,7 @@ APPL_CXXOBJS +=\
 	LaneChangeCompleteJudge.o\
 	SinpleLaneChangeAction.o\
 	ChangeDirectionAction.o\
+	FineChangeDirectionAction.o\
 	OraOraAction.o\
 	ActionNode.o\
 	Device.o\
