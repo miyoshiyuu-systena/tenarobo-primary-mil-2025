@@ -33,6 +33,7 @@ APPL_CXXOBJS +=\
 	TwinWheelDrive.o\
 	Logger.o\
 	config.o\
+	ImageAnalysisServer.o\
 
 SRCLANG := c++
 
