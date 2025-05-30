@@ -26,7 +26,7 @@ void GateFrontCloser::init()
 
 int GateFrontCloser::getSeqCountIsGateMax()
 {
-    return config.getIntValue("seqCountIsGateMax", 10);
+    return config.getIntValue("seqCountIsGateMax", 1);
 }
 
 bool GateFrontCloser::isClosed()
