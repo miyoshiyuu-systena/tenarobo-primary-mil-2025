@@ -321,7 +321,7 @@ def main():
                 print("IAnaS: 開発者はインターフェースを見直して下さい")
 
             count += 1
-            time.sleep(0.033) # 30fpsで画像を分析
+            time.sleep(0.05) # 0.05sごとに画像を分析
 
     finally:
         shm_image_map.close()
