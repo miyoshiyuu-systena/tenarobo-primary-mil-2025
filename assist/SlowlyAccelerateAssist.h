@@ -37,6 +37,11 @@ class SlowlyAccelerateAssist : public IAssist
          */
         SlowlyAccelerateAssist(
             /**
+             * デバイスの参照
+             */
+            Device*& device,
+
+            /**
              * 加速の段階数
              */
             int stepCount,
@@ -53,6 +58,7 @@ class SlowlyAccelerateAssist : public IAssist
         void correct(float* speeds) override;
 
     private:
+        Device*& mDevice;
         int mStepCount;
         int mStepInterval;
         int mStepIndex;

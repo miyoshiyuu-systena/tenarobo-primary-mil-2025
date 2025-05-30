@@ -3,12 +3,14 @@
 #include    <cmath>
 
 ICloserGenerator curveCloserGenerator() {
-    return []() {
-        return new CurveCloser();
+    return [](Device*& device) {
+        return new CurveCloser(device);
     };
 }
 
-CurveCloser::CurveCloser() : ICloser()
+wCurveCloser::CurveCloser(Device*& device)
+: ICloser()
+, mDevice(device)
 {
     mSeqCountIsCurve = 0;
 }

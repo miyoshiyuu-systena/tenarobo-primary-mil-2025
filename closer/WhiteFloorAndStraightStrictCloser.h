@@ -16,11 +16,14 @@ ICloserGenerator whiteFloorAndStraightStrictGenerator();
 class WhiteFloorAndStraightStrict : public ICloser
 {
     public:
-        WhiteFloorAndStraightStrict();
+        WhiteFloorAndStraightStrict(Device*& device);
         ~WhiteFloorAndStraightStrict();
 
         void init() override;
         bool isClosed() override;
+
+    private:
+        Device*& mDevice;
 };
 
 #endif

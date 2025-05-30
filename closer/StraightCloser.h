@@ -16,13 +16,18 @@ ICloserGenerator straightCloserGenerator();
 class StraightCloser : public ICloser
 {
     public:
-        StraightCloser();
+        StraightCloser(Device*& device);
         ~StraightCloser();
 
         void init() override;
         bool isClosed() override;
 
     private:
+        /**
+         * デバイスの参照
+         */
+        Device*& mDevice;
+
         /**
          * 正面の直線が連続して観測された回数
          * @note

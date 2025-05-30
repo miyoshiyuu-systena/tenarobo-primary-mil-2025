@@ -2,8 +2,8 @@
 #include "config.h"
 
 ICloserGenerator blackFloorCloserGenerator() {
-    return []() {
-        return new BlackFloorCloser();
+    return [](Device*& device) {
+        return new BlackFloorCloser(device);
     };
 }
 
@@ -34,7 +34,9 @@ static int getBlackFloorVLowerThreshold() {
     return config.getIntValue("blackFloorVLowerThreshold", 0);
 }
 
-BlackFloorCloser::BlackFloorCloser() : ICloser()
+BlackFloorCloser::BlackFloorCloser(Device*& device)
+: ICloser()
+, mDevice(device)
 {
 }
 

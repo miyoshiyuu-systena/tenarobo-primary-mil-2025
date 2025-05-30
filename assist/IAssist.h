@@ -2,6 +2,7 @@
 #define _I_ASSIST_H_
 
 #include <cstdint>
+#include "Device.h"
 
 /**
  * 走行補助インターフェース
@@ -24,8 +25,6 @@ class IAssist
          * @param speeds 次の走行速度[mm/s]（構造体を更新することで次の速度を渡す）
          */
         virtual void correct(float* speeds) = 0;
-
-        uint8_t mask;
 };
 
 #endif // _I_ASSIST_H_

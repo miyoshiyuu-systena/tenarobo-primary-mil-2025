@@ -2,8 +2,8 @@
 #include "config.h"
 
 ICloserGenerator blueFloorCloserGenerator() {
-    return []() {
-        return new BlueFloorCloser();
+    return [](Device*& device) {
+        return new BlueFloorCloser(device);
     };
 }
 
@@ -34,7 +34,9 @@ static int getBlueFloorVLowerThreshold() {
     return config.getIntValue("blueFloorVLowerThreshold", 50);
 }
 
-BlueFloorCloser::BlueFloorCloser() : ICloser()
+BlueFloorCloser::BlueFloorCloser(Device*& device) 
+: ICloser()
+, mDevice(device)
 {
 }
 

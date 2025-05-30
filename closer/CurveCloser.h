@@ -18,13 +18,18 @@ ICloserGenerator curveCloserGenerator();
 class CurveCloser : public ICloser
 {
     public:
-        CurveCloser();
+        CurveCloser(Device*& device);
         ~CurveCloser();
 
         void init() override;
         bool isClosed() override;
 
     private:
+        /**
+         * デバイスの参照
+         */
+        Device*& mDevice;
+        
         /**
          * 正面の直線を連続して見失った回数
          * @note

@@ -1,12 +1,14 @@
 #include "OnLeftEdgeCloser.h"
 
 ICloserGenerator onLeftEdgeCloserGenerator() {
-    return []() {
-        return new OnLeftEdgeCloser();
+    return [](Device*& device) {
+        return new OnLeftEdgeCloser(device);
     };
 }
 
-OnLeftEdgeCloser::OnLeftEdgeCloser() : ICloser() 
+OnLeftEdgeCloser::OnLeftEdgeCloser(Device*& device)
+: ICloser()
+, mDevice(device)
 {
 }
 

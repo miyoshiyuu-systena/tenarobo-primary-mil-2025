@@ -1,18 +1,20 @@
 #include "LaneTracingAssist.h"
 
 IAssistGenerator laneTracingAssistGenerator(
+    Device*& device,
     bool isRightSide,
     float kp,
     float ki,
     float kd,
     CalcErrorFunc calcError
 ) {
-    return [isRightSide, kp, ki, kd, calcError]() {
-        return new LaneTracingAssist(isRightSide, kp, ki, kd, calcError);
+    return [device, isRightSide, kp, ki, kd, calcError]() {
+        return new LaneTracingAssist(device, isRightSide, kp, ki, kd, calcError);
     };
 }
 
 LaneTracingAssist::LaneTracingAssist(
+    Device*& device,
     bool isRightSide,
     float kp,
     float ki,
@@ -20,6 +22,7 @@ LaneTracingAssist::LaneTracingAssist(
     CalcErrorFunc calcError
 ):
     IAssist()
+    , mDevice(device)
     , mIsRightSide(isRightSide)
     , mKp(kp)
     , mKi(ki)

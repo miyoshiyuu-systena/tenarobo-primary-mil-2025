@@ -1,12 +1,14 @@
 #include "WhiteFloorAndStraightStrictCloser.h"
 
 ICloserGenerator whiteFloorAndStraightStrictGenerator() {
-    return []() -> ICloser* {
-        return new WhiteFloorAndStraightStrict();
+    return [](Device*& device) -> ICloser* {
+        return new WhiteFloorAndStraightStrict(device);
     };
 }
 
-WhiteFloorAndStraightStrict::WhiteFloorAndStraightStrict() : ICloser()
+WhiteFloorAndStraightStrict::WhiteFloorAndStraightStrict(Device*& device)
+: ICloser()
+, mDevice(device)
 {
 }
 

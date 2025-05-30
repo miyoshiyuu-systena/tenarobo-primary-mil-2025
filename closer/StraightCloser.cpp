@@ -3,12 +3,14 @@
 #include <cmath>
 
 ICloserGenerator straightCloserGenerator() {
-    return []() {
-        return new StraightCloser();
+    return [](Device*& device) {
+        return new StraightCloser(device);
     };
 }
 
-StraightCloser::StraightCloser() : ICloser()
+StraightCloser::StraightCloser(Device*& device)
+: ICloser()
+, mDevice(device)
 {
     mSeqCountIsStraight = 0;
 }
