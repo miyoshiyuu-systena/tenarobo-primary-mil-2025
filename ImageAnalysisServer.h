@@ -29,8 +29,8 @@ struct AnalysisResultPacket {
     uint8_t gate_in_front : 1;
     uint8_t red_bottle_in_front : 1;
     uint8_t blue_bottle_in_front : 1;
-    uint8_t reserved6 : 2; //今は使用していない
-    uint8_t reserved7 : 2; //今は使用していない
+    uint8_t reserved6 : 1; //今は使用していない
+    uint8_t reserved7 : 1; //今は使用していない
 };
 
 /**
