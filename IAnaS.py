@@ -358,7 +358,6 @@ def main():
             command = struct.unpack('<i', command_bytes)[0]
             sem_analysis_command.release()
 
-            command = ANALYSIS_COMMAND.target_circle_in_display.value#デバッグ
 
             if (count % 100 == 0):
                 print("IAnaS: 分析", command, "を実行しています")
