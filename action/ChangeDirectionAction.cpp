@@ -30,7 +30,9 @@ ActionCall changeDirectionActionFactory(
                 device->twinWheelDrive.rightSpinTurn(90);
             }
             dly_tsk(500 * 1000);
+            
             device->twinWheelDrive.stop();
+            dly_tsk(500 * 1000);
 
             for (ICloser* closer : closers) {
                 if (closer->isClosed())
