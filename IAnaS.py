@@ -131,21 +131,35 @@ def is_gate_in_front(image):
 def is_front_straight(image):
     ## 画像をグレースケールに変換
     image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/0_gray.png", image)
 
     ## ガウシアンぼかし
     ## 周辺のピクセルを取り込んでごちゃ混ぜにする
     ## これによってノイズを軽減する
     image = cv2.GaussianBlur(image, (5, 5), 0)
+    cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/1_blur.png", image)
 
     ## エッジ検出
     ## エッジを検出する
     image = cv2.Canny(image, 100, 200)
+    cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/2_canny.png", image)
 
     ## ハフ変換
     ## 直線を検出する
     lines = cv2.HoughLinesP(image, 1, np.pi / 180, 50, 10, 10)
+    
+    # 直線が検出されなかった場合の処理を追加
+    if lines is None:
+        return False  # 直線が検出されなかった場合はFalseを返す
+    
+    # 直線が検出された場合の処理
+    lines_squeezed = lines.squeeze()
+    if lines_squeezed.ndim == 1:  # 1つの直線のみ検出された場合
+        lines_squeezed = lines_squeezed.reshape(1, -1)
 
-    for x1, y1, x2, y2 in lines.squeeze():
+    is_front_straight = False
+    _image = np.zeros((image.shape[0], image.shape[1]), dtype=np.uint8)
+    for x1, y1, x2, y2 in lines_squeezed:
         ## x1 始点のx座標
         ## y1 始点のy座標
         ## x2 終点のx座標
@@ -159,9 +173,11 @@ def is_front_straight(image):
 
             ## この条件は何を指しているかというと
             ## ロボットの足元から伸びている、ある程度長い直線があるかどうかを判定する
-            return True
+            cv2.line(_image, (x1, y1), (x2, y2), (255, 0, 0), 4)
+            is_front_straight = True
     
-    return False
+    cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/3_hough.png", _image)
+    return is_front_straight
 
 
 
