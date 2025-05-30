@@ -90,50 +90,52 @@ def is_gate_in_front(image):
 
     # 二値化
     # 明るいところを255、暗いところを0に変換する
-    image = cv2.inRange(image, 100, 255)
+    image = cv2.inRange(image, 120, 255)
+    # image = cv2.inRange(image, 100, 255)
     cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/0_binary.png", image)
 
     is_left_post_start_found = False
     is_left_post_end_found = False
     is_right_post_start_found = False
 
-    # 左ポストの終了位置
+     # 左ポストの終了位置
     # 右ポストの開始位置
     # を探す
     left_post_index = -1
     right_post_index = -1
 
-    image_row = image[image.shape[0] // 3]
-    for pixel_index, pixel in enumerate(image_row):
-        # 画像の上から1/3のラインを抽出し、
-        # 左側から1pixelずつ見ていく
+    for i in range(image.shape[1]):
+        bright = image[image.shape[0] // 6, i]
+        # bright = image[image.shape[0] // 3, i]
         if is_left_post_start_found == False:
-            # 左のポストの開始位置を探す
-            if pixel == 255:
-                # ピクセルが明るいならば、初めて左のポストが見つかったと考える
+            if bright > 127:
+                pass
+            else:
                 is_left_post_start_found = True
+                left_post_index = i
         elif is_left_post_end_found == False:
-            # 左のポストの終了位置を探す
-            if pixel == 0:
-                # ピクセルが暗いならば、左のポストが見つかったと考える
+            if bright < 127:
+                pass
+            else:
                 is_left_post_end_found = True
-                left_post_index = pixel_index
         elif is_right_post_start_found == False:
-            # 右のポストの開始位置を探す
-            if pixel == 255:
-                # ピクセルが明るいならば、初めて右のポストが見つかったと考える
+            if bright > 127:
+                pass
+            else:
                 is_right_post_start_found = True
-                right_post_index = pixel_index
+                right_post_index = i
         else:
-            # 全て見つかっているのでゲートは見つかっている
+            ## Nothing
             break
 
     if left_post_index == -1 or right_post_index == -1:
         # ゲートが見つかっていない
+        print("no center")
         return False
 
     # ゲートの中心位置を計算
     center_index = (left_post_index + right_post_index) // 2
+    print(f"center_index: {center_index}")
 
     # ゲートの中心位置が画像の中央付近にあるかどうかを返す
     return ((image.shape[1] * 2 // 5) <= center_index) and (center_index <= (image.shape[1] * 3 // 5))
