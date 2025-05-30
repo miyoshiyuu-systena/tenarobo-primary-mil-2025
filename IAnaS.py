@@ -85,12 +85,12 @@ def is_gate_in_front(image):
     # ガウシアンぼかし
     # 周辺のピクセルを取り込んでごちゃ混ぜにする
     # これによってノイズを軽減する
-    image = cv2.GaussianBlur(image, (5, 151), 0)
+    image = cv2.GaussianBlur(image, (5, 501), 0)
     cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/0_blur.png", image)
 
     # 二値化
     # 明るいところを255、暗いところを0に変換する
-    image = cv2.inRange(image, 0, 127)
+    image = cv2.inRange(image, 100, 255)
     cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/0_binary.png", image)
 
     is_left_post_start_found = False
