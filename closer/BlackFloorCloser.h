@@ -16,11 +16,14 @@ ICloserGenerator blackFloorCloserGenerator();
 class BlackFloorCloser : public ICloser
 {
     public:
-        BlackFloorCloser();
+        BlackFloorCloser(Device*& device);
         ~BlackFloorCloser();
 
         void init() override;
         bool isClosed() override;
+
+    private:
+        Device*& mDevice;
 };
 
 #endif // _BLACK_FLOOR_CLOSER_H_

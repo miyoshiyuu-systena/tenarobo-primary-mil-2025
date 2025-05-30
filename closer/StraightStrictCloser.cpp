@@ -1,17 +1,16 @@
 #include "StraightStrictCloser.h"
-#include "PerceptionReporter.h"
-#include "PerceptionReport.h"
 #include "config.h"
-#include "web-camera/CameraManager.h"
 #include <cmath>
 
 ICloserGenerator straightStrictCloserGenerator() {
-    return []() {
-        return new StraightStrictCloser();
+    return [](Device*& device) {
+        return new StraightStrictCloser(device);
     };
 }
 
-StraightStrictCloser::StraightStrictCloser() : ICloser()
+StraightStrictCloser::StraightStrictCloser(Device*& device)
+: ICloser()
+, mDevice(device)
 {
 }
 
@@ -29,33 +28,27 @@ int StraightStrictCloser::getSeqCountIsStraightMax()
 }
 
 bool StraightStrictCloser::isClosed()
-{
-    PerceptionReport report = PerceptionReporter::getInstance().getLatest();
-
-    if (!PerceptionReporter::getInstance().isImageUpdated()) {
-        return false;
-    }
-    
+{   
     cv::Mat image;
 
     /**
      * グレースケールに変換
      */
-    cv::cvtColor(report.image, image, cv::COLOR_BGR2GRAY);
+    // cv::cvtColor(mReport.image, image, cv::COLOR_BGR2GRAY);
 
     /**
      * ガウシアンぼかし
      */
     static int gaussianKernelSizeWidth = config.getIntValue("straightStrictGaussianKernelSizeWidth", 5);
     static int gaussianKernelSizeHeight = config.getIntValue("straightStrictGaussianKernelSizeHeight", 51);
-    cv::GaussianBlur(image, image, cv::Size(gaussianKernelSizeWidth, gaussianKernelSizeHeight), 0);
+    // cv::GaussianBlur(image, image, cv::Size(gaussianKernelSizeWidth, gaussianKernelSizeHeight), 0);
 
     /**
      * エッジ検出
      */
     static int cannyLowerThreshold = config.getIntValue("straightStrictCannyLowerThreshold", 100);  // 100
     static int cannyUpperThreshold = config.getIntValue("straightStrictCannyUpperThreshold", 200);  // 200
-    cv::Canny(image, image, cannyLowerThreshold, cannyUpperThreshold);
+    // cv::Canny(image, image, cannyLowerThreshold, cannyUpperThreshold);
 
     /**
      * ハフ変換
@@ -64,7 +57,7 @@ bool StraightStrictCloser::isClosed()
     static int houghMinLineLength = config.getIntValue("straightStrictHoughMinLineLength", 100);
     static int houghMaxLineGap = config.getIntValue("straightStrictHoughMaxLineGap", 10);
     std::vector<cv::Vec4i> lines;
-    cv::HoughLinesP(image, lines, 1, CV_PI / 180, houghThreshold, houghMinLineLength, houghMaxLineGap);
+    // cv::HoughLinesP(image, lines, 1, CV_PI / 180, houghThreshold, houghMinLineLength, houghMaxLineGap);
 
     bool isStraight = false;
     for (const auto& l : lines) {

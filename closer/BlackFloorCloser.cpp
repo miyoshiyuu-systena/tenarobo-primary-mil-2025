@@ -1,11 +1,9 @@
 #include "BlackFloorCloser.h"
-#include "PerceptionReporter.h"
-#include "PerceptionReport.h"
 #include "config.h"
 
 ICloserGenerator blackFloorCloserGenerator() {
-    return []() {
-        return new BlackFloorCloser();
+    return [](Device*& device) {
+        return new BlackFloorCloser(device);
     };
 }
 
@@ -36,7 +34,9 @@ static int getBlackFloorVLowerThreshold() {
     return config.getIntValue("blackFloorVLowerThreshold", 0);
 }
 
-BlackFloorCloser::BlackFloorCloser() : ICloser()
+BlackFloorCloser::BlackFloorCloser(Device*& device)
+: ICloser()
+, mDevice(device)
 {
 }
 
@@ -57,11 +57,9 @@ bool BlackFloorCloser::isClosed()
     static int V_UPPER_THRESHOLD = getBlackFloorVUpperThreshold();
     static int V_LOWER_THRESHOLD = getBlackFloorVLowerThreshold();
 
-    PerceptionReport report = PerceptionReporter::getInstance().getLatest();
-    
     return (
-        (H_LOWER_THRESHOLD <= report.h && report.h <= H_UPPER_THRESHOLD) &&
-        (S_LOWER_THRESHOLD <= report.s && report.s <= S_UPPER_THRESHOLD) &&
-        (V_LOWER_THRESHOLD <= report.v && report.v <= V_UPPER_THRESHOLD)
+        (H_LOWER_THRESHOLD <= mReport.h && mReport.h <= H_UPPER_THRESHOLD) &&
+        (S_LOWER_THRESHOLD <= mReport.s && mReport.s <= S_UPPER_THRESHOLD) &&
+        (V_LOWER_THRESHOLD <= mReport.v && mReport.v <= V_UPPER_THRESHOLD)
     );
 }

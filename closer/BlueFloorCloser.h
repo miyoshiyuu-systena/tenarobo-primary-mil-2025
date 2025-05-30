@@ -16,11 +16,14 @@ ICloserGenerator blueFloorCloserGenerator();
 class BlueFloorCloser : public ICloser
 {
     public:
-        BlueFloorCloser();
+        BlueFloorCloser(Device*& device);
         ~BlueFloorCloser();
 
         void init() override;
-        bool isClosed() override;;
+        bool isClosed() override;
+
+    private:
+        Device*& mDevice;
 };
 
 #endif // _BLUE_FLOOR_CLOSER_H_

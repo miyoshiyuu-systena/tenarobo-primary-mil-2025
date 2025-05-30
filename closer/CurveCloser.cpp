@@ -1,17 +1,16 @@
 #include    "CurveCloser.h"
-#include    "PerceptionReporter.h"
-#include    "PerceptionReport.h"
 #include    "config.h"
-#include    "web-camera/CameraManager.h"
 #include    <cmath>
 
 ICloserGenerator curveCloserGenerator() {
-    return []() {
-        return new CurveCloser();
+    return [](Device*& device) {
+        return new CurveCloser(device);
     };
 }
 
-CurveCloser::CurveCloser() : ICloser()
+wCurveCloser::CurveCloser(Device*& device)
+: ICloser()
+, mDevice(device)
 {
     mSeqCountIsCurve = 0;
 }
@@ -31,18 +30,12 @@ int CurveCloser::getSeqCountIsCurveMax()
 
 bool CurveCloser::isClosed()
 {
-    PerceptionReport report = PerceptionReporter::getInstance().getLatest();
-
-    if (!PerceptionReporter::getInstance().isImageUpdated()) {
-        return false;
-    }
-
     cv::Mat image;
 
     /**
      * グレースケールに変換
      */
-     cv::cvtColor(report.image, image, cv::COLOR_BGR2GRAY);
+     cv::cvtColor(mReport.image, image, cv::COLOR_BGR2GRAY);
 
     /**
      * ガウシアンぼかし
@@ -70,7 +63,7 @@ bool CurveCloser::isClosed()
      * 処理全体が遅くなってしまうかも。
      */
     static int gaussianKernelSize = config.getIntValue("curveGaussianKernelSize", 5);
-    cv::GaussianBlur(image, image, cv::Size(gaussianKernelSize, gaussianKernelSize), 0);
+    // cv::GaussianBlur(image, image, cv::Size(gaussianKernelSize, gaussianKernelSize), 0);
 
     /**
      * エッジ検出
@@ -84,7 +77,7 @@ bool CurveCloser::isClosed()
      */
     static int cannyLowerThreshold = config.getIntValue("curveCannyLowerThreshold", 100);
     static int cannyUpperThreshold = config.getIntValue("curveCannyUpperThreshold", 200);
-    cv::Canny(image, image, cannyLowerThreshold, cannyUpperThreshold);
+    // cv::Canny(image, image, cannyLowerThreshold, cannyUpperThreshold);
 
     /**
      * ハフ変換
@@ -105,7 +98,7 @@ bool CurveCloser::isClosed()
     static int houghMinLineLength = config.getIntValue("curveHoughMinLineLength", 10);
     static int houghMaxLineGap = config.getIntValue("curveHoughMaxLineGap", 10);
     std::vector<cv::Vec4i> lines;
-    cv::HoughLinesP(image, lines, 1, CV_PI / 180, houghThreshold, houghMinLineLength, houghMaxLineGap);
+    // cv::HoughLinesP(image, lines, 1, CV_PI / 180, houghThreshold, houghMinLineLength, houghMaxLineGap);
 
     bool isCurve = true;
     for (const auto& l : lines) {
@@ -124,7 +117,7 @@ bool CurveCloser::isClosed()
             ((lineXMin < l[2]) && (l[2] < lineXMax) && (l[3] > lineYMin))
         ) {
             isCurve = false;
-            cv::line(report.image, cv::Point(l[0], l[1]), cv::Point(l[2], l[3]), cv::Scalar(0, 0, 255), 2, cv::LINE_AA);
+            // cv::line(mReport.image, cv::Point(l[0], l[1]), cv::Point(l[2], l[3]), cv::Scalar(0, 0, 255), 2, cv::LINE_AA);
             // line(画像, 始点, 終点, 色(BGR), 太さ, アンチエイリアス)
         }
     }

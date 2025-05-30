@@ -16,11 +16,14 @@ ICloserGenerator onLeftEdgeCloserGenerator();
  */
 class OnLeftEdgeCloser : public ICloser {
     public:
-        OnLeftEdgeCloser();
+        OnLeftEdgeCloser(Device*& device);
         ~OnLeftEdgeCloser();
 
         void init() override;
         bool isClosed() override;
+
+    private:
+        Device*& mDevice;
 };
 
 #endif

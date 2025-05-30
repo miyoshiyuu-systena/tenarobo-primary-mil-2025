@@ -1,20 +1,20 @@
 #include "LaneTracingAssist.h"
-#include "PerceptionReporter.h"
-#include "PerceptionReport.h"
 
 IAssistGenerator laneTracingAssistGenerator(
+    Device*& device,
     bool isRightSide,
     float kp,
     float ki,
     float kd,
     CalcErrorFunc calcError
 ) {
-    return [isRightSide, kp, ki, kd, calcError]() {
-        return new LaneTracingAssist(isRightSide, kp, ki, kd, calcError);
+    return [device, isRightSide, kp, ki, kd, calcError]() {
+        return new LaneTracingAssist(device, isRightSide, kp, ki, kd, calcError);
     };
 }
 
 LaneTracingAssist::LaneTracingAssist(
+    Device*& device,
     bool isRightSide,
     float kp,
     float ki,
@@ -22,6 +22,7 @@ LaneTracingAssist::LaneTracingAssist(
     CalcErrorFunc calcError
 ):
     IAssist()
+    , mDevice(device)
     , mIsRightSide(isRightSide)
     , mKp(kp)
     , mKi(ki)
@@ -44,12 +45,10 @@ void LaneTracingAssist::init()
 
 void LaneTracingAssist::correct(float* speeds)
 {
-    PerceptionReport report = PerceptionReporter::getInstance().getLatest();
-
     /**
     * 青白線の境界線からの誤差を計算する
     */
-    float error = mCalcError(report.h, report.s, report.v);
+    float error = mCalcError(mReport.h, mReport.s, mReport.v);
     
     /**
      * 過去のエラー値を集計する

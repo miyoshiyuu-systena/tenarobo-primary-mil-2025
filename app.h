@@ -6,6 +6,7 @@ extern "C" {
   
 /* タスク優先度 */
 #define     MAIN_PRIORITY       (TMIN_APP_TPRI + 1)
+#define     IMAGE_ACQ_PRIORITY  (TMIN_APP_TPRI + 2)  // 画像取得タスク（高優先度）
 
 #ifndef     STACK_SIZE
 #define     STACK_SIZE          (4096)

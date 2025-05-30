@@ -50,8 +50,8 @@ void calcCurveSpeedsByLinearSpeed(float linear_speed, float radius, float speeds
     float inner_speed_mms = linear_speed * inner_radius / radius;
 
     // mm/sから°/sに変換
-    float outer_speed = outer_speed_mms * 360.0f / (M_PI * WHEEL_DIAMETER_MM);
-    float inner_speed = inner_speed_mms * 360.0f / (M_PI * WHEEL_DIAMETER_MM);
+    float outer_speed = outer_speed_mms * 180.0f / (M_PI * WHEEL_DIAMETER_MM);
+    float inner_speed = inner_speed_mms * 180.0f / (M_PI * WHEEL_DIAMETER_MM);
 
     // 内輪の速度が負になる場合は0にする
     if (inner_speed < 0.0f) {
