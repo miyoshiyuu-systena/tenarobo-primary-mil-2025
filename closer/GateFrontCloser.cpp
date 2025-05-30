@@ -21,6 +21,7 @@ GateFrontCloser::~GateFrontCloser()
 
 void GateFrontCloser::init()
 {
+    ImageAnalysisServer::getInstance().request(AnalysisCommand::GATE_IN_FRONT);
 }
 
 int GateFrontCloser::getSeqCountIsGateMax()
