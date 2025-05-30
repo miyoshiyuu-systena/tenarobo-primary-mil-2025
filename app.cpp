@@ -48,11 +48,10 @@ void main_task(intptr_t exinf)   {
     // ロガーインスタンスの取得
     Logger& logger = Logger::getInstance();
 
-    ImageAnalysisServer::getInstance().request(AnalysisCommand::GATE_IN_FRONT);
+    ImageAnalysisServer::getInstance().request(AnalysisCommand::FRONT_STRAIGHT);
     while (true) {
-        if (ImageAnalysisServer::getInstance().responseGateInFront()) {
-            std::cout << "gate in front" << std::endl;
-            break;
+        if (ImageAnalysisServer::getInstance().responseFrontStraight()) {
+            std::cout << "front straight" << std::endl;
         } else {
             std::cout << "0" << std::endl;
         }
