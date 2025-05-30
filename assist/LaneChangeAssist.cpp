@@ -40,14 +40,14 @@ void LaneChangeAssist::correct(float* speeds)
             speeds[0] = speeds[0] / weight;
             speeds[1] = speeds[1] * weight;
         }
-        else if (mDetectCount < 120) {
-            speeds[0] = speeds[0] * weight;
-            speeds[1] = speeds[1] / weight;
-        }
-        else if (mDetectCount < 160) {
-            speeds[0] = speeds[0] * weight;
-            speeds[1] = speeds[1] / weight;
-        }
+        // else if (mDetectCount < 120) {
+        //     speeds[0] = speeds[0] * weight;
+        //     speeds[1] = speeds[1] / weight;
+        // }
+        // else if (mDetectCount < 160) {
+        //     speeds[0] = speeds[0] * weight;
+        //     speeds[1] = speeds[1] / weight;
+        // }
         else {
             /** No Operation */
         }
@@ -60,14 +60,14 @@ void LaneChangeAssist::correct(float* speeds)
             speeds[0] = speeds[0] * weight;
             speeds[1] = speeds[1] / weight;
         }
-        else if (mDetectCount < 120) {
-            speeds[0] = speeds[0] / weight;
-            speeds[1] = speeds[1] * weight;
-        }
-        else if (mDetectCount < 160) {
-            speeds[0] = speeds[0] * weight;
-            speeds[1] = speeds[1] / weight;
-        }
+        // else if (mDetectCount < 120) {
+        //     speeds[0] = speeds[0] / weight;
+        //     speeds[1] = speeds[1] * weight;
+        // }
+        // else if (mDetectCount < 160) {
+        //     speeds[0] = speeds[0] * weight;
+        //     speeds[1] = speeds[1] / weight;
+        // }
         else {
             /** No Operation */
         }
