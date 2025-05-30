@@ -27,7 +27,10 @@ void LaneChangeAssist::init()
 
 void LaneChangeAssist::correct(float* speeds)
 {
-    float weight = 1.5f;
+    /**
+     * 足し引きで与えた方がいいかも
+     */
+    float weight = 2.0f;
     if (mIsRightSide) {
         if (mDetectCount < 40) {
             speeds[0] = speeds[0] * weight;
