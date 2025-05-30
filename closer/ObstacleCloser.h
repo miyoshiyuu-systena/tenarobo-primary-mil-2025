@@ -7,9 +7,10 @@
 
 /**
  * 障害物があることを終了判定を出すクラスのファクトリー関数
+ * @param detectDistance 障害物検知距離（これよりも近いところは障害物ありと判定する）
  * @return 障害物があることを終了判定を出すクラス
  */
-ICloserGenerator obstacleCloserGenerator();
+ICloserGenerator obstacleCloserGenerator(int detectDistance);
 
 class ObstacleCloser : public ICloser
 {
