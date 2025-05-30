@@ -127,6 +127,44 @@ def is_gate_in_front(image):
     # ゲートの中心位置が画像の中央付近にあるかどうかを返す
     return ((image.shape[1] * 2 // 5) <= center_index) and (center_index <= (image.shape[1] * 3 // 5))
 
+### TODO 動作チェック
+def is_front_straight(image):
+    ## 画像をグレースケールに変換
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+    ## ガウシアンぼかし
+    ## 周辺のピクセルを取り込んでごちゃ混ぜにする
+    ## これによってノイズを軽減する
+    image = cv2.GaussianBlur(image, (5, 5), 0)
+
+    ## エッジ検出
+    ## エッジを検出する
+    image = cv2.Canny(image, 100, 200)
+
+    ## ハフ変換
+    ## 直線を検出する
+    lines = cv2.HoughLinesP(image, 1, np.pi / 180, 50, 10, 10)
+
+    for line in lines:
+        ## l[0] 始点のx座標
+        ## l[1] 始点のy座標
+        ## l[2] 終点のx座標
+        ## l[3] 終点のy座標
+        if (
+            ((image.shape[1] * 1 // 5) < line[0] < (image.shape[1] * 4 // 5) and (image.shape[0] * 4 // 5) < line[1]) or
+            ((image.shape[1] * 1 // 5) < line[2] < (image.shape[1] * 4 // 5) and (image.shape[0] * 4 // 5) < line[3])
+        ):
+            ## 線分のx座標が画像の左端1/5から右端1/5の間（比較的中央付近）であり
+            ## かつ、その始点のy座標は画像の上端から4/5の位置より下にある
+
+            ## この条件は何を指しているかというと
+            ## ロボットの足元から伸びている、ある程度長い直線があるかどうかを判定する
+            return True
+    
+    return False
+
+
+
 def main():
     # 画像の共有メモリ・セマフォの取得
     shm_image = posix_ipc.SharedMemory(SHM_IMAGE_NAME)
@@ -188,7 +226,11 @@ def main():
 
             if (command == ANALYSIS_COMMAND.front_straight.value):
                 result = 0
-                result |= FRONT_STRAIGHT_MASK
+                front_straight_detected = is_front_straight(image)
+                if front_straight_detected:
+                    result |= FRONT_STRAIGHT_MASK
+                else:
+                    result &= ~FRONT_STRAIGHT_MASK
 
                 sem_analysis_result.acquire()
                 # !!!!フォーマットが変わったときここも変更すること
@@ -227,6 +269,11 @@ def main():
                 sem_analysis_result.release()
 
             elif (command == ANALYSIS_COMMAND.red_bottle_in_front.value):
+                ### mada
+                ### mada
+                ### mada
+                ### mada
+                ### mada
                 result = 0
                 result |= RED_BOTTLE_IN_FRONT_MASK
 
@@ -236,6 +283,11 @@ def main():
                 sem_analysis_result.release()
 
             elif (command == ANALYSIS_COMMAND.blue_bottle_in_front.value):
+                ### mada
+                ### mada
+                ### mada
+                ### mada
+                ### mada
                 result = 0
                 result |= BLUE_BOTTLE_IN_FRONT_MASK
 
