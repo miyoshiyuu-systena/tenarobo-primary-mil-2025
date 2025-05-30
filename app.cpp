@@ -25,6 +25,9 @@
 #include "CurveCloser.h"
 #include "TimedCloser.h"
 #include "OnRightEdgeCloser.h"
+#include "ObstacleCloser.h"
+#include "NoObstacleCloser.h"
+#include "OraOraAction.h"
 
 using namespace spikeapi;
 
@@ -62,11 +65,13 @@ void main_task(intptr_t exinf)   {
     );
 
     ActionNode* action1 = new ActionNode(
-        "action1: オラオラ！ぶっ飛ばすぜ！！",
+        "action1: オラオラ！！ペットボトル、ぶっ飛ばすぜ！！",
         &device,
         oraOraActionFactory(
             is_clockwise,
-            {}
+            {
+                noObstacleCloserGenerator(300)
+            }
         ),
         0
     );
