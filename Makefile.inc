@@ -26,6 +26,7 @@ APPL_CXXOBJS +=\
 	LaneChangeAction.o\
 	LaneChangeCompleteJudge.o\
 	SinpleLaneChangeAction.o\
+	ChangeDirectionAction.o\
 	ActionNode.o\
 	Device.o\
 	CalcCurveDriveSpeed.o\
