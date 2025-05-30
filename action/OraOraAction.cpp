@@ -1,4 +1,5 @@
 #include "OraOraAction.h"
+#include "spikeapi.h"
 
 ActionCall oraOraActionFactory(
     bool is_clockwise,
@@ -50,6 +51,6 @@ ActionCall oraOraActionFactory(
                     isClosed = true;
             }
         } while (!isClosed);
-    }
+    };
 }
 
