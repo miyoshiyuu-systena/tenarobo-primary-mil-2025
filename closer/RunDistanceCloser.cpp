@@ -4,8 +4,6 @@
 #include "config.h"
 #include <cmath>
 
-#include "Logger.h"
-
 using namespace spikeapi;
 
 ICloserGenerator runDistanceCloserGenerator(float distance) {
@@ -21,7 +19,6 @@ RunDistanceCloser::RunDistanceCloser(Device*& device, float distance)
 , mStartEncodeRight(0)
 {
     mTargetEncode = static_cast<int>(((distance * 360.0f) / (M_PI * WHEEL_DIAMETER_MM)) * getEncodeCorrect());
-    Logger::getInstance().logDebug(":::" + std::to_string(getEncodeCorrect()));
 }
 
 RunDistanceCloser::~RunDistanceCloser()
