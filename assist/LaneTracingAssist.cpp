@@ -1,4 +1,5 @@
 #include "LaneTracingAssist.h"
+#include "ColorSensor.h"
 
 IAssistGenerator laneTracingAssistGenerator(
     Device*& device,
@@ -48,7 +49,9 @@ void LaneTracingAssist::correct(float* speeds)
     /**
     * 青白線の境界線からの誤差を計算する
     */
-    float error = mCalcError(mReport.h, mReport.s, mReport.v);
+    ColorSensor::HSV hsv;
+    mDevice->colorSensor.getHSV(hsv, true);
+    float error = mCalcError(hsv.h, hsv.s, hsv.v);
     
     /**
      * 過去のエラー値を集計する

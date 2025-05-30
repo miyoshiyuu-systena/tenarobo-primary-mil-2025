@@ -1,5 +1,6 @@
 #include "BlackFloorCloser.h"
 #include "config.h"
+#include "ColorSensor.h"
 
 ICloserGenerator blackFloorCloserGenerator() {
     return [](Device*& device) {
@@ -57,9 +58,12 @@ bool BlackFloorCloser::isClosed()
     static int V_UPPER_THRESHOLD = getBlackFloorVUpperThreshold();
     static int V_LOWER_THRESHOLD = getBlackFloorVLowerThreshold();
 
+    ColorSensor::HSV hsv;
+    mDevice->colorSensor.getHSV(hsv, true);
+
     return (
-        (H_LOWER_THRESHOLD <= mReport.h && mReport.h <= H_UPPER_THRESHOLD) &&
-        (S_LOWER_THRESHOLD <= mReport.s && mReport.s <= S_UPPER_THRESHOLD) &&
-        (V_LOWER_THRESHOLD <= mReport.v && mReport.v <= V_UPPER_THRESHOLD)
+        (H_LOWER_THRESHOLD <= hsv.h && hsv.h <= H_UPPER_THRESHOLD) &&
+        (S_LOWER_THRESHOLD <= hsv.s && hsv.s <= S_UPPER_THRESHOLD) &&
+        (V_LOWER_THRESHOLD <= hsv.v && hsv.v <= V_UPPER_THRESHOLD)
     );
 }

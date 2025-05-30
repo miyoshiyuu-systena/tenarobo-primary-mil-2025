@@ -1,4 +1,5 @@
 #include "BlueFloorCloser.h"
+#include "ColorSensor.h"
 #include "config.h"
 
 ICloserGenerator blueFloorCloserGenerator() {
@@ -56,10 +57,13 @@ bool BlueFloorCloser::isClosed()
     static int S_LOWER_THRESHOLD = getBlueFloorSLowerThreshold();
     static int V_UPPER_THRESHOLD = getBlueFloorVUpperThreshold();
     static int V_LOWER_THRESHOLD = getBlueFloorVLowerThreshold();
+
+    ColorSensor::HSV hsv;
+    mDevice->colorSensor.getHSV(hsv, true);
     
     return (
-        (H_LOWER_THRESHOLD <= report.h && report.h <= H_UPPER_THRESHOLD) &&
-        (S_LOWER_THRESHOLD <= report.s && report.s <= S_UPPER_THRESHOLD) &&
-        (V_LOWER_THRESHOLD <= report.v && report.v <= V_UPPER_THRESHOLD)
+        (H_LOWER_THRESHOLD <= hsv.h && hsv.h <= H_UPPER_THRESHOLD) &&
+        (S_LOWER_THRESHOLD <= hsv.s && hsv.s <= S_UPPER_THRESHOLD) &&
+        (V_LOWER_THRESHOLD <= hsv.v && hsv.v <= V_UPPER_THRESHOLD)
     );
 }

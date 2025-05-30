@@ -1,22 +1,19 @@
 #include "SlowlyAccelerateAssist.h"
 
 IAssistGenerator slowlyAccelerateAssistGenerator(
-    Device*& device,
     int stepCount,
     int stepInterval
 ) {
-    return [device, stepCount, stepInterval]() {
-        return new SlowlyAccelerateAssist(device, stepCount, stepInterval);
+    return [stepCount, stepInterval]() {
+        return new SlowlyAccelerateAssist(stepCount, stepInterval);
     };
 }
 
 SlowlyAccelerateAssist::SlowlyAccelerateAssist(
-    Device*& device,
     int stepCount,
     int stepInterval
 ):
     IAssist()
-    , mDevice(device)
     , mStepCount(stepCount)
     , mStepInterval(stepInterval)
 {
