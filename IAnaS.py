@@ -50,6 +50,9 @@ class ANALYSIS_COMMAND(Enum):
     ## ターゲットサークルの座標
     target_circle_xy = 7
 
+    ## 青いペットボトルの座標
+    blue_bottle_xy = 8
+
 # 分析結果パケット
 #  bit0: 前方に直線がある
 #  bit1: 画面内にターゲットサークルがある
@@ -61,6 +64,8 @@ class ANALYSIS_COMMAND(Enum):
 #  bit7: 予約
 #  uint16: ターゲットサークルのX座標 （画像のサイズは320x240で1byte(uint8)では表現できない）
 #  uint16: ターゲットサークルのY座標 
+#  uint16: 青いペットボトルのX座標 
+#  uint16: 青いペットボトルのY座標 
 #
 # ↑　このデータの配置を考慮して実装する
 FRONT_STRAIGHT_MASK             = 1 << 0 # 前方に直線がある
@@ -82,7 +87,7 @@ RESERVED7_MASK                  = 1 << 7 # 予約
 # https://docs.python.org/ja/3.13/library/struct.html
 
 #### 画像分析の種類を増やすたびに、C++側と合わせてここを変更すること
-format_string = "<BHH"
+format_string = "<BHHHHH"
 
 def is_gate_in_front(image):
     # 画像をグレースケールに変換
@@ -283,6 +288,10 @@ def is_target_circle_in_display(image):
     target_x, target_y = get_target_circle_center(image)
     return target_x != -1 and target_y != -1
 
+def get_blue_bottle_center(image):
+    ## TODO: 未開発
+    pass
+
 def main():
     # 画像の共有メモリ・セマフォの取得
     shm_image = posix_ipc.SharedMemory(SHM_IMAGE_NAME)
@@ -327,7 +336,7 @@ def main():
                 sem_analysis_result.acquire()
                 # 共有メモリを0でクリア
                 # !!!!フォーマットが変わったときここも変更すること
-                shm_analysis_result_map[:] = struct.pack(format_string, 0, 0, 0)
+                shm_analysis_result_map[:] = struct.pack(format_string, 0, 0, 0, 0, 0)
                 sem_analysis_result.release()
                 # 書き込みが完了したらセマフォをアンロック
                 time.sleep(1)
@@ -354,7 +363,7 @@ def main():
 
                 sem_analysis_result.acquire()
                 # !!!!フォーマットが変わったときここも変更すること
-                shm_analysis_result_map[:] = struct.pack(format_string, result, 0, 0)
+                shm_analysis_result_map[:] = struct.pack(format_string, result, 0, 0, 0, 0)
                 sem_analysis_result.release()
 
             elif (command == ANALYSIS_COMMAND.target_circle_in_display.value):
@@ -366,7 +375,7 @@ def main():
                     result &= ~TARGET_CIRCLE_IN_DISPLAY_MASK
                 sem_analysis_result.acquire()
                 # !!!!フォーマットが変わったときここも変更すること
-                shm_analysis_result_map[:] = struct.pack(format_string, result, 0, 0)
+                shm_analysis_result_map[:] = struct.pack(format_string, result, 0, 0, 0, 0)
                 sem_analysis_result.release()
 
             elif (command == ANALYSIS_COMMAND.on_left_edge.value):
@@ -388,7 +397,7 @@ def main():
 
                 sem_analysis_result.acquire()
                 # !!!!フォーマットが変わったときここも変更すること
-                shm_analysis_result_map[:] = struct.pack(format_string, result, 0, 0)
+                shm_analysis_result_map[:] = struct.pack(format_string, result, 0, 0, 0, 0)
                 sem_analysis_result.release()
 
             elif (command == ANALYSIS_COMMAND.red_bottle_in_front.value):
@@ -402,7 +411,7 @@ def main():
 
                 sem_analysis_result.acquire()
                 # !!!!フォーマットが変わったときここも変更すること
-                shm_analysis_result_map[:] = struct.pack(format_string, result, 0, 0)
+                shm_analysis_result_map[:] = struct.pack(format_string, result, 0, 0, 0, 0)
                 sem_analysis_result.release()
 
             elif (command == ANALYSIS_COMMAND.blue_bottle_in_front.value):
@@ -416,14 +425,21 @@ def main():
 
                 sem_analysis_result.acquire()
                 # !!!!フォーマットが変わったときここも変更すること
-                shm_analysis_result_map[:] = struct.pack(format_string, result, 0, 0)
+                shm_analysis_result_map[:] = struct.pack(format_string, result, 0, 0, 0, 0)
                 sem_analysis_result.release()
             
             elif (command == ANALYSIS_COMMAND.target_circle_xy.value):
                 result_x, result_y = get_target_circle_center(image)
                 sem_analysis_result.acquire()
                 # !!!!フォーマットが変わったときここも変更すること
-                shm_analysis_result_map[:] = struct.pack(format_string, 0, result_x, result_y)
+                shm_analysis_result_map[:] = struct.pack(format_string, 0, result_x, result_y, 0, 0)
+                sem_analysis_result.release()
+
+            elif (command == ANALYSIS_COMMAND.blue_bottle_xy.value):
+                result_x, result_y = get_blue_bottle_center(image)
+                sem_analysis_result.acquire()
+                # !!!!フォーマットが変わったときここも変更すること
+                shm_analysis_result_map[:] = struct.pack(format_string, 0, 0, 0, result_x, result_y)
                 sem_analysis_result.release()
 
             else:

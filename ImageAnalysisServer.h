@@ -16,7 +16,8 @@ enum AnalysisCommand {
     RED_BOTTLE_IN_FRONT = 5,
     BLUE_BOTTLE_IN_FRONT = 6,
     TARGET_CIRCLE_XY = 7,
-    ANALYSIS_COMMAND_MAX = 8
+    BLUE_BOTTLE_XY = 8,
+    ANALYSIS_COMMAND_MAX = 9
 };
 
 /**
@@ -32,6 +33,10 @@ struct AnalysisResultPacket {
     uint8_t blue_bottle_in_front : 1;
     uint8_t reserved6 : 1; //今は使用していない
     uint8_t reserved7 : 1; //今は使用していない
+    uint16_t target_circle_x;
+    uint16_t target_circle_y;
+    uint16_t blue_bottle_x;
+    uint16_t blue_bottle_y;
 };
 
 /**
@@ -117,6 +122,13 @@ public:
      * @return ターゲットサークルの座標
      */
     void responseTargetCircleXY(uint16_t& x, uint16_t& y);
+
+    /**
+     * 青いペットボトルの座標を読み取る
+     * 事前にrequest(enum AnalysisCommand command)を実行しておく必要がある
+     * @return 青いペットボトルの座標
+     */
+    void responseBlueBottleXY(uint16_t& x, uint16_t& y);
 
 private:
     ImageAnalysisServer();
