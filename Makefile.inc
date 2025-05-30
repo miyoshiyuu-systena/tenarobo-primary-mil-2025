@@ -34,8 +34,6 @@ APPL_CXXOBJS +=\
 	TwinWheelDrive.o\
 	Logger.o\
 	config.o\
-	ImageAcquisitionTask.o\
-	TaskWrappers.o\
 
 SRCLANG := c++
 

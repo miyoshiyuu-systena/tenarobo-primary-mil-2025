@@ -70,14 +70,6 @@ void PerceptionReporter::update(int detectInterval)
      * Spike-artの他のセンサと同じペースで取得し続けても意味がない
      * 更新のペースに合わせて取得する
      */
-    // int index = (int)((mCount * detectInterval) / CAMERA_INTERVAL);
-    // if (index != mPrevIndex) {
-    //     CameraManager::getInstance().captureImageNow(mLatestReport.image);
-    //     mIsImageUpdated = true;
-    // } else {
-    //     mIsImageUpdated = false;
-    // }
-    // mPrevIndex = index;
 
     /**
      * モータのエンコーダの値を更新する
