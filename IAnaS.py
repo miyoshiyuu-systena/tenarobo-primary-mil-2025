@@ -151,8 +151,8 @@ def is_front_straight(image):
         ## x2 終点のx座標
         ## y2 終点のy座標
         if (
-            ((image.shape[1] * 1 // 5) < line[0] < (image.shape[1] * 4 // 5) and (image.shape[0] * 4 // 5) < line[1]) or
-            ((image.shape[1] * 1 // 5) < line[2] < (image.shape[1] * 4 // 5) and (image.shape[0] * 4 // 5) < line[3])
+            ((image.shape[1] * 1 // 5) < x1 < (image.shape[1] * 4 // 5) and (image.shape[0] * 4 // 5) < y1) or
+            ((image.shape[1] * 1 // 5) < x2 < (image.shape[1] * 4 // 5) and (image.shape[0] * 4 // 5) < y2)
         ):
             ## 線分のx座標が画像の左端1/5から右端1/5の間（比較的中央付近）であり
             ## かつ、その始点のy座標は画像の上端から4/5の位置より下にある
