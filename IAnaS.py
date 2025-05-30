@@ -145,11 +145,11 @@ def is_front_straight(image):
     ## 直線を検出する
     lines = cv2.HoughLinesP(image, 1, np.pi / 180, 50, 10, 10)
 
-    for line in lines:
-        ## l[0] 始点のx座標
-        ## l[1] 始点のy座標
-        ## l[2] 終点のx座標
-        ## l[3] 終点のy座標
+    for x1, y1, x2, y2 in lines.squeeze():
+        ## x1 始点のx座標
+        ## y1 始点のy座標
+        ## x2 終点のx座標
+        ## y2 終点のy座標
         if (
             ((image.shape[1] * 1 // 5) < line[0] < (image.shape[1] * 4 // 5) and (image.shape[0] * 4 // 5) < line[1]) or
             ((image.shape[1] * 1 // 5) < line[2] < (image.shape[1] * 4 // 5) and (image.shape[0] * 4 // 5) < line[3])
