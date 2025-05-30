@@ -3,6 +3,14 @@
 
 #include <cstdint>
 
+const uint16_t IMAGE_WIDTH = 320;
+const uint16_t IMAGE_HEIGHT = 240;
+
+/**
+ * 座標を受け取るコールバック関数の型
+ */
+typedef void (*CoordinateCallback)(uint16_t& x, uint16_t& y);
+
 /**
  * 分析コマンド
  * Python画像分析サーバーとの間で番号と意味の合意を維持し続けなければならない
