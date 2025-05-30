@@ -199,3 +199,7 @@ void ImageAnalysisServer::responseBlueBottleXY(uint16_t& x, uint16_t& y) {
     y = shared_result->blue_bottle_y;
     sem_post(sem_analysis_result);
 }
+
+void ImageAnalysisServer::responseBlueBottleXYStatic(uint16_t& x, uint16_t& y) {
+    ImageAnalysisServer::getInstance().responseBlueBottleXY(x, y);
+}

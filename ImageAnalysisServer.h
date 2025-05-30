@@ -137,6 +137,7 @@ public:
      * @return 青いペットボトルの座標
      */
     void responseBlueBottleXY(uint16_t& x, uint16_t& y);
+    static void responseBlueBottleXYStatic(uint16_t& x, uint16_t& y);
 
 private:
     ImageAnalysisServer();
