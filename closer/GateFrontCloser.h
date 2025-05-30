@@ -28,18 +28,6 @@ class GateFrontCloser : public ICloser
          * デバイスの参照
          */
         Device*& mDevice;
-
-        /**
-         * 正面のゲートを連続して検出した回数
-         * @note
-         *  ○回連続して正面にゲートがあったらゲート検出とみなす
-         */
-        int mSeqCountIsGate;
-
-        /**
-         * 設定ファイルから連続してゲートと判定する最大回数を取得
-         */
-        int getSeqCountIsGateMax();
 };
 
 #endif
