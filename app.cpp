@@ -10,6 +10,7 @@
 #include "SpinTurnAction.h"
 #include "LaneChangeAction.h"
 #include "ChangeDirectionAction.h"
+#include "FineChangeDirectionAction.h"
 #include "SinpleLaneChangeAction.h"
 #include "StopAction.h"
 #include "Device.h"
@@ -30,6 +31,7 @@
 #include "RunDistanceCloser.h"
 #include "OraOraAction.h"
 #include "LaneChangeAssist.h"
+#include "ImageAnalysisServer.h"
 
 using namespace spikeapi;
 
@@ -66,64 +68,74 @@ void main_task(intptr_t exinf)   {
         0
     );
 
-    ActionNode* action1 = new ActionNode(
-        "action1: 直線走行",
+        ActionNode* action1 = new ActionNode(
+        "action1: ペットボトルを探す",
         &device,
-        goStraightActionFactory(
-            250.0f,
-            10,
-            {},
-            {
-                runDistanceCloserGenerator(760.0f)
-            }
+        fineChangeDirectionActionFactory(
+            BLUE_BOTTLE_XY
         ),
         0
     );
     root->setNext(action1);
 
-    ActionNode* action2 = new ActionNode(
-        "action2: 停止する",
-        &device,
-        stopActionFactory(),
-        0
-    );
-    action1->setNext(action2);
+    // ActionNode* action1 = new ActionNode(
+    //     "action1: 直線走行",
+    //     &device,
+    //     goStraightActionFactory(
+    //         250.0f,
+    //         10,
+    //         {},
+    //         {
+    //             runDistanceCloserGenerator(760.0f)
+    //         }
+    //     ),
+    //     0
+    // );
+    // root->setNext(action1);
 
-    ActionNode* action3 = new ActionNode(
-        "action3: ゲートを探す",
-        &device,
-        changeDirectionActionFactory(
-            is_clockwise,
-            {
-                gateFrontCloserGenerator()
-            }
-        ),
-        0
-    );
-    action2->setNext(action3);
+    // ActionNode* action2 = new ActionNode(
+    //     "action2: 停止する",
+    //     &device,
+    //     stopActionFactory(),
+    //     0
+    // );
+    // action1->setNext(action2);
 
-    ActionNode* action4 = new ActionNode(
-        "action4: ゲートを通過する",
-        &device,
-        goStraightActionFactory(
-            250.0f,
-            10,
-            {},
-            {
-                runDistanceCloserGenerator(760.0f)
-            }
-        ),
-        0
-    );
-    action3->setNext(action4);
+    // ActionNode* action3 = new ActionNode(
+    //     "action3: ゲートを探す",
+    //     &device,
+    //     changeDirectionActionFactory(
+    //         is_clockwise,
+    //         {
+    //             gateFrontCloserGenerator()
+    //         }
+    //     ),
+    //     0
+    // );
+    // action2->setNext(action3);
 
-    ActionNode* action5 = new ActionNode(
-        "action5: 停止する",
-        &device,
-        stopActionFactory(),
-        0
-    );
-    action4->setNext(action5);
+    // ActionNode* action4 = new ActionNode(
+    //     "action4: ゲートを通過する",
+    //     &device,
+    //     goStraightActionFactory(
+    //         250.0f,
+    //         10,
+    //         {},
+    //         {
+    //             runDistanceCloserGenerator(760.0f)
+    //         }
+    //     ),
+    //     0
+    // );
+    // action3->setNext(action4);
+
+    // ActionNode* action5 = new ActionNode(
+    //     "action5: 停止する",
+    //     &device,
+    //     stopActionFactory(),
+    //     0
+    // );
+    // action4->setNext(action5);
     
     ActionNode* current = root;
     ActionNode* next = nullptr;
