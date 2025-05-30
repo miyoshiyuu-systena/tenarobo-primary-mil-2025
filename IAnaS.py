@@ -138,56 +138,47 @@ def is_gate_in_front(image):
     # ゲートの中心位置が画像の中央付近にあるかどうかを返す
     return ((image.shape[1] * 2 // 5) <= center_index) and (center_index <= (image.shape[1] * 3 // 5))
 
-### TODO 動作チェック
-def is_front_straight(image):
-    ## 画像をグレースケールに変換
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/1_gray.png", image)
+def is_front_straight(row_image):
+    is_front_straight = False
 
     ## ガウシアンぼかし
     ## 周辺のピクセルを取り込んでごちゃ混ぜにする
     ## これによってノイズを軽減する
-    image = cv2.GaussianBlur(image, (5, 5), 0)
+    image = cv2.GaussianBlur(row_image, (5, 5), 0)
     cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/1_blur.png", image)
+    
+    ## 画像をグレースケールに変換
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/1_gray.png", image)
+
+    ## 画像を2値化
+    image = cv2.inRange(image, (0, 0, 0), (360, 255, 127))
+    cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/1_binary.png", image)
 
     ## エッジ検出
     ## エッジを検出する
-    image = cv2.Canny(image, 100, 200)
+    image = cv2.Canny(image, 50, 150)
     cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/1_canny.png", image)
 
     ## ハフ変換
     ## 直線を検出する
-    lines = cv2.HoughLinesP(image, 1, np.pi / 180, 50, 10, 10)
+    lines = cv2.HoughLinesP(image, 1, np.pi / 180, 20, 25, 10)
     
-    # 直線が検出されなかった場合の処理を追加
-    if lines is None:
-        return False  # 直線が検出されなかった場合はFalseを返す
-    
-    # 直線が検出された場合の処理
-    lines_squeezed = lines.squeeze()
-    if lines_squeezed.ndim == 1:  # 1つの直線のみ検出された場合
-        lines_squeezed = lines_squeezed.reshape(1, -1)
+    if lines is not None:
+        for line in lines:
+            x1, y1, x2, y2 = line[0]
+            ## ロボットの足元から伸びている直線だけを抽出
+            if (
+                ((image.shape[1] * 2 / 5) < x1) and (x1 < (image.shape[1] * 3 / 5)) and ((image.shape[0] * 5 / 7) < y1)
+                or ((image.shape[1] * 2 / 5) < x2) and (x2 < (image.shape[1] * 3 / 5)) and ((image.shape[0] * 5 / 7) < y2)
+            ):
+                ## 正面に向かってまっすぐ伸びている直線だけを抽出
+                if np.abs(np.tan(np.arctan2(x2 - x1, y2 - y1))) < 0.1:
+                    is_front_straight = True
+                    cv2.line(row_image, (x1, y1), (x2, y2), (127, 255, 0), 2)
 
-    is_front_straight = False
-    _image = np.zeros((image.shape[0], image.shape[1]), dtype=np.uint8)
-    for x1, y1, x2, y2 in lines_squeezed:
-        ## x1 始点のx座標
-        ## y1 始点のy座標
-        ## x2 終点のx座標
-        ## y2 終点のy座標
-        if (
-            ((image.shape[1] * 1 // 5) < x1 < (image.shape[1] * 4 // 5) and (image.shape[0] * 4 // 5) < y1) or
-            ((image.shape[1] * 1 // 5) < x2 < (image.shape[1] * 4 // 5) and (image.shape[0] * 4 // 5) < y2)
-        ):
-            ## 線分のx座標が画像の左端1/5から右端1/5の間（比較的中央付近）であり
-            ## かつ、その始点のy座標は画像の上端から4/5の位置より下にある
+    cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/1_hough.png", row_image)
 
-            ## この条件は何を指しているかというと
-            ## ロボットの足元から伸びている、ある程度長い直線があるかどうかを判定する
-            cv2.line(_image, (x1, y1), (x2, y2), (255, 0, 0), 4)
-            is_front_straight = True
-    
-    cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/1_hough.png", _image)
     return is_front_straight
 
 
