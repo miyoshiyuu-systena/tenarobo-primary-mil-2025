@@ -27,6 +27,7 @@
 #include "OnRightEdgeCloser.h"
 #include "ObstacleCloser.h"
 #include "NoObstacleCloser.h"
+#include "RunDistanceCloser.h"
 #include "OraOraAction.h"
 #include "LaneChangeAssist.h"
 
@@ -73,7 +74,7 @@ void main_task(intptr_t exinf)   {
             10,
             {},
             {
-                timedCloserGenerator(200)
+                runDistanceCloserGenerator(760.0f)
             }
         ),
         0
@@ -81,29 +82,12 @@ void main_task(intptr_t exinf)   {
     root->setNext(action1);
 
     ActionNode* action2 = new ActionNode(
-        "action2: 最初に車線変更を行う、直線走行",
-        &device,
-        goStraightActionFactory(
-            250.0f,
-            10,
-            {
-                laneChangeAssistGenerator(false),
-            },
-            {
-                timedCloserGenerator(200)
-            }
-        ),
-        0
-    );
-    action1->setNext(action2);
-
-    ActionNode* action3 = new ActionNode(
-        "action3: 停止する",
+        "action2: 停止する",
         &device,
         stopActionFactory(),
         0
     );
-    action2->setNext(action3);
+    action1->setNext(action2);
 
     
     ActionNode* current = root;
