@@ -1,6 +1,4 @@
 #include "StraightCloser.h"
-#include "PerceptionReporter.h"
-#include "PerceptionReport.h"
 #include "config.h"
 #include <cmath>
 
@@ -30,12 +28,6 @@ int StraightCloser::getSeqCountIsStraightMax()
 
 bool StraightCloser::isClosed()
 {
-    PerceptionReport report = PerceptionReporter::getInstance().getLatest();
-
-    if (!PerceptionReporter::getInstance().isImageUpdated()) {
-        return false;
-    }
-    
     cv::Mat image;
 
     /**
@@ -69,7 +61,7 @@ bool StraightCloser::isClosed()
      * 処理全体が遅くなってしまうかも。
      */
     static int gaussianKernelSize = config.getIntValue("straightGaussianKernelSize", 5);
-    cv::GaussianBlur(image, image, cv::Size(gaussianKernelSize, gaussianKernelSize), 0);
+    // cv::GaussianBlur(image, image, cv::Size(gaussianKernelSize, gaussianKernelSize), 0);
 
     /**
      * エッジ検出
@@ -83,7 +75,7 @@ bool StraightCloser::isClosed()
      */
     static int cannyLowerThreshold = config.getIntValue("straightCannyLowerThreshold", 100);
     static int cannyUpperThreshold = config.getIntValue("straightCannyUpperThreshold", 200);
-    cv::Canny(image, image, cannyLowerThreshold, cannyUpperThreshold);
+    // cv::Canny(image, image, cannyLowerThreshold, cannyUpperThreshold);
 
     /**
      * ハフ変換
@@ -104,7 +96,7 @@ bool StraightCloser::isClosed()
     static int houghMinLineLength = config.getIntValue("straightHoughMinLineLength", 10);
     static int houghMaxLineGap = config.getIntValue("straightHoughMaxLineGap", 10);
     std::vector<cv::Vec4i> lines;
-    cv::HoughLinesP(image, lines, 1, CV_PI / 180, houghThreshold, houghMinLineLength, houghMaxLineGap);
+    // cv::HoughLinesP(image, lines, 1, CV_PI / 180, houghThreshold, houghMinLineLength, houghMaxLineGap);
 
     bool isStraight = false;
     for (const auto& l : lines) {

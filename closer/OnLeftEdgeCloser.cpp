@@ -1,5 +1,4 @@
 #include "OnLeftEdgeCloser.h"
-#include "PerceptionReporter.h"
 
 ICloserGenerator onLeftEdgeCloserGenerator() {
     return []() {
@@ -20,19 +19,13 @@ void OnLeftEdgeCloser::init()
 }
 
 bool OnLeftEdgeCloser::isClosed() {
-    PerceptionReport report = PerceptionReporter::getInstance().getLatest();
-
-    if (!PerceptionReporter::getInstance().isImageUpdated()) {
-        return false;
-    }
-
     cv::Mat image;
 
     /**
      * ガウシアンフィルタを適用
      * ノイズを軽減するために5x5のカーネルサイズでぼかしを適用
      */
-    cv::GaussianBlur(report.image, image, cv::Size(5, 5), 0);
+    cv::GaussianBlur(mReport.image, image, cv::Size(5, 5), 0);
 
     /**
      * HSV色空間に変換

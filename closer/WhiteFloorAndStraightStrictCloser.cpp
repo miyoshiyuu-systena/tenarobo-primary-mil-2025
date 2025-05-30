@@ -1,6 +1,4 @@
 #include "WhiteFloorAndStraightStrictCloser.h"
-#include "PerceptionReporter.h"
-#include "PerceptionReport.h"
 
 ICloserGenerator whiteFloorAndStraightStrictGenerator() {
     return []() -> ICloser* {
@@ -22,12 +20,6 @@ void WhiteFloorAndStraightStrict::init()
 
 bool WhiteFloorAndStraightStrict::isClosed()
 {
-    PerceptionReport report = PerceptionReporter::getInstance().getLatest();
-
-    if (!PerceptionReporter::getInstance().isImageUpdated()) {
-        return false;
-    }
-
     static int H_UPPER_THRESHOLD = 360;
     static int H_LOWER_THRESHOLD = 0;
     static int S_UPPER_THRESHOLD = 100;
@@ -38,8 +30,8 @@ bool WhiteFloorAndStraightStrict::isClosed()
     // XXX　とりあえず色だけで終了判定
     
     return (
-        (H_LOWER_THRESHOLD <= report.h && report.h <= H_UPPER_THRESHOLD) &&
-        (S_LOWER_THRESHOLD <= report.s && report.s <= S_UPPER_THRESHOLD) &&
-        (V_LOWER_THRESHOLD <= report.v && report.v <= V_UPPER_THRESHOLD)
+        (H_LOWER_THRESHOLD <= mReport.h && mReport.h <= H_UPPER_THRESHOLD) &&
+        (S_LOWER_THRESHOLD <= mReport.s && mReport.s <= S_UPPER_THRESHOLD) &&
+        (V_LOWER_THRESHOLD <= mReport.v && mReport.v <= V_UPPER_THRESHOLD)
     );
 }

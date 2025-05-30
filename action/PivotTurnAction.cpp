@@ -1,6 +1,5 @@
 #include "PivotTurnAction.h"
 #include "spikeapi.h"
-#include "PerceptionReporter.h"
 
 ActionCall pivotTurnActionFactory(
     float angular_speed,
@@ -34,8 +33,6 @@ ActionCall pivotTurnActionFactory(
             } else {
                 device->twinWheelDrive.rightPivotTurn(angular_speed);
             }
-
-            PerceptionReporter::getInstance().update(detectInterval);
 
             dly_tsk(detectInterval * 1000);
             

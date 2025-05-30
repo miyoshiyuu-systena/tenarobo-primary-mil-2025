@@ -1,6 +1,4 @@
 #include "BlueFloorCloser.h"
-#include "PerceptionReporter.h"
-#include "PerceptionReport.h"
 #include "config.h"
 
 ICloserGenerator blueFloorCloserGenerator() {
@@ -56,8 +54,6 @@ bool BlueFloorCloser::isClosed()
     static int S_LOWER_THRESHOLD = getBlueFloorSLowerThreshold();
     static int V_UPPER_THRESHOLD = getBlueFloorVUpperThreshold();
     static int V_LOWER_THRESHOLD = getBlueFloorVLowerThreshold();
-
-    PerceptionReport report = PerceptionReporter::getInstance().getLatest();
     
     return (
         (H_LOWER_THRESHOLD <= report.h && report.h <= H_UPPER_THRESHOLD) &&

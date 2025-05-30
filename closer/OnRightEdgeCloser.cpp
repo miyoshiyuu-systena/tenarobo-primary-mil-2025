@@ -1,5 +1,4 @@
 #include "OnRightEdgeCloser.h"
-#include "PerceptionReporter.h"
 
 ICloserGenerator onRightEdgeCloserGenerator() {
     return []() {
@@ -20,12 +19,6 @@ void OnRightEdgeCloser::init()
 }
 
 bool OnRightEdgeCloser::isClosed() {
-    PerceptionReport report = PerceptionReporter::getInstance().getLatest();
-
-    if (!PerceptionReporter::getInstance().isImageUpdated()) {
-        return false;
-    }
-
     cv::Mat image;
 
     /**

@@ -1,7 +1,6 @@
 #include "GoStraightAction.h"
 #include "spikeapi.h"
 #include "logger/Logger.h"
-#include "PerceptionReporter.h"
 #include <vector>
 
 ActionCall goStraightActionFactory(
@@ -40,9 +39,6 @@ ActionCall goStraightActionFactory(
             // 基準速度から開始
             speeds[0] = speed; // 左輪
             speeds[1] = speed; // 右輪
-
-            // 知覚データを取得
-            PerceptionReporter::getInstance().update(detectInterval);
             
             // 複数のアシストを順次適用
             for (IAssist* assist : assists) {
