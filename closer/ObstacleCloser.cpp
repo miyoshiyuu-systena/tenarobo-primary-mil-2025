@@ -24,5 +24,5 @@ void ObstacleCloser::init()
 bool ObstacleCloser::isClosed()
 {
     int distance = mDevice->ultrasonicSensor.getDistance();
-    return (distance < mDetectDistance) && (distance > 0);//超音波センサは何も検知しなかったときに負数を返すため
+    return (0 < distance) && (distance < mDetectDistance);//超音波センサは何も検知しなかったときに負数を返すため
 }
