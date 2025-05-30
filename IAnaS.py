@@ -198,9 +198,11 @@ def main():
             command = struct.unpack('<i', command_bytes)[0]
             sem_analysis_command.release()
 
+            if (count % 100 == 0):
+                print("IAnaS: 分析", command, "を実行しています")
+
             # 分析コマンドがない場合はスキップ
             if (command == ANALYSIS_COMMAND.do_nothing.value):
-                print("IAnaS: アイドリング中")
                 # 他のプロセスが読み取りを終えるまで待つ（セマフォをロック）
                 sem_analysis_result.acquire()
                 # 共有メモリを0でクリア
@@ -210,8 +212,6 @@ def main():
                 # 書き込みが完了したらセマフォをアンロック
                 time.sleep(1)
                 continue
-
-            print("IAnaS: 分析", command, "を実行します")
 
             # セマフォをロック
             sem_image.acquire()
