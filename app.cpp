@@ -103,7 +103,7 @@ void main_task(intptr_t exinf)   {
         stopActionFactory(),
         0
     );
-    action2->setNext(action1);
+    action2->setNext(action3);
 
     
     ActionNode* current = root;
