@@ -1,4 +1,6 @@
 #include "GateFrontCloser.h"
+#include "ImageAnalysisServer.h"
+#include "config.h"
 
 ICloserGenerator gateFrontCloserGenerator() {
     return [](Device*& device) {
