@@ -17,9 +17,9 @@ ActionCall laneChangeCompleteJudgeFactory(
     ) {
         bool is_closed = false;
         if (go_right_lane) {
-            is_closed = onRightEdgeCloserGenerator()()->isClosed();
+            is_closed = onRightEdgeCloserGenerator()(device)->isClosed();
         } else {
-            is_closed = onLeftEdgeCloserGenerator()()->isClosed();
+            is_closed = onLeftEdgeCloserGenerator()(device)->isClosed();
         }
 
         if (is_closed) {

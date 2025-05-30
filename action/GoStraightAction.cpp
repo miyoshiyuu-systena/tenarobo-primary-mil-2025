@@ -23,14 +23,14 @@ ActionCall goStraightActionFactory(
         // 複数のアシストオブジェクトを生成
         std::vector<IAssist*> assists;
         for (const auto& assistPtrGenerator : assistPtrGenerators) {
-            IAssist* assist = assistPtrGenerator();
+            IAssist* assist = assistPtrGenerator(device);
             assist->init();
             assists.push_back(assist);
         }
         
         std::vector<ICloser*> closers;
         for (const auto& closerPtrGenerator : closerPtrGenerators) {
-            ICloser* closer = closerPtrGenerator();
+            ICloser* closer = closerPtrGenerator(device);
             closer->init();
             closers.push_back(closer);
         }

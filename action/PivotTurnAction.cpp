@@ -22,7 +22,7 @@ ActionCall pivotTurnActionFactory(
 
         std::vector<ICloser*> closers;
         for (const auto& closerPtrGenerator : closerPtrGenerators) {
-            ICloser* closer = closerPtrGenerator();
+            ICloser* closer = closerPtrGenerator(device);
             closer->init();
             closers.push_back(closer);
         }

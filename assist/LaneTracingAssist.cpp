@@ -1,15 +1,15 @@
 #include "LaneTracingAssist.h"
 #include "ColorSensor.h"
+#include "Device.h"
 
 IAssistGenerator laneTracingAssistGenerator(
-    Device*& device,
     bool isRightSide,
     float kp,
     float ki,
     float kd,
     CalcErrorFunc calcError
 ) {
-    return [device, isRightSide, kp, ki, kd, calcError]() {
+    return [isRightSide, kp, ki, kd, calcError](Device*& device) {
         return new LaneTracingAssist(device, isRightSide, kp, ki, kd, calcError);
     };
 }

@@ -4,6 +4,7 @@
 #include "IAssist.h"
 #include "CalcErrorFunc.h"
 #include "IAssistGenerator.h"
+#include "Device.h"
 
 /**
  * 青白線に沿って走行する補助クラスのファクトリー関数

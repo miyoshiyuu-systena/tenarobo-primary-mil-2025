@@ -8,7 +8,7 @@ ICloserGenerator curveCloserGenerator() {
     };
 }
 
-wCurveCloser::CurveCloser(Device*& device)
+CurveCloser::CurveCloser(Device*& device)
 : ICloser()
 , mDevice(device)
 {

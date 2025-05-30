@@ -1,7 +1,7 @@
 #include "TimedCloser.h"
 
 ICloserGenerator timedCloserGenerator(int max) {
-    return [max]() {
+    return [max](Device*& device) {
         return new TimedCloser(max);
     };
 }

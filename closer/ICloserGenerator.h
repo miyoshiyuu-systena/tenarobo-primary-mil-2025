@@ -3,6 +3,7 @@
 
 #include "ICloser.h"
 #include <functional>
+#include "Device.h"
 
 /**
  * 終了判定クラスのファクトリー関数
@@ -17,6 +18,6 @@
  * 
  * 組み込みシステムにおけるリアルタイム制御では、このような細やかなメモリ管理が重要。
  */
-typedef std::function<ICloser*()> ICloserGenerator;
+typedef std::function<ICloser*(Device*&)> ICloserGenerator;
 
 #endif 

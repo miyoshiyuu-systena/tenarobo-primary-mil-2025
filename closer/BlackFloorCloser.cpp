@@ -1,6 +1,9 @@
 #include "BlackFloorCloser.h"
 #include "config.h"
 #include "ColorSensor.h"
+#include "spikeapi.h"
+
+using namespace spikeapi;
 
 ICloserGenerator blackFloorCloserGenerator() {
     return [](Device*& device) {

@@ -4,7 +4,7 @@ IAssistGenerator slowlyAccelerateAssistGenerator(
     int stepCount,
     int stepInterval
 ) {
-    return [stepCount, stepInterval]() {
+    return [stepCount, stepInterval](Device*& device) {
         return new SlowlyAccelerateAssist(stepCount, stepInterval);
     };
 }

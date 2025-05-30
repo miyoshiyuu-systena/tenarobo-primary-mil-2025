@@ -3,6 +3,7 @@
 
 #include "IAssist.h"
 #include <functional>
+#include "Device.h"
 
 /**
  * 走行補助クラスのファクトリー関数

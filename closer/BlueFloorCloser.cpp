@@ -1,6 +1,10 @@
 #include "BlueFloorCloser.h"
 #include "ColorSensor.h"
 #include "config.h"
+#include "spikeapi.h"
+#include "Device.h"
+
+using namespace spikeapi;
 
 ICloserGenerator blueFloorCloserGenerator() {
     return [](Device*& device) {
