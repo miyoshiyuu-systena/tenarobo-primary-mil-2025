@@ -10,7 +10,7 @@
  * 視野内に存在することは、ChangeDirectionActionなどを事前に使用し、保証しておくこと
  */
 ActionCall fineChangeDirectionActionFactory(
-    CoordinateCallback coordinateCallback
+    enum AnalysisCommand command
 );
 
 #endif

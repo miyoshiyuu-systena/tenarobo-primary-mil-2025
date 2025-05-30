@@ -1,18 +1,35 @@
 #include "FineChangeDirectionAction.h"
 #include "spikeapi.h"
 #include <math.h>
+#include "Logger.h"
 
 ActionCall fineChangeDirectionActionFactory(
-    CoordinateCallback coordinateCallback
+    enum AnalysisCommand command
 )
 {
     return [
-        coordinateCallback
+        command
     ](
         ActionNode*& curr_ptr,
         ActionNode*& next_ptr,
         Device*& device
     ) {
+        /**
+         * 分析コマンドに応じて、座標を取得するコールバック関数を設定する
+         * XXX リクエストとレスポンスをうまく組み合わせることができておらずswitchを使うハメに
+         * XXX 要リファクタリング（どっちかというとImageAnalysisServerの方を工夫した方がいいかも）
+         */
+        CoordinateCallback coordinateCallback;
+        switch (command) {
+            case BLUE_BOTTLE_XY:
+                ImageAnalysisServer::getInstance().request(command);
+                coordinateCallback = ImageAnalysisServer::responseBlueBottleXYStatic;
+                Logger::getInstance().logDebug("FineChangeDirectionAction: BLUE_BOTTLE_XY");
+                break;
+            default:
+                return;
+        }
+
         uint16_t x = 0;
         uint16_t y = 0;
         int trial = 0;
@@ -37,13 +54,17 @@ ActionCall fineChangeDirectionActionFactory(
          * やや大きめの角度変更 (20°)ほど
          */
         while (trial < 3) { // 検出精度が低く検知できないことがあるため、3回試行する
+            Logger::getInstance().logDebug("FineChangeDirectionAction: trial: " + std::to_string(trial));
             coordinateCallback(x, y);
+            Logger::getInstance().logDebug("FineChangeDirectionAction: x, y: " + std::to_string(x) + ", " + std::to_string(y));
             if (x != 0 && y != 0) {
                 break;
             }
             trial++;
             dly_tsk(100 * 1000); // 100ms待機して画像分析の更新を待つ
         }
+        
+        Logger::getInstance().logDebug("x, y: " + std::to_string(x) + ", " + std::to_string(y));
 
         if (x != 0 && y != 0) {
             x_diff = IMAGE_WIDTH / 2 - (int)x;
