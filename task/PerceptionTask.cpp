@@ -9,17 +9,17 @@ using   namespace   spikeapi;
 ForceSensor forceSensor(    EPort::PORT_D      );
 
 /**
- * 知覚処理
- * @param   exinf     拡張情報
+ * 知覚�?��?
+ * @param   exinf     拡張�?報
  */
 void    perc_task(intptr_t exinf)   {
     /**
-     * カメラデータの取得
+     * カメラ�?ータの取�?
      */
-    //  TODO    miyoshi: カメラデータの取得
+    //  TODO    miyoshi: カメラ�?ータの取�?
 
     /**
-     * 力学センサデータの取得
+     * 力学センサ�?ータの取�?
      */
     syslog(LOG_INFO, "~~~~~~~~~~~~~~~~~~");
     
@@ -31,29 +31,29 @@ void    perc_task(intptr_t exinf)   {
     distance = forceSensor.getDistance();
     syslog(LOG_INFO, "distance %f [mm]", distance);
 
-    isPress = forceSensor.isPress(0.05);
+    isPress = forceSensor.isPressed(0.05);
     syslog(LOG_INFO, "press?? %d", isPress);
 
-    isTouch = forceSensor.isTouch();
+    isTouch = forceSensor.isTouched();
     syslog(LOG_INFO, "touch?? %d", isTouch);
 
     syslog(LOG_INFO, "~~~~~~~~~~~~~~~~~~");
 
     /**
-     * カラーセンサデータの取得
+     * カラーセンサ�?ータの取�?
      */
-    //  TODO    miyoshi: カラーセンサデータの取得
+    //  TODO    miyoshi: カラーセンサ�?ータの取�?
 
     /**
-     * 超音波センサデータの取得
+     * �?音波センサ�?ータの取�?
      */
-    //  TODO    miyoshi: 超音波センサデータの取得
+    //  TODO    miyoshi: �?音波センサ�?ータの取�?
 
     /**
-     * 待機
+     * �?�?
      */
     syslog(LOG_WARNING, "Perception_Task is running");
 
-    //  タスク終了
+    //  タスク終�?
     ext_tsk();
 }
