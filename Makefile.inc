@@ -8,8 +8,8 @@ APPL_LIBS += -lm
 
 APPL_CXXOBJS +=\
 DrivingTask.o\
-InitTask.o\
 PerceptionTask.o\
+Clock.o\
 
 SRCLANG := c++
 
