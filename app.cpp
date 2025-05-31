@@ -1,7 +1,6 @@
 #include    "app.h"
 #include    <stdio.h>
 #include    "syssvc/syslog.h"
-#include    "Clock.h"
 #include    "PerceptionTask.h"
 #include    "DrivingTask.h"
 
