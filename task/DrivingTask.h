@@ -6,7 +6,7 @@ extern "C" {
 
 #ifndef TOPPERS_MACRO_ONLY
 
-extern void driving_task(intptr_t exinf);
+extern void driv_task(intptr_t exinf);
 
 #endif /* TOPPERS_MACRO_ONLY */
 

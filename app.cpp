@@ -27,7 +27,7 @@ void    main_task(intptr_t exinf)   {
     syslog(LOG_NOTICE, "INIT FINISH - Its start!!!");
 
     sta_cyc(PERC_CYC);
-    // sta_cyc(DRIV_CYC);
+    sta_cyc(DRIV_CYC);
 
     while(
         (1) &&  /* 停止ボタン（圧力センサ）が押されていない */  //TODO: 仮に無限ループとする  

@@ -5,7 +5,7 @@
  * 駆動指示
  * @param   exinf     拡張情報
  */
-void    driving_task(intptr_t exinf)   {
+void    driv_task(intptr_t exinf)   {
     /**
      * 右モーターへの指示
      */
