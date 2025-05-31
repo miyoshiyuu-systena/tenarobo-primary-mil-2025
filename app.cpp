@@ -5,8 +5,7 @@
 #include    "PerceptionTask.h"
 #include    "DrivingTask.h"
 
-//  TODO: 仮メインサイクルタイマー
-Clock clock;
+using namespace spikeapi;
 
 //  メイン処理の実行周期(1s)
 const int16_t main_cycle_delay = (1000 * 1000);
@@ -16,6 +15,9 @@ const int16_t main_cycle_delay = (1000 * 1000);
  * @param   exinf     拡張情報
  */
 void    main_task(intptr_t exinf)   {
+    //  TODO: 仮メインサイクルタイマー
+    Clock clock;
+
     /**
      * センサーデータ取得インスタンスの生成
      */
