@@ -15,6 +15,8 @@ SHM_IMAGE_NAME = "/robot_shm_image"
 SEM_IMAGE_NAME = "/robot_sem_image"
 
 def main():
+    acq_count = 0 # debug
+
     width = 320
     height = 240
     image_shape = (height, width, 3) # 画像サイズに合わせて変更
@@ -43,6 +45,9 @@ def main():
             if not ret:
                 print("IAcqS: エラー: フレームを読み込めませんでした。")
                 break
+            
+            if (acq_count % 30 == 0): # debug
+                cv2.imwrite(f"image_{acq_count}.jpg", frame) # debug
 
             # 他のプロセスが読み取りを終えるまで待つ（セマフォをロック）
             sem.acquire()
@@ -53,6 +58,7 @@ def main():
                 sem.release()
 
             time.sleep(0.033) # 30fpsに相当するウェイト
+            acq_count += 1 # debug
 
     finally:
         cap.release()
