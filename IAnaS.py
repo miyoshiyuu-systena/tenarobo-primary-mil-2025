@@ -290,15 +290,20 @@ def is_target_circle_in_display(image):
     target_x, target_y = get_target_circle_center(image)
     return target_x != 0 and target_y != 0
 
+static_count = 0
+
 def get_blue_bottle_center(image):
+    global static_count
+    static_count += 1
     image2 = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/3_rgb.png", image2)
+    cv2.imwrite(f"/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/3_rgb{static_count}.png", image2)
 
     image3 = cv2.GaussianBlur(image2, (5, 5), 0)
-    cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/3_blur.png", image3)
+    cv2.imwrite(f"/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/3_blur{static_count}.png", image3)
 
     image4 = cv2.inRange(image3, (95, 50, 50), (125, 255, 255))
-    cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/3_binary.png", image4)
+    # image4 = cv2.inRange(image3, (85, 50, 50), (105, 255, 255)) # 自宅の光源だとこちらの方が良かった、背景にオレンジのマットを展開した
+    cv2.imwrite(f"/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/3_binary{static_count}.png", image4)
 
     contours, _ = cv2.findContours(image4, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     bottle_index = 0
@@ -324,7 +329,7 @@ def get_blue_bottle_center(image):
         x = round(m['m10'] / m['m00'])
         y = round(m['m01'] / m['m00'])
         cv2.circle(image, (x, y), 5, (255, 255, 127), 2)
-        cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/3_bottle.png", image)
+        cv2.imwrite(f"/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/3_bottle{static_count}.png", image)
         return x, y
 
     return 0, 0
