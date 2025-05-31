@@ -21,23 +21,23 @@ void    perc_task(intptr_t exinf)   {
     /**
      * 力学センサデータの取得
      */
-    syslog(LOG_INFO, "~~~~~~~~~~~~~~~~~~");
+    syslog(LOG_WARNING, "~~~~~~~~~~~~~~~~~~");
     
     float force, distance;
     bool isPressed, isTouched;
     force = forceSensor.getForce();
-    syslog(LOG_INFO, "force %f [N]", force);
+    syslog(LOG_WARNING, "force %f [N]", force);
 
     distance = forceSensor.getDistance();
-    syslog(LOG_INFO, "distance %f [mm]", distance);
+    syslog(LOG_WARNING, "distance %f [mm]", distance);
 
     isPressed = forceSensor.isPressed(0.05);
-    syslog(LOG_INFO, "press?? %d", isPressed);
+    syslog(LOG_WARNING, "press?? %d", isPressed);
 
     isTouched = forceSensor.isTouched();
-    syslog(LOG_INFO, "touch?? %d", isTouched);
+    syslog(LOG_WARNING, "touch?? %d", isTouched);
 
-    syslog(LOG_INFO, "~~~~~~~~~~~~~~~~~~");
+    syslog(LOG_WARNING, "~~~~~~~~~~~~~~~~~~");
 
     /**
      * カラーセンサデータの取得
