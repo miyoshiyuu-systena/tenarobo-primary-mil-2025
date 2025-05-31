@@ -26,7 +26,7 @@ void    main_task(intptr_t exinf)   {
 
     syslog(LOG_NOTICE, "INIT FINISH - Its start!!!");
 
-    sta_cyc(PERC_CYC);
+    // sta_cyc(PERC_CYC);
     sta_cyc(DRIV_CYC);
 
     while(
@@ -54,7 +54,7 @@ void    main_task(intptr_t exinf)   {
         // syslog(LOG_NOTICE, "Main_Task is running");
     }
     
-    stp_cyc(PERC_CYC);
+    // stp_cyc(PERC_CYC);
     stp_cyc(DRIV_CYC);
     
     //  タスク終了
