@@ -20,6 +20,7 @@ APPL_CXXOBJS +=\
 	GateFrontCloser.o\
 	ObstacleCloser.o\
 	NoObstacleCloser.o\
+	ObstacleNearCloser.o\
 	RunDistanceCloser.o\
 	GoStraightAction.o\
 	GoCurveAction.o\
