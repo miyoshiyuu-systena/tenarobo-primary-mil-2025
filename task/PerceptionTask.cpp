@@ -9,28 +9,26 @@ const int16_t perception_cycle_delay = (5000 * 1000 * 1000);
  * @param   exinf     拡張情報
  */
 void    perception_task(intptr_t exinf)   {
-    while(1) {
-        /**
-         * カメラデータの取得
-         */
-        //  TODO    miyoshi: カメラデータの取得
+    /**
+     * カメラデータの取得
+     */
+    //  TODO    miyoshi: カメラデータの取得
 
-        /**
-         * カラーセンサデータの取得
-         */
-        //  TODO    miyoshi: カラーセンサデータの取得
+    /**
+     * カラーセンサデータの取得
+     */
+    //  TODO    miyoshi: カラーセンサデータの取得
 
-        /**
-         * 超音波センサデータの取得
-         */
-        //  TODO    miyoshi: 超音波センサデータの取得
+    /**
+     * 超音波センサデータの取得
+     */
+    //  TODO    miyoshi: 超音波センサデータの取得
 
-        /**
-         * 待機
-         */
-        syslog(LOG_WARNING, "Perception_Task is running");        
-        dly_tsk(perception_cycle_delay);
-    }
+    /**
+     * 待機
+     */
+    syslog(LOG_WARNING, "Perception_Task is running");
+
     //  タスク終了
     ext_tsk();
 }
