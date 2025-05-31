@@ -23,6 +23,7 @@
 #include "BlackFloorCloser.h"
 #include "StraightCloser.h"
 #include "GateFrontCloser.h"
+#include "TargetInImageCloser.h"
 #include "CurveCloser.h"
 #include "TimedCloser.h"
 #include "OnRightEdgeCloser.h"
@@ -57,28 +58,6 @@ void main_task(intptr_t exinf)   {
     // ロガーインスタンスの取得
     Logger& logger = Logger::getInstance();
 
-    ActionNode* test0 = new ActionNode(
-        "test0: 前に進む",
-        &device,
-        goStraightActionFactory(
-            100.0f,
-            100,
-            {},
-            {
-                obstacleNearCloserGenerator(BLUE_BOTTLE_XY)
-            }
-        ),
-        0
-    );
-
-    ActionNode* test1 = new ActionNode(
-        "test1: 停止",
-        &device,
-        stopActionFactory(),
-        0
-    );
-    test0->setNext(test1);
-    
     bool is_right = true;
 
     ActionNode* root = new ActionNode(
@@ -504,294 +483,272 @@ void main_task(intptr_t exinf)   {
      * $$$$$$$$$$$$$$$$$$$$$$$$$$
      */
 
-    // ActionNode* action14 = new ActionNode(
-    //    "action14: 前進する、一定の距離だけ(ゲートを検知しやすい位置まで移動する)",
-    //    &device,
-    //    goStraightActionFactory(
-    //        150.0f,//速度150mm/s
-    //        10,//判定間隔10ms
-    //        {},
-    //        {
-    //            runDistanceCloserGenerator(760.0f)//760mm走行したら終了判定を出す
-    //        }
-    //    ),
-    //    0
-    // )
+    ActionNode* action14 = new ActionNode(
+       "action14: 前進する、一定の距離だけ(ゲートを検知しやすい位置まで移動する)",
+       &device,
+       goStraightActionFactory(
+           150.0f,//速度150mm/s
+           10,//判定間隔10ms
+           {},
+           {
+               runDistanceCloserGenerator(760.0f)//760mm走行したら終了判定を出す
+           }
+       ),
+       0
+    );
 
-    // ActionNode* action15 = new ActionNode(
-    //    "action15: ゲートを探してその場で回転する",
-    //    &device,
-    //    changeDirectionActionFactory(
-    //        is_right,
-    //        {
-    //            gateFrontCloserGenerator()//ゲートを検知したら終了判定を出す
-    //        }
-    //    ),
-    //    0
-    // )
+    ActionNode* action15 = new ActionNode(
+       "action15: ゲートを探してその場で回転する",
+       &device,
+       changeDirectionActionFactory(
+           is_right,
+           {
+               gateFrontCloserGenerator()//ゲートを検知したら終了判定を出す
+           }
+       ),
+       0
+    );
 
-    // ActionNode* action16 = new ActionNode(
-    //    "action16: 直進する、一定の距離だけ",
-    //    &device,
-    //    goStraightActionFactory(
-    //        500.0f,//速度500mm/s
-    //        10,//判定間隔10ms
-    //        {},
-    //        {
-    //            runDistanceCloserGenerator(1000.0f)     //1000mm走行したら終了判定を出す
-    //                                                    /**
-    //                                                     * TASK
-    //                                                     * ゲートを通過するまでの走行の終了条件は洗練したい
-    //                                                     */
-    //        }
-    //    ),
-    //    0
-    // )
+    ActionNode* action16 = new ActionNode(
+       "action16: 直進する、一定の距離だけ",
+       &device,
+       goStraightActionFactory(
+           500.0f,//速度500mm/s
+           10,//判定間隔10ms
+           {},
+           {
+               runDistanceCloserGenerator(1000.0f)     //1000mm走行したら終了判定を出す
+                                                       /**
+                                                        * TASK
+                                                        * ゲートを通過するまでの走行の終了条件は洗練したい
+                                                        */
+           }
+       ),
+       0
+    );
 
-    // ActionNode* action17 = new ActionNode(
-    //    "action17: ちゃんと停止する",
-    //    &device,
-    //    stopActionFactory(),
-    //    0
-    // )
+    ActionNode* action17 = new ActionNode(
+       "action17: ちゃんと停止する",
+       &device,
+       stopActionFactory(),
+       0
+    );
 
-    // ActionNode* action18 = new ActionNode(
-    //    "action18: ターゲットサークルを探してその場で回転する",
-    //    &device,
-    //    changeDirectionActionFactory(
-    //        is_right,
-    //                    /**
-    //                     * TASK
-    //                     * ゲートを通過した直後に右手にターゲットサークルがあるとは限らない
-    //                     * 左右両方を確認できるようにしたい
-    //                     */
-    //        {
-    //            targetCircleCloserGenerator()//ターゲットサークルを検知したら終了判定を出す
-    //        }
-    //    ),
-    //    0
-    // )
+    ActionNode* action18 = new ActionNode(
+       "action18: ターゲットサークルを探してその場で回転する",
+       &device,
+       changeDirectionActionFactory(
+           is_right,
+                       /**
+                        * TASK
+                        * ゲートを通過した直後に右手にターゲットサークルがあるとは限らない
+                        * 左右両方を確認できるようにしたい
+                        */
+           {
+                targetInImageCloserGenerator(TARGET_CIRCLE_IN_DISPLAY)//ターゲットサークルを検知したら終了判定を出す
+           }
+       ),
+       0
+    );
 
-    // /**
-    //  * TASK
-    //  * ChangeDirectionActionは粗いので、
-    //  * さらにFineChangeDirectionActionを実行して、
-    //  * ターゲットサークルへの方向へ精度良く回転する
-    //  */
+    ActionNode* action18_1 = new ActionNode(
+        "action18_1: ターゲットサークルを探してその場で回転する(細かく)",
+        &device,
+        fineChangeDirectionActionFactory(TARGET_CIRCLE_XY),
+        0
+    );
 
-    // ActionNode* action19 = new ActionNode(
-    //    "action19: 直進する、一定の距離だけ",
-    //    &device,
-    //    goStraightActionFactory(
-    //        500.0f,//速度500mm/s
-    //        10,//判定間隔10ms
-    //        {},
-    //        {
-    //            runDistanceCloserGenerator(760.0f)     //760mm走行したら終了判定を出す
-    //                                                    /**
-    //                                                     * TASK
-    //                                                     * ターゲットサークルまでの距離が760mmだとは限らない
-    //                                                     * 画像の中心にターゲットサークルが差し掛かるまで、ゆっくり前進するアクションを追加する
-    //                                                     */
-    //        }
-    //    ),
-    //    0
-    // )
+    ActionNode* action18_2 = new ActionNode(
+        "action18_2: ターゲットサークルとの距離が760mm以内になるまで前進する",
+        &device,
+        goStraightActionFactory(
+            100.0f,//速度100mm/s
+            100,//判定間隔100ms
+            {},
+            {
+                obstacleNearCloserGenerator(TARGET_CIRCLE_XY)//ターゲットサークルとの距離が760mm以内になるまで前進する
+            }
+        ),
+        0
+    );
 
-    // ActionNode* action20 = new ActionNode(
-    //    "action20: ちゃんと停止する",
-    //    &device,
-    //    stopActionFactory(),
-    //    0
-    // )
+    ActionNode* action18_3 = new ActionNode(
+        "action18_3: ターゲットサークルを探してその場で回転する(細かく)",
+        &device,
+        fineChangeDirectionActionFactory(TARGET_CIRCLE_XY),
+        0
+    );
 
-    // /**
-    //  * TASK
-    //  * ここでまっすぐ後ろに進んで
-    //  * ペットボトルを切り離す
-    //  */
+    ActionNode* action19 = new ActionNode(
+       "action19: 直進する、一定の距離だけ",
+       &device,
+       goStraightActionFactory(
+           500.0f,//速度500mm/s
+           10,//判定間隔10ms
+           {},
+           {
+               runDistanceCloserGenerator(760.0f)     //760mm走行したら終了判定を出す
+                                                       /**
+                                                        * TASK
+                                                        * ターゲットサークルまでの距離が760mmだとは限らない
+                                                        * 画像の中心にターゲットサークルが差し掛かるまで、ゆっくり前進するアクションを追加する
+                                                        */
+           }
+       ),
+       0
+    );
 
-    // ActionNode* action21 = new ActionNode(
-    //    "action21: 後ろに一定の距離だけ進む",
-    //    &device,
-    //    goStraightActionFactory(
-    //        -500.0f,    //速度-500mm/s後ろ向き
-    //                    /**
-    //                     * XXX
-    //                     * これが後ろ向き走行で機能するかわからない
-    //                     * というより多分機能しない
-    //                     */
-    //        10,//判定間隔10ms
-    //        {},
-    //        {
-    //            runDistanceCloserGenerator(760.0f)     //760mm走行したら終了判定を出す
-    //                                                    /**
-    //                                                     * XXX
-    //                                                     * これが後ろ向き走行で機能するかわからない
-    //                                                     * というより多分機能しない
-    //                                                     */
-    //        }
-    //    ),
-    //    0
-    // )
+    ActionNode* action20 = new ActionNode(
+       "action20: 後ろに一定の距離だけ進む",
+       &device,
+       goStraightActionFactory(
+           -500.0f,    //速度-500mm/s後ろ向き
+                       /**
+                        * XXX
+                        * これが後ろ向き走行で機能するかわからない
+                        * というより多分機能しない
+                        */
+           10,//判定間隔10ms
+           {},
+           {
+               runDistanceCloserGenerator(760.0f)     //760mm走行したら終了判定を出す
+                                                       /**
+                                                        * XXX
+                                                        * これが後ろ向き走行で機能するかわからない
+                                                        * というより多分機能しない
+                                                        */
+           }
+       ),
+       0
+    );
 
-    // ActionNode* action22 = new ActionNode(
-    //    "action22: 青いペットボトルを探して、その場で回転する",
-    //    &device,
-    //    changeDirectionActionFactory(
-    //        is_right,
-    //        {
-    //            // ここに青いペットボトルを検知したら終了判定を出すクローザーを追加する
-    //        }
-    //    ),
-    //    0
-    // )
+    ActionNode* action21 = new ActionNode(
+       "action21: 青いペットボトルを探して、その場で回転する",
+       &device,
+       changeDirectionActionFactory(
+           !is_right,//左に回転する
+           {
+               targetInImageCloserGenerator(BLUE_BOTTLE_IN_FRONT)//青いペットボトルを検知したら終了判定を出す
+           }
+       ),
+       0
+    );
 
-    // ActionNode* action23 = new ActionNode(
-    //    "action23: 青いペットボトルを探して、その場で回転する(細かく)",
-    //    &device,
-    //    fineChangeDirectionActionFactory(
-    //        is_right,
-    //        {
-    //            // ここに青いペットボトルを検知したら終了判定を出すクローザーを追加する
-    //        }
-    //    ),
-    //    0
-    // )
+    ActionNode* action22 = new ActionNode(
+       "action22: 青いペットボトルを探して、その場で回転する(細かく)",
+       &device,
+       fineChangeDirectionActionFactory(BLUE_BOTTLE_XY),
+       0
+    );
 
-    // ActionNode* action24 = new ActionNode(
-    //    "action24: その場で回転する（余計なもの=ターゲットサークルに似ているものを見ないために条件なし）",
-    //    &device,
-    //    changeDirectionActionFactory(
-    //        is_right,
-    //        {
-    //            // ここに一定角度回転するクローザーを追加する
-    //        }
-    //    ),
-    //    0
-    // )
+    ActionNode* action23 = new ActionNode(
+        "action23: ターゲットサークルを探してその場で回転する",
+        &device,
+        changeDirectionActionFactory(
+            !is_right,
+                        /**
+                         * TASK
+                         * ゲートを通過した直後に右手にターゲットサークルがあるとは限らない
+                         * 左右両方を確認できるようにしたい
+                         */
+            {
+                 targetInImageCloserGenerator(TARGET_CIRCLE_IN_DISPLAY)//ターゲットサークルを検知したら終了判定を出す
+            }
+        ),
+        0
+     );
 
-    // ActionNode* action25 = new ActionNode(
-    //    "action25: ターゲットサークルを探して、その場で回転する",
-    //    &device,
-    //    changeDirectionActionFactory(
-    //        is_right,
-    //        {
-    //            // ここにターゲットサークルを検知したら終了判定を出すクローザーを追加する
-    //        }
-    //    ),
-    //    0
-    // )
+    ActionNode* action24 = new ActionNode(
+        "action24: ターゲットサークルを探してその場で回転する(細かく)",
+        &device,
+        fineChangeDirectionActionFactory(TARGET_CIRCLE_XY),
+        0
+    );
 
-    // ActionNode* action26 = new ActionNode(
-    //    "action26: 前進する",
-    //    &device,
-    //    goStraightActionFactory(
-    //        500.0f,//速度500mm/s
-    //        10,//判定間隔10ms
-    //        {},
-    //        {
-    //            runDistanceCloserGenerator(1000.0f)     //1000mm走行したら終了判定を出す
-    //        }
-    //    ),
-    //    0
-    // )
+    ActionNode* action25 = new ActionNode(
+        "action25: ターゲットサークルとの距離が760mm以内になるまで前進する",
+        &device,
+        goStraightActionFactory(
+            100.0f,//速度100mm/s
+            100,//判定間隔100ms
+            {},
+            {
+                obstacleNearCloserGenerator(TARGET_CIRCLE_XY)//ターゲットサークルとの距離が760mm以内になるまで前進する
+            }
+        ),
+        0
+    );
 
-    // ActionNode* action27 = new ActionNode(
-    //    "action27: 後ろに一定距離だけ進む",
-    //    &device,
-    //    goStraightActionFactory(
-    //        -500.0f,//速度-500mm/s後ろ向き
-    //        10,//判定間隔10ms
-    //        {},
-    //        {
-    //            runDistanceCloserGenerator(1000.0f)     //1000mm走行したら終了判定を出す
-    //        }
-    //    ),
-    //    0
-    // )
+    ActionNode* action26 = new ActionNode(
+        "action26: ターゲットサークルを探してその場で回転する(細かく)",
+        &device,
+        fineChangeDirectionActionFactory(TARGET_CIRCLE_XY),
+        0
+    );
 
-    // ActionNode* action28 = new ActionNode(
-    //    "action28: ちゃんと停止する",
-    //    &device,
-    //    stopActionFactory(),
-    //    0
-    // )
+    ActionNode* action27 = new ActionNode(
+        "action27: 直進する、一定の距離だけ",
+        &device,
+        goStraightActionFactory(
+            500.0f,//速度500mm/s
+            10,//判定間隔10ms
+            {},
+            {
+                runDistanceCloserGenerator(760.0f)     //760mm走行したら終了判定を出す
+                                                        /**
+                                                         * TASK
+                                                         * ターゲットサークルまでの距離が760mmだとは限らない
+                                                         * 画像の中心にターゲットサークルが差し掛かるまで、ゆっくり前進するアクションを追加する
+                                                         */
+            }
+        ),
+        0
+     );
 
-    // ActionNode* action29 = new ActionNode(
-    //    "action29: 黒い直線を探して、その場で回転する",
-    //    &device,
-    //    changeDirectionActionFactory(
-    //        is_right,
-    //        {
-    //            // ここに黒い直線を検知したら終了判定を出すクローザーを追加する
-    //        }
-    //    ),
-    //    0
-    // )
+     ActionNode* action28 = new ActionNode(
+        "action28: 後ろに一定の距離だけ進む",
+        &device,
+        goStraightActionFactory(
+            -500.0f,    //速度-500mm/s後ろ向き
+                        /**
+                         * XXX
+                         * これが後ろ向き走行で機能するかわからない
+                         * というより多分機能しない
+                         */
+            10,//判定間隔10ms
+            {},
+            {
+                runDistanceCloserGenerator(760.0f)     //760mm走行したら終了判定を出す
+                                                        /**
+                                                         * XXX
+                                                         * これが後ろ向き走行で機能するかわからない
+                                                         * というより多分機能しない
+                                                         */
+            }
+        ),
+        0
+     );
 
-    // ActionNode* action30 = new ActionNode(
-    //    "action30: 黒い直線を目指して直進する",
-    //    &device,
-    //    goStraightActionFactory(
-    //        500.0f,//速度500mm/s
-    //        10,//判定間隔10ms
-    //        {},
-    //        {
-    //            blackLineCloserGenerator()     //黒い直線を検知したら終了判定を出す
-    //        }
-    //    ),
-    //    0
-    // )
+    action13->setNext(action14);
+    action14->setNext(action15);
+    action15->setNext(action16);
+    action16->setNext(action17);
+    action17->setNext(action18);
+    action18->setNext(action18_1);
+    action18_1->setNext(action18_2);
+    action18_2->setNext(action18_3);
+    action18_3->setNext(action19);
+    action19->setNext(action20);
+    action20->setNext(action21);
+    action21->setNext(action22);
+    action22->setNext(action23);
+    action23->setNext(action24);
+    action24->setNext(action25);
+    action25->setNext(action26);
+    action26->setNext(action27);
+    action27->setNext(action28);
 
-    // ActionNode* action31 = new ActionNode(
-    //    "action31: 直線が正面に車線変更する",
-    //    &device,
-    //    changeDirectionActionFactory(
-    //        is_right,
-    //        {
-    //            // ここに直線が正面に車線変更するクローザーを追加する
-    //        }
-    //    ),
-    //    0
-    // )
-
-    // ActionNode* action32 = new ActionNode(
-    //    "action32: 前進する、青い床を検知するまで",
-    //    &device,
-    //    goStraightActionFactory(
-    //        500.0f,//速度500mm/s
-    //        10,//判定間隔10ms
-    //        {},
-    //        {
-    //            blueFloorCloserGenerator()     //青い床を検知したら終了判定を出す
-    //        }
-    //    ),
-    //    0
-    // )
-
-    // action13->setNext(action14);
-    // action14->setNext(action15);
-    // action15->setNext(action16);
-    // action16->setNext(action17);
-    // action17->setNext(action18);
-    // action18->setNext(action19);
-    // action19->setNext(action20);
-    // action20->setNext(action21);
-    // action21->setNext(action22);
-    // action22->setNext(action23);
-    // action23->setNext(action24);
-    // action24->setNext(action25);
-    // action25->setNext(action26);
-    // action26->setNext(action27);
-    // action27->setNext(action28);
-    // action28->setNext(action29);
-    // action29->setNext(action30);
-    // action30->setNext(action31);
-    // action31->setNext(action32);
-
-    // ActionNode* current = root;
-    ActionNode* current = test0;
+    ActionNode* current = root;
     ActionNode* next = nullptr;
 
     do {
