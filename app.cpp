@@ -76,7 +76,7 @@ void main_task(intptr_t exinf)   {
             100,//判定間隔100ms
             // 10,//判定間隔10ms(ペットボトルを検知するならば早い方がいい, 超音波センサは10msに1回センサ値を取得する) // サンプル
             {
-                laneTracingAssistFactory(//足元にガイド線がある場合はそれを活用する
+                laneTracingAssistGenerator(//足元にガイド線がある場合はそれを活用する
                     is_right,//線の右縁にそう
                     100.0f,//比例ゲイン
                     0.1f,//積分ゲイン
@@ -90,7 +90,7 @@ void main_task(intptr_t exinf)   {
             }
         ),
         0
-    )
+    );
     
     /**
      * TASK
@@ -121,9 +121,11 @@ void main_task(intptr_t exinf)   {
         &device,
         goCurveActionFactory(
             150.0f,//150mm/s
-            100,//判定間隔100ms
+            150,//半径150mm
+            is_right,//右方向に曲がる
+            100,//判定時間100ms
             {
-                laneTracingAssistFactory(//足元にガイド線がある場合はそれを活用する
+                laneTracingAssistGenerator(//足元にガイド線がある場合はそれを活用する
                     is_right,//線の右縁にそう
                     100.0f,//比例ゲイン
                     0.1f,//積分ゲイン
@@ -134,8 +136,9 @@ void main_task(intptr_t exinf)   {
             {
                 straightCloserGenerator()//直線を検知したら終了判定を出す
             }
-        )
-    )
+        ),
+        0
+    );
 
     ActionNode* action3 = new ActionNode(
         "action3: 直進する、曲線に差し掛かるまで",
@@ -144,7 +147,7 @@ void main_task(intptr_t exinf)   {
             500.0f,//500mm/s
             100,//判定間隔100ms
             {
-                laneTracingAssistFactory(//足元にガイド線がある場合はそれを活用する
+                laneTracingAssistGenerator(//足元にガイド線がある場合はそれを活用する
                     is_right,//線の右縁にそう
                     100.0f,//比例ゲイン
                     0.1f,//積分ゲイン
@@ -157,16 +160,18 @@ void main_task(intptr_t exinf)   {
             }
         ),
         0
-    )
+    );
 
     ActionNode* action4 = new ActionNode(
         "action4: 曲線を走行する、直線に差し掛かるまで",
         &device,
         goCurveActionFactory(
             150.0f,//150mm/s
-            100,//判定間隔100ms
+            150,//半径150mm
+            is_right,//右に曲がる
+            100,//判定時間100ms
             {
-                laneTracingAssistFactory(//足元にガイド線がある場合はそれを活用する
+                laneTracingAssistGenerator(//足元にガイド線がある場合はそれを活用する
                     is_right,//線の右縁にそう
                     100.0f,//比例ゲイン
                     0.1f,//積分ゲイン
@@ -179,7 +184,7 @@ void main_task(intptr_t exinf)   {
             }
         ),
         0
-    )
+    );
 
     root->setNext(action1);
     action1->setNext(action2);
@@ -205,7 +210,7 @@ void main_task(intptr_t exinf)   {
             250.0f,//250mm/s（ダブルループのエントリーは大事にしたい、低速で侵入する）
             10,//判定間隔10ms
             {
-                laneTracingAssistFactory(//足元にガイド線がある場合はそれを活用する
+                laneTracingAssistGenerator(//足元にガイド線がある場合はそれを活用する
                     is_right,//線の右縁にそう
                     100.0f,//比例ゲイン
                     0.1f,//積分ゲイン
@@ -218,7 +223,7 @@ void main_task(intptr_t exinf)   {
             }
         ),
         0
-    )
+    );
 
     ActionNode* action6 = new ActionNode(
         "action6: 青い床を直進する、黒い床に差し掛かるまで",
@@ -227,7 +232,7 @@ void main_task(intptr_t exinf)   {
             250.0f,//250mm/s
             10,//判定間隔10ms
             {
-                laneTracingAssistFactory(//足元にガイド線がある場合はそれを活用する
+                laneTracingAssistGenerator(//足元にガイド線がある場合はそれを活用する
                     is_right,//線の右縁にそう
                     100.0f,//比例ゲイン
                     0.1f,//積分ゲイン
@@ -240,7 +245,7 @@ void main_task(intptr_t exinf)   {
             }
         ),
         0
-    )
+    );
 
     ActionNode* action7 = new ActionNode(
         "action7: 黒い線に沿って旋回する、青い床に差し掛かるまで(大ループ)",
@@ -251,14 +256,14 @@ void main_task(intptr_t exinf)   {
             is_right,//右に旋回する
             10,//判定間隔10ms
             {
-                laneTracingAssistFactory(//足元にガイド線がある場合はそれを活用する
+                laneTracingAssistGenerator(//足元にガイド線がある場合はそれを活用する
                     is_right,//線の右縁にそう
                     100.0f,//比例ゲイン
                     0.1f,//積分ゲイン
                     10.0f,//微分ゲイン
                     calcBlackWhiteBorderError//誤差計算関数(黒い線と白い線の境界を活用する)
                 ),
-                slowlyAccelerateAssistFactory(//I制御の効果を高めるためにゆっくり加速する
+                slowlyAccelerateAssistGenerator(//I制御の効果を高めるためにゆっくり加速する
                     10,//10段階加速する, 250 / 10 = 25mm/sずつ加速する
                     10//判定間隔10ms * 10 = 100msに一回ずつ加速する
                 ),
@@ -270,7 +275,7 @@ void main_task(intptr_t exinf)   {
             }
         ),
         0
-    )
+    );
 
     ActionNode* action8 = new ActionNode(
         "action8: 青い線に沿って旋回する、黒い床に差し掛かるまで",
@@ -281,7 +286,7 @@ void main_task(intptr_t exinf)   {
             is_right,//右に旋回する
             10,//判定間隔10ms
             {
-                laneTracingAssistFactory(//足元にガイド線がある場合はそれを活用する
+                laneTracingAssistGenerator(//足元にガイド線がある場合はそれを活用する
                     is_right,//線の右縁にそう
                     100.0f,//比例ゲイン
                     0.1f,//積分ゲイン
@@ -294,7 +299,7 @@ void main_task(intptr_t exinf)   {
             }
         ),
         0
-    )
+    );
 
     ActionNode* action9 = new ActionNode(
         "action9: 黒い線に沿って旋回する、青い床に差し掛かるまで(小ループ)",
@@ -305,14 +310,14 @@ void main_task(intptr_t exinf)   {
             !is_right,//左に旋回する
             10,//判定間隔10ms
             {
-                laneTracingAssistFactory(//足元にガイド線がある場合はそれを活用する
+                laneTracingAssistGenerator(//足元にガイド線がある場合はそれを活用する
                     !is_right,//線の左縁にそう
                     100.0f,//比例ゲイン
                     0.1f,//積分ゲイン
                     10.0f,//微分ゲイン
                     calcBlackWhiteBorderError//誤差計算関数(黒い線と白い線の境界を活用する)
                 ),
-                slowlyAccelerateAssistFactory(//I制御の効果を高めるためにゆっくり加速する
+                slowlyAccelerateAssistGenerator(//I制御の効果を高めるためにゆっくり加速する
                     10,//10段階加速する, 150 / 10 = 15mm/sずつ加速する
                     10//判定間隔10ms * 10 = 100msに一回ずつ加速する
                 ),
@@ -323,7 +328,7 @@ void main_task(intptr_t exinf)   {
             }
         ),
         0
-    )
+    );
 
     ActionNode* action10 = new ActionNode(
         "action10: 青い線に沿って旋回する、黒い床に差し掛かるまで",
@@ -334,7 +339,7 @@ void main_task(intptr_t exinf)   {
             !is_right,//左に旋回する
             10,//判定間隔10ms
             {
-                laneTracingAssistFactory(//足元にガイド線がある場合はそれを活用する
+                laneTracingAssistGenerator(//足元にガイド線がある場合はそれを活用する
                     !is_right,//線の左縁にそう
                     100.0f,//比例ゲイン
                     0.1f,//積分ゲイン
@@ -347,7 +352,7 @@ void main_task(intptr_t exinf)   {
             }
         ),
         0
-    )
+    );
 
     ActionNode* action11 = new ActionNode(
         "action11: 黒い線に沿って旋回する、青い床に差し掛かるまで(大ループ)",
@@ -358,14 +363,14 @@ void main_task(intptr_t exinf)   {
             is_right,//右に旋回する
             10,//判定間隔10ms
             {
-                laneTracingAssistFactory(//足元にガイド線がある場合はそれを活用する
+                laneTracingAssistGenerator(//足元にガイド線がある場合はそれを活用する
                     is_right,//線の右縁にそう
                     100.0f,//比例ゲイン
                     0.1f,//積分ゲイン
                     10.0f,//微分ゲイン
                     calcBlackWhiteBorderError//誤差計算関数(黒い線と白い線の境界を活用する)
                 ),
-                slowlyAccelerateAssistFactory(//I制御の効果を高めるためにゆっくり加速する
+                slowlyAccelerateAssistGenerator(//I制御の効果を高めるためにゆっくり加速する
                     10,//10段階加速する, 250 / 10 = 25mm/sずつ加速する
                     10//判定間隔10ms * 10 = 100msに一回ずつ加速する
                 ),
@@ -374,8 +379,9 @@ void main_task(intptr_t exinf)   {
             {
                 blueFloorCloserGenerator()//青い床に差し掛かったら終了判定を出す
             }
-        )
-    )
+        ),
+        0
+    );
 
     ActionNode* action12 = new ActionNode(
         "action12: 青い線に沿って旋回する、黒い床に差し掛かるまで",
@@ -386,7 +392,7 @@ void main_task(intptr_t exinf)   {
             is_right,//右に旋回する
             10,//判定間隔10ms
             {
-                laneTracingAssistFactory(//足元にガイド線がある場合はそれを活用する
+                laneTracingAssistGenerator(//足元にガイド線がある場合はそれを活用する
                     is_right,//線の右縁にそう
                     100.0f,//比例ゲイン
                     0.1f,//積分ゲイン
@@ -399,7 +405,7 @@ void main_task(intptr_t exinf)   {
             }
         ),
         0
-    )
+    );
 
     ActionNode* action13 = new ActionNode(
         "action13: 直進する, 青い床に差し掛かるまで",
@@ -408,14 +414,14 @@ void main_task(intptr_t exinf)   {
             150.0f,//速度150mm/s //この間にペットボトルを抱え込むために低速で走行する
             10,//判定間隔10ms
             {
-                laneTracingAssistFactory(//足元にガイド線がある場合はそれを活用する
+                laneTracingAssistGenerator(//足元にガイド線がある場合はそれを活用する
                     !is_right,//線の左縁にそう
                     100.0f,//比例ゲイン
                     0.1f,//積分ゲイン
                     10.0f,//微分ゲイン
                     calcBlueWhiteBorderError//誤差計算関数(青い線と白い線の境界を活用する)
                 ),
-                slowlyAccelerateAssistFactory(//I制御の効果を高めるためにゆっくり加速する
+                slowlyAccelerateAssistGenerator(//I制御の効果を高めるためにゆっくり加速する
                     10,//10段階加速する, 150 / 10 = 15mm/sずつ加速する
                     10//判定間隔10ms * 10 = 100msに一回ずつ加速する
                 ),
@@ -426,7 +432,7 @@ void main_task(intptr_t exinf)   {
             }
         ),
         0
-    )
+    );
 
     action4->setNext(action5);
     action5->setNext(action6);
