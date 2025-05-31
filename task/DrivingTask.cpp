@@ -34,7 +34,7 @@ void    driv_task(intptr_t exinf)   {
      * アームモータへの指示
      */
     //  TODO miyoshi: アームモータへの指示
-    fromtArm.setPower(pwm);
+    frontArm.setPower(pwm);
 
     /**
      * 待機
