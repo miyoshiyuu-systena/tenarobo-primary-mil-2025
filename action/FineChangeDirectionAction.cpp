@@ -1,7 +1,6 @@
 #include "FineChangeDirectionAction.h"
 #include "spikeapi.h"
 #include <math.h>
-#include "Logger.h"
 
 ActionCall fineChangeDirectionActionFactory(
     enum AnalysisCommand command
@@ -24,7 +23,6 @@ ActionCall fineChangeDirectionActionFactory(
             case BLUE_BOTTLE_XY:
                 ImageAnalysisServer::getInstance().request(command);
                 coordinateCallback = ImageAnalysisServer::responseBlueBottleXYStatic;
-                Logger::getInstance().logDebug("FineChangeDirectionAction: BLUE_BOTTLE_XY");
                 break;
             default:
                 return;
@@ -55,9 +53,7 @@ ActionCall fineChangeDirectionActionFactory(
          * やや大きめの角度変更 (20°)ほど
          */
         while (trial < 3) { // 検出精度が低く検知できないことがあるため、3回試行する
-            Logger::getInstance().logDebug("FineChangeDirectionAction: trial: " + std::to_string(trial));
             coordinateCallback(x, y);
-            Logger::getInstance().logDebug("FineChangeDirectionAction: x, y: " + std::to_string(x) + ", " + std::to_string(y));
             if (x != 0 && y != 0) {
                 break;
             }
@@ -65,12 +61,13 @@ ActionCall fineChangeDirectionActionFactory(
             dly_tsk(100 * 1000); // 100ms待機して画像分析の更新を待つ
         }
         
-        Logger::getInstance().logDebug("x, y: " + std::to_string(x) + ", " + std::to_string(y));
-
         if (x != 0 && y != 0) {
             x_diff = (int)x - IMAGE_WIDTH / 2;
             y_diff = IMAGE_HEIGHT - (int)y;
+            Logger::getInstance().logDebug("FineChangeDirectionAction: x_diff, y_diff: " + std::to_string(x_diff) + ", " + std::to_string(y_diff));
+            
             angle = atan2(y_diff, x_diff) * 180 / M_PI; // 何この関数
+            Logger::getInstance().logDebug("FineChangeDirectionAction: angle: " + std::to_string(angle));
             if (angle > 20.0f) {
                 device->twinWheelDrive.leftPivotTurn(90);
                 dly_tsk((int)((angle / 90.0f) * 1000 * 1000));
@@ -104,7 +101,10 @@ ActionCall fineChangeDirectionActionFactory(
          if (x != 0 && y != 0) {
             x_diff = (int)x - IMAGE_WIDTH / 2;
             y_diff = IMAGE_HEIGHT - (int)y;
+            Logger::getInstance().logDebug("FineChangeDirectionAction: x_diff, y_diff: " + std::to_string(x_diff) + ", " + std::to_string(y_diff));
+
             angle = atan2(y_diff, x_diff) * 180 / M_PI;
+            Logger::getInstance().logDebug("FineChangeDirectionAction: angle: " + std::to_string(angle));
             if (angle > 10.0f) {
                device->twinWheelDrive.leftPivotTurn(45);
                dly_tsk((int)((angle / 45.0f) * 1000 * 1000));
@@ -138,7 +138,10 @@ ActionCall fineChangeDirectionActionFactory(
          if (x != 0 && y != 0) {
             x_diff = (int)x - IMAGE_WIDTH / 2;
             y_diff = IMAGE_HEIGHT - (int)y;
+            Logger::getInstance().logDebug("FineChangeDirectionAction: x_diff, y_diff: " + std::to_string(x_diff) + ", " + std::to_string(y_diff));
+
             angle = atan2(y_diff, x_diff) * 180 / M_PI;
+            Logger::getInstance().logDebug("FineChangeDirectionAction: angle: " + std::to_string(angle));
             if (angle > 5.0f) {
                device->twinWheelDrive.leftPivotTurn(30);
                dly_tsk((int)((angle / 30.0f) * 1000 * 1000));
