@@ -30,8 +30,9 @@ void ObstacleNearCloser::init()
      */
     switch (mCommand) {
         case BLUE_BOTTLE_XY:
+        case TARGET_CIRCLE_XY:
             ImageAnalysisServer::getInstance().request(mCommand);
-            mCoordinateCallback = ImageAnalysisServer::responseBlueBottleXYStatic;
+            mCoordinateCallback = ImageAnalysisServer::responseTargetCircleXYStatic;
             break;
         default:
             return;
