@@ -96,8 +96,8 @@ void main_task(intptr_t exinf)   {
         &device,
         goStraightActionFactory(
             500.0f,//500mm/s
-            100,//判定間隔100ms
-            // 10,//判定間隔10ms(ペットボトルを検知するならば早い方がいい, 超音波センサは10msに1回センサ値を取得する) // サンプル
+            // 100,//判定間隔100ms
+            10,//判定間隔10ms(ペットボトルを検知するならば早い方がいい, 超音波センサは10msに1回センサ値を取得する) // サンプル
             {
                 laneTracingAssistGenerator(//足元にガイド線がある場合はそれを活用する
                     is_right,//線の右縁にそう
@@ -108,8 +108,8 @@ void main_task(intptr_t exinf)   {
                 )
             },
             {
-                curveCloserGenerator()//曲線に差し掛かったら終了判定を出す（実際には直線を検知できなくなったら終了判定を出す）
-                // obstacleCloserGenerator(150)//前方150mm以内に障害物を検知したら終了判定を出す // サンプル
+                // curveCloserGenerator()//曲線に差し掛かったら終了判定を出す（実際には直線を検知できなくなったら終了判定を出す）
+                obstacleCloserGenerator(150)//前方150mm以内に障害物を検知したら終了判定を出す // サンプル
             }
         ),
         0
@@ -127,17 +127,39 @@ void main_task(intptr_t exinf)   {
      * なんらかの対処が必要
      */
     // 例えば・・・
-    // ActionNode* action1_1 = new ActionNode(
-    //     "action1_1: オラオラ！！！ロボット様のお通りだぜ！！！左右に蛇行しながらペットボトルにタックル！！！",
-    //     &device,
-    //     oraOraActionFactory(
-    //         is_right,//最初に右側に首を振る
-    //         {
-    //             noObstacleCloserGenerator(150)//前方150mm以内に障害物がないことを終了判定を出す
-    //         }
-    //     ),
-    //     0
-    // )
+    ActionNode* action1_1 = new ActionNode(
+        "action1_1: オラオラ！！！ロボット様のお通りだぜ！！！左右に蛇行しながらペットボトルにタックル！！！",
+        &device,
+        oraOraActionFactory(
+            is_right,//最初に右側に首を振る
+            {
+                noObstacleCloserGenerator(150)//前方150mm以内に障害物がないことを終了判定を出す
+            }
+        ),
+        0
+    )
+
+    ActionNode* action1_2 = new ActionNode(
+        "action1_2: 直線をゆっくり走行する",
+        &device,
+        goStraightActionFactory(
+            250.0f,//100mm/s
+            100,//判定間隔10ms
+            {
+                laneTracingAssistGenerator(//足元にガイド線がある場合はそれを活用する
+                    is_right,//線の右縁にそう
+                    100.0f,//比例ゲイン
+                    0.1f,//積分ゲイン
+                    10.0f,//微分ゲイン
+                    calcBlackWhiteBorderError//誤差計算関数(黒い線と白い線の境界を活用する)
+                )
+            },
+            {
+                curveCloserGenerator()//曲線に差し掛かったら終了判定を出す（実際には直線を検知できなくなったら終了判定を出す）
+            }
+        ),
+        0
+    )
 
     ActionNode* action2 = new ActionNode(
         "action2: 曲線を走行する、直線に差し掛かるまで",
@@ -176,6 +198,10 @@ void main_task(intptr_t exinf)   {
                     0.1f,//積分ゲイン
                     10.0f,//微分ゲイン
                     calcBlackWhiteBorderError//誤差計算関数(黒い線と白い線の境界を活用する)
+                ),
+                slowlyAccelerateAssistGenerator(//I制御の効果を高めるためにゆっくり加速する
+                    10,//10段階加速する, 500 / 10 = 50mm/sずつ加速する
+                    10//判定間隔10ms * 10 = 100msに一回ずつ加速する
                 )
             },
             {
