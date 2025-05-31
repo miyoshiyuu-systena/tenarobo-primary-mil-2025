@@ -58,7 +58,7 @@ void main_task(intptr_t exinf)   {
     // ロガーインスタンスの取得
     Logger& logger = Logger::getInstance();
 
-    bool is_right = true;
+    bool is_right = false;
 
     ActionNode* root = new ActionNode(
         "action0: 背中のボタンを押すまで忠犬ハチ公！！！",
