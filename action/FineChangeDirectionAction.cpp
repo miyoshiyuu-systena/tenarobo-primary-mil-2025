@@ -46,7 +46,6 @@ ActionCall fineChangeDirectionActionFactory(
             coordinateCallback(x, y);
             if (x != 0 && y != 0) {
                 x_diff = (int)x - (int)IMAGE_WIDTH / 2;
-                Logger::getInstance().logDebug("x_diff: " + std::to_string(x_diff));
                 if (x_diff > 90) {
                     device->twinWheelDrive.leftPivotTurn(45);
                 } else if (x_diff < -90) {
@@ -58,6 +57,7 @@ ActionCall fineChangeDirectionActionFactory(
             trial++;
             dly_tsk(100 * 1000); // 100ms待機して画像分析の更新を待つ
             device->twinWheelDrive.stop();
+            dly_tsk(50 * 1000); // 100ms待機して画像分析の更新を待つ
         }
 
         trial = 0;
@@ -70,7 +70,6 @@ ActionCall fineChangeDirectionActionFactory(
             coordinateCallback(x, y);
             if (x != 0 && y != 0) {
                 x_diff = (int)x - (int)IMAGE_WIDTH / 2;
-                Logger::getInstance().logDebug("x_diff: " + std::to_string(x_diff));
                 if (x_diff > 45) {
                     device->twinWheelDrive.leftPivotTurn(30);
                 } else if (x_diff < -45) {
@@ -82,6 +81,7 @@ ActionCall fineChangeDirectionActionFactory(
             trial++;
             dly_tsk(100 * 1000); // 100ms待機して画像分析の更新を待つ
             device->twinWheelDrive.stop();
+            dly_tsk(50 * 1000); // 100ms待機して画像分析の更新を待つ
         }
 
         trial = 0;
@@ -94,7 +94,6 @@ ActionCall fineChangeDirectionActionFactory(
             coordinateCallback(x, y);
             if (x != 0 && y != 0) {
                 x_diff = (int)x - (int)IMAGE_WIDTH / 2;
-                Logger::getInstance().logDebug("x_diff: " + std::to_string(x_diff));
                 if (x_diff > 20) {
                     device->twinWheelDrive.leftPivotTurn(15);
                 } else if (x_diff < -20) {
@@ -106,6 +105,7 @@ ActionCall fineChangeDirectionActionFactory(
             trial++;
             dly_tsk(100 * 1000); // 100ms待機して画像分析の更新を待つ
             device->twinWheelDrive.stop();
+            dly_tsk(50 * 1000); // 100ms待機して画像分析の更新を待つ
         }
 
         ImageAnalysisServer::getInstance().request(DO_NOTHING);
