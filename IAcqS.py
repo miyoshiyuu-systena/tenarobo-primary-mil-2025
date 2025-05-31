@@ -47,7 +47,7 @@ def main():
                 break
             
             if (acq_count % 30 == 0): # debug
-                cv2.imwrite(f"/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/image_{acq_count}.jpg", frame) # debug
+                cv2.imwrite(f"/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug2/image_{acq_count}.jpg", frame) # debug
 
             # 他のプロセスが読み取りを終えるまで待つ（セマフォをロック）
             sem.acquire()
