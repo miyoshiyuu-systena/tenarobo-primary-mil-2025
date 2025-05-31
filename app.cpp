@@ -55,6 +55,8 @@ void    main_task(intptr_t exinf)   {
     }
     
     stp_cyc(PERC_CYC);
+    stp_cyc(DRIV_CYC);
+    
     //  タスク終了
     ext_tsk();
 }
