@@ -76,8 +76,8 @@ void main_task(intptr_t exinf)   {
             10,
             {},
             {
-                runDistanceCloserGenerator(760.0f), // 走行距離は仮。実際に計測して決める。なくてもいいかも
-                obstacleCloserGenerator(1)          // ペットボトル検知：1[cm]未満になったら次action
+                runDistanceCloserGenerator(3000.0f), // 走行距離は仮。実際に計測して決める。なくてもいいかも
+                obstacleCloserGenerator(100)          // ペットボトル検知：1[cm]未満になったら次action
             }
         ),
         0
@@ -93,7 +93,7 @@ void main_task(intptr_t exinf)   {
             10,
             {},
             {
-                runDistanceCloserGenerator(760.0f), // カーブまでの走行距離は仮。実際に計測して決める。
+                runDistanceCloserGenerator(2000.0f), // カーブまでの走行距離は仮。実際に計測して決める。
                 curveCloserGenerator()              // カーブに差し掛かったら次action
             }
         ),
@@ -110,7 +110,7 @@ void main_task(intptr_t exinf)   {
             10,
             {},
             {
-                runDistanceCloserGenerator(50.0f)   // コース外までの走行距離は仮。実際に計測して決める。
+                runDistanceCloserGenerator(200.0f)   // コース外までの走行距離は仮。実際に計測して決める。
             }
         ),
         0
@@ -135,7 +135,7 @@ void main_task(intptr_t exinf)   {
             10,
             {},
             {
-                runDistanceCloserGenerator(50.0f),  // もしかしたら移動距離をマイナスにしないといけないかも
+                runDistanceCloserGenerator(200.0f),  // もしかしたら移動距離をマイナスにしないといけないかも
                 blackFloorCloserGenerator()         // 黒線に差し掛かったら次action
             }
         ),
