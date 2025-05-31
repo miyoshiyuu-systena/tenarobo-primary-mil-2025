@@ -14,8 +14,8 @@ extern "C" {
 #define     DRIV_PERIOD         (4000 * 1000)       //TODO: 仮に、分かりやすさのために4sとする
 
 /* サイクル起動位相（最初に起動するときの遅延時間） */
-#define     PERC_PHS            (200 * 1000)        //TODO: 仮値
-#define     DRIV_PHS            (600 * 1000)        //TODO: 仮値
+#define     PERC_PHS            (1 * 1000)          //TODO: 仮値
+#define     DRIV_PHS            (4 * 1000)          //TODO: 仮値
 
 #ifndef     STACK_SIZE
 #define     STACK_SIZE          (4096)
