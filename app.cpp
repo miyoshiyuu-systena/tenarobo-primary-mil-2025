@@ -53,6 +53,8 @@ void    main_task(intptr_t exinf)   {
          */
         // syslog(LOG_NOTICE, "Main_Task is running");
     }
+    
+    stp_cyc(PERC_CYC);
     //  タスク終了
     ext_tsk();
 }

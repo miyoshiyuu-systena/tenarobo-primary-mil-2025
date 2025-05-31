@@ -5,7 +5,7 @@
  * 知覚処理
  * @param   exinf     拡張情報
  */
-void    perception_task(intptr_t exinf)   {
+void    perc_task(intptr_t exinf)   {
     /**
      * カメラデータの取得
      */
