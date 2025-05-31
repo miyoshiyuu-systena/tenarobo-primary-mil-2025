@@ -137,7 +137,7 @@ void main_task(intptr_t exinf)   {
             }
         ),
         0
-    )
+    );
 
     ActionNode* action1_2 = new ActionNode(
         "action1_2: 直線をゆっくり走行する",
@@ -159,7 +159,7 @@ void main_task(intptr_t exinf)   {
             }
         ),
         0
-    )
+    );
 
     ActionNode* action2 = new ActionNode(
         "action2: 曲線を走行する、直線に差し掛かるまで",
