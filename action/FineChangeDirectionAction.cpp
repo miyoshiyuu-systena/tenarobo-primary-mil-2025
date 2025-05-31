@@ -68,7 +68,7 @@ ActionCall fineChangeDirectionActionFactory(
         Logger::getInstance().logDebug("x, y: " + std::to_string(x) + ", " + std::to_string(y));
 
         if (x != 0 && y != 0) {
-            x_diff = IMAGE_WIDTH / 2 - (int)x;
+            x_diff = (int)x - IMAGE_WIDTH / 2;
             y_diff = IMAGE_HEIGHT - (int)y;
             angle = atan2(y_diff, x_diff) * 180 / M_PI; // 何この関数
             if (angle > 20.0f) {
@@ -102,7 +102,7 @@ ActionCall fineChangeDirectionActionFactory(
          }
 
          if (x != 0 && y != 0) {
-            x_diff = IMAGE_WIDTH / 2 - (int)x;
+            x_diff = (int)x - IMAGE_WIDTH / 2;
             y_diff = IMAGE_HEIGHT - (int)y;
             angle = atan2(y_diff, x_diff) * 180 / M_PI;
             if (angle > 10.0f) {
@@ -136,7 +136,7 @@ ActionCall fineChangeDirectionActionFactory(
          }
 
          if (x != 0 && y != 0) {
-            x_diff = IMAGE_WIDTH / 2 - (int)x;
+            x_diff = (int)x - IMAGE_WIDTH / 2;
             y_diff = IMAGE_HEIGHT - (int)y;
             angle = atan2(y_diff, x_diff) * 180 / M_PI;
             if (angle > 5.0f) {
