@@ -1,3 +1,4 @@
+#include    <string.h>
 #include    "syssvc/syslog.h"
 #include    "ForceSensor.h"
 #include    "PerceptionTask.h"
@@ -23,13 +24,17 @@ void    perc_task(intptr_t exinf)   {
      */
     syslog(LOG_WARNING, "~~~~~~~~~~~~~~~~~~");
     
-    float32_t force, distance;
+    float force, distance;
+    char force_buffer[50], distance[50];
     bool isPressed, isTouched;
-    force = (float32_t)forceSensor.getForce();
-    syslog(LOG_WARNING, "force %f [N]", force);
 
-    distance = (float32_t)forceSensor.getDistance();
-    syslog(LOG_WARNING, "distance %f [mm]", distance);
+    force = forceSensor.getForce();
+    springf(force_buffer, "force %06.3f [N]", force);
+    syslog(LOG_WARNING, force_buffer);
+
+    distance = forceSensor.getDistance();
+    springf(distance_buffer, "distance %06.3f [mm]", distance);
+    syslog(LOG_WARNING, distance_buffer);
 
     isPressed = forceSensor.isPressed(0.05);
     syslog(LOG_WARNING, "press?? %d", isPressed);
