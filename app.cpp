@@ -80,7 +80,7 @@ void main_task(intptr_t exinf)   {
             {
                 laneTracingAssistGenerator(//足元にガイド線がある場合はそれを活用する
                     is_right,//線の右縁にそう
-                    100.0f,//比例ゲイン
+                    150.0f,//比例ゲイン
                     0.1f,//積分ゲイン
                     10.0f,//微分ゲイン
                     calcBlackWhiteBorderError//誤差計算関数(黒い線と白い線の境界を活用する)
@@ -88,7 +88,7 @@ void main_task(intptr_t exinf)   {
             },
             {
                 // curveCloserGenerator()//曲線に差し掛かったら終了判定を出す（実際には直線を検知できなくなったら終了判定を出す）
-                obstacleCloserGenerator(150)//前方150mm以内に障害物を検知したら終了判定を出す // サンプル
+                obstacleCloserGenerator(200)//前方150mm以内に障害物を検知したら終了判定を出す // サンプル
             }
         ),
         0
