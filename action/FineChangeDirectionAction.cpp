@@ -27,7 +27,7 @@ ActionCall fineChangeDirectionActionFactory(
             default:
                 return;
         }
-        dly_tsk(1000 * 1000); // 1s待機して画像分析の更新を待つ
+        dly_tsk(100 * 1000); // 100ms待機して画像分析の更新を待つ
 
         uint16_t x = 0;
         uint16_t y = 0;
