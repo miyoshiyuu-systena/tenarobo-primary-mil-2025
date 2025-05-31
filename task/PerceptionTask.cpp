@@ -25,10 +25,10 @@ void    perc_task(intptr_t exinf)   {
     
     float32_t force, distance;
     bool isPressed, isTouched;
-    force = forceSensor.getForce();
+    force = (float32_t)forceSensor.getForce();
     syslog(LOG_WARNING, "force %06.3f [N]", force);
 
-    distance = forceSensor.getDistance();
+    distance = (float32_t)forceSensor.getDistance();
     syslog(LOG_WARNING, "distance %06.3f [mm]", distance);
 
     isPressed = forceSensor.isPressed(0.05);
