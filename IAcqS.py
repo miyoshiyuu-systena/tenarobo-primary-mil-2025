@@ -47,7 +47,7 @@ def main():
                 break
             
             if (acq_count % 30 == 0): # debug
-                cv2.imwrite(f"image_{acq_count}.jpg", frame) # debug
+                cv2.imwrite(f"env_image_{acq_count}.jpg", frame) # debug
 
             # 他のプロセスが読み取りを終えるまで待つ（セマフォをロック）
             sem.acquire()
