@@ -4,16 +4,11 @@
 #include    "PerceptionTask.h"
 #include    "DrivingTask.h"
 
-using namespace spikeapi;
-
 /**
  * メイン処理
  * @param   exinf     拡張情報
  */
 void    main_task(intptr_t exinf)   {
-    //  TODO: 仮メインサイクルタイマー
-    Clock clock;
-
     /**
      * センサーデータ取得インスタンスの生成
      */
