@@ -11,7 +11,7 @@ extern "C" {
 
 /* サイクル起動周期 */
 #define     PERC_PERIOD         (1000 * 1000)       //TODO: 仮に、分かりやすさのために1sとする
-#define     DRIV_PERIOD         (4000 * 1000)       //TODO: 仮に、分かりやすさのために4sとする
+#define     DRIV_PERIOD         (3500 * 1000)       //TODO: 仮に、分かりやすさのために3.5sとする
 
 /* サイクル起動位相（最初に起動するときの遅延時間） */
 #define     PERC_PHS            (1 * 1000)          //TODO: 仮値
