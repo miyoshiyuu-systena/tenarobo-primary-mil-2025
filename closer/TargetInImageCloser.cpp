@@ -1,4 +1,5 @@
 #include "TargetInImageCloser.h"
+#include "Logger.h"
 
 ICloserGenerator targetInImageCloserGenerator(enum AnalysisCommand command) {
     return [command](Device*& device) {
@@ -31,7 +32,7 @@ void TargetInImageCloser::init()
 
 bool TargetInImageCloser::isClosed()
 {
-    if (mCoordinateCallback == nullptr) {
+    if (mIsInImageCallback == nullptr) {
         Logger::getInstance().logWarning("正しく画像分析タスクが実行されていません。");
         return true;
     }
