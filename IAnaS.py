@@ -416,7 +416,7 @@ def main():
 
                 sem_analysis_result.acquire()
                 # !!!!フォーマットが変わったときここも変更すること
-                shm_analysis_result_map[:] = struct.pack(format_string, 0, result_x, result_y)
+                shm_analysis_result_map[:] = struct.pack(format_string, result, 0, 0, 0, 0)
                 sem_analysis_result.release()
                 
             elif (command == ANALYSIS_COMMAND.gate_in_front.value):
