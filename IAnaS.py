@@ -87,7 +87,9 @@ RESERVED7_MASK                  = 1 << 7 # 予約
 # https://docs.python.org/ja/3.13/library/struct.html
 
 #### 画像分析の種類を増やすたびに、C++側と合わせてここを変更すること
-format_string = "<BHHHH"
+# C++構造体のメモリレイアウトに合わせる:
+# Byte 0: ビットフィールド(B), Byte 1: パディング(x), Bytes 2-9: 4つのuint16_t(HHHH)
+format_string = "<BxHHHH"
 
 def is_gate_in_front(image):
     # 画像をグレースケールに変換
@@ -463,6 +465,7 @@ def main():
                 result_x, result_y = get_target_circle_center(image)
                 sem_analysis_result.acquire()
                 # !!!!フォーマットが変わったときここも変更すること
+                # C++構造体: ビットフィールド(0), target_circle_x(result_x), target_circle_y(result_y), blue_bottle_x(0), blue_bottle_y(0)
                 shm_analysis_result_map[:] = struct.pack(format_string, 0, result_x, result_y, 0, 0)
                 sem_analysis_result.release()
 
