@@ -32,8 +32,6 @@ ActionCall fineChangeDirectionActionFactory(
         uint16_t x = 0;
         uint16_t y = 0;
         int x_diff = 0;
-        int y_diff = 0;
-        float angle = 0;
         int trial;
 
         trial = 0;
