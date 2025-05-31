@@ -1,19 +1,45 @@
-#include "app.h"
-#include <stdio.h>
-#include "syssvc/syslog.h"
-#include "InitTask.h"
-#include "PerceptionTask.h"
-#include "DrivingTask.h"
+#include    "app.h"
+#include    <stdio.h>
+#include    "syssvc/syslog.h"
+#include    "Clock.h"
+#include    "PerceptionTask.h"
+#include    "DrivingTask.h"
+
+//  TODO: 仮メインサイクルタイマー
+Clock clock;
 
 //  メイン処理の実行周期(1s)
-const int16_t main_cycle_delay = (1000 * 1000 * 1000);
+const int16_t main_cycle_delay = (1000 * 1000);
 
 /**
  * メイン処理
  * @param   exinf     拡張情報
  */
 void    main_task(intptr_t exinf)   {
-    while(1) {
+    /**
+     * センサーデータ取得インスタンスの生成
+     */
+    //  TODO miyoshi: センサーの初期化
+
+    /**
+     * シナリオチェーンの構成
+     */
+    //  TODO miyoshi: シナリオチェーンの構成
+
+    /**
+     * 駆動系インスタンスの生成
+     */
+    //  TODO miyoshi: 駆動系インスタンスの生成
+
+    syslog(LOG_NOTICE, "INIT FINISH - Its start!!!");
+
+    sta_cyc(PERC_TASK);
+    sta_cyc(DRIV_TASK);
+
+    while(
+        (1) &&  /* 停止ボタン（圧力センサ）が押されていない */  //TODO: 仮に無限ループとする  
+        (1)     /* 全てのタスクが終了した or 異常終了した */    //TODO: 仮に無限ループとする
+    ) {
         /**
          * 通信部 -> 制御部データコピー
          */
@@ -33,7 +59,7 @@ void    main_task(intptr_t exinf)   {
          * 待機
          */
         syslog(LOG_NOTICE, "Main_Task is running");
-        dly_tsk(main_cycle_delay);
+        clock.sleep(main_cycle_delay);
     }
     //  タスク終了
     ext_tsk();
