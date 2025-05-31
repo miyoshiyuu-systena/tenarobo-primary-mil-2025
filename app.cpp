@@ -7,9 +7,6 @@
 
 using namespace spikeapi;
 
-//  メイン処理の実行周期(1s)
-const int16_t main_cycle_delay = (1000 * 1000);
-
 /**
  * メイン処理
  * @param   exinf     拡張情報
@@ -60,8 +57,7 @@ void    main_task(intptr_t exinf)   {
         /**
          * 待機
          */
-        syslog(LOG_NOTICE, "Main_Task is running");
-        clock.sleep(main_cycle_delay);
+        // syslog(LOG_NOTICE, "Main_Task is running");
     }
     //  タスク終了
     ext_tsk();
