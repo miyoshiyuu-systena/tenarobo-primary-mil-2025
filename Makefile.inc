@@ -2,6 +2,13 @@ USE_RASPIKE_ART=1
 
 mkfile_path := $(dir $(lastword $(MAKEFILE_LIST)))
 
+ifdef CONFIG_EV3RT_APPLICATION
+
+# Include libraries
+include $(EV3RT_SDK_LIB_DIR)/libcpp-spike/Makefile
+
+endif
+
 APPL_COBJS += \
 
 APPL_LIBS += -lm
