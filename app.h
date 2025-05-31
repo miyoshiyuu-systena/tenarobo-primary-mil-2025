@@ -10,8 +10,8 @@ extern "C" {
 #define     MAIN_PRIORITY       (TMIN_APP_TPRI + 3)
 
 /* サイクル起動周期 */
-#define     PERC_PERIOD         (1000 * 1000)       //TODO: 仮に、分かりやすさのために1sとする
-#define     DRIV_PERIOD         (300 * 1000)        //TODO: 仮に、分かりやすさのために0.3sとする
+#define     PERC_PERIOD         (10000 * 1000)       //TODO: 仮に、分かりやすさのために10sとする
+#define     DRIV_PERIOD         (3000 * 1000)        //TODO: 仮に、分かりやすさのために3sとする
 
 /* サイクル起動位相（最初に起動するときの遅延時間） */
 #define     PERC_PHS            (5 * 1000)          //TODO: 仮値
