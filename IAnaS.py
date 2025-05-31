@@ -306,6 +306,11 @@ def get_blue_bottle_center(image):
     cv2.imwrite(f"/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/3_binary{static_count}.png", image4)
 
     contours, _ = cv2.findContours(image4, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    
+    # 輪郭が見つからない場合は早期リターン
+    if len(contours) == 0:
+        return 0, 0
+    
     bottle_index = 0
     bottle_area = 0
     for i, contour in enumerate(contours):
