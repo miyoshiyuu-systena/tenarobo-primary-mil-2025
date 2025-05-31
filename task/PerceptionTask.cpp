@@ -1,9 +1,6 @@
 #include    "syssvc/syslog.h"
 #include    "PerceptionTask.h"
 
-//  知覚処理の実行周期(5s)
-const int16_t perception_cycle_delay = (5000 * 1000 * 1000);
-
 /**
  * 知覚処理
  * @param   exinf     拡張情報
