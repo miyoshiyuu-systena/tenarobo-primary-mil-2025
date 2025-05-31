@@ -27,6 +27,7 @@
 #include "TimedCloser.h"
 #include "OnRightEdgeCloser.h"
 #include "ObstacleCloser.h"
+#include "ObstacleNearCloser.h"
 #include "NoObstacleCloser.h"
 #include "RunDistanceCloser.h"
 #include "OraOraAction.h"
@@ -55,6 +56,28 @@ void main_task(intptr_t exinf)   {
 
     // ロガーインスタンスの取得
     Logger& logger = Logger::getInstance();
+
+    ActionNode* test0 = new ActionNode(
+        "test0: 前に進む",
+        &device,
+        goStraightActionFactory(
+            100.0f,
+            100,
+            {},
+            {
+                obstacleNearCloserGenerator(BLUE_BOTTLE_XY)
+            }
+        ),
+        0
+    );
+
+    ActionNode* test1 = new ActionNode(
+        "test1: 停止",
+        &device,
+        stopActionFactory(),
+        0
+    );
+    test0->setNext(test1);
     
     bool is_right = true;
 
@@ -741,7 +764,8 @@ void main_task(intptr_t exinf)   {
     // action30->setNext(action31);
     // action31->setNext(action32);
 
-    ActionNode* current = root;
+    // ActionNode* current = root;
+    ActionNode* current = test0;
     ActionNode* next = nullptr;
 
     do {
