@@ -491,7 +491,7 @@ void main_task(intptr_t exinf)   {
            10,//判定間隔10ms
            {},
            {
-               runDistanceCloserGenerator(760.0f)//760mm走行したら終了判定を出す
+               runDistanceCloserGenerator(100.0f)//100mm走行したら終了判定を出す
            }
        ),
        0
