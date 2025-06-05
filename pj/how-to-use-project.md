@@ -1,78 +1,78 @@
-## GitHub Issues�F�^�X�N��ۑ�̋L�^�ƊǗ�
+## GitHub Issues：タスクや課題の記録と管理
 
-**Issues**�́A�o�O�񍐁A�@�\�ǉ��̒�āA�Z�p�I�ȉۑ�ȂǁA�v���W�F�N�g�Ɋւ��邠����^�X�N���L�^�E���L���邽�߂̎d�g�݂ł��B
+**Issues**は、バグ報告、機能追加の提案、技術的な課題など、プロジェクトに関するあらゆるタスクを記録・共有するための仕組みです。
 
-### ��Ȏg����
+### 主な使い方
 
-1. **Issue�̍쐬**:
+1. **Issueの作成**:
 
-   * ���|�W�g���́uIssues�v�^�u���N���b�N���A�uNew issue�v��I�����܂��B
-   * �^�C�g���ƏڍׂȐ������L�����A�K�v�ɉ����ă��x����S���ҁiAssignee�j�A�}�C���X�g�[����ݒ肵�܂��B
+   * リポジトリの「Issues」タブをクリックし、「New issue」を選択します。
+   * タイトルと詳細な説明を記入し、必要に応じてラベルや担当者（Assignee）、マイルストーンを設定します。
 
-2. **�e���v���[�g�̊��p**:
+2. **テンプレートの活用**:
 
-   * ���|�W�g����Issue�e���v���[�g��ݒ肷�邱�ƂŁA�񍐓��e�̕W�������\�ł��B
-   * �e���v���[�g��`.github/ISSUE_TEMPLATE/`�f�B���N�g����Markdown�`���Ŕz�u���܂��B
+   * リポジトリにIssueテンプレートを設定することで、報告内容の標準化が可能です。
+   * テンプレートは`.github/ISSUE_TEMPLATE/`ディレクトリにMarkdown形式で配置します。
 
-3. **Sub-issues�̗��p**:
+3. **Sub-issuesの利用**:
 
-   * �eIssue�ɑ΂���Sub-issues���쐬���A�^�X�N���K�w�I�ɊǗ��ł��܂��B
-   * �i�s�󋵃t�B�[���h���g�p���邱�ƂŁA�eIssue�̐i���������ł��܂��B
+   * 親Issueに対してSub-issuesを作成し、タスクを階層的に管理できます。
+   * 進行状況フィールドを使用することで、親Issueの進捗を可視化できます。
 
-## GitHub Projects�F�^�X�N�̉����Ɛi���Ǘ�
+## GitHub Projects：タスクの可視化と進捗管理
 
-**Projects**�́AIssues��Pull Requests�𓝍����A�v���W�F�N�g�S�̂̐i�������o�I�ɊǗ����邽�߂̋@�\�ł��B
+**Projects**は、IssuesやPull Requestsを統合し、プロジェクト全体の進捗を視覚的に管理するための機能です。
 
-### ��Ȏg����
+### 主な使い方
 
-1. **�v���W�F�N�g�̍쐬**:
+1. **プロジェクトの作成**:
 
-   * ���|�W�g���́uProjects�v�^�u����uNew project�v���N���b�N���܂��B
-   * �e���v���[�g�i��FAutomated Kanban�j��I�����A�v���W�F�N�g������͂��č쐬���܂��B
+   * リポジトリの「Projects」タブから「New project」をクリックします。
+   * テンプレート（例：Automated Kanban）を選択し、プロジェクト名を入力して作成します。
 
-2. **�J�����̐ݒ�**:
+2. **カラムの設定**:
 
-   * �f�t�H���g�ŁuTo Do�v�uIn Progress�v�uDone�v��3�̃J�������p�ӂ���Ă��܂��B
-   * �K�v�ɉ����ăJ������ǉ��E�ҏW���A�Ǝ��̃��[�N�t���[���\�z�ł��܂��B
+   * デフォルトで「To Do」「In Progress」「Done」の3つのカラムが用意されています。
+   * 必要に応じてカラムを追加・編集し、独自のワークフローを構築できます。
 
-3. **�^�X�N�̒ǉ��ƊǗ�**:
+3. **タスクの追加と管理**:
 
-   * �u+ Add item�v����V�����^�X�N��ǉ��ł��܂��B
-   * ������Issue���h���b�O���h���b�v�ŃJ�����ɒǉ����邱�Ƃ��\�ł��B
-   * �^�X�N���uConvert to issue�v��Issue�����A�ڍׂȊǗ����ł��܂��B
+   * 「+ Add item」から新しいタスクを追加できます。
+   * 既存のIssueをドラッグ＆ドロップでカラムに追加することも可能です。
+   * タスクを「Convert to issue」でIssue化し、詳細な管理ができます。
 
-4. **�������Ɠ���**:
+4. **自動化と同期**:
 
-   * Issue�̏�Ԃ��ύX�����ƁAProjects���̃^�X�N�������I�ɍX�V����܂��B
-   * ����ɂ��A��ɍŐV�̐i���󋵂�c���ł��܂��B
-
----
-
-## Issues��Projects�̘A�g�F���ʓI�ȃv���W�F�N�g�Ǘ�
-
-Issues��Projects�͘A�g���Ďg�p���邱�ƂŁA�����ʓI�ȃv���W�F�N�g�Ǘ����\�ɂȂ�܂��B
-
-* **�^�X�N�̈ꌳ�Ǘ�**:
-
-  * Issues�ŋL�^�����^�X�N��Projects�Ɏ�荞�݁A�i���󋵂�D��x�����o�I�ɊǗ��ł��܂��B
-
-* **�X�e�[�^�X�̎����X�V**:
-
-  * Projects���Ń^�X�N�̃X�e�[�^�X��ύX����ƁA�Ή�����Issue�̏��������I�ɍX�V����܂��B
-
-* **�`�[���S�̂̉���**:
-
-  * Projects���g���āA�`�[���S�̂̍�Ə󋵂���ڂŔc���ł��A���\�[�X�̍œK����X�P�W���[���������e�ՂɂȂ�܂��B
-
-���̂悤�ɁAIssues�Ń^�X�N�̏ڍׂ��Ǘ����AProjects�őS�̂̐i�����������邱�ƂŁA�v���W�F�N�g�̌����I�ȉ^�c�������ł��܂��B
+   * Issueの状態が変更されると、Projects内のタスクも自動的に更新されます。
+   * これにより、常に最新の進捗状況を把握できます。
 
 ---
 
-## �܂Ƃ�
+## IssuesとProjectsの連携：効果的なプロジェクト管理
 
-| �@�\           | ��ȗp�r           | ����                            |                           |
+IssuesとProjectsは連携して使用することで、より効果的なプロジェクト管理が可能になります。
+
+* **タスクの一元管理**:
+
+  * Issuesで記録したタスクをProjectsに取り込み、進捗状況や優先度を視覚的に管理できます。
+
+* **ステータスの自動更新**:
+
+  * Projects内でタスクのステータスを変更すると、対応するIssueの情報も自動的に更新されます。
+
+* **チーム全体の可視化**:
+
+  * Projectsを使って、チーム全体の作業状況を一目で把握でき、リソースの最適化やスケジュール調整が容易になります。
+
+このように、Issuesでタスクの詳細を管理し、Projectsで全体の進捗を可視化することで、プロジェクトの効率的な運営が実現できます。
+
+---
+
+## まとめ
+
+| 機能           | 主な用途           | 特徴                            |                           |
 | ------------ | -------------- | ----------------------------- | ------------------------- |
-| **Issues**   | �^�X�N��ۑ�̋L�^�Əڍ׊Ǘ� | �R�����g�@�\�A���x���A�}�C���X�g�[���ȂǂŏڍׂȊǗ����\ |                           |
-| **Projects** | �^�X�N�̉����Ɛi���Ǘ�   | �J�X�^�}�C�Y�\�ȃr���[�ƃX�e�[�^�X�őS�̂̐i�����Ǘ�   |
+| **Issues**   | タスクや課題の記録と詳細管理 | コメント機能、ラベル、マイルストーンなどで詳細な管理が可能 |                           |
+| **Projects** | タスクの可視化と進捗管理   | カスタマイズ可能なビューとステータスで全体の進捗を管理   |
 
-GitHub��Issues��Projects��g�ݍ��킹�Ċ��p���邱�ƂŁA�^�X�N�̏ڍׂȊǗ��ƃv���W�F�N�g�S�̂̐i���������\�ƂȂ�A�`�[���̐��Y������Ɋ�^���܂��B
+GitHubのIssuesとProjectsを組み合わせて活用することで、タスクの詳細な管理とプロジェクト全体の進捗可視化が可能となり、チームの生産性向上に寄与します。
