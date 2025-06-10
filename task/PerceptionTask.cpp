@@ -1,5 +1,11 @@
+#include    <string.h>
 #include    "syssvc/syslog.h"
 #include    "PerceptionTask.h"
+#include    "UltrasonicSensor.h"
+
+using   namespace   spikeapi;
+// 超音波センサーの宣言
+UltrasonicSensor    ultraSonicSencer(   EPort::PORT_E   );
 
 /**
  * 知覚処理
@@ -20,6 +26,11 @@ void    perc_task(intptr_t exinf)   {
      * 超音波センサデータの取得
      */
     //  TODO    miyoshi: 超音波センサデータの取得
+    int32_t Distance;
+    char distance_buffer[50];
+    Distance = ultraSonicSencer.getDistance();
+    sprintf(distance_buffer, "distance %d [cm]", Distance);
+    syslog(LOG_WARNING, distance_buffer);     
 
     /**
      * 待機
