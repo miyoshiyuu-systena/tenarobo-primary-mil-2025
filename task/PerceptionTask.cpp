@@ -29,14 +29,14 @@ void    perc_task(intptr_t exinf)   {
     bool isPressed, isTouched;
 
     force = forceSensor.getForce();
-    sprintf(force_buffer, "force %06.3f [N]", force);
+    sprintf(force_buffer, "force %0.1f [N]", force);
     syslog(LOG_WARNING, force_buffer);
 
     distance = forceSensor.getDistance();
-    sprintf(distance_buffer, "distance %06.3f [mm]", distance);
+    sprintf(distance_buffer, "distance %0.1f [mm]", distance);
     syslog(LOG_WARNING, distance_buffer);
 
-    isPressed = forceSensor.isPressed(5);
+    isPressed = forceSensor.isPressed(5.0F);
     syslog(LOG_WARNING, "press?? %d", isPressed);
 
     isTouched = forceSensor.isTouched();
