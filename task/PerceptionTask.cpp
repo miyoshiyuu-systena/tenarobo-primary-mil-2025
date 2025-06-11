@@ -36,7 +36,7 @@ void    perc_task(intptr_t exinf)   {
     sprintf(distance_buffer, "distance %0.1f [mm]", distance);
     syslog(LOG_WARNING, distance_buffer);
 
-    isPressed = forceSensor.isPressed(5.0F);
+    isPressed = forceSensor.isPressed(2.0F);
     syslog(LOG_WARNING, "press?? %d", isPressed);
 
     isTouched = forceSensor.isTouched();
