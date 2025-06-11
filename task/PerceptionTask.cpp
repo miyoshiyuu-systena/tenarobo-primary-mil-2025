@@ -30,11 +30,11 @@ void    perc_task(intptr_t exinf)   {
     ColorSensor::HSV hsv;
     char rgb_buffer[50], hsv_buffer[50];
 
-    colorSensor.getRGB(&rgb);
-    colorSensor.getHSV(&hsv);
+    colorSensor.getRGB(rgb);
+    colorSensor.getHSV(hsv);
     
     sprintf(rgb_buffer, "RGB: %d, %d, %d", rgb.r, rgb.g, rgb.b);
-    syslog(LOG_WARNING, rbg_buffer);
+    syslog(LOG_WARNING, rgb_buffer);
 
     sprintf(hsv_buffer, "HSV: %d, %d, %d", hsv.h, hsv.s, hsv.v);
     syslog(LOG_WARNING, hsv_buffer);
