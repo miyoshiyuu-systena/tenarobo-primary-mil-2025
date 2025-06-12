@@ -5,6 +5,7 @@ mkfile_path := $(dir $(lastword $(MAKEFILE_LIST)))
 APPL_CXXOBJS +=\
 DrivingTask.o\
 PerceptionTask.o\
+logging.o\
 
 SRCLANG := c++
 
@@ -19,5 +20,6 @@ APPL_DIRS += $(mkfile_path)task
 
 INCLUDES += \
 	-I$(mkfile_path)task\
+	-I$(mkfile_path)utils\
 
 COPTS += -std=gnu++11
