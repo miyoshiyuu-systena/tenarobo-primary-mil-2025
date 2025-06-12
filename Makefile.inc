@@ -3,9 +3,9 @@ USE_RASPIKE_ART=1
 mkfile_path := $(dir $(lastword $(MAKEFILE_LIST)))
 
 APPL_CXXOBJS +=\
-DrivingTask.o\
-PerceptionTask.o\
-logging.o\
+	DrivingTask.o\
+	PerceptionTask.o\
+	logging.o\
 
 SRCLANG := c++
 
@@ -16,7 +16,9 @@ include $(EV3RT_SDK_LIB_DIR)/libcpp-spike/Makefile
 
 endif
 
-APPL_DIRS += $(mkfile_path)task
+APPL_DIRS +=\
+	$(mkfile_path)task\
+	$(mkfile_path)utils\
 
 INCLUDES += \
 	-I$(mkfile_path)task\
