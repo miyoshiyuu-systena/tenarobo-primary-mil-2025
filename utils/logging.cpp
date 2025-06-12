@@ -1,9 +1,10 @@
-#include "logging.h"
-#include <chrono.h>
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <filesystem>
+#include    "logging.h"
+#include    "syssvc/syslog.h"
+#include    <chrono>
+#include    <iostream>
+#include    <fstream>
+#include    <string>
+#include    <filesystem>
 
 const std::string LOG_BASE_DIR = "work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/log";
 
