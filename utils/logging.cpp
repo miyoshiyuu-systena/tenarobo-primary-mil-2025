@@ -1,8 +1,8 @@
+#include "logging.h"
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <filesystem>
-#include "logging.h"
 
 const std::string LOG_BASE_DIR = "work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/log";
 
