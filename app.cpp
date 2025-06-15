@@ -1,5 +1,4 @@
 #include    "app.h"
-#include    <spdlog/spdlog.h>
 #include    <stdio.h>
 #include    "syssvc/syslog.h"
 #include    "PerceptionTask.h"
