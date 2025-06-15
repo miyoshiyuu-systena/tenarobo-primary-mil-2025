@@ -19,9 +19,11 @@ endif
 APPL_DIRS +=\
 	$(mkfile_path)task\
 	$(mkfile_path)utils\
+	$(mkfile_path)package/spdlog/include\
 
 INCLUDES += \
 	-I$(mkfile_path)task\
 	-I$(mkfile_path)utils\
+	-I$(mkfile_path)package/spdlog/include\
 
 COPTS += -std=gnu++11
