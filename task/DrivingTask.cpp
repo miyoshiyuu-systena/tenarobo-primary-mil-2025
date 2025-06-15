@@ -9,7 +9,6 @@
 void    driv_task(intptr_t exinf)   {
     auto& myLogger = Logger::getInstance().getSpdLogger();
     myLogger->debug("Driving_Task is running.");
-    spdlog::shutdown();
     
     /**
      * 右モーターへの指示
