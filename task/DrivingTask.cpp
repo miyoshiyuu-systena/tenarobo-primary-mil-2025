@@ -17,7 +17,7 @@ void    driv_task(intptr_t exinf)   {
         file_logger->error("処理中にエラーが発生しました: {}", "無効な入力");
         spdlog::shutdown();
     } catch (const spdlog::spdlog_ex& ex) {
-        ;
+        syslog(LOG_ERROR, "ファイル生成時に例外が発生しています。");
     }
     /**
      * 右モーターへの指示
