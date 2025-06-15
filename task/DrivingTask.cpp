@@ -9,7 +9,7 @@
  */
 void    driv_task(intptr_t exinf)   {
     try {
-        auto file_logger = spdlog::basic_logger_mt("my_app_logger", "logs/application.log", true);
+        auto file_logger = spdlog::basic_logger_mt("my_app_logger", "logs/application.log", false);
         file_logger->set_level(spdlog::level::info);
         file_logger->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%L] [%n] %v");
         file_logger->info("アプリケーションを開始します。");
