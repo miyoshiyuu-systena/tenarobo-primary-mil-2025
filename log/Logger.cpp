@@ -1,9 +1,10 @@
-#include "Logger.h"
-#include <spdlog/sinks/basic_file_sink.h> // ファイルシンク用
-#include <chrono>   // 時間取得用
-#include <iomanip>  // std::put_time 用
-#include <sstream>  // std::stringstream 用
-#include <ctime>    // std::localtime 用
+#include    "Logger.h"
+#include    "syssvc/syslog.h"
+#include    <spdlog/sinks/basic_file_sink.h> // ファイルシンク用
+#include    <chrono>   // 時間取得用
+#include    <iomanip>  // std::put_time 用
+#include    <sstream>  // std::stringstream 用
+#include    <ctime>    // std::localtime 用
 
 // シングルトンインスタンスの静的メンバー変数の定義
 // プログラム起動時に一度だけ初期化されます
