@@ -37,7 +37,7 @@ bool writelog(const std::string& logMessage) {
         // home_dir = home_env; // std::filesystem を boost::filesystem に変更
         home_dir = home_env;
     } else {
-        syslog(LOG_ERR, "[ERR]HOME環境変数を取得できませんでした。");
+        syslog(LOG_ERROR, "[ERR]HOME環境変数を取得できませんでした。");
         return false;
     }
     // std::filesystem::path full_log_folder_path = home_dir / LOG_BASE_DIR; // std::filesystem を boost::filesystem に変更
@@ -50,7 +50,7 @@ bool writelog(const std::string& logMessage) {
         // (!std::filesystem::create_directories(full_log_folder_path)) // std::filesystem を boost::filesystem に変更
         (!boost::filesystem::create_directories(full_log_folder_path))
     ) {
-        syslog(LOG_ERR, "[ERR]ログファイルを作成できませんでした。");
+        syslog(LOG_ERROR, "[ERR]ログファイルを作成できませんでした。");
         return false;
     }
 
@@ -66,7 +66,7 @@ bool writelog(const std::string& logMessage) {
 
     // ファイルが開けたか確認
     if (!outputFile.is_open()) {
-        syslog(LOG_ERR, "[ERR]ファイルを開けませんでした。");
+        syslog(LOG_ERROR, "[ERR]ファイルを開けませんでした。");
         return false;
     }
 
