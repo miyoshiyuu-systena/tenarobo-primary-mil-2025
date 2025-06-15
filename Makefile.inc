@@ -16,7 +16,7 @@ include $(EV3RT_SDK_LIB_DIR)/libcpp-spike/Makefile
 
 endif
 
-APPL_DIRS += 
+APPL_DIRS += \
 	$(mkfile_path)task\
 	$(mkfile_path)log\
 
