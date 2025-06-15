@@ -22,4 +22,4 @@ INCLUDES += \
 	-I$(mkfile_path)task\
 	-I$(SPDLOG_INCLUDE_DIR)\
 
-COPTS += -std=c++11 -DSPDLOG_HEADER_ONLY
+COPTS += -std=c++14 -DSPDLOG_HEADER_ONLY
