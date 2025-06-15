@@ -59,7 +59,7 @@ std::string Logger::generateLogFilename() {
 
     // 日時フォーマット
     std::stringstream ss;
-    ss << std::put_time(timeinfo, "%Y-%m-%d-%H:%M:%S"); // ファイル名に ':' は使えないため '-' に変更
+    ss << std::put_time(timeinfo, "%Y-%m-%d-%H-%M-%S"); // ファイル名に ':' は使えないため '-' に変更
     ss << '.' << std::setfill('0') << std::setw(3) << ms.count(); // ミリ秒を追加
 
     // ログファイルのディレクトリとファイル名を結合
