@@ -3,6 +3,11 @@
 
 #include <memory>
 #include <string>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "spdlog/spdlog.h" // Spdlogのヘッダファイルをインクルード
 #include "spdlog/sinks/daily_file_sink.h" // 日次ファイルローテーション用
 #include "spdlog/sinks/stdout_color_sinks.h" // コンソール出力用
@@ -36,5 +41,9 @@ private:
 
     std::shared_ptr<spdlog::logger> spdLogger;
 };
+
+#ifdef __cpluspluc
+}
+#endif
 
 #endif // LOGGER_H
