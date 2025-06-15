@@ -3,7 +3,8 @@
 #include    <iostream>
 #include    <fstream>
 #include    <string>
-#include    <filesystem>
+// #include    <filesystem> // これを削除
+#include    <boost/filesystem.hpp> // これを追加
 #include    <chrono>
 #include    <ctime>
 #include    <iomanip>
@@ -14,7 +15,7 @@ const std::string LOG_BASE_DIR = "work/RasPike-ART/sdk/workspace/tenarobo-primar
 
 /**
  * ログを書き込む
- * @param ログメッセージ
+ * @param logMessage ログメッセージ
  * @return ログの書込み是非
  */
 bool writelog(const std::string& logMessage) {
@@ -29,35 +30,43 @@ bool writelog(const std::string& logMessage) {
     std::string current_log_filename = date_ss.str() + ".log";
 
     // 2. ログファイルのフルパスを取得
-    std::filesystem::path home_dir;
+    // std::filesystem::path home_dir; // std::filesystem を boost::filesystem に変更
+    boost::filesystem::path home_dir;
     const char* home_env = std::getenv("HOME"); // Linux/macOS
     if (home_env) {
+        // home_dir = home_env; // std::filesystem を boost::filesystem に変更
         home_dir = home_env;
     } else {
         syslog(LOG_ERR, "[ERR]HOME環境変数を取得できませんでした。");
         return false;
     }
-    std::filesystem::path full_log_folder_path = home_dir / LOG_BASE_DIR;
+    // std::filesystem::path full_log_folder_path = home_dir / LOG_BASE_DIR; // std::filesystem を boost::filesystem に変更
+    boost::filesystem::path full_log_folder_path = home_dir / LOG_BASE_DIR;
 
     // 3. フォルダの存在確認と作成
     if (
-        (!std::filesystem::exists(full_log_folder_path)) &&
-        (!std::filesystem::create_directories(full_log_folder_path))
+        // (!std::filesystem::exists(full_log_folder_path)) && // std::filesystem を boost::filesystem に変更
+        (!boost::filesystem::exists(full_log_folder_path)) &&
+        // (!std::filesystem::create_directories(full_log_folder_path)) // std::filesystem を boost::filesystem に変更
+        (!boost::filesystem::create_directories(full_log_folder_path))
     ) {
-        syslog(LOG_ERROR, "[ERR]ログファイルを作成できませんでした。");
+        syslog(LOG_ERR, "[ERR]ログファイルを作成できませんでした。");
         return false;
     }
 
     // 4. フルパスの構築
-    std::filesystem::path full_log_file_path = full_log_folder_path / current_log_filename;
+    // std::filesystem::path full_log_file_path = full_log_folder_path / current_log_filename; // std::filesystem を boost::filesystem に変更
+    boost::filesystem::path full_log_file_path = full_log_folder_path / current_log_filename;
 
     // 5. ファイルを開く
     // std::ios::app は追記モード (ファイルが存在すれば末尾に追記、なければ新規作成)
-    std::ofstream outputFile(fullPath, std::ios::app);
+    // 修正: fullPath は未定義でした。full_log_file_path を使用します。
+    // std::ofstream outputFile(fullPath, std::ios::app);
+    std::ofstream outputFile(full_log_file_path.string(), std::ios::app); // Boost.Filesystem の path を string に変換して渡す
 
     // ファイルが開けたか確認
     if (!outputFile.is_open()) {
-        syslog(LOG_ERROR, "[ERR]ファイルを開けませんでした。");
+        syslog(LOG_ERR, "[ERR]ファイルを開けませんでした。");
         return false;
     }
 
