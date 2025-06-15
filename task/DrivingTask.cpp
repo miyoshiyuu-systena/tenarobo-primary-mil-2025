@@ -25,7 +25,7 @@ void    driv_task(intptr_t exinf)   {
     /**
      * 待機
      */
-    Logger::getInstance().trace("sample driving");
+    // Logger::getInstance().trace("sample driving");
     syslog(LOG_ERROR, "Driving_Task is running");
 
     //  タスク終了
