@@ -51,7 +51,7 @@ void    main_task(intptr_t exinf)   {
         /**
          * 待機
          */
-        syslog(LOG_NOTICE, "Main_Task is running");
+        // syslog(LOG_NOTICE, "Main_Task is running");
     }
     
     stp_cyc(PERC_CYC);
