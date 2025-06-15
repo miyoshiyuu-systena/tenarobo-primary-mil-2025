@@ -1,6 +1,6 @@
 #include    "syssvc/syslog.h"
 #include    "DrivingTask.h"
-#include    "logging.h"
+#include    "Logger.h"
 
 /**
  * 駆動指示
@@ -25,7 +25,7 @@ void    driv_task(intptr_t exinf)   {
     /**
      * 待機
      */
-    writeLog("sample driving");
+    Logger::getInstance().trace("sample driving");
     syslog(LOG_ERROR, "Driving_Task is running");
 
     //  タスク終了
