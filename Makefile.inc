@@ -3,9 +3,10 @@ USE_RASPIKE_ART=1
 mkfile_path := $(dir $(lastword $(MAKEFILE_LIST)))
 
 APPL_CXXOBJS +=\
-DrivingTask.o\
-PerceptionTask.o\
-Logger.o\
+	app.o\
+	DrivingTask.o\
+	PerceptionTask.o\
+	Logger.o\
 
 SRCLANG := c++
 
