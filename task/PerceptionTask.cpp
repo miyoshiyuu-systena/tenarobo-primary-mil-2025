@@ -5,7 +5,7 @@
 
 using   namespace   spikeapi;
 // 超音波センサーの宣言
-UltrasonicSensor    ultraSonicSencer(   EPort::PORT_E   );
+UltrasonicSensor    ultraSonicSencer(   EPort::PORT_F   );
 
 /**
  * 知覚処理
