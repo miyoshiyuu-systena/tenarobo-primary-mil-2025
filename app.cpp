@@ -69,58 +69,21 @@ void    main_task(intptr_t exinf)   {
         (1)     /* 全てのタスクが終了した or 異常終了した */    //TODO: 仮に無限ループとする
     ) {
         loopCount++;
-        
-        // 定期的な状態ログ
-        if (loopCount % LOG_INTERVAL == 0) {
-            logger.logInfo("メインループ実行中 - 総実行回数: " + std::to_string(loopCount));
-        }
 
         /**
          * 通信部 -> 制御部データコピー
          */
         //  TODO    miyoshi: 通信部 -> 制御部データコピー
-        if (loopCount % 2000 == 0) {
-            logger.logDebug("通信部 -> 制御部データコピー実行");
-            // 実際の通信処理が追加される際のログ例
-            // logger.logDebug("センサーデータ受信: カラー値=" + std::to_string(colorValue));
-            // logger.logDebug("センサーデータ受信: 距離=" + std::to_string(distance));
-        }
 
         /**
          * 意思決定
          */
         //  TODO    miyoshi: 意思決定
-        if (loopCount % 1500 == 0) {
-            logger.logDebug("意思決定処理実行");
-            // 実際の意思決定処理が追加される際のログ例
-            // logger.logDebug("現在の状態: ライントレース中");
-            // logger.logInfo("障害物検出 - 回避行動開始");
-            // logger.logWarning("コース逸脱検出 - 補正動作実行");
-        }
 
         /**
          * 制御部 -> 通信部データコピー
          */
         //  TODO    miyoshi: 制御部 -> 通信部データコピー
-        if (loopCount % 2000 == 0) {
-            logger.logDebug("制御部 -> 通信部データコピー実行");
-            // 実際の制御命令送信が追加される際のログ例
-            // logger.logDebug("モーター制御命令送信: 左=" + std::to_string(leftPower) + "%, 右=" + std::to_string(rightPower) + "%");
-        }
-
-        // エラーシミュレーション（テスト用）
-        if (loopCount == 5000) {
-            logger.logWarning("【テスト】警告レベルのイベントが発生しました");
-        }
-        
-        if (loopCount == 7500) {
-            logger.logError("【テスト】エラーレベルのイベントが発生しました（システムは継続動作中）");
-        }
-
-        // 定期的にログファイルに書き込み（5000回ループごと）
-        if (loopCount % 5000 == 0) {
-            logger.writeLogsToFile();
-        }
 
         /**
          * 待機
@@ -129,9 +92,11 @@ void    main_task(intptr_t exinf)   {
         
         // 例：10000回ループしたら終了（実際の実装では適切な終了条件を設定してください）
         if (loopCount >= 10000) {
-            logger.logInfo("テスト用ループ回数上限に達しました");
-            logger.logInfo("プログラム終了処理を開始");
-            break;
+            logger.logInfo("メインループ実行中 - 総実行回数: " + std::to_string(loopCount));
+        }
+
+        if (loopCount >= 1000000) {
+            logger.logInfo("メインループ実行中 - 総実行回数: " + std::to_string(loopCount));
         }
     }
     
