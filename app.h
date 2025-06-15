@@ -2,7 +2,7 @@
 extern "C" {
 #endif
 
-#include    "spikeapi.h"
+// #include    "spikeapi.h"
   
 /* タスク優先度 */
 #define     PERC_PRIORITY       (TMIN_APP_TPRI + 1)
