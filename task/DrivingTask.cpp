@@ -9,6 +9,11 @@
  */
 void    driv_task(intptr_t exinf)   {
     auto file_logger = spdlog::basic_logger_mt("my_app_logger", "logs/application.log", true);
+    file_logger->set_level(spdlog::level::info);
+    file_logger->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%L] [%n] %v");
+    file_logger->info("アプリケーションを開始します。");
+    file_logger->warn("設定ファイルが見つかりませんでした。デフォルト値を使用します。");
+    file_logger->error("処理中にエラーが発生しました: {}", "無効な入力");
     /**
      * 右モーターへの指示
      */
