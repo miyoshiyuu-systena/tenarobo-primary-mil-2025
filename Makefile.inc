@@ -28,7 +28,7 @@ APPL_DIRS +=\
 	$(mkfile_path)utils\
 
 INCLUDES += \
-	-I$(BOOST_ROOT)
+	-I$(BOOST_ROOT)\
 	-I$(mkfile_path)task\
 	-I$(mkfile_path)utils\
 
