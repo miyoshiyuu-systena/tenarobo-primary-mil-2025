@@ -17,12 +17,10 @@ include $(EV3RT_SDK_LIB_DIR)/libcpp-spike/Makefile\
 endif
 
 APPL_DIRS +=\
-	$(mkfile_path)package/spdlog/include\
 	$(mkfile_path)task\
 	$(mkfile_path)utils\
 
 INCLUDES += \
-	-I$(mkfile_path)package/spdlog/include\
 	-I$(mkfile_path)task\
 	-I$(mkfile_path)utils\
 
