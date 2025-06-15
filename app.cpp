@@ -58,7 +58,7 @@ void    main_task(intptr_t exinf)   {
     stp_cyc(PERC_CYC);
     stp_cyc(DRIV_CYC);
 
-    Logger::end();
+    Logger::getInstance().end();
     
     //  タスク終了
     ext_tsk();
