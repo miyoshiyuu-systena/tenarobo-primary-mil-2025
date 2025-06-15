@@ -1,73 +1,91 @@
-#include    "logging.h"
-#include    "syssvc/syslog.h"
-#include    <iostream>
-#include    <fstream>
-#include    <string>
-#include    <filesystem>
-#include    <chrono>
-#include    <ctime>
-#include    <iomanip>
-#include    <sstream>
+#include "Logger.h"
+#include <iostream> // エラー出力用
 
+// シングルトンインスタンスの初期化 (プログラム起動時に一度だけ実行される)
+Logger& Logger::getInstance() {
+    static Logger instance;
+    return instance;
+}
 
-const std::string LOG_BASE_DIR = "work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/log";
+// コンストラクタ
+Logger::Logger() {
+    try {
+        // コンソールシンクの作成
+        auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
+        console_sink->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%^%l%$] %v"); // 色付き出力
+        console_sink->set_level(spdlog::level::debug); // コンソールにはDEBUG以上を出力
 
-/**
- * ログを書き込む
- * @param ログメッセージ
- * @return ログの書込み是非
- */
-bool writelog(const std::string& logMessage) {
-    // 1. ログファイルのファイル名を決定
-    auto now = std::chrono::system_clock::now();
-    std::time_t now_c = std::chrono::system_clock::to_time_t(now);
-    std::tm* local_tm = std::localtime(&now_c);
+        // 日次ファイルシンクの作成 (ログファイル名、時間、ファイル数)
+        // daily_file_sink_mt("logs/application.log", 0, 0) は、
+        // logsディレクトリにapplication.logという名前で、毎日0時0分に新しいファイルを作成します。
+        // 例: application_2025-06-15.log
+        auto daily_file_sink = std::make_shared<spdlog::sinks::daily_file_sink_mt>("logs/application.log", 0, 0);
+        daily_file_sink->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%l] %v");
+        daily_file_sink->set_level(spdlog::level::trace); // ファイルにはTRACE以上を出力
 
-    std::stringstream date_ss;
-    date_ss << std::put_time(local_tm, "%Y-%m-%d");
+        // ロガーの作成 (複数のシンクを持つ)
+        std::vector<spdlog::sink_ptr> sinks;
+        sinks.push_back(console_sink);
+        sinks.push_back(daily_file_sink);
+        spdLogger = std::make_shared<spdlog::logger>("my_app_logger", begin(sinks), end(sinks));
 
-    std::string current_log_filename = date_ss.str() + ".log";
-
-    // 2. ログファイルのフルパスを取得
-    std::filesystem::path home_dir;
-    const char* home_env = std::getenv("HOME"); // Linux/macOS
-    if (home_env) {
-        home_dir = home_env;
-    } else {
-        syslog(LOG_ERR, "[ERR]HOME環境変数を取得できませんでした。");
-        return false;
+        // グローバルなデフォルトロガーとして登録 (オプション)
+        // spdlog::set_default_logger(spdLogger);
+        
+        // ロガーのレベル設定 (デフォルトはinfo)
+        spdLogger->set_level(spdlog::level::info);
+        spdLogger->flush_on(spdlog::level::warn); // WARN以上は即時フラッシュ
+    } catch (const spdlog::spdlog_ex& ex) {
+        std::cerr << "Log initialization failed: " << ex.what() << std::endl;
+        // ロガーの初期化に失敗した場合の処理 (アプリケーションの終了など)
     }
-    std::filesystem::path full_log_folder_path = home_dir / LOG_BASE_DIR;
+}
 
-    // 3. フォルダの存在確認と作成
-    if (
-        (!std::filesystem::exists(full_log_folder_path)) &&
-        (!std::filesystem::create_directories(full_log_folder_path))
-    ) {
-        syslog(LOG_ERROR, "[ERR]ログファイルを作成できませんでした。");
-        return false;
+// デストラクタ
+Logger::~Logger() {
+    spdlog::drop_all(); // 全てのロガーを解放
+}
+
+// ログレベルを設定
+void Logger::setLogLevel(spdlog::level::level_enum level) {
+    if (spdLogger) {
+        spdLogger->set_level(level);
     }
+}
 
-    // 4. フルパスの構築
-    std::filesystem::path full_log_file_path = full_log_folder_path / current_log_filename;
-
-    // 5. ファイルを開く
-    // std::ios::app は追記モード (ファイルが存在すれば末尾に追記、なければ新規作成)
-    std::ofstream outputFile(fullPath, std::ios::app);
-
-    // ファイルが開けたか確認
-    if (!outputFile.is_open()) {
-        syslog(LOG_ERROR, "[ERR]ファイルを開けませんでした。");
-        return false;
+// 各ログレベルでのログ出力関数
+void Logger::trace(const std::string& msg) {
+    if (spdLogger) {
+        spdLogger->trace(msg);
     }
+}
 
-    // 6. ログを書き込む
-    std::stringstream formatted_log_ss;
-    formatted_log_ss << std::put_time(local_tm, "%Y-%m-%d %H:%M:%S") << " " << logMessage;
-    outputFile << formatted_log_ss.str() << std::endl; // 改行も追加
+void Logger::debug(const std::string& msg) {
+    if (spdLogger) {
+        spdLogger->debug(msg);
+    }
+}
 
-    // 7. ファイルを閉じる
-    outputFile.close();
+void Logger::info(const std::string& msg) {
+    if (spdLogger) {
+        spdLogger->info(msg);
+    }
+}
 
-    return true;
+void Logger::warn(const std::string& msg) {
+    if (spdLogger) {
+        spdLogger->warn(msg);
+    }
+}
+
+void Logger::error(const std::string& msg) {
+    if (spdLogger) {
+        spdLogger->error(msg);
+    }
+}
+
+void Logger::critical(const std::string& msg) {
+    if (spdLogger) {
+        spdLogger->critical(msg);
+    }
 }
