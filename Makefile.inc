@@ -21,7 +21,7 @@ BOOST_ROOT = /usr
 
 # Boost.Filesystemライブラリへのリンク (OSによってライブラリ名が異なる場合があります)
 # Linuxの場合:
-LDFLAGS += -L$(BOOST_ROOT)/lib/aarch64-linux-gnu -lboost_filesystem -lboost_system
+LDFLAGS += -L$(BOOST_ROOT)/lib/aarch64-linux-gnu -l:libboost_filesystem.a -l:libboost_system.a
 
 APPL_DIRS +=\
 	$(mkfile_path)task\
