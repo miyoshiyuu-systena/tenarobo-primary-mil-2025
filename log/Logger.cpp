@@ -23,7 +23,7 @@ Logger::Logger() {
         // ロガー名 "my_application_logger"
         // ファイル名: 生成したファイル名 (例: logs/2025-06-15 16:15:21.0123.log)
         // true: 既存のファイルを上書き (これは初回なので常に新しいファイル)
-        m_logger = spdlog::basic_logger_mt("my_application_logger", log_filename, true);
+        m_logger = spdlog::basic_logger_mt("my_application_logger", log_filename, false);
 
         // ログレベルの設定 (例: INFO 以上のメッセージを出力)
         m_logger->set_level(spdlog::level::trace); // デバッグしやすいようにTRACEに設定
