@@ -4,7 +4,7 @@
 #include    "DrivingTask.h"
 #include    <spdlog/spdlog.h>
 #include    <spdlog/sinks/basic_file_sink.h>
-#include    "syssvc/syslog.h"
+// #include    "syssvc/syslog.h"
 
 /**
  * メイン処理
@@ -20,7 +20,7 @@ void    main_task(intptr_t exinf)   {
         file_logger->error("処理中にエラーが発生しました: {}", "無効な入力");
         spdlog::shutdown();
     } catch (const spdlog::spdlog_ex& ex) {
-        syslog(LOG_ERROR, "ファイル生成時に例外が発生しています。");
+        // syslog(LOG_ERROR, "ファイル生成時に例外が発生しています。");
     }
     /**
      * センサーデータ取得インスタンスの生成
@@ -37,7 +37,7 @@ void    main_task(intptr_t exinf)   {
      */
     //  TODO miyoshi: 駆動系インスタンスの生成
 
-    syslog(LOG_NOTICE, "INIT FINISH - Its start!!!");
+    // syslog(LOG_NOTICE, "INIT FINISH - Its start!!!");
 
     sta_cyc(PERC_CYC);
     sta_cyc(DRIV_CYC);
