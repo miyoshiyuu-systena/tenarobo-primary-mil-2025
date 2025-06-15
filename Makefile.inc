@@ -3,6 +3,7 @@ USE_RASPIKE_ART=1
 mkfile_path := $(dir $(lastword $(MAKEFILE_LIST)))
 
 APPL_CXXOBJS +=\
+app.o\
 DrivingTask.o\
 PerceptionTask.o\
 
@@ -17,7 +18,9 @@ endif
 
 APPL_DIRS += $(mkfile_path)task
 
+SPDLOG_INCLUDE_DIR := $(mkfile_path)include
 INCLUDES += \
 	-I$(mkfile_path)task\
+	-I$(SPDLOG_INCLUDE_DIR)\
 
-COPTS += -std=gnu++11
+COPTS += -std=gnu++11 -DSPDLOG_HEADER_ONLY
