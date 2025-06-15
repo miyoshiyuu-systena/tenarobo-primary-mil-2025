@@ -2,7 +2,6 @@
 #include    <stdio.h>
 #include    "syssvc/syslog.h"
 #include    "PerceptionTask.h"
-#include    "DrivingTask.h"
 #include    "logging/Logger.h"
 
 /**
@@ -52,8 +51,7 @@ void    main_task(intptr_t exinf)   {
     logger.logInfo("=== システム初期化完了 - 制御開始 ===");
 
     sta_cyc(PERC_CYC);
-    sta_cyc(DRIV_CYC);
-    logger.logInfo("周期タスク開始: PERC_CYC, DRIV_CYC");
+    logger.logInfo("周期タスク開始: PERC_CYC");
 
     // 初期化完了時にログファイルを一度書き込み
     logger.writeLogsToFile();
@@ -91,19 +89,18 @@ void    main_task(intptr_t exinf)   {
         // syslog(LOG_NOTICE, "Main_Task is running");
         
         // 例：10000回ループしたら終了（実際の実装では適切な終了条件を設定してください）
-        if (loopCount >= 10000) {
+        if (loopCount >= 100000000) {
             logger.logInfo("メインループ実行中 - 総実行回数: " + std::to_string(loopCount));
         }
 
-        if (loopCount >= 1000000) {
-            logger.logInfo("メインループ実行中 - 総実行回数: " + std::to_string(loopCount));
+        if (loopCount >= 10000000000) {
+            break;
         }
     }
     
     logger.logInfo("メインループ終了");
     
     stp_cyc(PERC_CYC);
-    stp_cyc(DRIV_CYC);
     logger.logInfo("周期タスク停止完了");
     
     logger.logInfo("=== ロボット制御システム正常終了 ===");
