@@ -1,10 +1,10 @@
 #include    "app.h"
 #include    <stdio.h>
-#include    "syssvc/syslog.h"
 #include    "PerceptionTask.h"
 #include    "DrivingTask.h"
 #include    <spdlog/spdlog.h>
 #include    <spdlog/sinks/basic_file_sink.h>
+#include    "syssvc/syslog.h"
 
 /**
  * メイン処理
