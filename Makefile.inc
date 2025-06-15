@@ -13,7 +13,7 @@ ifdef CONFIG_EV3RT_APPLICATION
 
 # Include libraries
 include $(EV3RT_SDK_LIB_DIR)/libcpp-spike/Makefile\
-include $(mkfile_path)package/spdlog/include/Makfile\
+include $(mkfile_path)package/spdlog/build/Makfile\
 
 endif
 
