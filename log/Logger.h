@@ -14,6 +14,8 @@ public:
      */
     std::shared_ptr<spdlog::logger>& getSpdLogger();
 
+    void end();
+
     /**
      * コピーコンストラクタと代入演算子を削除し、シングルトンを強制
      */

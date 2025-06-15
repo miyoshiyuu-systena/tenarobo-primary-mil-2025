@@ -3,6 +3,7 @@
 #include    "syssvc/syslog.h"
 #include    "PerceptionTask.h"
 #include    "DrivingTask.h"
+#include    "Logger.h"
 
 /**
  * メイン処理
@@ -57,7 +58,7 @@ void    main_task(intptr_t exinf)   {
     stp_cyc(PERC_CYC);
     stp_cyc(DRIV_CYC);
 
-    spdlog::shutdown();
+    Logger::end();
     
     //  タスク終了
     ext_tsk();

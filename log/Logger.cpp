@@ -65,3 +65,7 @@ std::string Logger::generateLogFilename() {
     // ログファイルのディレクトリとファイル名を結合
     return "logs/" + ss.str() + ".log";
 }
+
+void Logger::end() {
+    spdlog::shutdown();
+}
