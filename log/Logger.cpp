@@ -38,7 +38,7 @@ Logger::Logger() {
         // ロガー初期化中にエラーが発生した場合
         // ここでは標準エラー出力に直接メッセージを出力します
         // spdlog はまだ使えないため
-        syslog("Logger initialization failed: ");
+        syslog(LOG_ERROR, "Logger initialization failed: ");
         // プログラムを続行しない場合は、ここで例外を再スローするか、終了する
         throw; // 初期化失敗は通常致命的
     }
