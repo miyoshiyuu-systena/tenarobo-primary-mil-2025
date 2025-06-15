@@ -6,6 +6,8 @@
 #include    <spdlog/sinks/basic_file_sink.h>
 // #include    "syssvc/syslog.h"
 
+#include    "spikeapi.h"
+
 /**
  * メイン処理
  * @param   exinf     拡張情報
