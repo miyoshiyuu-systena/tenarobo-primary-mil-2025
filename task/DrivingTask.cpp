@@ -1,5 +1,4 @@
-#include    <spdlog/spdlog.h>
-#include    <spdlog/sinks/basic_file_sink.h>
+#include    "Logger.h"
 #include    "syssvc/syslog.h"
 #include    "DrivingTask.h"
 
@@ -8,17 +7,9 @@
  * @param   exinf     拡張情報
  */
 void    driv_task(intptr_t exinf)   {
-    try {
-        auto file_logger = spdlog::basic_logger_mt("my_app_logger", "logs/application.log", false);
-        file_logger->set_level(spdlog::level::info);
-        file_logger->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%L] [%n] %v");
-        file_logger->info("アプリケーションを開始します。");
-        file_logger->warn("設定ファイルが見つかりませんでした。デフォルト値を使用します。");
-        file_logger->error("処理中にエラーが発生しました: {}", "無効な入力");
-        spdlog::shutdown();
-    } catch (const spdlog::spdlog_ex& ex) {
-        syslog(LOG_ERROR, "ファイル生成時に例外が発生しています。");
-    }
+    auto& myLogger = Logger::getInstance().getSpdLogger();
+    myLogger->debug("Driving_Task is running.");
+
     /**
      * 右モーターへの指示
      */
