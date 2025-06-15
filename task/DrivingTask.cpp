@@ -7,12 +7,10 @@
  * @param   exinf     拡張情報
  */
 void    driv_task(intptr_t exinf)   {
-    try {
-        auto& myLogger = Logger::getInstance().getSpdLogger();
-        myLogger->debug("Driving_Task is running.");
-        spdlog::shutdown();
-    } catch 
-
+    auto& myLogger = Logger::getInstance().getSpdLogger();
+    myLogger->debug("Driving_Task is running.");
+    spdlog::shutdown();
+    
     /**
      * 右モーターへの指示
      */
