@@ -157,50 +157,6 @@ void finishAction() {
 }
 
 /**
- * ActionChainの実行関数
- */
-void executeActionChain(ActionChain* firstAction) {
-    Logger& logger = Logger::getInstance();
-    ActionChain* currentAction = firstAction;
-    
-    while (currentAction != nullptr) {
-        logger.logInfo("アクション実行中...");
-        currentAction->execute();
-        
-        // アクションが終了するまで待機
-        while (!currentAction->isEnd()) {
-            delay_ms(100);
-        }
-        
-        // 次のアクションに移動（mNextActionはprivateなので直接アクセス不可）
-        // ActionChainの設計上、各アクションは個別に実行する必要がある
-        break;
-    }
-}
-
-/**
- * ActionChainクラスを拡張して、次のアクションを取得するメソッドを追加するためのヘルパー関数
- * setNext()で設定されたアクションチェーンを再帰的に実行する
- */
-void executeActionChainWithRecursion(ActionChain* action) {
-    Logger& logger = Logger::getInstance();
-    if (action == nullptr) {
-        return;
-    }
-    
-    logger.logInfo("アクション実行中...");
-    action->execute();
-    
-    // アクションが終了するまで待機
-    while (!action->isEnd()) {
-        delay_ms(100);
-    }
-    
-    // 次のアクションを再帰的に実行
-    executeActionChainWithRecursion(action->getNext());
-}
-
-/**
  * ActionChainを使用したより効率的な実行関数
  */
 void executeActionChainOptimized(ActionChain* firstAction) {
