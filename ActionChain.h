@@ -15,6 +15,8 @@ public:
      * @param frontArm 前腕モーターのポインタ
      * @param percDataAccess 知覚データへのアクセス（センサデータ）
      * @param actionCall アクションの実行
+     *          一度実行すればいいだけの場合は、whileループを使用しない
+     *          繰り返し実行する場合は、whileループを使用する
      * @param actionName アクションの名前（ログ出力のため）
      */
     ActionChain(
