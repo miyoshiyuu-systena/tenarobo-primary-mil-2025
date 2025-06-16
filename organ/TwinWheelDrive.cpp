@@ -7,12 +7,7 @@ using   namespace   spikeapi;
 TwinWheelDrive::TwinWheelDrive(EPort left_port, EPort right_port)
     : mLeftMotor(left_port, Motor::EDirection::COUNTERCLOCKWISE, true)
     , mRightMotor(right_port, Motor::EDirection::CLOCKWISE, true)
-{
-    // モーターの初期化が正常に完了したかチェック
-    if (mLeftMotor.hasError() || mRightMotor.hasError()) {
-        syslog(LOG_ERROR, "TwoWheelDrive: モーターの初期化が正常に完了していません\n");
-    }
-}
+{}
 
 bool TwinWheelDrive::hasError()
 {
