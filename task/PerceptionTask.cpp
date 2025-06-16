@@ -19,7 +19,7 @@ void    perc_task(intptr_t exinf)   {
      * カラーセンサデータの取得
      */
     ColorSensor::HSV hsv;
-    colorSensor.getColor(hsv, true);
+    colorSensor.getHSV(hsv, true);
     perceptionDataAccess.color[0] = hsv.h;
     perceptionDataAccess.color[1] = hsv.s;
     perceptionDataAccess.color[2] = hsv.v;
