@@ -24,8 +24,8 @@ void TwinWheelDrive::leftPivotTurn(int angular_speed)
     
     int motor_speed = static_cast<int>(angular_speed * WHEEL_TREAD_MM / WHEEL_DIAMETER_MM);
     
-    mLeftMotor.setSpeed(-motor_speed);
-    mRightMotor.setSpeed(motor_speed);
+    mLeftMotor.setSpeed(motor_speed);
+    mRightMotor.setSpeed(-motor_speed);
 }
 
 void TwinWheelDrive::rightPivotTurn(int angular_speed)
@@ -35,8 +35,8 @@ void TwinWheelDrive::rightPivotTurn(int angular_speed)
     
     int motor_speed = static_cast<int>(angular_speed * WHEEL_TREAD_MM / WHEEL_DIAMETER_MM);
     
-    mLeftMotor.setSpeed(motor_speed);
-    mRightMotor.setSpeed(-motor_speed);
+    mLeftMotor.setSpeed(-motor_speed);
+    mRightMotor.setSpeed(motor_speed);
 }
 
 void TwinWheelDrive::leftSpinTurn(int angular_speed)
@@ -84,8 +84,8 @@ void TwinWheelDrive::curveLeftSpeed(float travel_speed, float radius)
     }
     
     // 右輪（外輪）と左輪（内輪）の速度を設定
-    mRightMotor.setSpeed(outer_speed);
-    mLeftMotor.setSpeed(inner_speed);
+    mRightMotor.setSpeed(inner_speed);
+    mLeftMotor.setSpeed(outer_speed);
 }
 
 void TwinWheelDrive::curveRightSpeed(float travel_speed, float radius)
@@ -108,8 +108,8 @@ void TwinWheelDrive::curveRightSpeed(float travel_speed, float radius)
     }
     
     // 左輪（外輪）と右輪（内輪）の速度を設定
-    mLeftMotor.setSpeed(outer_speed);
-    mRightMotor.setSpeed(inner_speed);
+    mLeftMotor.setSpeed(inner_speed);
+    mRightMotor.setSpeed(outer_speed);
 }
 
 void TwinWheelDrive::setPower(int left_power, int right_power)
