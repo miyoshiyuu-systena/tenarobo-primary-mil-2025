@@ -5,6 +5,7 @@ mkfile_path := $(dir $(lastword $(MAKEFILE_LIST)))
 APPL_CXXOBJS +=\
 PerceptionTask.o\
 Logger.o\
+two_wheel_drive.o\
 
 SRCLANG := c++
 
@@ -15,10 +16,14 @@ include $(EV3RT_SDK_LIB_DIR)/libcpp-spike/Makefile
 
 endif
 
-APPL_DIRS += $(mkfile_path)task $(mkfile_path)logging
+APPL_DIRS += \
+	$(mkfile_path)task \
+	$(mkfile_path)logging \
+	$(mkfile_path)organ \
 
 INCLUDES += \
 	-I$(mkfile_path)task\
 	-I$(mkfile_path)logging\
+	-I$(mkfile_path)organ\
 
 COPTS += -std=gnu++11
