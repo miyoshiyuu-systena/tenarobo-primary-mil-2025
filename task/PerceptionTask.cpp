@@ -37,12 +37,12 @@ void    perc_task(intptr_t exinf)   {
     /**
      * モータデータの取得
      */
-    perceptionDataAccess.leftMotorRotationCount = twinWheelDrive.getLeftCount();
-    perceptionDataAccess.rightMotorRotationCount = twinWheelDrive.getRightCount();
+    // perceptionDataAccess.leftMotorRotationCount = twinWheelDrive.getLeftCount();
+    // perceptionDataAccess.rightMotorRotationCount = twinWheelDrive.getRightCount();
     perceptionDataAccess.leftMotorSpeed = twinWheelDrive.getLeftSpeed();
     perceptionDataAccess.rightMotorSpeed = twinWheelDrive.getRightSpeed();
-    perceptionDataAccess.leftMotorPower = twinWheelDrive.getLeftPower();
-    perceptionDataAccess.rightMotorPower = twinWheelDrive.getRightPower();
+    // perceptionDataAccess.leftMotorPower = twinWheelDrive.getLeftPower();
+    // perceptionDataAccess.rightMotorPower = twinWheelDrive.getRightPower();
 
     // // ログ出力
     std::string sensorsStr = "Sensors - Force:" + std::to_string(perceptionDataAccess.force) + "N Distance:" + 
