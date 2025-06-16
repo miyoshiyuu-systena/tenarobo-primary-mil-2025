@@ -9,10 +9,10 @@ extern "C" {
 #define     MAIN_PRIORITY       (TMIN_APP_TPRI + 2)
 
 /* サイクル起動周期 */
-#define     PERC_PERIOD         (1000 * 1000)       //TODO: 仮に、分かりやすさのために1sとする
+#define     PERC_PERIOD         (100 * 1000)       //TODO: 仮に、分かりやすさのために100msとする
 
 /* サイクル起動位相（最初に起動するときの遅延時間） */
-#define     PERC_PHS            (100)          //TODO: 仮値
+#define     PERC_PHS            (0)
 
 #ifndef     STACK_SIZE
 #define     STACK_SIZE          (4096)

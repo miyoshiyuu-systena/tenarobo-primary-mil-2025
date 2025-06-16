@@ -12,7 +12,7 @@ void run_until_wall_detect_action()
     static const int DETECT_DISTANCE_THRESHOLD = 100;
 
     // 壁の接近を検知する間隔時間（ms）
-    static const int DETECT_INTERVAL = 100;
+    static const int DETECT_INTERVAL = 200;
 
     // モーターの回転出力
     static const int POWER = 50;
