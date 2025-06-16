@@ -28,44 +28,44 @@ public:
      // @note   このメソッドは正しく動作しない可能性が高い
      //         モーターは初期化が完了しても、hasError = trueを返す
     bool hasError();
-
+    
     /**
-     * 左正転回転
-     * @param speed 速度（°/s）
+     * 左超信地回転（その場で左回転）
+     * @param angular_speed 回転速度（°/s）
      */
-    void leftForward(int speed);
+    void leftPivotTurn(int angular_speed);
 
     /**
-     * 右正転回転
-     * @param speed 速度（°/s）
+     * 右超信地回転（その場で右回転）
+     * @param angular_speed 回転速度（°/s）
      */
-    void rightForward(int speed);
+    void rightPivotTurn(int angular_speed);
 
     /**
-     * 左逆転回転
-     * @param speed 速度（°/s）
+     * 左信地回転（右輪中心の左回転）
+     * @param angular_speed 回転速度（°/s）
      */
-    void leftReverse(int speed);
+    void leftSpinTurn(int angular_speed);
 
     /**
-     * 右逆転回転
-     * @param speed 速度（°/s）
+     * 右信地回転（左輪中心の右回転）
+     * @param angular_speed 回転速度（°/s）
      */
-    void rightReverse(int speed);
+    void rightSpinTurn(int angular_speed);
 
     /**
-     * 左曲線走行
-     * @param speed 速度（°/s）
+     * 左曲線走行（走行速度指定版）
+     * @param travel_speed 走行速度（mm/s）
      * @param radius 半径（mm）
      */
-    void curveLeft(int speed, float radius);
+    void curveLeftSpeed(float travel_speed, float radius);
 
     /**
-     * 右曲線走行
-     * @param speed 速度（°/s）
+     * 右曲線走行（走行速度指定版）
+     * @param travel_speed 走行速度（mm/s）
      * @param radius 半径（mm）
      */
-    void curveRight(int speed, float radius);
+    void curveRightSpeed(float travel_speed, float radius);
 
     /**
      * 両輪へPWM値を指示
@@ -108,6 +108,7 @@ public:
 
 private:
     static constexpr float WHEEL_TREAD_MM = 115.0f; /**< 車輪間距離（トレッド）[mm] */
+    static constexpr float WHEEL_DIAMETER_MM = 56.0f; /**< 車輪径[mm] */
 
     Motor mLeftMotor;   /**< 左モーター */
     Motor mRightMotor;  /**< 右モーター */

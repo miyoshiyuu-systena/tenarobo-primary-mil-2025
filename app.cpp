@@ -47,14 +47,83 @@ void    main_task(intptr_t exinf)   {
     Logger& logger = Logger::getInstance();
     
     logger.logInfo("TwinWheelDriveデモンストレーション開始");
-
-    // 5. 左曲線走行 (速度200°/s, 半径300mm) - 2秒間
-    logger.logInfo("左曲線走行開始");
-    twinWheelDrive.curveLeft(200, 1000.0f);
-    delay_ms(10000);
-    twinWheelDrive.stop();
     
     sta_cyc(PERC_CYC);
+
+    twinWheelDrive.leftPivotTurn(10000);
+    logger.logInfo("左超信地回転開始");
+    delay_ms(10000);
+    twinWheelDrive.stop();
+
+    std::string left_count = "左エンコーダ値: " + std::to_string(twinWheelDrive.getLeftCount());
+    std::string right_count = "右エンコーダ値: " + std::to_string(twinWheelDrive.getRightCount());
+
+    logger.logInfo(left_count.c_str());
+    logger.logInfo(right_count.c_str());
+
+    twinWheelDrive.rightPivotTurn(10000);
+    logger.logInfo("右超信地回転開始");
+    delay_ms(10000);
+    twinWheelDrive.stop();
+
+    left_count = "左エンコーダ値: " + std::to_string(twinWheelDrive.getLeftCount());
+    right_count = "右エンコーダ値: " + std::to_string(twinWheelDrive.getRightCount());
+
+    logger.logInfo(left_count.c_str());
+    logger.logInfo(right_count.c_str());
+
+    twinWheelDrive.leftSpinTurn(10000);
+    logger.logInfo("左信地回転開始");
+    delay_ms(10000);
+    twinWheelDrive.stop();
+
+    left_count = "左エンコーダ値: " + std::to_string(twinWheelDrive.getLeftCount());
+    right_count = "右エンコーダ値: " + std::to_string(twinWheelDrive.getRightCount());
+
+    logger.logInfo(left_count.c_str());
+    logger.logInfo(right_count.c_str());
+
+    twinWheelDrive.rightSpinTurn(10000);
+    logger.logInfo("右信地回転開始");
+    delay_ms(10000);
+    twinWheelDrive.stop();
+
+    logger.logInfo(left_count.c_str());
+    logger.logInfo(right_count.c_str());
+
+    twinWheelDrive.curveLeftSpeed(100, 1000.0f);
+    logger.logInfo("左曲線走行開始");
+    delay_ms(10000);
+    twinWheelDrive.stop();
+
+    left_count = "左エンコーダ値: " + std::to_string(twinWheelDrive.getLeftCount());
+    right_count = "右エンコーダ値: " + std::to_string(twinWheelDrive.getRightCount());
+
+    logger.logInfo(left_count.c_str());
+    logger.logInfo(right_count.c_str());
+
+    twinWheelDrive.curveRightSpeed(100, 1000.0f);
+    logger.logInfo("右曲線走行開始");
+    delay_ms(10000);
+    twinWheelDrive.stop();
+
+    left_count = "左エンコーダ値: " + std::to_string(twinWheelDrive.getLeftCount());
+    right_count = "右エンコーダ値: " + std::to_string(twinWheelDrive.getRightCount());
+
+    logger.logInfo(left_count.c_str());
+    logger.logInfo(right_count.c_str());
+
+    twinWheelDrive.setPower(100, 100);
+    logger.logInfo("パワー設定開始");
+    delay_ms(500);
+    twinWheelDrive.brake();
+
+    left_count = "左エンコーダ値: " + std::to_string(twinWheelDrive.getLeftCount());
+    right_count = "右エンコーダ値: " + std::to_string(twinWheelDrive.getRightCount());
+
+    logger.logInfo(left_count.c_str());
+    logger.logInfo(right_count.c_str());
+
     stp_cyc(PERC_CYC);
     
     // 最終的なログファイル書き込み
