@@ -2,12 +2,13 @@
 #include    "spikeapi.h"
 #include    "share/ModuleAccess.h"
 #include    "share/PerceptionDataAccess.h"
+#include    "action/ActionChain.h"
 
 /**
  * 圧力センサを押すまで忠犬ハチ公！！
  * 圧力センサを押したら次のタスクを始めるよ
  */
-void start_on_pressure_sensor_action()
+void start_on_pressure_sensor_action(ActionChain* next_ptr)
 {
     // 検知間隔時間(100ms)
     static const int DELAY_TIME = 100 * 1000;
