@@ -25,6 +25,8 @@ public:
      * @return true 正常に初期化された
      * @return false 初期化に失敗した
      */
+     // @note   このメソッドは正しく動作しない可能性が高い
+     //         モーターは初期化が完了しても、hasError = trueを返す
     bool hasError() const;
 
     /**

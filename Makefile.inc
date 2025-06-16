@@ -5,7 +5,7 @@ mkfile_path := $(dir $(lastword $(MAKEFILE_LIST)))
 APPL_CXXOBJS +=\
 PerceptionTask.o\
 Logger.o\
-two_wheel_drive.o\
+TwinWheelDrive.o\
 
 SRCLANG := c++
 
