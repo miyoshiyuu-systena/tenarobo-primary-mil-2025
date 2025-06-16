@@ -56,8 +56,8 @@ void    perc_task(intptr_t exinf)   {
     //                        " Right:" + std::to_string(perceptionDataAccess.rightMotorRotationCount);
     // Logger::getInstance().logWarning(motorsStr);
     
-    std::string motorsStr2 = "Motors - Left:" + std::to_string(perceptionDataAccess.leftMotorSpeed + " °/秒") + 
-                           " Right:" + std::to_string(perceptionDataAccess.rightMotorSpeed + " °/秒");
+    std::string motorsStr2 = "Motor Speed - Left:" + std::to_string(perceptionDataAccess.leftMotorSpeed) + 
+                           " Right:" + std::to_string(perceptionDataAccess.rightMotorSpeed);
     Logger::getInstance().logWarning(motorsStr2);
     
     // std::string motorsStr3 = "Motors - Left:" + std::to_string(perceptionDataAccess.leftMotorPower) + 
