@@ -112,42 +112,6 @@ void    main_task_action_chain(intptr_t exinf)   {
     );
     action3->setNext(action4);
 
-    ActionChain* action5 = new ActionChain(
-        &twinWheelDrive,
-        &frontArm,
-        perceptionDataAccess,
-        turn_180_action,
-        "その場でくるりん！！"
-    );
-    action4->setNext(action5);
-
-    ActionChain* action6 = new ActionChain(
-        &twinWheelDrive,
-        &frontArm,
-        perceptionDataAccess,
-        turn_180_action,
-        "その場でくるりん！！"
-    );
-    action5->setNext(action6);
-
-    ActionChain* action7 = new ActionChain(
-        &twinWheelDrive,
-        &frontArm,
-        perceptionDataAccess,
-        run_until_wall_detect_action,
-        "壁に激突するまで猪突猛進！！"
-    );
-    action6->setNext(action7);
-
-    ActionChain* action8 = new ActionChain(
-        &twinWheelDrive,
-        &frontArm,
-        perceptionDataAccess,
-        turn_180_action,
-        "その場でくるりん！！"
-    );
-    action7->setNext(action8);
-
     // ActionChainの実行
     execute_and_haul_action_chain(action0);
 }
