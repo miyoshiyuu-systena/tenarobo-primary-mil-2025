@@ -71,7 +71,7 @@ void    main_task_action_chain(intptr_t exinf)   {
     ActionChain* acttion0 = new ActionChain(
         &twinWheelDrive,
         &frontArm,
-        parceptionDateAccess,
+        perceptionDateAccess,
         start_on_pressure_sensor_action,
         "ボタンが押されるまでハチ公モード！！"
     );
