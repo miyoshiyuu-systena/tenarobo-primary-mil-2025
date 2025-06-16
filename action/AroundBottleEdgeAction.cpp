@@ -6,7 +6,7 @@
 /**
  * ペットボトルの周りを5秒かけて半円回る
  */
-void AroundBottleEdgeAction()
+void aroundBottleEdgeAction()
 {
     //右曲がりに回る(5秒で半径100ミリメートルの円を半周する)
     twinWheelDrive.curveRightSpeed(62.832, 100);
