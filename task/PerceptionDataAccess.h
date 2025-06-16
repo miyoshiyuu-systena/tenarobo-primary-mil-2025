@@ -1,6 +1,10 @@
 #ifndef _PERCEPTION_DATA_ACCESS_H_
 #define _PERCEPTION_DATA_ACCESS_H_
 
+/**
+ * 知覚データへのアクセス
+ * 構造体として定義する
+ */
 struct PerceptionDataAccess
 {
     /**
@@ -29,6 +33,18 @@ struct PerceptionDataAccess
     int rightMotor;
 
     // ここに知覚データのアクセスを定義する
+};
+
+/**
+ * 知覚データへのアクセス
+ * グローバルデータとしてインスタンス化する
+ */
+PerceptionDataAccess perceptionDataAccess = {
+    .force = 0.0f,
+    .distance = 0.0f,
+    .color = {0, 0, 0},
+    .leftMotor = 0,
+    .rightMotor = 0
 };
 
 #endif
