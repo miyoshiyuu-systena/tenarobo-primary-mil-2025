@@ -83,6 +83,7 @@ void    main_task_action_chain(intptr_t exinf)   {
         run_until_wall_detect_action,
         "ペットボトルに激突するまで猪突猛進！！"
     );
+    action0->setNext(action1);
 
     ActionChain* action2 = new ActionChain(
         &twinWheelDrive,
