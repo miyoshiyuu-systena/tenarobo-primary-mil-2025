@@ -17,19 +17,6 @@
 
 using namespace spikeapi;
 
-// 他の周辺モジュールのインスタンスを宣言
-TwinWheelDrive twinWheelDrive(EPort::PORT_B, EPort::PORT_A);
-
-Motor frontArm    (   EPort::PORT_C,      Motor::EDirection::CLOCKWISE,           true        );
-
-/**                                 SPIKE_port       */
-ForceSensor forceSensor(            EPort::PORT_D   );
-ColorSensor colorSensor(            EPort::PORT_E   );
-UltrasonicSensor ultrasonicSensor(  EPort::PORT_F   );
-
-/**                                 ハブ内蔵IMU      */
-IMU imu;
-
 /**
  * 指定時間待機する関数
  * @param ms 待機時間（ミリ秒）
