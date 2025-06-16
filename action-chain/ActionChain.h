@@ -3,7 +3,7 @@
 
 #include "TwinWheelDrive.h"
 #include "Motor.h"
-#include "task/PerceptionDataAccess.h"
+#include "share/PerceptionDataAccess.h"
 #include <string>
 
 class ActionChain
@@ -47,6 +47,11 @@ public:
      * 次のアクションの設定
      */
     void setNext(ActionChain* nextAction);
+
+    /**
+     * 次のアクションの取得
+     */
+    ActionChain* getNext();
 
     /**
      * 次以降のアクションの削除

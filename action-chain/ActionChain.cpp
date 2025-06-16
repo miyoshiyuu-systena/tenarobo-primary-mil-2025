@@ -21,7 +21,7 @@ ActionChain::ActionChain(
 
 ActionChain::~ActionChain()
 {
-    Logger::getInstance().logInfo("ActionChain %s 終了", mActionName.c_str());
+    Logger::getInstance().logInfo("ActionChain " + mActionName + " 終了");
 }
 
 void ActionChain::execute()
@@ -38,6 +38,11 @@ bool ActionChain::isEnd()
 void ActionChain::setNext(ActionChain* nextAction)
 {
     mNextAction = nextAction;
+}
+
+ActionChain* ActionChain::getNext()
+{
+    return mNextAction;
 }
 
 void ActionChain::deleteNext()

@@ -37,14 +37,8 @@ struct PerceptionDataAccess
 
 /**
  * 知覚データへのアクセス
- * グローバルデータとしてインスタンス化する
+ * グローバルデータとして宣言する（実体は.cppファイルで定義）
  */
-PerceptionDataAccess perceptionDataAccess = {
-    .force = 0.0f,
-    .distance = 0.0f,
-    .color = {0, 0, 0},
-    .leftMotor = 0,
-    .rightMotor = 0
-};
+extern PerceptionDataAccess perceptionDataAccess;
 
 #endif

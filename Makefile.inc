@@ -6,6 +6,9 @@ APPL_CXXOBJS +=\
 PerceptionTask.o\
 Logger.o\
 TwinWheelDrive.o\
+ActionChain.o\
+PerceptionDataAccess.o\
+ModuleAccess.o\
 
 SRCLANG := c++
 
@@ -20,10 +23,14 @@ APPL_DIRS += \
 	$(mkfile_path)task \
 	$(mkfile_path)logging \
 	$(mkfile_path)organ \
+	$(mkfile_path)action-chain \
+	$(mkfile_path)share \
 
 INCLUDES += \
 	-I$(mkfile_path)task\
 	-I$(mkfile_path)logging\
 	-I$(mkfile_path)organ\
+	-I$(mkfile_path)action-chain\
+	-I$(mkfile_path)share\
 
 COPTS += -std=gnu++11

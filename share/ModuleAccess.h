@@ -10,39 +10,32 @@
 
 using namespace spikeapi;
 
-// 他の周辺モジュールのインスタンスを宣言
-TwinWheelDrive twinWheelDrive(
-    EPort::PORT_B,      // 左モーターのポート
-    EPort::PORT_A       // 右モーターのポート
-);
+// 他の周辺モジュールのインスタンスを宣言（実体は.cppファイルで定義）
+extern TwinWheelDrive twinWheelDrive;
 
 /**
  * 前腕モーター
  */
-Motor frontArm(
-    EPort::PORT_C,                  // 前腕モーターのポート
-    Motor::EDirection::CLOCKWISE,   // 前腕モーターの方向
-    true                            // 前腕モーターのカウンタリセット
-);
+extern Motor frontArm;
 
 /**
  * 力センサー
  */
-ForceSensor forceSensor(EPort::PORT_D);
+extern ForceSensor forceSensor;
 
 /**
  * カラーセンサー
  */
-ColorSensor colorSensor(EPort::PORT_E);
+extern ColorSensor colorSensor;
 
 /**
  * 超音波センサー
  */
-UltrasonicSensor ultrasonicSensor(EPort::PORT_F);
+extern UltrasonicSensor ultrasonicSensor;
 
 /**
  * ハブ内蔵IMU
  */
-IMU imu;
+extern IMU imu;
 
 #endif
