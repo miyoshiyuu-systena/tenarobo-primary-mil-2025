@@ -14,6 +14,8 @@
 #include    "share/PerceptionDataAccess.h"
 #include    "action/RunUntilWallDetectAction.h"
 #include    "action/Turn180Action.h"
+#include    "action/AroundBottleEdgeAction.h"
+#include    "action/StartOnPressureSensorAction.h"
 
 using namespace spikeapi;
 
@@ -26,9 +28,9 @@ void delay_ms(int ms) {
 }
 
 /**
- * ActionChainを使用したより効率的な実行関数
+ * ActionChainを手繰り寄せながら、順繰りに実行する
  */
-void executeActionChainOptimized(ActionChain* firstAction) {
+void execute_and_haul_action_chain(ActionChain* firstAction) {
     Logger& logger = Logger::getInstance();
     ActionChain* currentAction = firstAction;
     ActionChain* previousAction = nullptr;
@@ -58,16 +60,14 @@ void executeActionChainOptimized(ActionChain* firstAction) {
 }
 
 /**
- * メイン処理（方法3：真のActionChain実行）
+ * ActionChainの処理
+ * 生成から実行まで
  * @param   exinf     拡張情報
  */
-void    main_task_method3(intptr_t exinf)   {
-    Logger& logger = Logger::getInstance();
-    logger.logInfo("ActionChainサンプルプログラム開始（方法3：真のActionChain実行）");
-    
-    // 知覚タスクの開始
-    sta_cyc(PERC_CYC);
-
+void    main_task_action_chain(intptr_t exinf)   {  
+    /**
+     * アクションチェーンの形成
+     */
     ActionChain* acttion0 = new ActionChain(
         &twinWheelDrive,
         &frontArm,
@@ -76,15 +76,12 @@ void    main_task_method3(intptr_t exinf)   {
         "ボタンが押されるまでハチ公モード！！"
     );
     
-    /**
-     * アクションチェーンの形成
-     */
     ActionChain* action1 = new ActionChain(
         &twinWheelDrive,
         &frontArm,
         perceptionDataAccess,
         run_until_wall_detect_action,
-        "壁に激突するまで猪突猛進！！"
+        "ペットボトルに激突するまで猪突猛進！！"
     );
 
     ActionChain* action2 = new ActionChain(
@@ -100,8 +97,8 @@ void    main_task_method3(intptr_t exinf)   {
         &twinWheelDrive,
         &frontArm,
         perceptionDataAccess,
-        run_until_wall_detect_action,
-        "壁に激突するまで猪突猛進！！"
+        aroundBottleEdgeAction,
+        "ペットボトルの周りをぐるん！！"
     );
     action2->setNext(action3);
 
@@ -118,8 +115,8 @@ void    main_task_method3(intptr_t exinf)   {
         &twinWheelDrive,
         &frontArm,
         perceptionDataAccess,
-        run_until_wall_detect_action,
-        "壁に激突するまで猪突猛進！！"
+        turn_180_action,
+        "その場でくるりん！！"
     );
     action4->setNext(action5);
 
@@ -151,24 +148,29 @@ void    main_task_method3(intptr_t exinf)   {
     action7->setNext(action8);
 
     // ActionChainの実行
-    executeActionChainOptimized(action1);
-    
-    // 知覚タスクの停止
-    stp_cyc(PERC_CYC);
-    
-    // 最終的なログファイル書き込み
-    logger.writeLogsToFile();
-    
-    logger.logInfo("ActionChainサンプルプログラム終了");
+    execute_and_haul_action_chain(action1);
 }
 
 /**
  * メイン処理
  * @param   exinf     拡張情報
  */
-void    main_task(intptr_t exinf)   {   
-    // 方法3を使用（真のActionChain実行） - 推奨
-    main_task_method3(exinf);
+void    main_task(intptr_t exinf)   {
+    // ロガーインスタンスの取得
+    Logger& logger = Logger::getInstance();
+
+    // 知覚タスクの開始
+    sta_cyc(PERC_CYC);
+
+    // アクションチェーンの処理
+    main_task_action_chain(exinf);
+
+    // 知覚タスクの停止
+    stp_cyc(PERC_CYC);
+
+    // 最終的なログファイル書き込み
+    logger.writeLogsToFile();
+    logger.logInfo("ActionChainサンプルプログラム終了");
     
     //  タスク終了
     ext_tsk();
