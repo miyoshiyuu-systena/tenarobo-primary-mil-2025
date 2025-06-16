@@ -22,7 +22,7 @@ public:
     ActionChain(
         TwinWheelDrive* twinWheelDrive,
         Motor* frontArm,
-        PercDataAccess& percDataAccess,
+        PerceptionDataAccess& percDataAccess,
         void (*actionCall)(void),
         std::string actionName
     );
@@ -63,7 +63,7 @@ private:
     /**
      * 知覚データへのアクセス
      */
-    PercDataAccess* mPercDataAccess;
+    PerceptionDataAccess* mPercDataAccess;
     
     /**
      * アクションの名前

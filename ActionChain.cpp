@@ -6,7 +6,7 @@ using   namespace   spikeapi;
 ActionChain::ActionChain(
     TwinWheelDrive* twinWheelDrive,
     Motor* frontArm,
-    PercDataAccess& percDataAccess,
+    PerceptionDataAccess& percDataAccess,
     void (*actionCall)(void),
     std::string actionName
 )
