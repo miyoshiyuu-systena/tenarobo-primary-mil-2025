@@ -20,6 +20,11 @@ struct PerceptionDataAccess
     int distance;
 
     /**
+     * 力センサーの値
+     */
+    bool isTouched;
+
+    /**
      * カラーセンサーの値
      * H: 色相
      * S: 彩度

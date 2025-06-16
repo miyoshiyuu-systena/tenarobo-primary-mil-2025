@@ -68,6 +68,14 @@ void    main_task_method3(intptr_t exinf)   {
     // 知覚タスクの開始
     sta_cyc(PERC_CYC);
 
+    ActionChain* acttion0 = new ActionChain(
+        &twinWheelDrive,
+        &frontArm,
+        parceptionDateAccess,
+        start_on_pressure_sensor_action,
+        "ボタンが押されるまでハチ公モード！！"
+    );
+    
     /**
      * アクションチェーンの形成
      */
