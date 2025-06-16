@@ -9,7 +9,7 @@
 #include    "logging/Logger.h"
 #include    "PerceptionTask.h"
 #include    "organ/TwinWheelDrive.h"
-#include    "action-chain/ActionChain.h"
+#include    "action/ActionChain.h"
 #include    "share/ModuleAccess.h"
 #include    "share/PerceptionDataAccess.h"
 
