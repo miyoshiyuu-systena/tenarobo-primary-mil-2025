@@ -9,7 +9,7 @@
 void run_until_wall_detect_action()
 {
     // 壁の接近を検知する距離
-    static const int DETECT_DISTANCE_THRESHOLD = 100;
+    static const int DETECT_DISTANCE_THRESHOLD = 500;
 
     // 壁の接近を検知する間隔時間（ms）
     static const int DETECT_INTERVAL = 200;
