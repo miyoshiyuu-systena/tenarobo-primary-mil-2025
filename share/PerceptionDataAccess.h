@@ -15,7 +15,7 @@ struct PerceptionDataAccess
     /**
      * 超音波センサーの値
      */
-    float distance;
+    int distance;
 
     /**
      * カラーセンサーの値
