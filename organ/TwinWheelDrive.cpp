@@ -5,48 +5,42 @@
 
 using   namespace   spikeapi;
 
-TwoWheelDrive::TwoWheelDrive(Motor* left_motor, Motor* right_motor)
-    : mLeftMotor(left_motor)
-    , mRightMotor(right_motor)
+TwinWheelDrive::TwinWheelDrive(EPort left_port, EPort right_port)
+    : mLeftMotor(left_port, Motor::EDirection::CLOCKWISE, true)
+    , mRightMotor(right_port, Motor::EDirection::CLOCKWISE, true)
 {
-    // モーターポインタの有効性チェック
-    if (mLeftMotor == nullptr || mRightMotor == nullptr) {
-        syslog(LOG_ERROR, "TwoWheelDrive: モーターポインタが無効です\n");
-        return;
-    }
-    
     // モーターの初期化が正常に完了したかチェック
-    if (mLeftMotor->hasError() || mRightMotor->hasError()) {
+    if (mLeftMotor.hasError() || mRightMotor.hasError()) {
         syslog(LOG_ERROR, "TwoWheelDrive: モーターの初期化が正常に完了していません\n");
     }
 }
 
-bool TwoWheelDrive::hasError() const
+bool TwinWheelDrive::hasError()
 {
-    return mLeftMotor->hasError() || mRightMotor->hasError();
+    return mLeftMotor.hasError() || mRightMotor.hasError();
 }
 
-void TwoWheelDrive::leftForward(int speed)
+void TwinWheelDrive::leftForward(int speed)
 {
-    mLeftMotor->setSpeed(speed);
+    mLeftMotor.setSpeed(speed);
 }
 
-void TwoWheelDrive::rightForward(int speed)
+void TwinWheelDrive::rightForward(int speed)
 {
-    mRightMotor->setSpeed(speed);
+    mRightMotor.setSpeed(speed);
 }
 
-void TwoWheelDrive::leftReverse(int speed)
+void TwinWheelDrive::leftReverse(int speed)
 {
-    mLeftMotor->setSpeed(-speed);
+    mLeftMotor.setSpeed(-speed);
 }
 
-void TwoWheelDrive::rightReverse(int speed)
+void TwinWheelDrive::rightReverse(int speed)
 {
-    mRightMotor->setSpeed(-speed);
+    mRightMotor.setSpeed(-speed);
 }
 
-void TwoWheelDrive::curveLeft(int speed, float radius)
+void TwinWheelDrive::curveLeft(int speed, float radius)
 {   
     // 左曲線：右輪が外輪、左輪が内輪
     float outer_radius = radius + WHEEL_TREAD_MM / 2.0f;
@@ -61,11 +55,11 @@ void TwoWheelDrive::curveLeft(int speed, float radius)
     }
     
     // 右輪（外輪）と左輪（内輪）の速度を設定
-    mRightMotor->setSpeed(outer_speed);
-    mLeftMotor->setSpeed(inner_speed);
+    mRightMotor.setSpeed(outer_speed);
+    mLeftMotor.setSpeed(inner_speed);
 }
 
-void TwoWheelDrive::curveRight(int speed, float radius)
+void TwinWheelDrive::curveRight(int speed, float radius)
 {
     // 右曲線：左輪が外輪、右輪が内輪
     float outer_radius = radius + WHEEL_TREAD_MM / 2.0f;
@@ -80,54 +74,54 @@ void TwoWheelDrive::curveRight(int speed, float radius)
     }
     
     // 左輪（外輪）と右輪（内輪）の速度を設定
-    mLeftMotor->setSpeed(outer_speed);
-    mRightMotor->setSpeed(inner_speed);
+    mLeftMotor.setSpeed(outer_speed);
+    mRightMotor.setSpeed(inner_speed);
 }
 
-void TwoWheelDrive::setPower(int left_power, int right_power)
+void TwinWheelDrive::setPower(int left_power, int right_power)
 {
     // PWM値の範囲チェック（-100〜100）
     if (!isValidRange(left_power, -100, 100) || !isValidRange(right_power, -100, 100)) {
         return;
     }
     
-    mLeftMotor->setPower(left_power);
-    mRightMotor->setPower(right_power);
+    mLeftMotor.setPower(left_power);
+    mRightMotor.setPower(right_power);
 }
 
-void TwoWheelDrive::stop()
+void TwinWheelDrive::stop()
 {
-    mLeftMotor->stop();
-    mRightMotor->stop();
+    mLeftMotor.stop();
+    mRightMotor.stop();
 }
 
-void TwoWheelDrive::brake()
+void TwinWheelDrive::brake()
 {
-    mLeftMotor->brake();
-    mRightMotor->brake();
+    mLeftMotor.brake();
+    mRightMotor.brake();
 }
 
-void TwoWheelDrive::resetLeftCount()
+void TwinWheelDrive::resetLeftCount()
 {
-    mLeftMotor->resetCount();
+    mLeftMotor.resetCount();
 }
 
-void TwoWheelDrive::resetRightCount()
+void TwinWheelDrive::resetRightCount()
 {
-    mRightMotor->resetCount();
+    mRightMotor.resetCount();
 }
 
-int32_t TwoWheelDrive::getLeftCount() const
+int32_t TwinWheelDrive::getLeftCount() const
 {
-    return mLeftMotor->getCount();
+    return mLeftMotor.getCount();
 }
 
-int32_t TwoWheelDrive::getRightCount() const
+int32_t TwinWheelDrive::getRightCount() const
 {
-    return mRightMotor->getCount();
+    return mRightMotor.getCount();
 }
 
-bool TwoWheelDrive::isValidRange(int value, int min, int max) const
+bool TwinWheelDrive::isValidRange(int value, int min, int max) const
 {
     return (value >= min && value <= max);
 } 

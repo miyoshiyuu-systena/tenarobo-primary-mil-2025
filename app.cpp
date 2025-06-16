@@ -18,9 +18,8 @@
 using namespace spikeapi;
 
 // 他の周辺モジュールのインスタンスを宣言
-// NOTE: PORT_A、PORT_Bは2輪駆動システムで使用するため、アームのモーターを無効化
-Motor rightMotor  (   EPort::PORT_A,      Motor::EDirection::CLOCKWISE,           true        );
-Motor leftMotor   (   EPort::PORT_B,      Motor::EDirection::CLOCKWISE,           true        );
+TwinWheelDrive twinWheelDrive(EPort::PORT_B, EPort::PORT_A);
+
 Motor frontArm    (   EPort::PORT_C,      Motor::EDirection::CLOCKWISE,           true        );
 
 /**                                 SPIKE_port       */
@@ -46,9 +45,6 @@ void delay_ms(int ms) {
 void    main_task(intptr_t exinf)   {
     // ロガーインスタンスの取得
     Logger& logger = Logger::getInstance();
-    
-    // TwinWheelDriveインスタンスの作成
-    TwoWheelDrive twinWheelDrive(&leftMotor, &rightMotor);
     
     logger.logInfo("TwinWheelDriveデモンストレーション開始");
 

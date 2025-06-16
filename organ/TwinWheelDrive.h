@@ -10,15 +10,15 @@ using   namespace   spikeapi;
 /**
  * 2輪駆動システムクラス
  */
-class TwoWheelDrive
+class TwinWheelDrive
 {
 public:
     /**
      * コンストラクタ
-     * @param left_motor 左モーターのポインタ
-     * @param right_motor 右モーターのポインタ
+     * @param left_port 左モーターのポート
+     * @param right_port 右モーターのポート
      */
-    TwoWheelDrive(Motor* left_motor, Motor* right_motor);
+    TwinWheelDrive(EPort left_port, EPort right_port);
 
     /**
      * 初期化が正常に完了したかどうかを確認
@@ -27,7 +27,7 @@ public:
      */
      // @note   このメソッドは正しく動作しない可能性が高い
      //         モーターは初期化が完了しても、hasError = trueを返す
-    bool hasError() const;
+    bool hasError();
 
     /**
      * 左正転回転
@@ -109,8 +109,8 @@ public:
 private:
     static constexpr float WHEEL_TREAD_MM = 115.0f; /**< 車輪間距離（トレッド）[mm] */
 
-    Motor* mLeftMotor;   /**< 左モーター */
-    Motor* mRightMotor;  /**< 右モーター */
+    Motor mLeftMotor;   /**< 左モーター */
+    Motor mRightMotor;  /**< 右モーター */
 
     /**
      * 引数の有効性を確認
