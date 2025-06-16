@@ -213,8 +213,16 @@ void executeActionChainOptimized(ActionChain* firstAction) {
         currentAction->execute();
         
         // アクションが終了するまで待機
-        while (!currentAction->isEnd()) {
-            delay_ms(100);
+        // while (!currentAction->isEnd()) {
+        //     delay_ms(100);
+        // }
+
+        if (!currentAction->isEnd()) {
+            logger.logError("アクションが終了していないにもかかわらず、次のアクションに移動しました");
+            currentAction->deleteNext();
+            delete currentAction;
+            currentAction = nullptr;
+            break;
         }
         
         // 次のアクションに移動
