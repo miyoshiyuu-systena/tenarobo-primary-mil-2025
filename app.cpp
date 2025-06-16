@@ -3,6 +3,7 @@
 #include    <cstdlib>
 #include    <ctime>
 #include    <cmath>
+#include    <string>
 #include    "syssvc/syslog.h"
 #include    "PerceptionTask.h"
 #include    "logging/Logger.h"
@@ -46,8 +47,18 @@ void    main_task(intptr_t exinf)   {
     // ロガーインスタンスの取得
     Logger& logger = Logger::getInstance();
     
-    sta_cyc(PERC_CYC);
+    // TwinWheelDriveインスタンスの作成
+    TwoWheelDrive twinWheelDrive(&leftMotor, &rightMotor);
+    
+    logger.logInfo("TwinWheelDriveデモンストレーション開始");
 
+    // 5. 左曲線走行 (速度200°/s, 半径300mm) - 2秒間
+    logger.logInfo("左曲線走行開始");
+    twinWheelDrive.curveLeft(200, 1000.0f);
+    delay_ms(10000);
+    twinWheelDrive.stop();
+    
+    sta_cyc(PERC_CYC);
     stp_cyc(PERC_CYC);
     
     // 最終的なログファイル書き込み

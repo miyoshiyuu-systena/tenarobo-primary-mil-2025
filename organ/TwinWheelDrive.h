@@ -111,7 +111,6 @@ private:
 
     Motor* mLeftMotor;   /**< 左モーター */
     Motor* mRightMotor;  /**< 右モーター */
-    bool mHasError;      /**< エラーフラグ */
 
     /**
      * 引数の有効性を確認
