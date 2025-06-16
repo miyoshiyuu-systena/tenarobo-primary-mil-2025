@@ -220,6 +220,7 @@ void executeActionChainOptimized(ActionChain* firstAction) {
         // 次のアクションに移動
         previousAction = currentAction;
         currentAction = currentAction->getNext();
+        delete previousAction;
     }
 }
 
@@ -234,31 +235,31 @@ void    main_task_method3(intptr_t exinf)   {
     // 知覚タスクの開始
     sta_cyc(PERC_CYC);
     
-    // ActionChainの作成
-    ActionChain action1(&twinWheelDrive, &frontArm, perceptionDataAccess, leftPivotTurnAction, "左超信地回転");
-    ActionChain action2(&twinWheelDrive, &frontArm, perceptionDataAccess, rightPivotTurnAction, "右超信地回転");
-    ActionChain action3(&twinWheelDrive, &frontArm, perceptionDataAccess, leftSpinTurnAction, "左信地回転");
-    ActionChain action4(&twinWheelDrive, &frontArm, perceptionDataAccess, rightSpinTurnAction, "右信地回転");
-    ActionChain action5(&twinWheelDrive, &frontArm, perceptionDataAccess, leftCurveAction, "左曲線走行");
-    ActionChain action6(&twinWheelDrive, &frontArm, perceptionDataAccess, rightCurveAction, "右曲線走行");
-    ActionChain action7(&twinWheelDrive, &frontArm, perceptionDataAccess, straightAction, "直進走行");
-    // ActionChain action8(&twinWheelDrive, &frontArm, perceptionDataAccess, frontArmAction, "前腕モーター動作");
-    ActionChain action9(&twinWheelDrive, &frontArm, perceptionDataAccess, sensorCheckAction, "センサー値確認");
-    ActionChain action10(&twinWheelDrive, &frontArm, perceptionDataAccess, finishAction, "終了処理");
+    // ActionChainの動的作成（newを使用してヒープ上に作成）
+    ActionChain* action1 = new ActionChain(&twinWheelDrive, &frontArm, perceptionDataAccess, leftPivotTurnAction, "左超信地回転");
+    ActionChain* action2 = new ActionChain(&twinWheelDrive, &frontArm, perceptionDataAccess, rightPivotTurnAction, "右超信地回転");
+    ActionChain* action3 = new ActionChain(&twinWheelDrive, &frontArm, perceptionDataAccess, leftSpinTurnAction, "左信地回転");
+    ActionChain* action4 = new ActionChain(&twinWheelDrive, &frontArm, perceptionDataAccess, rightSpinTurnAction, "右信地回転");
+    ActionChain* action5 = new ActionChain(&twinWheelDrive, &frontArm, perceptionDataAccess, leftCurveAction, "左曲線走行");
+    ActionChain* action6 = new ActionChain(&twinWheelDrive, &frontArm, perceptionDataAccess, rightCurveAction, "右曲線走行");
+    ActionChain* action7 = new ActionChain(&twinWheelDrive, &frontArm, perceptionDataAccess, straightAction, "直進走行");
+    // ActionChain* action8 = new ActionChain(&twinWheelDrive, &frontArm, perceptionDataAccess, frontArmAction, "前腕モーター動作");
+    ActionChain* action9 = new ActionChain(&twinWheelDrive, &frontArm, perceptionDataAccess, sensorCheckAction, "センサー値確認");
+    ActionChain* action10 = new ActionChain(&twinWheelDrive, &frontArm, perceptionDataAccess, finishAction, "終了処理");
     
     // ActionChainの連結
-    action1.setNext(&action2);
-    action2.setNext(&action3);
-    action3.setNext(&action4);
-    action4.setNext(&action5);
-    action5.setNext(&action6);
-    action6.setNext(&action7);
-    // action7.setNext(&action8);
-    action7.setNext(&action9);
-    action9.setNext(&action10);
+    action1->setNext(action2);
+    action2->setNext(action3);
+    action3->setNext(action4);
+    action4->setNext(action5);
+    action5->setNext(action6);
+    action6->setNext(action7);
+    // action7->setNext(action8);
+    action7->setNext(action9);
+    action9->setNext(action10);
     
-    // ActionChainの実行（効率的なチェーン実行）
-    executeActionChainOptimized(&action1);
+    // ActionChainの実行（動的メモリ管理で効率的なチェーン実行）
+    executeActionChainOptimized(action1);
     
     // 知覚タスクの停止
     stp_cyc(PERC_CYC);
