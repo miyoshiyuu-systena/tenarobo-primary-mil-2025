@@ -9,16 +9,21 @@ struct PerceptionDataAccess
 {
     /**
      * 力センサーの値
+     * 単位: N
      */
     float force;
 
     /**
      * 超音波センサーの値
+     * 単位: mm
      */
     int distance;
 
     /**
      * カラーセンサーの値
+     * H: 色相
+     * S: 彩度
+     * V: 明度
      */
     int color[3];
 
