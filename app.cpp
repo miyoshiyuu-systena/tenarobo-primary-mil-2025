@@ -68,7 +68,7 @@ void    main_task_action_chain(intptr_t exinf)   {
     /**
      * アクションチェーンの形成
      */
-    ActionChain* acttion0 = new ActionChain(
+    ActionChain* action0 = new ActionChain(
         &twinWheelDrive,
         &frontArm,
         perceptionDataAccess,
@@ -148,7 +148,7 @@ void    main_task_action_chain(intptr_t exinf)   {
     action7->setNext(action8);
 
     // ActionChainの実行
-    execute_and_haul_action_chain(action1);
+    execute_and_haul_action_chain(action0);
 }
 
 /**
