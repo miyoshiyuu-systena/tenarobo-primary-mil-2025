@@ -42,7 +42,7 @@ void logEncoderValues() {
 void leftPivotTurnAction() {
     Logger& logger = Logger::getInstance();
     logger.logInfo("左超信地回転開始");
-    twinWheelDrive.leftPivotTurn(10000);
+    twinWheelDrive.leftPivotTurn(100);
     delay_ms(5000);  // 5秒実行
     twinWheelDrive.stop();
     logEncoderValues();
@@ -54,7 +54,7 @@ void leftPivotTurnAction() {
 void rightPivotTurnAction() {
     Logger& logger = Logger::getInstance();
     logger.logInfo("右超信地回転開始");
-    twinWheelDrive.rightPivotTurn(10000);
+    twinWheelDrive.rightPivotTurn(100);
     delay_ms(5000);  // 5秒実行
     twinWheelDrive.stop();
     logEncoderValues();
@@ -66,7 +66,7 @@ void rightPivotTurnAction() {
 void leftSpinTurnAction() {
     Logger& logger = Logger::getInstance();
     logger.logInfo("左信地回転開始");
-    twinWheelDrive.leftSpinTurn(10000);
+    twinWheelDrive.leftSpinTurn(100);
     delay_ms(5000);  // 5秒実行
     twinWheelDrive.stop();
     logEncoderValues();
@@ -78,7 +78,7 @@ void leftSpinTurnAction() {
 void rightSpinTurnAction() {
     Logger& logger = Logger::getInstance();
     logger.logInfo("右信地回転開始");
-    twinWheelDrive.rightSpinTurn(10000);
+    twinWheelDrive.rightSpinTurn(100);
     delay_ms(5000);  // 5秒実行
     twinWheelDrive.stop();
     logEncoderValues();
@@ -90,7 +90,7 @@ void rightSpinTurnAction() {
 void leftCurveAction() {
     Logger& logger = Logger::getInstance();
     logger.logInfo("左曲線走行開始");
-    twinWheelDrive.curveLeftSpeed(100, 500.0f);
+    twinWheelDrive.curveLeftSpeed(100, 150.0f);
     delay_ms(5000);  // 5秒実行
     twinWheelDrive.stop();
     logEncoderValues();
@@ -102,7 +102,7 @@ void leftCurveAction() {
 void rightCurveAction() {
     Logger& logger = Logger::getInstance();
     logger.logInfo("右曲線走行開始");
-    twinWheelDrive.curveRightSpeed(100, 500.0f);
+    twinWheelDrive.curveRightSpeed(100, 150.0f);
     delay_ms(5000);  // 5秒実行
     twinWheelDrive.stop();
     logEncoderValues();
@@ -120,17 +120,6 @@ void straightAction() {
     logEncoderValues();
 }
 
-/**
- * 前腕モーター動作アクション
- */
-void frontArmAction() {
-    Logger& logger = Logger::getInstance();
-    logger.logInfo("前腕モーター動作開始");
-    frontArm.setPower(50);
-    delay_ms(2000);  // 2秒実行
-    frontArm.stop();
-    logger.logInfo("前腕モーター停止");
-}
 
 /**
  * センサー値確認アクション
@@ -217,6 +206,7 @@ void executeActionChainWithRecursion(ActionChain* action) {
 void executeActionChainOptimized(ActionChain* firstAction) {
     Logger& logger = Logger::getInstance();
     ActionChain* currentAction = firstAction;
+    ActionChain* previousAction = nullptr;
     
     while (currentAction != nullptr) {
         logger.logInfo("アクション実行中...");
@@ -228,143 +218,9 @@ void executeActionChainOptimized(ActionChain* firstAction) {
         }
         
         // 次のアクションに移動
+        previousAction = currentAction;
         currentAction = currentAction->getNext();
     }
-}
-
-/**
- * メイン処理（方法1：個別実行）
- * @param   exinf     拡張情報
- */
-void    main_task_method1(intptr_t exinf)   {
-    Logger& logger = Logger::getInstance();
-    logger.logInfo("ActionChainサンプルプログラム開始（方法1：個別実行）");
-    
-    // 知覚タスクの開始
-    sta_cyc(PERC_CYC);
-    
-    // ActionChainの作成と実行
-    ActionChain action1(&twinWheelDrive, &frontArm, perceptionDataAccess, leftPivotTurnAction, "左超信地回転");
-    action1.execute();
-    while (!action1.isEnd()) {
-        delay_ms(100);
-    }
-    
-    ActionChain action2(&twinWheelDrive, &frontArm, perceptionDataAccess, rightPivotTurnAction, "右超信地回転");
-    action2.execute();
-    while (!action2.isEnd()) {
-        delay_ms(100);
-    }
-    
-    ActionChain action3(&twinWheelDrive, &frontArm, perceptionDataAccess, leftSpinTurnAction, "左信地回転");
-    action3.execute();
-    while (!action3.isEnd()) {
-        delay_ms(100);
-    }
-    
-    ActionChain action4(&twinWheelDrive, &frontArm, perceptionDataAccess, rightSpinTurnAction, "右信地回転");
-    action4.execute();
-    while (!action4.isEnd()) {
-        delay_ms(100);
-    }
-    
-    ActionChain action5(&twinWheelDrive, &frontArm, perceptionDataAccess, leftCurveAction, "左曲線走行");
-    action5.execute();
-    while (!action5.isEnd()) {
-        delay_ms(100);
-    }
-    
-    ActionChain action6(&twinWheelDrive, &frontArm, perceptionDataAccess, rightCurveAction, "右曲線走行");
-    action6.execute();
-    while (!action6.isEnd()) {
-        delay_ms(100);
-    }
-    
-    ActionChain action7(&twinWheelDrive, &frontArm, perceptionDataAccess, straightAction, "直進走行");
-    action7.execute();
-    while (!action7.isEnd()) {
-        delay_ms(100);
-    }
-    
-    ActionChain action8(&twinWheelDrive, &frontArm, perceptionDataAccess, frontArmAction, "前腕モーター動作");
-    action8.execute();
-    while (!action8.isEnd()) {
-        delay_ms(100);
-    }
-    
-    ActionChain action9(&twinWheelDrive, &frontArm, perceptionDataAccess, sensorCheckAction, "センサー値確認");
-    action9.execute();
-    while (!action9.isEnd()) {
-        delay_ms(100);
-    }
-    
-    ActionChain action10(&twinWheelDrive, &frontArm, perceptionDataAccess, finishAction, "終了処理");
-    action10.execute();
-    while (!action10.isEnd()) {
-        delay_ms(100);
-    }
-    
-    // 知覚タスクの停止
-    stp_cyc(PERC_CYC);
-    
-    // 最終的なログファイル書き込み
-    logger.writeLogsToFile();
-    
-    logger.logInfo("ActionChainサンプルプログラム終了");
-}
-
-/**
- * メイン処理（方法2：チェーン作成）
- * @param   exinf     拡張情報
- */
-void    main_task_method2(intptr_t exinf)   {
-    Logger& logger = Logger::getInstance();
-    logger.logInfo("ActionChainサンプルプログラム開始（方法2：チェーン作成）");
-    
-    // 知覚タスクの開始
-    sta_cyc(PERC_CYC);
-    
-    // ActionChainの作成
-    ActionChain action1(&twinWheelDrive, &frontArm, perceptionDataAccess, leftPivotTurnAction, "左超信地回転");
-    ActionChain action2(&twinWheelDrive, &frontArm, perceptionDataAccess, rightPivotTurnAction, "右超信地回転");
-    ActionChain action3(&twinWheelDrive, &frontArm, perceptionDataAccess, leftSpinTurnAction, "左信地回転");
-    ActionChain action4(&twinWheelDrive, &frontArm, perceptionDataAccess, rightSpinTurnAction, "右信地回転");
-    ActionChain action5(&twinWheelDrive, &frontArm, perceptionDataAccess, leftCurveAction, "左曲線走行");
-    ActionChain action6(&twinWheelDrive, &frontArm, perceptionDataAccess, rightCurveAction, "右曲線走行");
-    ActionChain action7(&twinWheelDrive, &frontArm, perceptionDataAccess, straightAction, "直進走行");
-    ActionChain action8(&twinWheelDrive, &frontArm, perceptionDataAccess, frontArmAction, "前腕モーター動作");
-    ActionChain action9(&twinWheelDrive, &frontArm, perceptionDataAccess, sensorCheckAction, "センサー値確認");
-    ActionChain action10(&twinWheelDrive, &frontArm, perceptionDataAccess, finishAction, "終了処理");
-    
-    // ActionChainの連結
-    action1.setNext(&action2);
-    action2.setNext(&action3);
-    action3.setNext(&action4);
-    action4.setNext(&action5);
-    action5.setNext(&action6);
-    action6.setNext(&action7);
-    action7.setNext(&action8);
-    action8.setNext(&action9);
-    action9.setNext(&action10);
-    
-    // ActionChainの実行（手動でチェーンを実行）
-    std::vector<ActionChain*> actionList = {&action1, &action2, &action3, &action4, &action5, &action6, &action7, &action8, &action9, &action10};
-    
-    for (ActionChain* action : actionList) {
-        logger.logInfo("アクション実行中...");
-        action->execute();
-        while (!action->isEnd()) {
-            delay_ms(100);
-        }
-    }
-    
-    // 知覚タスクの停止
-    stp_cyc(PERC_CYC);
-    
-    // 最終的なログファイル書き込み
-    logger.writeLogsToFile();
-    
-    logger.logInfo("ActionChainサンプルプログラム終了");
 }
 
 /**
@@ -386,7 +242,7 @@ void    main_task_method3(intptr_t exinf)   {
     ActionChain action5(&twinWheelDrive, &frontArm, perceptionDataAccess, leftCurveAction, "左曲線走行");
     ActionChain action6(&twinWheelDrive, &frontArm, perceptionDataAccess, rightCurveAction, "右曲線走行");
     ActionChain action7(&twinWheelDrive, &frontArm, perceptionDataAccess, straightAction, "直進走行");
-    ActionChain action8(&twinWheelDrive, &frontArm, perceptionDataAccess, frontArmAction, "前腕モーター動作");
+    // ActionChain action8(&twinWheelDrive, &frontArm, perceptionDataAccess, frontArmAction, "前腕モーター動作");
     ActionChain action9(&twinWheelDrive, &frontArm, perceptionDataAccess, sensorCheckAction, "センサー値確認");
     ActionChain action10(&twinWheelDrive, &frontArm, perceptionDataAccess, finishAction, "終了処理");
     
@@ -397,8 +253,8 @@ void    main_task_method3(intptr_t exinf)   {
     action4.setNext(&action5);
     action5.setNext(&action6);
     action6.setNext(&action7);
-    action7.setNext(&action8);
-    action8.setNext(&action9);
+    // action7.setNext(&action8);
+    action7.setNext(&action9);
     action9.setNext(&action10);
     
     // ActionChainの実行（効率的なチェーン実行）
@@ -417,13 +273,7 @@ void    main_task_method3(intptr_t exinf)   {
  * メイン処理
  * @param   exinf     拡張情報
  */
-void    main_task(intptr_t exinf)   {
-    // 方法1を使用（個別実行）
-    // main_task_method1(exinf);
-    
-    // 方法2を使用（チェーン作成 + 手動実行）
-    // main_task_method2(exinf);
-    
+void    main_task(intptr_t exinf)   {   
     // 方法3を使用（真のActionChain実行） - 推奨
     main_task_method3(exinf);
     
