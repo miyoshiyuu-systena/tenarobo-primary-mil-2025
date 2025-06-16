@@ -11,6 +11,8 @@ PerceptionDataAccess.o\
 ModuleAccess.o\
 RunUntilWallDetectAction.o\
 Turn180Action.o\
+AroundBottleEdgeAction.o\
+StartOnPressureSensorAction.o\
 
 SRCLANG := c++
 
