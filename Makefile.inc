@@ -13,6 +13,7 @@ RunUntilWallDetectAction.o\
 Turn180Action.o\
 AroundBottleEdgeAction.o\
 StartOnPressureSensorAction.o\
+GenerateInfinityWanderAroundAction.o\
 
 SRCLANG := c++
 

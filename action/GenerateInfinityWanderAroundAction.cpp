@@ -11,7 +11,7 @@
  * その場でくるりん
  * を繰り返す
  */
-void generate_infinity_wander_around_action(ActionChain* next_ptr)
+void generate_infinity_wander_around_action(ActionChain*& next_ptr)
 {
     ActionChain* runAction = new ActionChain(
         &twinWheelDrive,
@@ -29,7 +29,7 @@ void generate_infinity_wander_around_action(ActionChain* next_ptr)
         turn_180_action,
         "その場でくるりん！！"
     );
-    runAction->setNext(runAction);
+    runAction->setNext(turnAction);
 
     ActionChain* infinityAction = new ActionChain(
         &twinWheelDrive,
@@ -38,5 +38,5 @@ void generate_infinity_wander_around_action(ActionChain* next_ptr)
         generate_infinity_wander_around_action,
         "無限に生成する・・・"
     );
-    runAction->setNext(infinityAction);
+    turnAction->setNext(infinityAction);
 }

@@ -3,6 +3,6 @@
 
 #include    "action/ActionChain.h"
 
-void turn_180_action(ActionChain* next_ptr);
+void turn_180_action(ActionChain*& next_ptr);
 
 #endif // _TURN_180_ACTION_H_

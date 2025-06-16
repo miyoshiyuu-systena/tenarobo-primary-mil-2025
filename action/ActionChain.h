@@ -24,7 +24,7 @@ public:
         TwinWheelDrive* twinWheelDrive,
         Motor* frontArm,
         PerceptionDataAccess& percDataAccess,
-        void (*actionCall)(ActionChain* next_ptr),
+        void (*actionCall)(ActionChain*& next_ptr),
         std::string actionName
     );
 
@@ -79,7 +79,7 @@ private:
     /**
      * アクションの実行
      */
-    void (*mActionCall)(ActionChain* next_ptr);
+    void (*mActionCall)(ActionChain*& next_ptr);
 
 
     /**

@@ -8,7 +8,7 @@
  * 圧力センサを押すまで忠犬ハチ公！！
  * 圧力センサを押したら次のタスクを始めるよ
  */
-void start_on_pressure_sensor_action(ActionChain* next_ptr)
+void start_on_pressure_sensor_action(ActionChain*& next_ptr)
 {
     // 検知間隔時間(100ms)
     static const int DELAY_TIME = 100 * 1000;

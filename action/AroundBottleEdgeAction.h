@@ -3,6 +3,6 @@
 
 #include    "action/ActionChain.h"
 
-void aroundBottleEdgeAction(ActionChain* next_ptr);
+void aroundBottleEdgeAction(ActionChain*& next_ptr);
 
 #endif // _AROUND_BOTTLE_EDGE_ACTION_H_
