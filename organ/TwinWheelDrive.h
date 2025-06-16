@@ -106,6 +106,18 @@ public:
      */
     int32_t getRightCount() const;
 
+    /**
+     * 左モーターの回転速度取得
+     * @return 回転速度（°/s）
+     */
+    float getLeftSpeed() const;
+
+    /**
+     * 右モーターの回転速度取得
+     * @return 回転速度（°/s）
+     */
+    float getRightSpeed() const;
+
 private:
     static constexpr float WHEEL_TREAD_MM = 115.0f; /**< 車輪間距離（トレッド）[mm] */
     static constexpr float WHEEL_DIAMETER_MM = 56.0f; /**< 車輪径[mm] */

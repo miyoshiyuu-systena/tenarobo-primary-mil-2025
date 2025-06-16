@@ -155,6 +155,16 @@ int32_t TwinWheelDrive::getRightCount() const
     return mRightMotor.getCount();
 }
 
+float TwinWheelDrive::getLeftSpeed() const
+{
+    return mLeftMotor.getSpeed();
+}
+
+float TwinWheelDrive::getRightSpeed() const
+{
+    return mRightMotor.getSpeed();
+}
+
 bool TwinWheelDrive::isValidRange(int value, int min, int max) const
 {
     return (value >= min && value <= max);
