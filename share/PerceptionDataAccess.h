@@ -28,15 +28,37 @@ struct PerceptionDataAccess
     int color[3];
 
     /**
-     * 左モーターの値
+     * 左モーターの回転角度
      */
-    int leftMotor;
+    // int leftMotorRotationCount;
 
     /**
-     * 右モーターの値
+     * 右モーターの回転角度
      */
-    int rightMotor;
+    // int rightMotorRotationCount;
+    
+    /**
+    * 左モーターの速度
+    * 単位: °/秒
+    */
+    float leftMotorSpeed;
+    
+    /**
+     * 右モーターの速度
+     * 単位: °/秒
+     */
+    float rightMotorSpeed;
+    
+    /**
+     * 左モーターのパワー（-100~100）
+     */
+    // int leftMotorPower;
 
+    /**
+     * 右モーターのパワー（-100~100）
+     */
+    // int rightMotorPower;
+    
     // ここに知覚データのアクセスを定義する
 };
 

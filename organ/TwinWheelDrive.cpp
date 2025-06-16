@@ -165,6 +165,16 @@ float TwinWheelDrive::getRightSpeed() const
     return mRightMotor.getSpeed();
 }
 
+int TwinWheelDrive::getLeftPower() const
+{
+    return mLeftMotor.getPower();
+}
+
+int TwinWheelDrive::getRightPower() const
+{
+    return mRightMotor.getPower();
+}
+
 bool TwinWheelDrive::isValidRange(int value, int min, int max) const
 {
     return (value >= min && value <= max);

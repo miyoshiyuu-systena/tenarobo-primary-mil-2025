@@ -118,6 +118,18 @@ public:
      */
     float getRightSpeed() const;
 
+    /**
+     * 左モーターのPWM値
+     * @return PWM値（-100~100）
+     */
+    int getLeftPower() const;
+
+    /**
+     * 右モーターのPWM値
+     * @return PWM値（-100~100）
+     */
+    int getRightPower() const;
+
 private:
     static constexpr float WHEEL_TREAD_MM = 115.0f; /**< 車輪間距離（トレッド）[mm] */
     static constexpr float WHEEL_DIAMETER_MM = 56.0f; /**< 車輪径[mm] */

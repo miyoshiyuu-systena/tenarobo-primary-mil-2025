@@ -19,4 +19,11 @@ void turn_180_action()
 
     // モーターを停止
     twinWheelDrive.stop();
+    twinWheelDrive.resetLeftCount();
+    twinWheelDrive.resetRightCount();
+
+    // 休憩時間（1s）
+    static const int VACATION_TIME = 1000;
+
+    dly_tsk(VACATION_TIME * 1000);
 }
