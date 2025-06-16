@@ -1,7 +1,6 @@
 #include "TwinWheelDrive.h"
 #include <cmath>
 #include <algorithm>
-#include "syssvc/syslog.h"
 
 using   namespace   spikeapi;
 
