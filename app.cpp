@@ -15,9 +15,6 @@
 
 using namespace spikeapi;
 
-// ロガーインスタンス
-Logger& logger = Logger::getInstance();
-
 /**
  * 指定時間待機する関数
  * @param ms 待機時間（ミリ秒）
@@ -30,6 +27,7 @@ void delay_ms(int ms) {
  * エンコーダ値を出力する関数
  */
 void logEncoderValues() {
+    Logger& logger = Logger::getInstance();
     std::string left_count = "左エンコーダ値: " + std::to_string(twinWheelDrive.getLeftCount());
     std::string right_count = "右エンコーダ値: " + std::to_string(twinWheelDrive.getRightCount());
     logger.logInfo(left_count.c_str());
@@ -42,6 +40,7 @@ void logEncoderValues() {
  * 左超信地回転アクション
  */
 void leftPivotTurnAction() {
+    Logger& logger = Logger::getInstance();
     logger.logInfo("左超信地回転開始");
     twinWheelDrive.leftPivotTurn(10000);
     delay_ms(5000);  // 5秒実行
@@ -53,6 +52,7 @@ void leftPivotTurnAction() {
  * 右超信地回転アクション
  */
 void rightPivotTurnAction() {
+    Logger& logger = Logger::getInstance();
     logger.logInfo("右超信地回転開始");
     twinWheelDrive.rightPivotTurn(10000);
     delay_ms(5000);  // 5秒実行
@@ -64,6 +64,7 @@ void rightPivotTurnAction() {
  * 左信地回転アクション
  */
 void leftSpinTurnAction() {
+    Logger& logger = Logger::getInstance();
     logger.logInfo("左信地回転開始");
     twinWheelDrive.leftSpinTurn(10000);
     delay_ms(5000);  // 5秒実行
@@ -75,6 +76,7 @@ void leftSpinTurnAction() {
  * 右信地回転アクション
  */
 void rightSpinTurnAction() {
+    Logger& logger = Logger::getInstance();
     logger.logInfo("右信地回転開始");
     twinWheelDrive.rightSpinTurn(10000);
     delay_ms(5000);  // 5秒実行
@@ -86,6 +88,7 @@ void rightSpinTurnAction() {
  * 左曲線走行アクション
  */
 void leftCurveAction() {
+    Logger& logger = Logger::getInstance();
     logger.logInfo("左曲線走行開始");
     twinWheelDrive.curveLeftSpeed(100, 500.0f);
     delay_ms(5000);  // 5秒実行
@@ -97,6 +100,7 @@ void leftCurveAction() {
  * 右曲線走行アクション
  */
 void rightCurveAction() {
+    Logger& logger = Logger::getInstance();
     logger.logInfo("右曲線走行開始");
     twinWheelDrive.curveRightSpeed(100, 500.0f);
     delay_ms(5000);  // 5秒実行
@@ -108,6 +112,7 @@ void rightCurveAction() {
  * 直進走行アクション
  */
 void straightAction() {
+    Logger& logger = Logger::getInstance();
     logger.logInfo("直進走行開始");
     twinWheelDrive.setPower(50, 50);
     delay_ms(3000);  // 3秒実行
@@ -119,6 +124,7 @@ void straightAction() {
  * 前腕モーター動作アクション
  */
 void frontArmAction() {
+    Logger& logger = Logger::getInstance();
     logger.logInfo("前腕モーター動作開始");
     frontArm.setPower(50);
     delay_ms(2000);  // 2秒実行
@@ -130,6 +136,7 @@ void frontArmAction() {
  * センサー値確認アクション
  */
 void sensorCheckAction() {
+    Logger& logger = Logger::getInstance();
     logger.logInfo("センサー値確認開始");
     
     // 力センサー値
@@ -154,6 +161,7 @@ void sensorCheckAction() {
  * 終了アクション
  */
 void finishAction() {
+    Logger& logger = Logger::getInstance();
     logger.logInfo("全アクション完了");
     // 最終的なエンコーダ値の出力
     logEncoderValues();
@@ -163,6 +171,7 @@ void finishAction() {
  * ActionChainの実行関数
  */
 void executeActionChain(ActionChain* firstAction) {
+    Logger& logger = Logger::getInstance();
     ActionChain* currentAction = firstAction;
     
     while (currentAction != nullptr) {
@@ -185,6 +194,7 @@ void executeActionChain(ActionChain* firstAction) {
  * setNext()で設定されたアクションチェーンを再帰的に実行する
  */
 void executeActionChainWithRecursion(ActionChain* action) {
+    Logger& logger = Logger::getInstance();
     if (action == nullptr) {
         return;
     }
@@ -205,6 +215,7 @@ void executeActionChainWithRecursion(ActionChain* action) {
  * ActionChainを使用したより効率的な実行関数
  */
 void executeActionChainOptimized(ActionChain* firstAction) {
+    Logger& logger = Logger::getInstance();
     ActionChain* currentAction = firstAction;
     
     while (currentAction != nullptr) {
@@ -226,6 +237,7 @@ void executeActionChainOptimized(ActionChain* firstAction) {
  * @param   exinf     拡張情報
  */
 void    main_task_method1(intptr_t exinf)   {
+    Logger& logger = Logger::getInstance();
     logger.logInfo("ActionChainサンプルプログラム開始（方法1：個別実行）");
     
     // 知覚タスクの開始
@@ -306,6 +318,7 @@ void    main_task_method1(intptr_t exinf)   {
  * @param   exinf     拡張情報
  */
 void    main_task_method2(intptr_t exinf)   {
+    Logger& logger = Logger::getInstance();
     logger.logInfo("ActionChainサンプルプログラム開始（方法2：チェーン作成）");
     
     // 知覚タスクの開始
@@ -359,6 +372,7 @@ void    main_task_method2(intptr_t exinf)   {
  * @param   exinf     拡張情報
  */
 void    main_task_method3(intptr_t exinf)   {
+    Logger& logger = Logger::getInstance();
     logger.logInfo("ActionChainサンプルプログラム開始（方法3：真のActionChain実行）");
     
     // 知覚タスクの開始
