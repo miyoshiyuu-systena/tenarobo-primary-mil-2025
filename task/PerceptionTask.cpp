@@ -40,6 +40,7 @@ void    perc_task(intptr_t exinf)   {
     perceptionDataAccess.leftMotor = twinWheelDrive.getLeftCount();
     perceptionDataAccess.rightMotor = twinWheelDrive.getRightCount();
 
+    // ログ出力
     std::string sensorsStr = "Sensors - Force:" + std::to_string(perceptionDataAccess.force) + "N Distance:" + 
                             std::to_string(perceptionDataAccess.distance) + "mm Color:" + 
                             std::to_string(perceptionDataAccess.color[0]) + "," + 
