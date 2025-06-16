@@ -14,15 +14,15 @@ void run_until_wall_detect_action()
     // 壁の接近を検知する間隔時間（ms）
     static const int DETECT_INTERVAL = 200;
 
-    // モーターの回転出力
-    static const int POWER = 30;
+    // モーターの速度出力
+    static const float SPEED = 1000.0f;
 
     // 壁の接近を検知したか
     bool isDetectWall = false;
 
     do {
         // 前進する
-        twinWheelDrive.setPower(POWER, POWER);
+        twinWheelDrive.setSpeed(SPEED, SPEED);
 
         // 壁の接近を検知したらループを抜ける、そのためにフラグをONにする
         int distance = perceptionDataAccess.distance;

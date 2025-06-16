@@ -73,6 +73,13 @@ public:
      * @param right_power 右モーターへのPWM値（-100〜100）
      */
     void setPower(int left_power, int right_power);
+    
+    /**
+     * 両輪へスピードを指示
+     * @param left_speed 左モーターへのスピード（°/秒）
+     * @param right_speed 右モーターへのスピード（°/秒）
+     */
+    void setSpeed(float left_speed, float right_speed);
 
     /**
      * 2輪駆動システムの停止

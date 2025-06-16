@@ -123,6 +123,12 @@ void TwinWheelDrive::setPower(int left_power, int right_power)
     mRightMotor.setPower(right_power);
 }
 
+void TwinWheelDrive::setSpeed(float left_speed, float right_speed)
+{
+    mLeftMotor.setSpeed(left_speed);
+    mRightMotor.setSpeed(right_speed);
+}
+
 void TwinWheelDrive::stop()
 {
     mLeftMotor.stop();
