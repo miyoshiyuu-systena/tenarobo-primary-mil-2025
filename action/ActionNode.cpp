@@ -7,7 +7,7 @@ ActionNode::ActionNode(
     TwinWheelDrive* twinWheelDrive,
     Motor* frontArm,
     PerceptionDataAccess& percDataAccess,
-    void (*actionCall)(ActionNode*& next_ptr),
+    std::function<void(ActionNode*&)> actionCall,
     std::string actionName
 )
     : mTwinWheelDrive(twinWheelDrive)

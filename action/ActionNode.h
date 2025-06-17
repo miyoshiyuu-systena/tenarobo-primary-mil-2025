@@ -5,6 +5,7 @@
 #include "Motor.h"
 #include "share/PerceptionDataAccess.h"
 #include <string>
+#include <functional>
 
 class ActionNode
 {
@@ -24,7 +25,7 @@ public:
         TwinWheelDrive* twinWheelDrive,
         Motor* frontArm,
         PerceptionDataAccess& percDataAccess,
-        void (*actionCall)(ActionNode*& next_ptr),
+        std::function<void(ActionNode*&)> actionCall,
         std::string actionName
     );
 
@@ -79,7 +80,7 @@ private:
     /**
      * アクションの実行
      */
-    void (*mActionCall)(ActionNode*& next_ptr);
+    std::function<void(ActionNode*&)> mActionCall;
 
 
     /**
