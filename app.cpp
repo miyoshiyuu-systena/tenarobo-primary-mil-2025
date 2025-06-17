@@ -75,9 +75,10 @@ void    main_task_action_chain(intptr_t exinf)   {
             45,// Vの閾値
             1.5f,// Kp（比例係数）
             0.1f,// Ki（積分係数）
+            0.05f,// Kd（微分係数）
             is_on_blue_line
         ),
-        "PI制御でライントレースするよ"
+        "PID制御でライントレースするよ"
     );
     action0->setNext(action1);
 

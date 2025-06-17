@@ -5,12 +5,13 @@
 #include    <functional>
 
 /**
- * ライントレースアクションのファクトリー関数（PI制御）
+ * ライントレースアクションのファクトリー関数（PID制御）
  * @param speed 大体の速度[mm/s]
  * @param duration 判定周期[ms]
  * @param threshold 閾値
  * @param Kp 比例係数
  * @param Ki 積分係数
+ * @param Kd 微分係数
  * @param judge ライントレース終了の判定
  * @return ライントレースアクション
  */
@@ -34,6 +35,14 @@ std::function<void(ActionNode*&)> line_trace_action(
      *      過度に大きくすると振動やオーバーシュートを引き起こす可能性がある
      */
     float Ki,
+    /**
+     * 微分定数
+     * @note
+     *      微分定数を使用することでエラーの変化率に基づく予測的制御が可能になる
+     *      オーバーシュートを抑制し、より滑らかな応答を実現する
+     *      ただし、値を大きくしすぎるとノイズに敏感になり不安定になる可能性がある
+     */
+    float Kd,
     std::function<bool()> judge
 );
 
