@@ -19,12 +19,12 @@ ActionNode::ActionNode(
     , mActionName(actionName)
     , mNextAction(nullptr)
     , mIsEnd(false)
-    , mVacationTime(vacationTIme)
+    , mVacationTime(vacationTime)
 {}
 
 ActionNode::~ActionNode()
 {
-    Logger::getInstance().logInfo("ActionNode " + mActionName + " 終了");
+    Logger::getInstance().logInfo("ActionNode " + mActionName + " 終�?");
 }
 
 void ActionNode::execute()
