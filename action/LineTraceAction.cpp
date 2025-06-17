@@ -3,7 +3,6 @@
 #include "share/ModuleAccess.h"
 #include "share/PerceptionDataAccess.h"
 #include "action/ActionNode.h"
-#include "logging/Logger.h"
 #include <functional>
 
 using   namespace   spikeapi;
@@ -47,9 +46,9 @@ const float Kp = 0.5f;
  * @note
  *      この関数で作成したアクションでは、ロボットが黒いラインの右縁に沿って移動する
  */
-std::function<void(ActionNode*&)> line_trace_action(float speed, int duration, int vacation_duration, std::function<bool()> judge)
+std::function<void(ActionNode*&)> line_trace_action(float speed, int duration, std::function<bool()> judge)
 {
-    return [speed, duration, vacation_duration, judge](ActionNode*& next_ptr) {
+    return [speed, duration, judge](ActionNode*& next_ptr) {
         do {
             /**
              * P制御による駆動指示
@@ -77,10 +76,7 @@ std::function<void(ActionNode*&)> line_trace_action(float speed, int duration, i
 
         twinWheelDrive.stop();
         twinWheelDrive.resetLeftCount();
-        twinWheelDrive.resetRightCount();   
-
-        // 休憩
-        dly_tsk(vacation_duration * 1000);
+        twinWheelDrive.resetRightCount();
     };
 }
 
