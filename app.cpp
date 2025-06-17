@@ -20,8 +20,24 @@
 #include    "action/StartOnPressureSensorAction.h"
 #include    "action/GenerateInfinityWanderAroundAction.h"
 #include    <opencv2/opencv.hpp>
+#include    <sys/stat.h>
+#include    <iomanip>
+#include    <sstream>
+#include    "CameraManager.h"
 
 using namespace spikeapi;
+
+/**
+ * カメラタスクの実装
+ * RTOSから呼び出される関数
+ */
+extern "C" void camera_task(intptr_t exinf) {
+    CameraManager& cameraManager = CameraManager::getInstance();
+    cameraManager.runCameraTask();
+    ext_tsk(); // タスク終了
+}
+
+
 
 /**
  * ActionChainを手繰り寄せながら、順繰りに実行する
@@ -93,169 +109,78 @@ void    main_task(intptr_t exinf)   {
     // ロガーインスタンスの取得
     Logger& logger = Logger::getInstance();
 
+    // カメラマネージャーの初期化
+    CameraManager& cameraManager = CameraManager::getInstance();
+    bool camera_initialized = false;
+    
     // カメラの初期化
-    cv::VideoCapture cap;
+    camera_initialized = cameraManager.initializeCamera();
     
-    // カメラデバイスの権限確認
-    logger.logInfo("カメラデバイスの権限を確認中...");
-    system("ls -la /dev/video*");
-    system("groups $USER");
-    
-    // 複数のカメラデバイスを試行（V4L2バックエンドを明示的に指定）
-    int camera_index = 0;
-    bool camera_opened = false;
-    
-    // まず、デバイスパスを直接指定して試行
-    std::vector<std::string> device_paths = {
-        "/dev/video0",
-        "/dev/video1", 
-        "/dev/video2",
-        "/dev/video3"
-    };
-    
-    for (const auto& device_path : device_paths) {
-        logger.logInfo("カメラデバイス " + device_path + " を試行中...");
-        cap.open(device_path, cv::CAP_V4L2);
-        if (cap.isOpened()) {
-            camera_opened = true;
-            logger.logInfo("カメラデバイス " + device_path + " が正常に開かれました");
-            break;
-        } else {
-            logger.logError("カメラデバイス " + device_path + " が開けませんでした");
-        }
-    }
-    
-    // デバイスパスで失敗した場合、インデックスで試行
-    if (!camera_opened) {
-        logger.logInfo("デバイスパスでの試行が失敗しました。インデックスで試行します。");
-        while (camera_index < 4 && !camera_opened) {
-            logger.logInfo("カメラデバイス " + std::to_string(camera_index) + " を試行中...");
-            // V4L2バックエンドを明示的に指定
-            cap.open(camera_index, cv::CAP_V4L2);
-            if (cap.isOpened()) {
-                camera_opened = true;
-                logger.logInfo("カメラデバイス " + std::to_string(camera_index) + " が正常に開かれました");
-            } else {
-                logger.logError("カメラデバイス " + std::to_string(camera_index) + " が開けませんでした");
-                camera_index++;
+    if (camera_initialized) {
+        logger.logInfo("カメラが正常に初期化されました");
+        
+        // カメラタスクを開始
+        cameraManager.startCameraTask();
+        
+        // カメラタスクを起動
+        act_tsk(CAMERA_TASK);
+        
+        // カメラタスクの起動を待機
+        usleep(500000); // 500ms待機
+        
+        // 初期画像を保存
+        cv::Mat initialImage;
+        if (cameraManager.getLatestImage(initialImage)) {
+            std::string savedPath = cameraManager.saveImage(initialImage, "camera_init");
+            if (!savedPath.empty()) {
+                logger.logInfo("初期画像を保存しました: " + savedPath);
             }
         }
     }
     
-    if (!camera_opened) {
-        logger.logError("利用可能なカメラが見つかりませんでした");
-        // カメラが使えない場合でも他の処理は続行
-    } else {
-        // カメラ設定
-        cap.set(cv::CAP_PROP_FRAME_WIDTH, 320);
-        cap.set(cv::CAP_PROP_FRAME_HEIGHT, 240);
-        cap.set(cv::CAP_PROP_FPS, 10);
-        
-        // カメラ設定の確認
-        double width = cap.get(cv::CAP_PROP_FRAME_WIDTH);
-        double height = cap.get(cv::CAP_PROP_FRAME_HEIGHT);
-        double fps = cap.get(cv::CAP_PROP_FPS);
-        logger.logInfo("カメラ設定 - 幅: " + std::to_string((int)width) + 
-                      ", 高さ: " + std::to_string((int)height) + 
-                      ", FPS: " + std::to_string((int)fps));
-        
-        // カメラの詳細情報を確認
-        double brightness = cap.get(cv::CAP_PROP_BRIGHTNESS);
-        double contrast = cap.get(cv::CAP_PROP_CONTRAST);
-        logger.logInfo("カメラ詳細 - 明度: " + std::to_string(brightness) + 
-                      ", コントラスト: " + std::to_string(contrast));
-        
-        // カメラ初期化後の待機時間
-        logger.logInfo("カメラ初期化後の待機中...");
-        dly_tsk(1 * 1000 * 1000); // 1秒待機
-        
-        logger.logInfo("カメラ処理を開始します");
-        
-        cv::Mat frame;
-        int frame_count = 0;
-        const int max_frames = 100; // 最大フレーム数（無限ループを防ぐ）
-        
-        // 複数のバックエンドで試行
-        std::vector<int> backends = {cv::CAP_V4L2, cv::CAP_V4L};
-        bool frame_read_success = false;
-        
-        for (int backend : backends) {
-            if (frame_read_success) break;
-            
-            logger.logInfo("バックエンド " + std::to_string(backend) + " でフレーム読み取りを試行中...");
-            
-            // カメラを再初期化
-            cap.release();
-            cap.open("/dev/video0", backend);
-            
-            if (!cap.isOpened()) {
-                logger.logError("バックエンド " + std::to_string(backend) + " でカメラを開けませんでした");
-                continue;
-            }
-            
-            // 設定を再適用
-            cap.set(cv::CAP_PROP_FRAME_WIDTH, 320);
-            cap.set(cv::CAP_PROP_FRAME_HEIGHT, 240);
-            cap.set(cv::CAP_PROP_FPS, 10);
-            
-            // 短い待機
-            dly_tsk(500 * 1000); // 500ms待機
-            
-            // フレーム読み取りを試行
-            bool read_result = cap.read(frame);
-            logger.logInfo("バックエンド " + std::to_string(backend) + " での読み取り結果: " + 
-                          std::string(read_result ? "成功" : "失敗"));
-            
-            if (read_result && !frame.empty()) {
-                frame_read_success = true;
-                logger.logInfo("フレームサイズ: " + std::to_string(frame.cols) + "x" + std::to_string(frame.rows));
-                break;
-            }
-        }
-        
-        if (!frame_read_success) {
-            logger.logError("すべてのバックエンドでフレーム読み取りに失敗しました");
-            cap.release();
-        } else {
-            // 成功した場合は通常のループを実行
-            while (frame_count < max_frames && cap.read(frame)) {
-                if (frame.empty()) {
-                    logger.logError("フレームが空です");
-                    break;
-                }
-                
-                logger.logInfo("フレーム " + std::to_string(frame_count) + " を読み取りました");
-                
-                // 画像処理の例（グレースケール変換）
-                cv::Mat gray_frame;
-                cv::cvtColor(frame, gray_frame, cv::COLOR_BGR2GRAY);
-                
-                // 画像を保存（デバッグ用）
-                if (frame_count % 30 == 0) { // 30フレームごとに保存
-                    std::string filename = "frame_" + std::to_string(frame_count) + ".png";
-                    cv::imwrite(filename, frame);
-                    logger.logInfo("フレーム " + std::to_string(frame_count) + " を保存しました: " + filename);
-                }
-                
-                frame_count++;
-                
-                // 短い待機時間（100ms）
-                dly_tsk(100 * 1000);
-            }
-        }
-        
-        logger.logInfo("カメラ処理を終了しました。処理したフレーム数: " + std::to_string(frame_count));
-        cap.release();
+    if (!camera_initialized) {
+        logger.logWarning("カメラの初期化に失敗しました。カメラなしで動作を続行します。");
+        // カメラなしでも動作を続行
     }
+
 
     // 知覚タスクの開始
     sta_cyc(PERC_CYC);
+
+    // アクション実行前の画像を保存
+    if (camera_initialized) {
+        cv::Mat preActionFrame;
+        if (cameraManager.getLatestImage(preActionFrame)) {
+            std::string savedPath = cameraManager.saveImage(preActionFrame, "pre_action");
+            if (!savedPath.empty()) {
+                logger.logInfo("アクション実行前の画像を保存しました: " + savedPath);
+            }
+        }
+    }
 
     // アクションチェーンの処理
     main_task_action_chain(0);
 
     // 知覚タスクの停止
     stp_cyc(PERC_CYC);
+
+    // プログラム終了前の画像を保存
+    if (camera_initialized) {
+        cv::Mat finalFrame;
+        if (cameraManager.getLatestImage(finalFrame)) {
+            std::string savedPath = cameraManager.saveImage(finalFrame, "program_end");
+            if (!savedPath.empty()) {
+                logger.logInfo("プログラム終了時の画像を保存しました: " + savedPath);
+            }
+        }
+    }
+
+    // カメラタスクの停止とリソース解放
+    if (camera_initialized) {
+        cameraManager.stopCameraTask();
+        cameraManager.shutdownCamera();
+        logger.logInfo("カメラリソースを解放しました");
+    }
 
     // 最終的なログファイル書き込み
     logger.writeLogsToFile();
