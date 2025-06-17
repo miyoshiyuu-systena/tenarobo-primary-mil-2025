@@ -28,6 +28,12 @@ struct PerceptionDataAccess
     int color[3];
 
     /**
+     * カラーセンサーの輝度
+     * 0 - 100 %
+     */
+    int brightness;
+
+    /**
      * 左モーターの回転角度
      */
     // int leftMotorRotationCount;

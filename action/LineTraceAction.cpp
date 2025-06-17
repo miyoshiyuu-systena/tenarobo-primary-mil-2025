@@ -12,15 +12,14 @@ using   namespace   spikeapi;
 /**
  * XXX: 実験的に決定してください。
  * ライントレースの白と黒の境目の値とします。
- * H / Vの値を使用します。
  */
-const float THRESHOLD = 0.5f;
+const float THRESHOLD = 40.0f;
 
 /**
  * XXX: 実験的に決定してください。
  * 比例定数
  */
-const float Kp = 5.0f;
+const float Kp = 0.5f;
 
 std::function<void(ActionNode*&)> line_trace_action(float speed, int duration, int vacation_duration, std::function<bool()> judge)
 {
@@ -28,19 +27,19 @@ std::function<void(ActionNode*&)> line_trace_action(float speed, int duration, i
         Logger& logger = Logger::getInstance();
         do {
             // P制御による速度制御
-            const float error = perceptionDataAccess.color[0] / perceptionDataAccess.color[2] - THRESHOLD;
+            const float error = perceptionDataAccess.brightness - THRESHOLD;
+            logger.logInfo("輝度: " + std::to_string(perceptionDataAccess.brightness) + " 誤差: " + std::to_string(error));
+            twinWheelDrive.setSpeed(speed - Kp * error, speed + Kp * error);
             if (error > 0) {
                 /**
                  * 白い床を検出：テープから離れすぎているので左に曲がる
                  */
-                twinWheelDrive.setSpeed(speed + Kp * error, speed - Kp * error);
-                logger.logInfo("白い床検出: 左に曲がる（テープに近づく）, 制御強度: " + std::to_string(Kp * error));
+                logger.logInfo("白い床検出: 左に曲がる（テープに近づく）");
             } else {
                 /**
                  * 黒いテープを検出：テープの上に乗りすぎているので右に曲がる
                  */
-                twinWheelDrive.setSpeed(speed - Kp * error, speed + Kp * error);
-                logger.logInfo("黒いテープ検出: 右に曲がる（白い床に近づく）, 制御強度: " + std::to_string(Kp * error));
+                logger.logInfo("黒いテープ検出: 右に曲がる（白い床に近づく）");
             }
 
             // 判定周期
