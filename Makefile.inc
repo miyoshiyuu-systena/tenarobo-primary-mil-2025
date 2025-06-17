@@ -14,6 +14,7 @@ Turn180Action.o\
 AroundBottleEdgeAction.o\
 StartOnPressureSensorAction.o\
 GenerateInfinityWanderAroundAction.o\
+LineTraceAction.o\
 
 SRCLANG := c++
 

@@ -17,6 +17,7 @@
 #include    "action/AroundBottleEdgeAction.h"
 #include    "action/StartOnPressureSensorAction.h"
 #include    "action/GenerateInfinityWanderAroundAction.h"
+#include    "action/LineTraceAction.h"
 
 using namespace spikeapi;
 
@@ -68,13 +69,13 @@ void    main_task_action_chain(intptr_t exinf)   {
         &twinWheelDrive,
         &frontArm,
         perceptionDataAccess,
-        around_bottle_edge_action(
-            250,    // 円弧の半径[mm]
-            120,    // 円弧の角度[°]
-            3000,   // 円弧を描く時間[ms]
-            1000    // 休憩時間[ms]
+        line_trace_action(
+            100,    // 速度[mm/s]
+            10,    // 判定周期[ms]
+            1000,   // 休憩時間[ms]
+            is_on_blue_line
         ),
-        "ペットボトルの周りを半円回るよ"
+        "ライントレースするよ"
     );
     action0->setNext(action1);
 
