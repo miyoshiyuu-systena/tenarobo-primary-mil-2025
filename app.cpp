@@ -68,13 +68,13 @@ void    main_task_action_chain(intptr_t exinf)   {
         &twinWheelDrive,
         &frontArm,
         perceptionDataAccess,
-        run_until_wall_detect_action(
-            400,    // 壁の接近を検知する距離mm
-            1000,    // モーターの速度出力mm/s
-            10,   // 壁の接近を検知する間隔時間ms
-            1000    // 休憩時間ms
+        around_bottle_edge_action(
+            250,    // 円弧の半径[mm]
+            120,    // 円弧の角度[°]
+            3000,   // 円弧を描く時間[ms]
+            1000    // 休憩時間[ms]
         ),
-        "壁を見つけるまで猪突猛進するよ"
+        "ペットボトルの周りを半円回るよ"
     );
     action0->setNext(action1);
 

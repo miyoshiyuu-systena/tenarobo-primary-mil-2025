@@ -140,9 +140,6 @@ public:
     int getRightPower() const;
 
 private:
-    static constexpr float WHEEL_TREAD_MM = 112.0f; /**< 車輪間距離（トレッド）[mm] */
-    static constexpr float WHEEL_DIAMETER_MM = 56.0f; /**< 車輪径[mm] */
-
     Motor mLeftMotor;   /**< 左モーター */
     Motor mRightMotor;  /**< 右モーター */
 
