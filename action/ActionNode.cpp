@@ -10,7 +10,7 @@ ActionNode::ActionNode(
     PerceptionDataAccess& percDataAccess,
     std::function<void(ActionNode*&)> actionCall,
     std::string actionName,
-    int vacationTime = 500
+    int vacationTime
 )
     : mTwinWheelDrive(twinWheelDrive)
     , mFrontArm(frontArm)
@@ -24,7 +24,7 @@ ActionNode::ActionNode(
 
 ActionNode::~ActionNode()
 {
-    Logger::getInstance().logInfo("ActionNode " + mActionName + " 終�?");
+    Logger::getInstance().logInfo("ActionNode " + mActionName + " 終了");
 }
 
 void ActionNode::execute()

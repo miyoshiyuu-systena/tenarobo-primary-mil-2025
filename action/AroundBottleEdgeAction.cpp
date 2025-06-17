@@ -18,7 +18,7 @@ std::function<void(ActionNode*&)> around_bottle_edge_action(
     int duration
 )
 {
-    return [radius, angle, duration, vacation_time](ActionNode*& next_ptr) {
+    return [radius, angle, duration](ActionNode*& next_ptr) {
         // 命令を送る時間の間隔[ms]
         const float FIXED_INTERVAL = 100.0f;
 
