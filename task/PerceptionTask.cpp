@@ -12,12 +12,6 @@
 static const bool is_logging_enable = false;
 
 /**
- * 知覚タスクの回数
- * オーバーフローしてもよい
- */
-static int count = 0;
-
-/**
  * 知覚処理
  * @param   exinf     拡張情報
  */
@@ -31,23 +25,17 @@ void    perc_task(intptr_t exinf)   {
      * カラーセンサデータの取得
      * @note
      *      一回のタスクでカラーセンサから複数のデータを取得しようとすると、メインタスクが停止する（原因不明）
-     * 　　　そのため知覚タスクのサイクルを2回セットにして別々の値を受ける
+     *      if文で分岐してもダメ
+     *      そのためカラーセンサから輝度とHSVの両方を取得するのはあきらめる
      */
-    if (count % 2 == 0) {
-        /**
-         * HSV値の取得（青床の判別に有効）
-         */
-        ColorSensor::HSV hsv;
-        colorSensor.getHSV(hsv, true);
-        perceptionDataAccess.color[0] = hsv.h;
-        perceptionDataAccess.color[1] = hsv.s;
-        perceptionDataAccess.color[2] = hsv.v;
-    } else {
-        /**
-         * 反射値の取得（白黒床の判別に有効）
-         */
-        perceptionDataAccess.brightness = colorSensor.getReflection();
-    }
+    /**
+        * HSV値の取得（青床の判別に有効）
+        */
+    ColorSensor::HSV hsv;
+    colorSensor.getHSV(hsv, true);
+    perceptionDataAccess.color[0] = hsv.h;
+    perceptionDataAccess.color[1] = hsv.s;
+    perceptionDataAccess.color[2] = hsv.v;
 
     
     /**
@@ -94,7 +82,6 @@ void    perc_task(intptr_t exinf)   {
         // Logger::getInstance().logWarning("Power （-100 ~ 100）");
         // Logger::getInstance().logWarning(motorsStr3);
     }
-    
     
     //  タスク終了
     ext_tsk();

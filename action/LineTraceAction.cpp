@@ -65,7 +65,7 @@ std::function<void(ActionNode*&)> line_trace_action(float speed, int duration, i
              *      制御対象の目標値と現在の値の偏差（誤差）に比例した操作量を出す制御方式
              *      今回の場合、比例係数Kpを使用している
              */
-            const float error = perceptionDataAccess.brightness - THRESHOLD_DEFAULT;
+            const float error = perceptionDataAccess.color[2] - THRESHOLD_DEFAULT;
             twinWheelDrive.setSpeed(
                 speed - Kp * error,     //  左輪
                 speed + Kp * error      //  右輪
