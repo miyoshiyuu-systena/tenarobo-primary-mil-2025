@@ -29,12 +29,26 @@ using namespace spikeapi;
 
 /**
  * カメラタスクの実装
- * RTOSから呼び出される関数
+ * RTOSから周期起動で呼び出される関数
  */
 extern "C" void camera_task(intptr_t exinf) {
     CameraManager& cameraManager = CameraManager::getInstance();
-    cameraManager.runCameraTask();
-    ext_tsk(); // タスク終了
+    
+    // カメラが初期化されている場合のみ処理
+    if (cameraManager.isInitialized()) {
+        // 1フレーム取得して保存
+        cv::Mat frame;
+        if (cameraManager.getLatestImage(frame)) {
+            // 定期的に画像を保存（10回に1回）
+            static int frameCount = 0;
+            if (++frameCount % 10 == 0) {
+                cameraManager.saveImage(frame, "camera_cycle");
+            }
+        }
+    }
+    
+    // タスク終了（周期起動なので自動的に再実行される）
+    ext_tsk();
 }
 
 
@@ -122,8 +136,8 @@ void    main_task(intptr_t exinf)   {
         // カメラタスクを開始
         cameraManager.startCameraTask();
         
-        // カメラタスクを起動
-        act_tsk(CAMERA_TASK);
+        // カメラ周期起動を開始
+        sta_cyc(CAMERA_CYC);
         
         // カメラタスクの起動を待機
         usleep(500000); // 500ms待機
@@ -177,6 +191,9 @@ void    main_task(intptr_t exinf)   {
 
     // カメラタスクの停止とリソース解放
     if (camera_initialized) {
+        // カメラ周期起動を停止
+        stp_cyc(CAMERA_CYC);
+        
         cameraManager.stopCameraTask();
         cameraManager.shutdownCamera();
         logger.logInfo("カメラリソースを解放しました");
