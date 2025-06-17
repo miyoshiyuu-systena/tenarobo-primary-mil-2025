@@ -11,8 +11,9 @@
  * その場でくるりん
  * を繰り返す
  */
-void generate_infinity_wander_around_action(ActionNode*& next_ptr)
+std::function<void(ActionNode*&)> generate_infinity_wander_around_action()
 {
+    return [](ActionNode*& next_ptr) {
     ActionNode* runAction = new ActionNode(
         &twinWheelDrive,
         &frontArm,
@@ -31,7 +32,7 @@ void generate_infinity_wander_around_action(ActionNode*& next_ptr)
         &twinWheelDrive,
         &frontArm,
         perceptionDataAccess,
-        turn_180_action,
+        turn_180_action(1000),
         "その場でくるりん！！"
     );
     runAction->setNext(turnAction);
@@ -40,8 +41,9 @@ void generate_infinity_wander_around_action(ActionNode*& next_ptr)
         &twinWheelDrive,
         &frontArm,
         perceptionDataAccess,
-        generate_infinity_wander_around_action,
+        generate_infinity_wander_around_action(),
         "無限に生成する・・・"
     );
     turnAction->setNext(infinityAction);
+    };
 }

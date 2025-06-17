@@ -6,17 +6,16 @@
 
 /**
  * 180度回転
+ * @param duration 180度回転するのにかける時間（ms）
  */
-void turn_180_action(ActionNode*& next_ptr)
+std::function<void(ActionNode*&)> turn_180_action(int duration)
 {
-    // 180°回転するのにかける時間（s）
-    static const int TURN_180_DURATION = 1;
-
+    return [duration](ActionNode*& next_ptr) {
     // その場で180°回転（引数は1s当たり何°回転するか）
-    twinWheelDrive.leftPivotTurn(180 / TURN_180_DURATION);
+    twinWheelDrive.leftPivotTurn(180 / (duration / 1000));
 
     // TOPPERS/ASP3インターフェースの待機関数（マイクロ秒）
-    dly_tsk(TURN_180_DURATION * 1000 * 1000);
+    dly_tsk(duration * 1000);
 
     // モーターを停止
     twinWheelDrive.stop();
@@ -27,4 +26,5 @@ void turn_180_action(ActionNode*& next_ptr)
     static const int VACATION_TIME = 1000;
 
     dly_tsk(VACATION_TIME * 1000);
+    };
 }

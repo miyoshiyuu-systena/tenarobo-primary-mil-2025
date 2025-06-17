@@ -60,7 +60,7 @@ void    main_task_action_chain(intptr_t exinf)   {
         &twinWheelDrive,
         &frontArm,
         perceptionDataAccess,
-        start_on_pressure_sensor_action,
+        start_on_pressure_sensor_action(3.0f),
         "ボタンが押されるまでハチ公モード！！"
     );
 
