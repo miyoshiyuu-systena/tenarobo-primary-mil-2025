@@ -17,7 +17,12 @@ void generate_infinity_wander_around_action(ActionNode*& next_ptr)
         &twinWheelDrive,
         &frontArm,
         perceptionDataAccess,
-        run_until_wall_detect_action,
+        run_until_wall_detect_action(
+            400,    // 壁の接近を検知する距離mm
+            100,    // モーターの速度出力mm/s
+            1000,   // 壁の接近を検知する間隔時間ms
+            1000    // 休憩時間ms
+        ),
         "ペットボトルに激突するまで猪突猛進！！"
     );
     next_ptr = runAction;

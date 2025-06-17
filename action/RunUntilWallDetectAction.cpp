@@ -3,48 +3,62 @@
 #include    "share/ModuleAccess.h"
 #include    "share/PerceptionDataAccess.h"
 #include    "action/ActionNode.h"
+#include    <functional>
 
 /**
- * 壁を見つけるまで猪突猛進
+ * 壁を見つけるまで猪突猛進するアクションのファクトリー関数
+ * @param detect_distance_threshold 壁の接近を検知する距離
+ * @param speed モーターの速度出力
+ * @param detect_interval 壁の接近を検知する間隔時間（ms）
+ * @param vacation_time 休憩時間（ms）
+ * @return 壁を見つけるまで猪突猛進するアクション
  */
-void run_until_wall_detect_action(ActionNode*& next_ptr)
+std::function<void(ActionNode*&)> run_until_wall_detect_action(
+    int detect_distance_threshold,
+    float speed,
+    int detect_interval,
+    int vacation_time
+)
 {
-    // 壁の接近を検知する距離
-    static const int DETECT_DISTANCE_THRESHOLD = 500;
+    return [detect_distance_threshold, speed, detect_interval, vacation_time](ActionNode*& next_ptr) {
+        // 壁の接近を検知する距離
+        const int DETECT_DISTANCE_THRESHOLD = detect_distance_threshold;
 
-    // 壁の接近を検知する間隔時間（ms）
-    static const int DETECT_INTERVAL = 200;
+        // 壁の接近を検知する間隔時間（ms）
+        const int DETECT_INTERVAL = detect_interval;
 
-    // モーターの速度出力
-    static const float SPEED = 1000.0f;
+        // モーターの速度出力
+        const float SPEED = speed;
 
-    // 壁の接近を検知したか
-    bool isDetectWall = false;
+        // 休憩時間（ms）
+        const int VACATION_TIME = vacation_time;
 
-    do {
-        // 前進する
-        twinWheelDrive.setSpeed(SPEED, SPEED);
+        // 壁の接近を検知したか
+        bool isDetectWall = false;
 
-        // 壁の接近を検知したらループを抜ける、そのためにフラグをONにする
-        int distance = perceptionDataAccess.distance;
-        if (
-            (distance != -1) &&                     // (何も検知していないときは-1を返すため)
-            (distance < DETECT_DISTANCE_THRESHOLD)  // 壁に接近したら
-        ) {
-            isDetectWall = true;
-        }
+        do {
+            // 前進する
+            twinWheelDrive.setSpeed(SPEED, SPEED);
 
-        // 壁の接近を検知する間隔時間だけ待機
-        dly_tsk(DETECT_INTERVAL * 1000);
-    } while (!isDetectWall);
+            // 壁の接近を検知したらループを抜ける、そのためにフラグをONにする
+            int distance = perceptionDataAccess.distance;
+            if (
+                (distance != -1) &&                     // (何も検知していないときは-1を返すため)
+                (distance < DETECT_DISTANCE_THRESHOLD)  // 壁に接近したら
+            ) {
+                isDetectWall = true;
+            }
 
-    // モーターを停止
-    twinWheelDrive.stop();
-    twinWheelDrive.resetLeftCount();
-    twinWheelDrive.resetRightCount();
+            // 壁の接近を検知する間隔時間だけ待機
+            dly_tsk(DETECT_INTERVAL * 1000);
+        } while (!isDetectWall);
 
-    // 休憩時間（1s）
-    static const int VACATION_TIME = 1000;
+        // モーターを停止
+        twinWheelDrive.stop();
+        twinWheelDrive.resetLeftCount();
+        twinWheelDrive.resetRightCount();
 
-    dly_tsk(VACATION_TIME * 1000);
+        // 休憩時間
+        dly_tsk(VACATION_TIME * 1000);
+    };
 }

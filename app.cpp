@@ -68,8 +68,13 @@ void    main_task_action_chain(intptr_t exinf)   {
         &twinWheelDrive,
         &frontArm,
         perceptionDataAccess,
-        generate_infinity_wander_around_action,
-        "無限にうろうろするよー"
+        run_until_wall_detect_action(
+            400,    // 壁の接近を検知する距離mm
+            1000,    // モーターの速度出力mm/s
+            10,   // 壁の接近を検知する間隔時間ms
+            1000    // 休憩時間ms
+        ),
+        "壁を見つけるまで猪突猛進するよ"
     );
     action0->setNext(action1);
 
@@ -89,7 +94,7 @@ void    main_task(intptr_t exinf)   {
     sta_cyc(PERC_CYC);
 
     // アクションチェーンの処理
-    twinWheelDrive.curveLeftSpeed(90, 300);
+    main_task_action_chain(0);
 
     // 知覚タスクの停止
     stp_cyc(PERC_CYC);
