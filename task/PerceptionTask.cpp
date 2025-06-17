@@ -6,6 +6,12 @@
 #include    <string>
 
 /**
+ * 知覚データをログ出力するかどうか
+ * デバッグ用
+ */
+static const bool is_logging_enable = false;
+
+/**
  * 知覚処理
  * @param   exinf     拡張情報
  */
@@ -44,26 +50,31 @@ void    perc_task(intptr_t exinf)   {
     // perceptionDataAccess.leftMotorPower = twinWheelDrive.getLeftPower();
     // perceptionDataAccess.rightMotorPower = twinWheelDrive.getRightPower();
 
-    // // ログ出力
-    std::string sensorsStr = "Sensors - Force:" + std::to_string(perceptionDataAccess.force) + "N Distance:" + 
-                            std::to_string(perceptionDataAccess.distance) + "mm Color:" + 
-                            std::to_string(perceptionDataAccess.color[0]) + "," + 
-                            std::to_string(perceptionDataAccess.color[1]) + "," + 
-                            std::to_string(perceptionDataAccess.color[2]);
-    Logger::getInstance().logWarning(sensorsStr);
+    if (is_logging_enable) {
+        std::string sensorsStr = "Sensors - Force:" + std::to_string(perceptionDataAccess.force) + "N Distance:" + 
+                                std::to_string(perceptionDataAccess.distance) + "mm Color: " + 
+                                std::to_string(perceptionDataAccess.color[0]) + "," + 
+                                std::to_string(perceptionDataAccess.color[1]) + "," + 
+                                std::to_string(perceptionDataAccess.color[2]);
+        Logger::getInstance().logInfoWithoutConsoleLog(sensorsStr);
+    }
     
-    // std::string motorsStr = "Motors - Left:" + std::to_string(perceptionDataAccess.leftMotorRotationCount) + 
-    //                        " Right:" + std::to_string(perceptionDataAccess.rightMotorRotationCount);
-    // Logger::getInstance().logWarning(motorsStr);
     
-    std::string motorsStr2 = "Motor Speed - Left:" + std::to_string(perceptionDataAccess.leftMotorSpeed) + 
-                           " Right:" + std::to_string(perceptionDataAccess.rightMotorSpeed);
-    Logger::getInstance().logWarning(motorsStr2);
+    if (is_logging_enable) {
+        // std::string motorsStr = "Motors - Left:" + std::to_string(perceptionDataAccess.leftMotorRotationCount) + 
+        //                        " Right:" + std::to_string(perceptionDataAccess.rightMotorRotationCount);
+        // Logger::getInstance().logWarning(motorsStr);
+
+        std::string motorsStr2 = "Motor Speed - Left:" + std::to_string(perceptionDataAccess.leftMotorSpeed) + 
+                               " Right:" + std::to_string(perceptionDataAccess.rightMotorSpeed);
+        Logger::getInstance().logInfoWithoutConsoleLog(motorsStr2);
+        
+        // std::string motorsStr3 = "Motors - Left:" + std::to_string(perceptionDataAccess.leftMotorPower) + 
+        //                        " Right:" + std::to_string(perceptionDataAccess.rightMotorPower);
+        // Logger::getInstance().logWarning("Power （-100 ~ 100）");
+        // Logger::getInstance().logWarning(motorsStr3);
+    }
     
-    // std::string motorsStr3 = "Motors - Left:" + std::to_string(perceptionDataAccess.leftMotorPower) + 
-    //                        " Right:" + std::to_string(perceptionDataAccess.rightMotorPower);
-    // Logger::getInstance().logWarning("Power （-100 ~ 100）");
-    // Logger::getInstance().logWarning(motorsStr3);
 
     //  タスク終了
     ext_tsk();

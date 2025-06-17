@@ -47,6 +47,13 @@ public:
     void logInfo(const std::string& message);
 
     /**
+     * INFOレベルのログを記録
+     * コンソールには出力しない
+     * @param message ログメッセージ
+     */
+    void logInfoWithoutConsoleLog(const std::string& message);
+
+    /**
      * WARNINGレベルのログを記録
      * @param message ログメッセージ
      */
@@ -68,8 +75,9 @@ public:
      * ログエントリを追加
      * @param level ログレベル
      * @param message ログメッセージ
+     * @param is_console_log コンソールに出力するかどうか
      */
-    void addLogEntry(LogLevel level, const std::string& message);
+    void addLogEntry(LogLevel level, const std::string& message, bool is_console_log = true);
 
     /**
      * ログをファイルに出力

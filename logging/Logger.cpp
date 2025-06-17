@@ -64,6 +64,15 @@ void Logger::logInfo(const std::string& message) {
 }
 
 /**
+ * INFOレベルのログを記録
+ * コンソールには出力しない
+ * @param message ログメッセージ
+ */
+void Logger::logInfoWithoutConsoleLog(const std::string& message) {
+    addLogEntry(LogLevel::INFO, message, false);
+}
+
+/**
  * WARNINGレベルのログを記録
  */
 void Logger::logWarning(const std::string& message) {
@@ -86,13 +95,18 @@ void Logger::logDebug(const std::string& message) {
 
 /**
  * ログエントリを追加
+ * @param level ログレベル
+ * @param message ログメッセージ
+ * @param is_console_log コンソールに出力するかどうか
  */
-void Logger::addLogEntry(LogLevel level, const std::string& message) {
+void Logger::addLogEntry(LogLevel level, const std::string& message, bool is_console_log = true) {
     m_logEntries.emplace_back(level, message);
     
-    // リアルタイムでコンソールにも出力（デバッグ用）
-    std::cout << "[" << timeToString(std::time(nullptr)) << "] " 
-              << logLevelToString(level) << ": " << message << std::endl;
+    // リアルタイムでコンソールにも出力（デバッグ用） 
+    if (is_console_log) {
+        std::cout << "[" << timeToString(std::time(nullptr)) << "] " 
+                  << logLevelToString(level) << ": " << message << std::endl;
+    }
     
     // 定期的にファイルに書き込み（100エントリごと）
     if (m_logEntries.size() % 100 == 0) {
