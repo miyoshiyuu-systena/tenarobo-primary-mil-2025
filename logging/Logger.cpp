@@ -60,7 +60,7 @@ Logger::~Logger() {
  * INFOレベルのログを記録
  */
 void Logger::logInfo(const std::string& message) {
-    addLogEntry(LogLevel::INFO, message);
+    addLogEntry(LogLevel::INFO, message, true);
 }
 
 /**
@@ -76,21 +76,21 @@ void Logger::logInfoWithoutConsoleLog(const std::string& message) {
  * WARNINGレベルのログを記録
  */
 void Logger::logWarning(const std::string& message) {
-    addLogEntry(LogLevel::WARNING, message);
+    addLogEntry(LogLevel::WARNING, message, true);
 }
 
 /**
  * ERRORレベルのログを記録
  */
 void Logger::logError(const std::string& message) {
-    addLogEntry(LogLevel::ERROR, message);
+    addLogEntry(LogLevel::ERROR, message, true);
 }
 
 /**
  * DEBUGレベルのログを記録
  */
 void Logger::logDebug(const std::string& message) {
-    addLogEntry(LogLevel::DEBUG, message);
+    addLogEntry(LogLevel::DEBUG, message, true);
 }
 
 /**
@@ -99,7 +99,7 @@ void Logger::logDebug(const std::string& message) {
  * @param message ログメッセージ
  * @param is_console_log コンソールに出力するかどうか
  */
-void Logger::addLogEntry(LogLevel level, const std::string& message, bool is_console_log = true) {
+void Logger::addLogEntry(LogLevel level, const std::string& message, bool is_console_log) {
     m_logEntries.emplace_back(level, message);
     
     // リアルタイムでコンソールにも出力（デバッグ用） 

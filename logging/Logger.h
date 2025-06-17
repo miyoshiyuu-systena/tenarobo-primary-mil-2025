@@ -77,7 +77,7 @@ public:
      * @param message ログメッセージ
      * @param is_console_log コンソールに出力するかどうか
      */
-    void addLogEntry(LogLevel level, const std::string& message, bool is_console_log = true);
+    void addLogEntry(LogLevel level, const std::string& message, bool is_console_log);
 
     /**
      * ログをファイルに出力
