@@ -73,10 +73,11 @@ void    main_task_action_chain(intptr_t exinf)   {
             200,// 速度[mm/s]
             5,// 判定周期[ms]
             45,// Vの閾値
-            1.5f,// Kp
+            1.5f,// Kp（比例係数）
+            0.3f,// Ki（積分係数）
             is_on_blue_line
         ),
-        "ライントレースするよ"
+        "PI制御でライントレースするよ"
     );
     action0->setNext(action1);
 

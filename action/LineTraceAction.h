@@ -5,11 +5,12 @@
 #include    <functional>
 
 /**
- * ライントレースアクションのファクトリー関数
+ * ライントレースアクションのファクトリー関数（PI制御）
  * @param speed 大体の速度[mm/s]
  * @param duration 判定周期[ms]
  * @param threshold 閾値
  * @param Kp 比例係数
+ * @param Ki 積分係数
  * @param judge ライントレース終了の判定
  * @return ライントレースアクション
  */
@@ -25,6 +26,14 @@ std::function<void(ActionNode*&)> line_trace_action(
      *      ただし、大きく方向が変わるなどの問題もあり得る
      */
     float Kp,
+    /**
+     * 積分定数
+     * @note
+     *      積分定数を使用することで定常誤差を減らし、より精密なライントレースが可能になる
+     *      値を大きくすると過去のエラーの累積効果が強くなるが、
+     *      過度に大きくすると振動やオーバーシュートを引き起こす可能性がある
+     */
+    float Ki,
     std::function<bool()> judge
 );
 

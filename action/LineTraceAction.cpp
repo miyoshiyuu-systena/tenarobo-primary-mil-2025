@@ -11,35 +11,56 @@ using   namespace   spikeapi;
  * ライントレースアクションを生成するファクトリー関数
  * @note
  *      この関数で作成したアクションでは、ロボットが黒いラインの右縁に沿って移動する
+ *      PI制御により精度の高いライントレースを実現する
  */
 std::function<void(ActionNode*&)> line_trace_action(
     float speed, 
     int duration, 
     int threshold,
-    float Kp, 
+    float Kp,
+    float Ki,  // 積分係数を追加
     std::function<bool()> judge
 )
 {
-    return [speed, duration, threshold, Kp, judge](ActionNode*& next_ptr) {
+    return [speed, duration, threshold, Kp, Ki, judge](ActionNode*& next_ptr) {
+        float integral = 0.0f;  // 積分項の累積値
+        const float integral_limit = 100.0f;  // 積分飽和防止用の制限値
+        
         do {
             /**
-             * P制御による駆動指示
+             * PI制御による駆動指示
              * errorは、実測した輝度が閾値よりもどのくらい明るかったかを表す。
              * (負数のときは閾値よりも暗かったことを表している。)
              * 
+             * P制御項：
              * errorが正数のときは目標よりも白いところを通っているため、右輪を加速して左方向に移動する
              * errorが負数のときは目標よりも黒いところを通っているため、左輪を加速して右方向に移動する
-             * この細かい調整により、黒い線の右縁を左右中心に移動するようにロボットの動きを最適化している
+             * 
+             * I制御項：
+             * 過去のエラーの累積により定常誤差を減らし、より正確にラインを追従する
              * 
              * @note 
-             *      P制御とは
-             *      制御対象の目標値と現在の値の偏差（誤差）に比例した操作量を出す制御方式
-             *      今回の場合、比例係数Kpを使用している
+             *      PI制御とは
+             *      P制御（比例項）：現在の誤差に比例した制御量
+             *      I制御（積分項）：過去の誤差の累積に比例した制御量
+             *      これにより定常誤差を減らし、より安定したライントレースが可能になる
              */
             const float error = perceptionDataAccess.color[2] - threshold;
+            
+            // 積分項を更新（積分飽和防止のため制限を設ける）
+            integral += error;
+            if (integral > integral_limit) {
+                integral = integral_limit;
+            } else if (integral < -integral_limit) {
+                integral = -integral_limit;
+            }
+            
+            // PI制御による制御量計算
+            const float control_output = Kp * error + Ki * integral;
+            
             twinWheelDrive.setSpeed(
-                speed - Kp * error,     //  左輪
-                speed + Kp * error      //  右輪
+                speed - control_output,     //  左輪
+                speed + control_output      //  右輪
             );
 
             // 判定周期
