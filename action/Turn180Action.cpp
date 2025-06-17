@@ -2,12 +2,12 @@
 #include    "spikeapi.h"
 #include    "share/ModuleAccess.h"
 #include    "share/PerceptionDataAccess.h"
-#include    "action/ActionChain.h"
+#include    "action/ActionNode.h"
 
 /**
  * 180度回転
  */
-void turn_180_action(ActionChain*& next_ptr)
+void turn_180_action(ActionNode*& next_ptr)
 {
     // 180°回転するのにかける時間（s）
     static const int TURN_180_DURATION = 1;

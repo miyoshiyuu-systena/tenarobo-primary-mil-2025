@@ -9,7 +9,7 @@
 #include    "logging/Logger.h"
 #include    "PerceptionTask.h"
 #include    "organ/TwinWheelDrive.h"
-#include    "action/ActionChain.h"
+#include    "action/ActionNode.h"
 #include    "share/ModuleAccess.h"
 #include    "share/PerceptionDataAccess.h"
 #include    "action/RunUntilWallDetectAction.h"
@@ -31,10 +31,10 @@ void delay_ms(int ms) {
 /**
  * ActionChainを手繰り寄せながら、順繰りに実行する
  */
-void execute_and_haul_action_chain(ActionChain* firstAction) {
+void execute_and_haul_action_chain(ActionNode* firstAction) {
     Logger& logger = Logger::getInstance();
-    ActionChain* currentAction = firstAction;
-    ActionChain* previousAction = nullptr;
+    ActionNode* currentAction = firstAction;
+    ActionNode* previousAction = nullptr;
     
     while (currentAction != nullptr) {
         logger.logInfo("アクション実行中...");
@@ -69,7 +69,7 @@ void    main_task_action_chain(intptr_t exinf)   {
     /**
      * アクションチェーンの形成
      */
-    ActionChain* action0 = new ActionChain(
+    ActionNode* action0 = new ActionNode(
         &twinWheelDrive,
         &frontArm,
         perceptionDataAccess,
@@ -77,7 +77,7 @@ void    main_task_action_chain(intptr_t exinf)   {
         "ボタンが押されるまでハチ公モード！！"
     );
 
-    ActionChain* action1 = new ActionChain(
+    ActionNode* action1 = new ActionNode(
         &twinWheelDrive,
         &frontArm,
         perceptionDataAccess,

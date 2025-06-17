@@ -2,12 +2,12 @@
 #include    "spikeapi.h"
 #include    "share/ModuleAccess.h"
 #include    "share/PerceptionDataAccess.h"
-#include    "action/ActionChain.h"
+#include    "action/ActionNode.h"
 
 /**
  * ペットボトルの周りを5秒かけて半円回る
  */
-void aroundBottleEdgeAction(ActionChain*& next_ptr)
+void aroundBottleEdgeAction(ActionNode*& next_ptr)
 {
     //右曲がりに回る(5秒で半径100ミリメートルの円を半周する)
     twinWheelDrive.curveRightSpeed(62.832, 100);

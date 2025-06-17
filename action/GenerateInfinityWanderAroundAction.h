@@ -1,9 +1,9 @@
 #ifndef _GENERATE_INFINITY_WANDER_AROUND_H_
 #define _GENERATE_INFINITY_WANDER_AROUND_H_
 
-#include    "action/ActionChain.h"
+#include    "action/ActionNode.h"
 
-void generate_infinity_wander_around_action(ActionChain*& next_ptr);
+void generate_infinity_wander_around_action(ActionNode*& next_ptr);
 
 #endif // _GENERATE_INFINITY_WANDER_AROUND_H_
 

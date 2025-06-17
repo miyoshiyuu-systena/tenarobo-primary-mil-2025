@@ -2,7 +2,7 @@
 #include    "action/GenerateInfinityWanderAroundAction.h"
 #include    "share/ModuleAccess.h"
 #include    "share/PerceptionDataAccess.h"
-#include    "action/ActionChain.h"
+#include    "action/ActionNode.h"
 #include    "action/RunUntilWallDetectAction.h"
 #include    "action/Turn180Action.h"
 
@@ -11,9 +11,9 @@
  * その場でくるりん
  * を繰り返す
  */
-void generate_infinity_wander_around_action(ActionChain*& next_ptr)
+void generate_infinity_wander_around_action(ActionNode*& next_ptr)
 {
-    ActionChain* runAction = new ActionChain(
+    ActionNode* runAction = new ActionNode(
         &twinWheelDrive,
         &frontArm,
         perceptionDataAccess,
@@ -22,7 +22,7 @@ void generate_infinity_wander_around_action(ActionChain*& next_ptr)
     );
     next_ptr = runAction;
 
-    ActionChain* turnAction = new ActionChain(
+    ActionNode* turnAction = new ActionNode(
         &twinWheelDrive,
         &frontArm,
         perceptionDataAccess,
@@ -31,7 +31,7 @@ void generate_infinity_wander_around_action(ActionChain*& next_ptr)
     );
     runAction->setNext(turnAction);
 
-    ActionChain* infinityAction = new ActionChain(
+    ActionNode* infinityAction = new ActionNode(
         &twinWheelDrive,
         &frontArm,
         perceptionDataAccess,
