@@ -3,7 +3,9 @@
 #include    "share/PerceptionDataAccess.h"
 #include    "share/ModuleAccess.h"
 #include    "logging/Logger.h"
+#include    "CameraManager.h"
 #include    <string>
+#include    <opencv2/opencv.hpp>
 
 /**
  * 知覚データをログ出力するかどうか
@@ -11,15 +13,46 @@
  */
 static const bool is_logging_enable = false;
 
+// カメラ処理の頻度を大幅に下げる（1000回→10000回に1回）
+static const int camera_save_interval = 10000;
+
+int count = 0;
+
 /**
  * 知覚処理
  * @param   exinf     拡張情報
  */
 void    perc_task(intptr_t exinf)   {
-    /**
-     * カメラデータの取得
-     */
-    //  TODO    miyoshi: カメラデータの取得
+    // カメラ処理の頻度を下げる
+    loc_cpu();
+    if (count % camera_save_interval == 0) {
+        /**
+         * カメラデータの取得
+         */
+        static CameraManager& cameraManager = CameraManager::getInstance();
+        static bool initAttempted = false;
+        
+        // カメラが初期化されていない場合は初期化を試行（一度だけ）
+        if (!cameraManager.isInitialized() && !initAttempted) {
+            cameraManager.initializeCamera();
+            initAttempted = true;
+        }
+        
+        // カメラが初期化されている場合のみ処理
+        if (cameraManager.isInitialized()) {
+            // 1フレーム取得して保存
+            cv::Mat frame;
+            if (cameraManager.getLatestImage(frame)) {
+                // 画像保存の頻度も下げる（100回→500回に1回）
+                static int frameCount = 0;
+                if (++frameCount % 500 == 0) {
+                    cameraManager.saveImage(frame, "perc_task");
+                }
+            }
+        }
+    }
+    unl_cpu();
+
 
     /**
      * カラーセンサデータの取得
