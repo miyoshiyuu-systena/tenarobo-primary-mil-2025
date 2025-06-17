@@ -70,9 +70,10 @@ void    main_task_action_chain(intptr_t exinf)   {
         &frontArm,
         perceptionDataAccess,
         line_trace_action(
-            100,    // 速度[mm/s]
-            10,    // 判定周期[ms]
-            1000,   // 休憩時間[ms]
+            250,// 速度[mm/s]
+            10,// 判定周期[ms]
+            40,// Vの閾値
+            2.5f,// Kp
             is_on_blue_line
         ),
         "ライントレースするよ"
