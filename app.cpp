@@ -102,7 +102,7 @@ void    main_task(intptr_t exinf)   {
     sta_cyc(PERC_CYC);
 
     // アクションチェーンの処理
-    main_task_action_chain(exinf);
+    twinWheelDrive.curveLeftSpeed(90, 300);
 
     // 知覚タスクの停止
     stp_cyc(PERC_CYC);

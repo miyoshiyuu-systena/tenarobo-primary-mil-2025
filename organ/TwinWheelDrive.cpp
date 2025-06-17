@@ -64,52 +64,64 @@ void TwinWheelDrive::rightSpinTurn(int angular_speed)
     mRightMotor.setSpeed(motor_speed);
 }
 
-void TwinWheelDrive::curveLeftSpeed(float travel_speed, float radius)
+void TwinWheelDrive::curveLeftSpeed(float angular_speed, float radius)
 {
+    // 半径が車輪間隔の半分より小さい場合は停止
+    if (radius < WHEEL_TREAD_MM / 2.0f) {
+        stop();
+        return;
+    }
+    
     // 左曲線：右輪が外輪、左輪が内輪
     float outer_radius = radius + WHEEL_TREAD_MM / 2.0f;
     float inner_radius = radius - WHEEL_TREAD_MM / 2.0f;
     
-    // 走行速度(mm/s)から角速度(°/s)に変換
-    float outer_speed_mms = travel_speed * outer_radius / radius;
-    float inner_speed_mms = travel_speed * inner_radius / radius;
+    // 角速度(°/s)から線速度(mm/s)に変換
+    float outer_speed_mms = angular_speed * outer_radius * (M_PI / 180.0f);
+    float inner_speed_mms = angular_speed * inner_radius * (M_PI / 180.0f);
     
     // mm/sから°/sに変換
-    int outer_speed = static_cast<int>(outer_speed_mms * 360.0f / (M_PI * WHEEL_DIAMETER_MM));
-    int inner_speed = static_cast<int>(inner_speed_mms * 360.0f / (M_PI * WHEEL_DIAMETER_MM));
+    float outer_speed = outer_speed_mms * 360.0f / (M_PI * WHEEL_DIAMETER_MM);
+    float inner_speed = inner_speed_mms * 360.0f / (M_PI * WHEEL_DIAMETER_MM);
     
     // 内輪の速度が負になる場合は0にする
-    if (inner_speed < 0) {
-        inner_speed = 0;
+    if (inner_speed < 0.0f) {
+        inner_speed = 0.0f;
     }
-    
+
     // 右輪（外輪）と左輪（内輪）の速度を設定
-    mRightMotor.setSpeed(inner_speed);
-    mLeftMotor.setSpeed(outer_speed);
+    mRightMotor.setSpeed(outer_speed);
+    mLeftMotor.setSpeed(inner_speed);
 }
 
-void TwinWheelDrive::curveRightSpeed(float travel_speed, float radius)
+void TwinWheelDrive::curveRightSpeed(float angular_speed, float radius)
 {
+    // 半径が車輪間隔の半分より小さい場合は停止
+    if (radius < WHEEL_TREAD_MM / 2.0f) {
+        stop();
+        return;
+    }
+    
     // 右曲線：左輪が外輪、右輪が内輪
     float outer_radius = radius + WHEEL_TREAD_MM / 2.0f;
     float inner_radius = radius - WHEEL_TREAD_MM / 2.0f;
     
-    // 走行速度(mm/s)から角速度(°/s)に変換
-    float outer_speed_mms = travel_speed * outer_radius / radius;
-    float inner_speed_mms = travel_speed * inner_radius / radius;
+    // 角速度(°/s)から線速度(mm/s)に変換
+    float outer_speed_mms = angular_speed * outer_radius * (M_PI / 180.0f);
+    float inner_speed_mms = angular_speed * inner_radius * (M_PI / 180.0f);
     
     // mm/sから°/sに変換
-    int outer_speed = static_cast<int>(outer_speed_mms * 360.0f / (M_PI * WHEEL_DIAMETER_MM));
-    int inner_speed = static_cast<int>(inner_speed_mms * 360.0f / (M_PI * WHEEL_DIAMETER_MM));
+    float outer_speed = outer_speed_mms * 360.0f / (M_PI * WHEEL_DIAMETER_MM);
+    float inner_speed = inner_speed_mms * 360.0f / (M_PI * WHEEL_DIAMETER_MM);
     
     // 内輪の速度が負になる場合は0にする
-    if (inner_speed < 0) {
-        inner_speed = 0;
+    if (inner_speed < 0.0f) {
+        inner_speed = 0.0f;
     }
     
     // 左輪（外輪）と右輪（内輪）の速度を設定
-    mLeftMotor.setSpeed(inner_speed);
-    mRightMotor.setSpeed(outer_speed);
+    mLeftMotor.setSpeed(outer_speed);
+    mRightMotor.setSpeed(inner_speed);
 }
 
 void TwinWheelDrive::setPower(int left_power, int right_power)

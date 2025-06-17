@@ -55,17 +55,19 @@ public:
 
     /**
      * 左曲線走行（走行速度指定版）
-     * @param travel_speed 走行速度（mm/s）
+     * @param angular_speed 回転速度（°/s）
      * @param radius 半径（mm）
+     * @note 進行方向から真左radiusの位置に中心があると仮想し、回転速度angular_speedで円弧を描くように移動する
      */
-    void curveLeftSpeed(float travel_speed, float radius);
+    void curveLeftSpeed(float angular_speed, float radius);
 
     /**
      * 右曲線走行（走行速度指定版）
-     * @param travel_speed 走行速度（mm/s）
+     * @param angular_speed 回転速度（°/s）
      * @param radius 半径（mm）
+     * @note 進行方向から真右radiusの位置に中心があると仮想し、回転速度angular_speedで円弧を描くように移動する
      */
-    void curveRightSpeed(float travel_speed, float radius);
+    void curveRightSpeed(float angular_speed, float radius);
 
     /**
      * 両輪へPWM値を指示
@@ -138,7 +140,7 @@ public:
     int getRightPower() const;
 
 private:
-    static constexpr float WHEEL_TREAD_MM = 115.0f; /**< 車輪間距離（トレッド）[mm] */
+    static constexpr float WHEEL_TREAD_MM = 112.0f; /**< 車輪間距離（トレッド）[mm] */
     static constexpr float WHEEL_DIAMETER_MM = 56.0f; /**< 車輪径[mm] */
 
     Motor mLeftMotor;   /**< 左モーター */
