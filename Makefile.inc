@@ -37,5 +37,14 @@ INCLUDES += \
 	-I$(mkfile_path)organ\
 	-I$(mkfile_path)action\
 	-I$(mkfile_path)share\
+	-I/usr/include/opencv4\
+	-I/usr/include/opencv4/opencv2\
 
 COPTS += -std=gnu++11
+
+# OpenCVがV4L2を使用するように環境変数を設定
+export OPENCV_VIDEOIO_PRIORITY_V4L2=1
+export OPENCV_VIDEOIO_DEBUG=1
+
+# OpenCVライブラリの追加
+LIBS += -lopencv_core -lopencv_imgproc -lopencv_imgcodecs -lopencv_videoio

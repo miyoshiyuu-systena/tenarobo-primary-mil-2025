@@ -5,6 +5,8 @@
 #include    <cmath>
 #include    <string>
 #include    <vector>
+#include    <unistd.h>
+#include    "spikeapi.h"
 #include    "syssvc/syslog.h"
 #include    "logging/Logger.h"
 #include    "PerceptionTask.h"
@@ -17,6 +19,7 @@
 #include    "action/AroundBottleEdgeAction.h"
 #include    "action/StartOnPressureSensorAction.h"
 #include    "action/GenerateInfinityWanderAroundAction.h"
+#include    <opencv2/opencv.hpp>
 
 using namespace spikeapi;
 
@@ -89,6 +92,91 @@ void    main_task_action_chain(intptr_t exinf)   {
 void    main_task(intptr_t exinf)   {
     // ロガーインスタンスの取得
     Logger& logger = Logger::getInstance();
+
+    // カメラの初期化
+    cv::VideoCapture cap;
+    
+    // 複数のカメラデバイスを試行（V4L2バックエンドを明示的に指定）
+    int camera_index = 0;
+    bool camera_opened = false;
+    
+    // まず、デバイスパスを直接指定して試行
+    std::vector<std::string> device_paths = {
+        "/dev/video0",
+        "/dev/video1", 
+        "/dev/video2",
+        "/dev/video3"
+    };
+    
+    for (const auto& device_path : device_paths) {
+        logger.logInfo("カメラデバイス " + device_path + " を試行中...");
+        cap.open(device_path, cv::CAP_V4L2);
+        if (cap.isOpened()) {
+            camera_opened = true;
+            logger.logInfo("カメラデバイス " + device_path + " が正常に開かれました");
+            break;
+        } else {
+            logger.logError("カメラデバイス " + device_path + " が開けませんでした");
+        }
+    }
+    
+    // デバイスパスで失敗した場合、インデックスで試行
+    if (!camera_opened) {
+        logger.logInfo("デバイスパスでの試行が失敗しました。インデックスで試行します。");
+        while (camera_index < 4 && !camera_opened) {
+            logger.logInfo("カメラデバイス " + std::to_string(camera_index) + " を試行中...");
+            // V4L2バックエンドを明示的に指定
+            cap.open(camera_index, cv::CAP_V4L2);
+            if (cap.isOpened()) {
+                camera_opened = true;
+                logger.logInfo("カメラデバイス " + std::to_string(camera_index) + " が正常に開かれました");
+            } else {
+                logger.logError("カメラデバイス " + std::to_string(camera_index) + " が開けませんでした");
+                camera_index++;
+            }
+        }
+    }
+    
+    if (!camera_opened) {
+        logger.logError("利用可能なカメラが見つかりませんでした");
+        // カメラが使えない場合でも他の処理は続行
+    } else {
+        // カメラ設定
+        cap.set(cv::CAP_PROP_FRAME_WIDTH, 640);
+        cap.set(cv::CAP_PROP_FRAME_HEIGHT, 480);
+        cap.set(cv::CAP_PROP_FPS, 30);
+        
+        logger.logInfo("カメラ処理を開始します");
+        
+        cv::Mat frame;
+        int frame_count = 0;
+        const int max_frames = 100; // 最大フレーム数（無限ループを防ぐ）
+        
+        while (frame_count < max_frames && cap.read(frame)) {
+            if (frame.empty()) {
+                logger.logError("フレームが空です");
+                break;
+            }
+            
+            // 画像処理の例（グレースケール変換）
+            cv::Mat gray_frame;
+            cv::cvtColor(frame, gray_frame, cv::COLOR_BGR2GRAY);
+            
+            // 画像を保存（デバッグ用）
+            if (frame_count % 30 == 0) { // 30フレームごとに保存
+                std::string filename = "frame_" + std::to_string(frame_count) + ".png";
+                cv::imwrite(filename, frame);
+                logger.logInfo("フレーム " + std::to_string(frame_count) + " を保存しました: " + filename);
+            }
+            
+            frame_count++;
+            
+            dly_tsk(1000 * 1000 * 1000);
+        }
+        
+        logger.logInfo("カメラ処理を終了しました。処理したフレーム数: " + std::to_string(frame_count));
+        cap.release();
+    }
 
     // 知覚タスクの開始
     sta_cyc(PERC_CYC);
