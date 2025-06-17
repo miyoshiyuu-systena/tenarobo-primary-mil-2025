@@ -17,14 +17,14 @@ std::function<void(ActionNode*&)> line_trace_action(
     float speed, 
     bool is_right_side,
     int duration, 
-    int threshold,
     float Kp,
     float Ki,
     float Kd,  // 微分係数を追加
-    std::function<bool()> judge
+    std::function<bool()> judge,
+    std::function<float(int h, int s, int v)> calc_error
 )
 {
-    return [speed, is_right_side, duration, threshold, Kp, Ki, Kd, judge](ActionNode*& next_ptr) {
+    return [speed, is_right_side, duration, Kp, Ki, Kd, judge, calc_error](ActionNode*& next_ptr) {
         float integral = 0.0f;  // 積分項の累積値
         float previous_error = 0.0f;  // 前回のエラー値（微分項計算用）
         const float integral_limit = 100.0f;  // 積分飽和防止用の制限値
@@ -54,7 +54,7 @@ std::function<void(ActionNode*&)> line_trace_action(
              *      D制御（微分項）：誤差の変化率に比例した制御量
              *      これにより定常誤差を減らし、応答性とオーバーシュート抑制を両立した安定したライントレースが可能になる
              */
-            const float error = perceptionDataAccess.color[2] - threshold;
+            const float error = calc_error(perceptionDataAccess.color[0], perceptionDataAccess.color[1], perceptionDataAccess.color[2]);
             
             // 積分項を更新（積分飽和防止のため制限を設ける）
             integral += error;
@@ -104,4 +104,14 @@ bool is_on_blue_line(void)
         (S_LOWER_THRESHOLD <= perceptionDataAccess.color[1] && perceptionDataAccess.color[1] <= S_UPPER_THRESHOLD) &&
         (V_LOWER_THRESHOLD <= perceptionDataAccess.color[2] && perceptionDataAccess.color[2] <= V_UPPER_THRESHOLD)
     );
+}
+
+/**
+ * 黒線と白線の境界線からの誤差を計算する
+ * 境界線の理想値はV=45であるとする
+ * @return 黒線と白線の境界線からの誤差
+ */
+float calc_error_on_black_white_border(int h, int s, int v)
+{
+    return (float)(v - 45.0f);
 }

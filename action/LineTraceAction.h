@@ -9,7 +9,6 @@
  * @param speed 大体の速度[mm/s]
  * @param isRightSide 右寄りか左寄りか
  * @param duration 判定周期[ms]
- * @param threshold 閾値
  * @param Kp 比例係数
  * @param Ki 積分係数
  * @param Kd 微分係数
@@ -20,7 +19,6 @@ std::function<void(ActionNode*&)> line_trace_action(
     float speed,
     bool is_right_side,
     int duration,
-    int threshold,
     /**
      * 比例定数
      * @note
@@ -45,7 +43,8 @@ std::function<void(ActionNode*&)> line_trace_action(
      *      ただし、値を大きくしすぎるとノイズに敏感になり不安定になる可能性がある
      */
     float Kd,
-    std::function<bool()> judge
+    std::function<bool()> judge,
+    std::function<float(int h, int s, int v)> calc_error
 );
 
 /**
@@ -53,5 +52,11 @@ std::function<void(ActionNode*&)> line_trace_action(
  * @return 青線上にいるかどうか
  */
 bool is_on_blue_line(void);
+
+/**
+ * 黒線と白線の境界線からの誤差を計算する
+ * @return 黒線と白線の境界線からの誤差
+ */
+float calc_error_on_black_white_border(int h, int s, int v);
 
 #endif // _LINE_TRACE_ACTION_H_
