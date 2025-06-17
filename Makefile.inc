@@ -45,6 +45,7 @@ COPTS += -std=gnu++11
 # OpenCVがV4L2を使用するように環境変数を設定
 export OPENCV_VIDEOIO_PRIORITY_V4L2=1
 export OPENCV_VIDEOIO_DEBUG=1
+export OPENCV_VIDEOIO_GSTREAMER=0
 
 # OpenCVライブラリの追加
 LIBS += -lopencv_core -lopencv_imgproc -lopencv_imgcodecs -lopencv_videoio

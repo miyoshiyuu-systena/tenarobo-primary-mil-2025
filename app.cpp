@@ -96,6 +96,11 @@ void    main_task(intptr_t exinf)   {
     // カメラの初期化
     cv::VideoCapture cap;
     
+    // カメラデバイスの権限確認
+    logger.logInfo("カメラデバイスの権限を確認中...");
+    system("ls -la /dev/video*");
+    system("groups $USER");
+    
     // 複数のカメラデバイスを試行（V4L2バックエンドを明示的に指定）
     int camera_index = 0;
     bool camera_opened = false;
@@ -142,9 +147,27 @@ void    main_task(intptr_t exinf)   {
         // カメラが使えない場合でも他の処理は続行
     } else {
         // カメラ設定
-        cap.set(cv::CAP_PROP_FRAME_WIDTH, 640);
-        cap.set(cv::CAP_PROP_FRAME_HEIGHT, 480);
-        cap.set(cv::CAP_PROP_FPS, 30);
+        cap.set(cv::CAP_PROP_FRAME_WIDTH, 320);
+        cap.set(cv::CAP_PROP_FRAME_HEIGHT, 240);
+        cap.set(cv::CAP_PROP_FPS, 10);
+        
+        // カメラ設定の確認
+        double width = cap.get(cv::CAP_PROP_FRAME_WIDTH);
+        double height = cap.get(cv::CAP_PROP_FRAME_HEIGHT);
+        double fps = cap.get(cv::CAP_PROP_FPS);
+        logger.logInfo("カメラ設定 - 幅: " + std::to_string((int)width) + 
+                      ", 高さ: " + std::to_string((int)height) + 
+                      ", FPS: " + std::to_string((int)fps));
+        
+        // カメラの詳細情報を確認
+        double brightness = cap.get(cv::CAP_PROP_BRIGHTNESS);
+        double contrast = cap.get(cv::CAP_PROP_CONTRAST);
+        logger.logInfo("カメラ詳細 - 明度: " + std::to_string(brightness) + 
+                      ", コントラスト: " + std::to_string(contrast));
+        
+        // カメラ初期化後の待機時間
+        logger.logInfo("カメラ初期化後の待機中...");
+        dly_tsk(1 * 1000 * 1000); // 1秒待機
         
         logger.logInfo("カメラ処理を開始します");
         
@@ -152,26 +175,73 @@ void    main_task(intptr_t exinf)   {
         int frame_count = 0;
         const int max_frames = 100; // 最大フレーム数（無限ループを防ぐ）
         
-        while (frame_count < max_frames && cap.read(frame)) {
-            if (frame.empty()) {
-                logger.logError("フレームが空です");
+        // 複数のバックエンドで試行
+        std::vector<int> backends = {cv::CAP_V4L2, cv::CAP_V4L};
+        bool frame_read_success = false;
+        
+        for (int backend : backends) {
+            if (frame_read_success) break;
+            
+            logger.logInfo("バックエンド " + std::to_string(backend) + " でフレーム読み取りを試行中...");
+            
+            // カメラを再初期化
+            cap.release();
+            cap.open("/dev/video0", backend);
+            
+            if (!cap.isOpened()) {
+                logger.logError("バックエンド " + std::to_string(backend) + " でカメラを開けませんでした");
+                continue;
+            }
+            
+            // 設定を再適用
+            cap.set(cv::CAP_PROP_FRAME_WIDTH, 320);
+            cap.set(cv::CAP_PROP_FRAME_HEIGHT, 240);
+            cap.set(cv::CAP_PROP_FPS, 10);
+            
+            // 短い待機
+            dly_tsk(500 * 1000); // 500ms待機
+            
+            // フレーム読み取りを試行
+            bool read_result = cap.read(frame);
+            logger.logInfo("バックエンド " + std::to_string(backend) + " での読み取り結果: " + 
+                          std::string(read_result ? "成功" : "失敗"));
+            
+            if (read_result && !frame.empty()) {
+                frame_read_success = true;
+                logger.logInfo("フレームサイズ: " + std::to_string(frame.cols) + "x" + std::to_string(frame.rows));
                 break;
             }
-            
-            // 画像処理の例（グレースケール変換）
-            cv::Mat gray_frame;
-            cv::cvtColor(frame, gray_frame, cv::COLOR_BGR2GRAY);
-            
-            // 画像を保存（デバッグ用）
-            if (frame_count % 30 == 0) { // 30フレームごとに保存
-                std::string filename = "frame_" + std::to_string(frame_count) + ".png";
-                cv::imwrite(filename, frame);
-                logger.logInfo("フレーム " + std::to_string(frame_count) + " を保存しました: " + filename);
+        }
+        
+        if (!frame_read_success) {
+            logger.logError("すべてのバックエンドでフレーム読み取りに失敗しました");
+            cap.release();
+        } else {
+            // 成功した場合は通常のループを実行
+            while (frame_count < max_frames && cap.read(frame)) {
+                if (frame.empty()) {
+                    logger.logError("フレームが空です");
+                    break;
+                }
+                
+                logger.logInfo("フレーム " + std::to_string(frame_count) + " を読み取りました");
+                
+                // 画像処理の例（グレースケール変換）
+                cv::Mat gray_frame;
+                cv::cvtColor(frame, gray_frame, cv::COLOR_BGR2GRAY);
+                
+                // 画像を保存（デバッグ用）
+                if (frame_count % 30 == 0) { // 30フレームごとに保存
+                    std::string filename = "frame_" + std::to_string(frame_count) + ".png";
+                    cv::imwrite(filename, frame);
+                    logger.logInfo("フレーム " + std::to_string(frame_count) + " を保存しました: " + filename);
+                }
+                
+                frame_count++;
+                
+                // 短い待機時間（100ms）
+                dly_tsk(100 * 1000);
             }
-            
-            frame_count++;
-            
-            dly_tsk(1000 * 1000 * 1000);
         }
         
         logger.logInfo("カメラ処理を終了しました。処理したフレーム数: " + std::to_string(frame_count));
