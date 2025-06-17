@@ -24,29 +24,18 @@ std::function<void(ActionNode*&)> around_bottle_edge_action(
         // 命令を送る時間の間隔[ms]
         const float FIXED_INTERVAL = 100.0f;
 
-        // 累積の角度[°]
-        float accumulated_angle = 0.0f;
-
-        // 単位時間当たりの角度の変化 = 回転速度[°/s]
+        // 速度[°/s]
         const float speed = angle / (duration / 1000);
+
+        // 残りの時間[ms]
+        float remaining_time_ms = duration;
 
         // 円弧を描きながら移動する
         while (true) {
             twinWheelDrive.curveRightSpeed(speed, radius);
 
-            // 累積の角度を更新
-            // 今回のインターバルで走行した実際の角度を加算
-            const float left_angle = perceptionDataAccess.leftMotorSpeed * (FIXED_INTERVAL / 1000) * WHEEL_DIAMETER_MM / (2 * radius + WHEEL_TREAD_MM);
-            const float right_angle = perceptionDataAccess.rightMotorSpeed * (FIXED_INTERVAL / 1000) * WHEEL_DIAMETER_MM / (2 * radius - WHEEL_TREAD_MM);
-            accumulated_angle += (right_angle + left_angle) / 2.0f;
-
-            // 累積の角度が目標の角度を超えたらループを抜ける
-            if (accumulated_angle >= angle) {
-                break;
-            }
-
-            // 残りの角度から、完了までの残り時間を計算する[ms]
-            const float remaining_time_ms = (angle - accumulated_angle) / speed * 1000.0f;
+            // 残りの時間を更新
+            remaining_time_ms -= FIXED_INTERVAL;
 
             if (remaining_time_ms < FIXED_INTERVAL) {
                 dly_tsk(remaining_time_ms * 1000);
