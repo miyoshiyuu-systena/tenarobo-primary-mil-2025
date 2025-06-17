@@ -21,14 +21,6 @@
 using namespace spikeapi;
 
 /**
- * 指定時間待機する関数
- * @param ms 待機時間（ミリ秒）
- */
-void delay_ms(int ms) {
-    dly_tsk(ms * 1000);  // マイクロ秒単位で待機
-}
-
-/**
  * ActionChainを手繰り寄せながら、順繰りに実行する
  */
 void execute_and_haul_action_chain(ActionNode* firstAction) {
@@ -39,11 +31,6 @@ void execute_and_haul_action_chain(ActionNode* firstAction) {
     while (currentAction != nullptr) {
         logger.logInfo("アクション実行中...");
         currentAction->execute();
-        
-        // アクションが終了するまで待機
-        // while (!currentAction->isEnd()) {
-        //     delay_ms(100);
-        // }
 
         if (!currentAction->isEnd()) {
             logger.logError("アクションが終了していないにもかかわらず、次のアクションに移動しました");
