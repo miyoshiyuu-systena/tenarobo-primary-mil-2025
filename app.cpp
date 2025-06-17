@@ -71,6 +71,7 @@ void    main_task_action_chain(intptr_t exinf)   {
         perceptionDataAccess,
         line_trace_action(
             200,// 速度[mm/s]
+            false,// 右寄りか左寄りか
             10,// 判定周期[ms]
             45,// Vの閾値
             1.5f,// Kp（比例係数）

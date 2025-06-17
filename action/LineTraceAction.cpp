@@ -15,6 +15,7 @@ using   namespace   spikeapi;
  */
 std::function<void(ActionNode*&)> line_trace_action(
     float speed, 
+    bool is_right_side,
     int duration, 
     int threshold,
     float Kp,
@@ -23,10 +24,12 @@ std::function<void(ActionNode*&)> line_trace_action(
     std::function<bool()> judge
 )
 {
-    return [speed, duration, threshold, Kp, Ki, Kd, judge](ActionNode*& next_ptr) {
+    return [speed, is_right_side, duration, threshold, Kp, Ki, Kd, judge](ActionNode*& next_ptr) {
         float integral = 0.0f;  // 積分項の累積値
         float previous_error = 0.0f;  // 前回のエラー値（微分項計算用）
         const float integral_limit = 100.0f;  // 積分飽和防止用の制限値
+
+        const int side_symbol = is_right_side ? 1 : -1;
         
         do {
             /**
@@ -69,8 +72,8 @@ std::function<void(ActionNode*&)> line_trace_action(
             const float control_output = Kp * error + Ki * integral + Kd * derivative;
             
             twinWheelDrive.setSpeed(
-                speed - control_output,     //  左輪
-                speed + control_output      //  右輪
+                speed - side_symbol * control_output,     //  左輪
+                speed + side_symbol * control_output      //  右輪
             );
 
             // 判定周期
