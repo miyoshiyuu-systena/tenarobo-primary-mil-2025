@@ -1,23 +1,19 @@
-#ifndef _LINE_TRACE_ACTION_H_
-#define _LINE_TRACE_ACTION_H_
-
 #include    "action/ActionNode.h"
 #include    <functional>
 
 /**
- * ライントレースアクションのファクトリー関数（PID制御）
- * 特定の条件に従って停止する
+ * ライントレースアクションを生成するファクトリー関数
+ * 特定の時間が経過したら停止する
  * @param speed 左右の輪の速度[mm/s]([0]は左輪、[1]は右輪)
  * @param isRightSide 右寄りか左寄りか
  * @param duration 判定周期[ms]
  * @param Kp 比例係数
  * @param Ki 積分係数
  * @param Kd 微分係数
- * @param judge ライントレース終了の判定
+ * @param stop_time 停止時間[ms]
  * @param calc_error 誤差の計算
- * @return ライントレースアクション
  */
-std::function<void(ActionNode*&)> line_trace_action(
+std::function<void(ActionNode*&)> line_trace_timed_action(
     float* speed,
     bool is_right_side,
     int duration,
@@ -45,33 +41,6 @@ std::function<void(ActionNode*&)> line_trace_action(
      *      ただし、値を大きくしすぎるとノイズに敏感になり不安定になる可能性がある
      */
     float Kd,
-    std::function<bool()> judge,
+    int stop_time,
     std::function<float(int h, int s, int v)> calc_error
 );
-
-/**
- * 青線上にいるかどうかを判定する
- * @return 青線上にいるかどうか
- */
-bool is_on_blue_line(void);
-
-/**
- * 黒線上にいるかどうかを判定する
- * @return 黒線上にいるかどうか
- */
-bool is_on_black_line(void);
-
-/**
- * 黒線と白線の境界線からの誤差を計算する
- * @return 黒線と白線の境界線からの誤差
- */
-float calc_error_on_black_white_border(int h, int s, int v);
-
-/**
- * 青線と白線の境界線からの誤差を計算する
- * 境界線の理想値はH=100であるとする
- * @return 青線と白線の境界線からの誤差
- */
-float calc_error_on_blue_white_border(int h, int s, int v);
-
-#endif // _LINE_TRACE_ACTION_H_
