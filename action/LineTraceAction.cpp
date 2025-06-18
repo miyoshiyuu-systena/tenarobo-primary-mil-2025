@@ -116,7 +116,7 @@ bool is_on_black_line(void)
     const int H_LOWER_THRESHOLD = 0;
     const int S_UPPER_THRESHOLD = 255;
     const int S_LOWER_THRESHOLD = 0;
-    const int V_UPPER_THRESHOLD = 40;
+    const int V_UPPER_THRESHOLD = 30;
     const int V_LOWER_THRESHOLD = 0;
 
     return (
