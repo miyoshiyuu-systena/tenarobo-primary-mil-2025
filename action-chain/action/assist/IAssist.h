@@ -15,7 +15,7 @@ class IAssist
         IAssist(
             TwinWheelDrive* twinWheelDrive,
             FrontArmDrive* frontArmDrive,
-            Perception* perception
+            Perception* perc
         );
 
         virtual ~IAssist() = default;

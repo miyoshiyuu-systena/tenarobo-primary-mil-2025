@@ -29,8 +29,9 @@ void ActionNode::execute()
 {
     Logger::getInstance().logInfo("ActionNode: " + mActionName + " 実行");
     ActionNode* curr_ptr = this;
+    ActionNode*& curr_ptr_ref = curr_ptr;
     mActionCall(
-        curr_ptr,           // 現在のノード(必ず自分自身のポインタとなる)
+        curr_ptr_ref,           // 現在のノード(必ず自分自身のポインタとなる)
         mNextAction,        // 次のノード(自分自身に登録されている次のノードのポインタを渡す)
         mTwinWheelDrive,    // ツインホイールドライブ
         mFrontArmDrive,     // フロントアームドライブ

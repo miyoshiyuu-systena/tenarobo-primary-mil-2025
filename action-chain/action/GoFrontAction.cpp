@@ -2,6 +2,7 @@
 #include "IAssist.h"
 #include "ICloser.h"
 #include "spikeapi.h"
+#include "logger/Logger.h"
 
 ActionCall goFrontActionFactory(
     float speed,
@@ -17,12 +18,15 @@ ActionCall goFrontActionFactory(
         FrontArmDrive*& frontArmDrive,
         Perception*& perc
     ) {
+        Logger::getInstance().logInfo("GoFrontAction: 実行中");
         float speeds[2] = {0.0f, 0.0f};
         assist->init(speed, speed);
         closerPtr->init();
-
+        
         do {
+            Logger::getInstance().logInfo("before assist: speeds: " + std::to_string(speeds[0]) + ", " + std::to_string(speeds[1]));
             assist->correct(speeds);
+            Logger::getInstance().logInfo("after assist: speeds: " + std::to_string(speeds[0]) + ", " + std::to_string(speeds[1]));
             twinWheelDrive->setSpeed(speeds[0], speeds[1]);
 
             /**
@@ -35,5 +39,8 @@ ActionCall goFrontActionFactory(
 
         twinWheelDrive->stop();
         twinWheelDrive->resetCount();
+
+        delete assist;
+        delete closerPtr;
     };
 }

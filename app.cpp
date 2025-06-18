@@ -43,11 +43,13 @@ void main_task(intptr_t exinf)   {
         &perception,
         hachikouActionFactory(
             1.0f,   // 圧力センサの検知閾値[N]
-            1000    // 圧力センサの検知間隔[ms]
+            100    // 圧力センサの検知間隔[ms]
         ),
-        500
+        100
     );
 
+    IAssist* assist = new LaneTracingAssist(&twinWheelDrive, &frontArmDrive, &perception);
+    ICloser* closer = new BlueFloorCloser(&perception);
     ActionNode* actionNode1 = new ActionNode(
         "レーントレーシングアシストで白黒の境界に沿って正面を走行し、青床を検出すると停止",
         &twinWheelDrive,
@@ -56,10 +58,10 @@ void main_task(intptr_t exinf)   {
         goFrontActionFactory(
             100,   // 速度[mm/s]
             100,  // 検知間隔[ms]
-            new LaneTracingAssist(&twinWheelDrive, &frontArmDrive, &perception),
-            new BlueFloorCloser(&perception)
+            assist,
+            closer
         ),
-        1000
+        100
     );
     actionNode0->setNext(actionNode1);
 

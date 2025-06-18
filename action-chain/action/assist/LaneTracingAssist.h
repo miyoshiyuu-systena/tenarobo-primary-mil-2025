@@ -16,7 +16,7 @@ class LaneTracingAssist : public IAssist
         LaneTracingAssist(
             TwinWheelDrive* twinWheelDrive,
             FrontArmDrive* frontArmDrive,
-            Perception* perception);
+            Perception* perc);
         ~LaneTracingAssist();
 
         void init(float baseLeftSpeed, float baseRightSpeed) override;
