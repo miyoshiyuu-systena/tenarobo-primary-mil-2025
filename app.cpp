@@ -4,6 +4,7 @@
 #include "action-chain/ActionNode.h"
 #include "device/Device.h"
 #include "action-chain/action/assist/LaneTracingAssist.h"
+#include "action-chain/action/assist/CalcBlackWhiteBorderError.h"
 #include "action-chain/action/closer/BlueFloorCloser.h"
 #include "action-chain/action/HachikouAction.h"
 #include "action-chain/action/GoFrontAction.h"
@@ -45,7 +46,7 @@ void main_task(intptr_t exinf)   {
             1.0f,   // 圧力センサの検知閾値[N]
             100    // 圧力センサの検知間隔[ms]
         ),
-        100
+        1000
     );
 
     IAssist* assist = new LaneTracingAssist(
@@ -54,8 +55,9 @@ void main_task(intptr_t exinf)   {
         &perception,
         true,
         100.0f,
-        10.0f,
-        0.5f
+        5.0f,
+        0.5f,
+        calcBlackWhiteBorderError
     );
     ICloser* closer = new BlueFloorCloser(&perception);
     ActionNode* actionNode1 = new ActionNode(
@@ -64,8 +66,8 @@ void main_task(intptr_t exinf)   {
         &frontArmDrive,
         &perception,
         goFrontActionFactory(
-            500,   // 速度[mm/s]
-            5,  // 検知間隔[ms]
+            750,   // 速度[mm/s]
+            3,  // 検知間隔[ms]
             assist,
             closer
         ),

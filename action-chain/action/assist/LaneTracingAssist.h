@@ -5,6 +5,7 @@
 #include "drive/TwinWheelDrive.h"
 #include "drive/FrontArmDrive.h"
 #include "perception/Perception.h"
+#include "CalcErrorFunc.h"
 
 /**
  * 青白線に沿って走行する補助クラス
@@ -39,7 +40,12 @@ class LaneTracingAssist : public IAssist
             /**
              * 微分ゲイン
              */
-            float kd
+            float kd,
+
+            /**
+             * 誤差を計算する関数
+             */
+            CalcErrorFunc calcError
         );
         ~LaneTracingAssist();
 
@@ -60,6 +66,7 @@ class LaneTracingAssist : public IAssist
         float mKp;
         float mKi;
         float mKd;
+        CalcErrorFunc mCalcError;
 };
 
 #endif // LANE_TRACING_ASSIST_H

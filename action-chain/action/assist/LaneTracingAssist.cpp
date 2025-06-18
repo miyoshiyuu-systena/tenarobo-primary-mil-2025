@@ -1,12 +1,6 @@
 #include "LaneTracingAssist.h"
 #include "IAssist.h"
-
-/**
- * XXX: debug
- * 三好家の床では60の方がうまくいく
- */
-// static const float BLACK_WHITE_BORDER_V_IDEAL = 45.0f;
-static const float BLACK_WHITE_BORDER_V_IDEAL = 60.0f;
+#include "CalcErrorFunc.h"
 
 // 積分の最大値（最小値）
 // 飽和防止のための制限値
@@ -19,13 +13,16 @@ LaneTracingAssist::LaneTracingAssist(
     bool isRightSide,
     float kp,
     float ki,
-    float kd
-): IAssist(twinWheelDrive, frontArmDrive, perc)
+    float kd,
+    CalcErrorFunc calcError
+):
+    IAssist(twinWheelDrive, frontArmDrive, perc)
+    , mIsRightSide(isRightSide)
+    , mKp(kp)
+    , mKi(ki)
+    , mKd(kd)
+    , mCalcError(calcError)
 {
-    mIsRightSide = isRightSide;
-    mKp = kp;
-    mKi = ki;
-    mKd = kd;
 }
 
 LaneTracingAssist::~LaneTracingAssist()
@@ -45,8 +42,8 @@ void LaneTracingAssist::correct(float* speeds)
     /**
     * 青白線の境界線からの誤差を計算する
     */
-    float error = (float)((mPerc->getColorV() - BLACK_WHITE_BORDER_V_IDEAL) / 100.0f);
-
+    float error = mCalcError(mPerc->getColorH(), mPerc->getColorS(), mPerc->getColorV());
+    
     mErrorIntegral += error;
     if (mErrorIntegral > INTEGRAL_LIMIT) {
         mErrorIntegral = INTEGRAL_LIMIT;
