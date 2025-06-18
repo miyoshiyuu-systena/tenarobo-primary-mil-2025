@@ -133,7 +133,8 @@ bool is_on_black_line(void)
  */
 float calc_error_on_black_white_border(int h, int s, int v)
 {
-    return (float)((v - 45.0f) / 100.0f);
+    return (float)((v - 60.0f) / 100.0f);
+    // return (float)((v - 45.0f) / 100.0f);
 }
 
 /**

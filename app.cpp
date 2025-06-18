@@ -69,110 +69,24 @@ void    main_task_action_chain(intptr_t exinf)   {
         0
     );
 
-    // ActionNode* action1 = new ActionNode(
-    //     &twinWheelDrive,
-    //     &frontArm,
-    //     perceptionDataAccess,
-    //     line_trace_action(
-    //         200,// 速度[mm/s]
-    //         true,// 右寄りか左寄りか
-    //         5,// 判定周期[ms]
-    //         100.0f,// Kp（比例係数）
-    //         5.0f,// Ki（積分係数）
-    //         5.0f,// Kd（微分係数）
-    //         is_on_blue_line,
-    //         calc_error_on_black_white_border
-    //     ),
-    //     "黒いラインの右側を走行し、青い線が見つかったら終了",
-    //     0
-    // );
-    // action0->setNext(action1);
-
-    // ActionNode* action2 = new ActionNode(
-    //     &twinWheelDrive,
-    //     &frontArm,
-    //     perceptionDataAccess,
-    //     line_trace_action(
-    //         150,// 速度[mm/s]
-    //         false,// 右寄りか左寄りか
-    //         5,// 判定周期[ms]
-    //         75.0f,// Kp（比例係数）
-    //         2.5f,// Ki（積分係数）
-    //         10.0f,// Kd（微分係数）
-    //         is_on_black_line,
-    //         calc_error_on_blue_white_border
-    //     ),
-    //     "青いラインの右側を走行し、黒い線が見つかったら終了",
-    //     0
-    // );
-    // action1->setNext(action2);
-
-    // ActionNode* action3 = new ActionNode(
-    //     &twinWheelDrive,
-    //     &frontArm,
-    //     perceptionDataAccess,
-    //     turn_action(30, 750, true),
-    //     " 右方向に回転する",
-    //     0
-    // );
-    // action2->setNext(action3);
-
-    ActionNode* action4 = new ActionNode(
+    ActionNode* action1 = new ActionNode(
         &twinWheelDrive,
         &frontArm,
         perceptionDataAccess,
-        circle_action(400, 280, 6000, false),
-        "左方向に円弧を描きながら移動する",
+        line_trace_action(
+            1000,
+            true,
+            2,
+            200,
+            5.0,
+            0.25,
+            is_on_blue_line,
+            calc_error_on_black_white_border
+        ),
+        "ボタンが押されるまでハチ公モード！！",
         0
     );
-    action0->setNext(action4);
-
-    // ActionNode* action5 = new ActionNode(
-    //     &twinWheelDrive,
-    //     &frontArm,
-    //     perceptionDataAccess,
-    //     straight_go_action(500, 5, is_on_black_line),
-    //     "直線走行する、黒い線が見つかったら終了",
-    //     0
-    // );
-    // action4->setNext(action5);
-
-    ActionNode* action5 = new ActionNode(
-        &twinWheelDrive,
-        &frontArm,
-        perceptionDataAccess,
-        circle_action(200, 440, 6000, true),
-        "右方向に円弧を描きながら移動する",
-        0
-    );
-    action4->setNext(action5);
-
-    ActionNode* action6 = new ActionNode(
-        &twinWheelDrive,
-        &frontArm,
-        perceptionDataAccess,
-        circle_action(400, 160, 3000, false),
-        "左方向に円弧を描きながら移動する",
-        0
-    );
-    action5->setNext(action6);
-
-    // ダブルループのシナリオ
-    // "黒い線の右側をライントレースして、青い線が見つかったら終了"
-    // "青い線の右側をライントレースして、黒い線が見つかったら終了"
-    // "右方向に回転する"
-    // "旋回走行する、何メートル走ったら終了"
-    // "直線走行する、黒い線が見つかったら終了"
-    // "黒い線の右側をライントレースして、青い線が見つかったら終了"
-    // "右方向に回転する"
-    // "直進走行する、何メートル以上走って、かつ黒い線を見つける"
-    // "黒い線の左側をライントレースして、青い線が見つかったら終了"
-    // "左方向に回転する"
-    // "直進走行する、なんメートル以上走って、かつ黒い線を見つける"
-    // "黒い線の右側をライントレースする"
-    // "右方向に回転する"
-    // "直進走行する、なんメートル以上走って、かつ黒い線を見つける"
-    // "黒い線の右側をライントレースする"
+    action0->setNext(action1);
 
 
     // ActionChainの実行
