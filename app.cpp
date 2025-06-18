@@ -88,7 +88,7 @@ void    main_task_action_chain(intptr_t exinf)   {
             75.0f,
             1.0f,
             0.25f,
-            7000,
+            5000,
             calc_error_on_black_white_border
         ),
         "黒直線の左側を走行する、青色の床面に差し当たったら停止する",
