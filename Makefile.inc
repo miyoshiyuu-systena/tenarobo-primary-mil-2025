@@ -15,6 +15,9 @@ AroundBottleEdgeAction.o\
 StartOnPressureSensorAction.o\
 GenerateInfinityWanderAroundAction.o\
 LineTraceAction.o\
+CircleAction.o\
+TurnAction.o\
+StraightGoAction.o\
 
 SRCLANG := c++
 
