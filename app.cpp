@@ -70,12 +70,12 @@ void    main_task_action_chain(intptr_t exinf)   {
         &frontArm,
         perceptionDataAccess,
         line_trace_action(
-            200,// 速度[mm/s]
+            300,// 速度[mm/s]
             true,// 右寄りか左寄りか
             5,// 判定周期[ms]
-            100.0f,// Kp（比例係数）
-            5.0f,// Ki（積分係数）
-            10.0f,// Kd（微分係数）
+            150.0f,// Kp（比例係数）
+            10.0f,// Ki（積分係数）
+            25.0f,// Kd（微分係数）
             is_on_blue_line,
             calc_error_on_black_white_border
         ),
@@ -106,12 +106,12 @@ void    main_task_action_chain(intptr_t exinf)   {
         &frontArm,
         perceptionDataAccess,
         line_trace_action(
-            200,// 速度[mm/s]
+            250,// 速度[mm/s]
             false,// 右寄りか左寄りか
             5,// 判定周期[ms]
-            100.0f,// Kp（比例係数）
-            5.0f,// Ki（積分係数）
-            10.0f,// Kd（微分係数）
+            150.0f,// Kp（比例係数）
+            10.0f,// Ki（積分係数）
+            25.0f,// Kd（微分係数）
             is_on_blue_line,
             calc_error_on_black_white_border
         ),
@@ -214,12 +214,12 @@ void    main_task_action_chain(intptr_t exinf)   {
         &frontArm,
         perceptionDataAccess,
         line_trace_action(
-            200,// 速度[mm/s]
+            300,// 速度[mm/s]
             true,// 右寄りか左寄りか
             5,// 判定周期[ms]
-            100.0f,// Kp（比例係数）
-            2.5f,// Ki（積分係数）
-            10.0f,// Kd（微分係数）
+            150.0f,// Kp（比例係数）
+            10.0f,// Ki（積分係数）
+            25.0f,// Kd（微分係数）
             is_on_blue_line,
             calc_error_on_black_white_border
         ),
