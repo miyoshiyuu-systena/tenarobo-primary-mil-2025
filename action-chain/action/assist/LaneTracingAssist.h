@@ -30,7 +30,7 @@ class LaneTracingAssist : public IAssist
     private:
         TwinWheelDrive* mTwinWheelDrive;
         FrontArmDrive* mFrontArmDrive;
-        Perception* mPerception;
+        Perception* mPerc;
         float mBaseLeftSpeed;
         float mBaseRightSpeed;
         float mErrorIntegral;

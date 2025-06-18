@@ -19,6 +19,9 @@ class ICloser
          * @return 終了判定（終了したらtrue, 終了しない場合はfalse）
          */
         virtual bool isClosed() = 0;
+
+    protected:
+        Perception* mPerc;
 };
 
 #endif // _I_CLOSER_H_

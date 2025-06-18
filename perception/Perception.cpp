@@ -1,6 +1,8 @@
 #include "perception/Perception.h"
 #include "device/Device.h"
 #include "debug.h"
+#include "spikeapi.h"
+#include "logger/Logger.h"
 
 using namespace spikeapi;
 
@@ -47,7 +49,7 @@ float Perception::getRightMotorSpeed() const {
     return mRightMotorSpeed;
 }
 
-float Perception::getFrontArmSpeed() {
+float Perception::getFrontArmSpeed() const {
     return mFrontArmSpeed;
 }
 
@@ -116,26 +118,25 @@ void Perception::update() {
         isPerceptionLoggingIgnoreMask ||
         (mMask & MASK_LEFT_MOTOR) != 0b00000000
     ) {
-        mLeftMotorSpeed = twinWheelDrive.getLeftMotorSpeed();
+        mLeftMotorSpeed = twinWheelDrive.getLeftSpeed();
     }
 
     if (
         isPerceptionLoggingIgnoreMask ||
         (mMask & MASK_RIGHT_MOTOR) != 0b00000000
     ) {
-        mRightMotorSpeed = twinWheelDrive.getRightMotorSpeed();
+        mRightMotorSpeed = twinWheelDrive.getRightSpeed();
     }
 
     if (
         isPerceptionLoggingIgnoreMask ||
         (mMask & MASK_FRONT_ARM) != 0b00000000
     ) {
-        mFrontArmSpeed = frontArm.getSpeed();
+        mFrontArmSpeed = frontArmDrive.getSpeed();
     }
     
     if (
-        isPerceptionLoggingIgnoreMask ||
-        (mMask & MASK_CAMERA) != 0b00000000 &&
+        (isPerceptionLoggingIgnoreMask || (mMask & MASK_CAMERA) != 0b00000000) &&
         count_cycle % cameraSaveInterval == 0   // カメラの保存間隔
     ) {
         // loc_cpu();
@@ -167,7 +168,7 @@ void Perception::update() {
     }
 
     if (isPerceptionLoggingEnable) {
-        Logger logger = Logger::getInstance();
+        Logger& logger = Logger::getInstance();
 
         logger.logDebug("--------------------------------");
         logger.logDebug(

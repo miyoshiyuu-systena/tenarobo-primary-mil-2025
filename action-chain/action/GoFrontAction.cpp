@@ -1,6 +1,7 @@
 #include "GoFrontAction.h"
 #include "IAssist.h"
 #include "ICloser.h"
+#include "spikeapi.h"
 
 ActionCall goFrontActionFactory(
     float speed,
@@ -34,6 +35,5 @@ ActionCall goFrontActionFactory(
 
         twinWheelDrive->stop();
         twinWheelDrive->resetCount();
-        frontArmDrive->stop();
-    }
+    };
 }

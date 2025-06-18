@@ -19,7 +19,7 @@ public:
      *  単位: mm
      *  何も検知できていない時は-1を返す
      */
-    int getDistance();
+    int getDistance() const;
 
     /**
      * @note
@@ -35,7 +35,7 @@ public:
      *  カラーセンサーによる測定値
      *  単位: 0~360
      */
-    int getColorH();
+    int getColorH() const;
 
 
     /**
@@ -44,7 +44,7 @@ public:
      *  カラーセンサーによる測定値
      *  単位: 0~100
      */
-    int getColorS();
+    int getColorS() const;
 
     /**
      * 床面のHSV値のうちV(明度)の値
@@ -52,7 +52,7 @@ public:
      *  カラーセンサーによる測定値
      *  単位: 0~100
      */
-    int getColorV();
+    int getColorV() const;
 
     /**
      * 背中のボタンに加えられた力の大きさ
@@ -60,7 +60,7 @@ public:
      *  圧力センサーによる測定値
      *  単位: N
      */
-    float getForce();
+    float getForce() const;
 
     /**
      * 左モーターの回転速度
@@ -68,7 +68,7 @@ public:
      *  モーターによる測定値
      *  単位: °/s
      */
-    float getLeftMotorSpeed();
+    float getLeftMotorSpeed() const;
 
     /**
      * 右モーターの回転速度
@@ -76,7 +76,7 @@ public:
      *  モーターによる測定値
      *  単位: °/s
      */
-    float getRightMotorSpeed();
+    float getRightMotorSpeed() const;
 
     /**
      * 前腕モーターの回転速度
@@ -88,7 +88,7 @@ public:
      *  前腕の回転速度を取得する必要があるのか未検討
      *  どちらかというとエンコード値を取得した方がいい気がする
      */
-    float getFrontArmSpeed();
+    float getFrontArmSpeed() const;
 
     /**
      * 正面の画像
@@ -99,7 +99,7 @@ public:
      *  
      * TODO: カメラの画像を取得する
      */
-    int getFrontImage();
+    int getFrontImage() const;
 
     /**
      * データ更新を宣言するマスク

@@ -6,8 +6,8 @@ class ActionNode;
 #include "perception/Perception.h"
 #include "drive/TwinWheelDrive.h"
 #include "drive/FrontArmDrive.h"
+#include <string>
 #include <functional>
-
 
 /**
  * アクションのコールバック関数の型定義
@@ -82,6 +82,15 @@ public:
      * 次のアクションの削除
      */
     void deleteNext();
+
+private:
+    std::string mActionName;
+    ActionNode* mNextAction;
+    TwinWheelDrive* mTwinWheelDrive;
+    FrontArmDrive* mFrontArmDrive;
+    Perception* mPerc;
+    ActionCall mActionCall;
+    int mVacationTime;
 };
 
 #endif // _ACTION_NODE_H_

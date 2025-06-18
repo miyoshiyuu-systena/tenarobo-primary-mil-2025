@@ -32,6 +32,11 @@ class IAssist
          * @param speeds 次の走行速度[mm/s]（構造体を更新することで次の速度を渡す）
          */
         virtual void correct(float* speeds) = 0;
+
+    protected:
+        TwinWheelDrive* mTwinWheelDrive;
+        FrontArmDrive* mFrontArmDrive;
+        Perception* mPerc;
 };
 
 #endif // _I_ASSIST_H_

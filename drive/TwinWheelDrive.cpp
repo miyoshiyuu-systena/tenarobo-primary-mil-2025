@@ -84,20 +84,15 @@ void TwinWheelDrive::brake()
 void TwinWheelDrive::resetCount()
 {
     mLeftMotor.resetCount();
-}
-
-void TwinWheelDrive::resetCount()
-{
-    mLeftMotor.resetCount();
     mRightMotor.resetCount();
 }
 
-void TwinWheelDrive::getLeftSpeed() const
+float TwinWheelDrive::getLeftSpeed() const
 {
     return mLeftMotor.getSpeed();
 }
 
-void TwinWheelDrive::getRightSpeed() const
+float TwinWheelDrive::getRightSpeed() const
 {
     return mRightMotor.getSpeed();
 }

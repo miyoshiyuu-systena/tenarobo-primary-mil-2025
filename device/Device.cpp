@@ -11,7 +11,7 @@ TwinWheelDrive twinWheelDrive(
 );
 
 FrontArmDrive frontArmDrive(
-    EPort::PORT_C,                  // 前腕モーターのポート
+    EPort::PORT_C                  // 前腕モーターのポート
 );
 
 ForceSensor forceSensor(EPort::PORT_D);

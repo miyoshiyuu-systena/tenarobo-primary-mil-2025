@@ -1,5 +1,6 @@
 #include "spikeapi.h"
 #include "ActionNode.h"
+#include "logger/Logger.h"
 
 using   namespace   spikeapi;
 
@@ -27,8 +28,9 @@ ActionNode::~ActionNode()
 void ActionNode::execute()
 {
     Logger::getInstance().logInfo("ActionNode: " + mActionName + " 実行");
+    ActionNode* curr_ptr = this;
     mActionCall(
-        this,               // 現在のノード(必ず自分自身のポインタとなる)
+        curr_ptr,           // 現在のノード(必ず自分自身のポインタとなる)
         mNextAction,        // 次のノード(自分自身に登録されている次のノードのポインタを渡す)
         mTwinWheelDrive,    // ツインホイールドライブ
         mFrontArmDrive,     // フロントアームドライブ

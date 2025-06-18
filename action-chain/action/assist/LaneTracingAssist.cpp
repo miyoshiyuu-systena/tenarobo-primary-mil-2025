@@ -1,4 +1,5 @@
 #include "LaneTracingAssist.h"
+#include "IAssist.h"
 
 /**
  * XXX: debug
@@ -14,12 +15,10 @@ static const float INTEGRAL_LIMIT = 5.0f;
 LaneTracingAssist::LaneTracingAssist(
     TwinWheelDrive* twinWheelDrive,
     FrontArmDrive* frontArmDrive,
-    Perception* perception
-)
-    : mTwinWheelDrive(twinWheelDrive)
-    , mFrontArmDrive(frontArmDrive)
-    , mPerception(perception)
-{}
+    Perception* perc
+): IAssist(twinWheelDrive, frontArmDrive, perc)
+{
+}
 
 LaneTracingAssist::~LaneTracingAssist()
 {
@@ -41,7 +40,7 @@ void LaneTracingAssist::correct(float* speeds)
     /**
      * 青白線の境界線からの誤差を計算する
      */
-    float error = (float)((mPerception->getColorV() - BLACK_WHITE_BORDER_V_IDEAL) / 100.0f);
+    float error = (float)((mPerc->getColorV() - BLACK_WHITE_BORDER_V_IDEAL) / 100.0f);
 
     mErrorIntegral += error;
     if (mErrorIntegral > INTEGRAL_LIMIT) {

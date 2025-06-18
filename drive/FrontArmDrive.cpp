@@ -9,3 +9,13 @@ FrontArmDrive::FrontArmDrive(EPort port)
 FrontArmDrive::~FrontArmDrive()
 {
 }
+
+void FrontArmDrive::setSpeed(float speed)
+{
+    mMotor.setSpeed(speed);
+}
+
+float FrontArmDrive::getSpeed() const
+{
+    return mMotor.getSpeed();
+}

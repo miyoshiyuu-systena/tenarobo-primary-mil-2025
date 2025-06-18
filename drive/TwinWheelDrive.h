@@ -2,6 +2,9 @@
 #define TWIN_WHEEL_DRIVE_H
 
 #include "Port.h"
+#include "Motor.h"
+
+using namespace spikeapi;
 
 /**
  * 2輪駆動クラス
@@ -95,6 +98,10 @@ public:
      * @return 回転速度（°/s）
      */
     float getRightSpeed() const;
+
+private:
+    Motor mLeftMotor;
+    Motor mRightMotor;
 };
 
 #endif // TWIN_WHEEL_DRIVE_H
