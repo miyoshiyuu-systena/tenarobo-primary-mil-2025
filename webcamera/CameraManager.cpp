@@ -140,6 +140,23 @@ bool CameraManager::getLatestImage(cv::Mat& image) {
 }
 
 /**
+ * その瞬間の画像を取得
+ */
+bool CameraManager::captureImageNow(cv::Mat& image) {
+    if (!m_initialized.load()) {
+        return false;
+    }
+    // スレッドセーフにVideoCaptureを使う
+    std::lock_guard<std::mutex> lock(m_imageMutex);
+    if (m_cap.isOpened()) {
+        if (m_cap.read(image) && !image.empty()) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
  * カメラタスクを開始
  */
 void CameraManager::startCameraTask() {

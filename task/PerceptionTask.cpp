@@ -13,8 +13,7 @@
  */
 static const bool is_logging_enable = false;
 
-// カメラ処理の頻度を大幅に下げる（1000回→10000回に1回）
-static const int camera_save_interval = 10000;
+static const int camera_save_interval = 1000;
 
 int count = 0;
 
@@ -42,12 +41,9 @@ void    perc_task(intptr_t exinf)   {
         if (cameraManager.isInitialized()) {
             // 1フレーム取得して保存
             cv::Mat frame;
-            if (cameraManager.getLatestImage(frame)) {
+            if (cameraManager.captureImageNow(frame)) {
                 // 画像保存の頻度も下げる（100回→500回に1回）
-                static int frameCount = 0;
-                if (++frameCount % 500 == 0) {
-                    cameraManager.saveImage(frame, "perc_task");
-                }
+                cameraManager.saveImage(frame, "perc_task");
             }
         }
     }

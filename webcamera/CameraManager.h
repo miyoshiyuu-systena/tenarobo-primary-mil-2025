@@ -47,6 +47,13 @@ public:
     bool getLatestImage(cv::Mat& image);
 
     /**
+     * その瞬間の画像を取得
+     * @param image 取得した画像を格納
+     * @return 取得成功時true
+     */
+    bool captureImageNow(cv::Mat& image);
+
+    /**
      * カメラが初期化されているかチェック
      * @return 初期化済みの場合true
      */
