@@ -13,6 +13,7 @@
  * @param Ki 積分係数
  * @param Kd 微分係数
  * @param judge ライントレース終了の判定
+ * @param calc_error 誤差の計算
  * @return ライントレースアクション
  */
 std::function<void(ActionNode*&)> line_trace_action(
