@@ -76,7 +76,7 @@ void    main_task_action_chain(intptr_t exinf)   {
     );
 
     float speeds[2];
-    calcStraightSpeed(500.0f, speeds);
+    calcStraightSpeed(600.0f, speeds);
     ActionNode* action1 = new ActionNode(
         &twinWheelDrive,
         &frontArm,
@@ -85,10 +85,10 @@ void    main_task_action_chain(intptr_t exinf)   {
             speeds,
             false,
             3,
-            75.0f,
-            1.0f,
+            100.0f,
+            1.5f,
             0.25f,
-            5000,
+            4000,
             calc_error_on_black_white_border
         ),
         "黒直線の左側を走行する、青色の床面に差し当たったら停止する",
@@ -97,7 +97,7 @@ void    main_task_action_chain(intptr_t exinf)   {
     action0->setNext(action1);
 
     float speeds2[2];
-    calcCurveSpeeds(15.0f, true, 350.0f, speeds2);
+    calcCurveSpeeds(30.0f, true, 350.0f, speeds2);
     ActionNode* action2 = new ActionNode(
         &twinWheelDrive,
         &frontArm,
@@ -106,8 +106,8 @@ void    main_task_action_chain(intptr_t exinf)   {
             speeds2,
             false,
             3,
-            125.0f,
-            5.0f,
+            100.0f,
+            10.0f,
             0.25f,
             is_on_blue,
             calc_error_on_black_white_border
