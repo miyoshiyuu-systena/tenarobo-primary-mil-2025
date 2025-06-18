@@ -90,6 +90,27 @@ float getRightMotorSpeed();
 float getFrontArmSpeed();
 
 /**
+ * データ更新を宣言するマスク
+ * 逆に言うと更新する必要のないデータは更新しない
+ * 
+ * @param mask データ更新を宣言するマスク
+ * 
+ * @note
+ *  0: 更新しない
+ *  1: 更新する
+ *  
+ *  [7] Webカメラ
+ *  [6] 超音波センサー
+ *  [5] カラーセンサー
+ *  [4] 圧力センサー
+ *  [3] 左モーター
+ *  [2] 右モーター
+ *  [1] 前腕モーター
+ *  [0] ハブ内蔵IMU
+ */
+void setMask(uint8_t mask);
+
+/**
  * センサーの値を取得するタスク
  */
 void perception_task();

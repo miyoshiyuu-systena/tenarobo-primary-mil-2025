@@ -44,7 +44,7 @@ static float mFrontArmSpeed = -1.0f;
  * [1] 前腕モーター
  * [0] ハブ内蔵IMU
  */
-static uint8_t mask = 0b00000000;
+static uint8_t mMask = 0b00000000;
 #define MASK_CAMERA         (1 << 7)
 #define MASK_ULTRASONIC     (1 << 6)
 #define MASK_COLOR          (1 << 5)
@@ -99,13 +99,18 @@ float getFrontArmSpeed()
     return mFrontArmSpeed;
 }
 
+void setMask(uint8_t mask)
+{
+    mMask = mask;
+}
+
 void perception_task()
 {
-    if (mask & MASK_ULTRASONIC) {
+    if (mMask & MASK_ULTRASONIC) {
         mDistance = ultrasonicSensor.getDistance();
     }
     
-    if (mask & MASK_COLOR) {
+    if (mMask & MASK_COLOR) {
         ColorSensor::HSV hsv;
         colorSensor.getHSV(hsv, true);
         loc_cpu();
@@ -115,24 +120,24 @@ void perception_task()
         unl_cpu();
     }
 
-    if (mask & MASK_FORCE) {
+    if (mMask & MASK_FORCE) {
         mForce = forceSensor.getForce();
     }
 
-    if (mask & MASK_LEFT_MOTOR) {
+    if (mMask & MASK_LEFT_MOTOR) {
         mLeftMotorSpeed = twinWheelDrive.getLeftMotorSpeed();
     }
 
-    if (mask & MASK_RIGHT_MOTOR) {
+    if (mMask & MASK_RIGHT_MOTOR) {
         mRightMotorSpeed = twinWheelDrive.getRightMotorSpeed();
     }
 
-    if (mask & MASK_FRONT_ARM) {
+    if (mMask & MASK_FRONT_ARM) {
         mFrontArmSpeed = frontArm.getSpeed();
     }
     
     if (
-        mask & MASK_CAMERA &&
+        mMask & MASK_CAMERA &&
         count_cycle % cameraSaveInterval == 0   // カメラの保存間隔
     ) {
         // TODO: カメラの画像を保存
