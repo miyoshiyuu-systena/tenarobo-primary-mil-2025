@@ -16,6 +16,7 @@ AroundBottleEdgeAction.o\
 StartOnPressureSensorAction.o\
 GenerateInfinityWanderAroundAction.o\
 LineTraceAction.o\
+LineTraceTimedAction.o\
 CircleAction.o\
 TurnAction.o\
 StraightGoAction.o\
