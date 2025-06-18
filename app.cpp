@@ -72,7 +72,7 @@ void    main_task_action_chain(intptr_t exinf)   {
 
     float speeds[2];
     // calcStraightSpeed(500.0f, speeds);
-    calcCurveSpeeds(45.0f, true, 300.0f, speeds);
+    calcCurveSpeeds(60.0f, true, 300.0f, speeds);
     ActionNode* action1 = new ActionNode(
         &twinWheelDrive,
         &frontArm,
@@ -82,7 +82,7 @@ void    main_task_action_chain(intptr_t exinf)   {
             false,
             5,
             125.0f,
-            1.0f,
+            5.0f,
             0.25f,
             is_on_blue_line,
             calc_error_on_black_white_border
