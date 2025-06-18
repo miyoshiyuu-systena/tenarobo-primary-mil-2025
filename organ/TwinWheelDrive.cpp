@@ -1,7 +1,6 @@
 #include "TwinWheelDrive.h"
-#include <cmath>
-#include <algorithm>
 #include "TwinWheelConst.h"
+#include "TwinWheelLogic.h"
 
 using   namespace   spikeapi;
 
@@ -67,64 +66,22 @@ void TwinWheelDrive::rightSpinTurn(int angular_speed)
 
 void TwinWheelDrive::curveLeftSpeed(float angular_speed, float radius)
 {
-    // 半径が車輪間隔の半分より小さい場合は停止
-    if (radius < WHEEL_TREAD_MM / 2.0f) {
-        stop();
-        return;
-    }
-    
-    // 左曲線：右輪が外輪、左輪が内輪
-    float outer_radius = radius + WHEEL_TREAD_MM / 2.0f;
-    float inner_radius = radius - WHEEL_TREAD_MM / 2.0f;
-    
-    // 角速度(°/s)から線速度(mm/s)に変換
-    float outer_speed_mms = angular_speed * outer_radius * (M_PI / 180.0f);
-    float inner_speed_mms = angular_speed * inner_radius * (M_PI / 180.0f);
-    
-    // mm/sから°/sに変換
-    float outer_speed = outer_speed_mms * 360.0f / (M_PI * WHEEL_DIAMETER_MM);
-    float inner_speed = inner_speed_mms * 360.0f / (M_PI * WHEEL_DIAMETER_MM);
-    
-    // 内輪の速度が負になる場合は0にする
-    if (inner_speed < 0.0f) {
-        inner_speed = 0.0f;
-    }
+    float speeds[2];
+    calculateCurveSpeeds(angular_speed, radius, speeds);
 
-    // 右輪（外輪）と左輪（内輪）の速度を設定
-    mRightMotor.setSpeed(outer_speed);
-    mLeftMotor.setSpeed(inner_speed);
+    mRightMotor.setSpeed(speeds[1]);
+    mLeftMotor.setSpeed(speeds[0]);
 }
 
 void TwinWheelDrive::curveRightSpeed(float angular_speed, float radius)
 {
-    // 半径が車輪間隔の半分より小さい場合は停止
-    if (radius < WHEEL_TREAD_MM / 2.0f) {
-        stop();
-        return;
-    }
-    
-    // 右曲線：左輪が外輪、右輪が内輪
-    float outer_radius = radius + WHEEL_TREAD_MM / 2.0f;
-    float inner_radius = radius - WHEEL_TREAD_MM / 2.0f;
-    
-    // 角速度(°/s)から線速度(mm/s)に変換
-    float outer_speed_mms = angular_speed * outer_radius * (M_PI / 180.0f);
-    float inner_speed_mms = angular_speed * inner_radius * (M_PI / 180.0f);
-    
-    // mm/sから°/sに変換
-    float outer_speed = outer_speed_mms * 360.0f / (M_PI * WHEEL_DIAMETER_MM);
-    float inner_speed = inner_speed_mms * 360.0f / (M_PI * WHEEL_DIAMETER_MM);
-    
-    // 内輪の速度が負になる場合は0にする
-    if (inner_speed < 0.0f) {
-        inner_speed = 0.0f;
-    }
-    
-    // 左輪（外輪）と右輪（内輪）の速度を設定
-    mLeftMotor.setSpeed(outer_speed);
-    mRightMotor.setSpeed(inner_speed);
-}
+    float speeds[2];
+    calculateCurveSpeeds(angular_speed, radius, speeds);
 
+    mRightMotor.setSpeed(speeds[0]);
+    mLeftMotor.setSpeed(speeds[1]);
+}
+    
 void TwinWheelDrive::setPower(int left_power, int right_power)
 {
     // PWM値の範囲チェック（-100〜100）

@@ -6,6 +6,7 @@ APPL_CXXOBJS +=\
 PerceptionTask.o\
 Logger.o\
 TwinWheelDrive.o\
+TwinWheelLogic.o\
 ActionNode.o\
 PerceptionDataAccess.o\
 ModuleAccess.o\
