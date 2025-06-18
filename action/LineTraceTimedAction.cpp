@@ -31,7 +31,7 @@ std::function<void(ActionNode*&)> line_trace_timed_action(
                 speed[1] + side_symbol * control_output      //  右輪
             );
             time_count += duration;
-            dly_tsk(duration);
+            dly_tsk(duration * 1000);
         } while (time_count < stop_time);
 
         twinWheelDrive.stop();
