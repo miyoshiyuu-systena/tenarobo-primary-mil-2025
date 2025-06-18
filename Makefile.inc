@@ -3,7 +3,9 @@ USE_RASPIKE_ART=1
 mkfile_path := $(dir $(lastword $(MAKEFILE_LIST)))
 
 APPL_CXXOBJS +=\
+	IAssist.o\
 	LaneTraceingAssist.o\
+	ICloser.o\
 	BlackFloorCloser.o\
 	BlueFloorCloser.o\
 	GoFrontAction.o\
@@ -33,9 +35,10 @@ APPL_DIRS += \
 	$(mkfile_path)action-chain/action/assist \
 	$(mkfile_path)action-chain/action/closer \
 	$(mkfile_path)device \
+	$(mkfile_path)drive \
 	$(mkfile_path)logger \
 	$(mkfile_path)perception \
-	$(mkfile_path)webcamera \
+	$(mkfile_path)web-camera \
 
 INCLUDES += \
 	-I$(mkfile_path)action-chain \
@@ -43,9 +46,10 @@ INCLUDES += \
 	-I$(mkfile_path)action-chain/action/assist \
 	-I$(mkfile_path)action-chain/action/closer \
 	-I$(mkfile_path)device \
+	-I$(mkfile_path)drive \
 	-I$(mkfile_path)logger \
 	-I$(mkfile_path)perception \
-	-I$(mkfile_path)webcamera \
+	-I$(mkfile_path)web-camera \
 	-I/usr/include/opencv4\
 	-I/usr/include/opencv4/opencv2\
 

@@ -7,14 +7,23 @@
 #include "action-chain/action/closer/BlueFloorCloser.h"
 #include "action-chain/action/HachikouAction.h"
 #include "action-chain/action/GoFrontAction.h"
+#include "perception/Perception.h"
 
 using namespace spikeapi;
+
+/**
+ * 知覚タスク
+ * @param exinf 拡張情報
+ */
+void perc_task(intptr_t exinf) {
+    perception.update();
+}
 
 /**
  * メイン処理
  * @param   exinf     拡張情報
  */
-void    main_task(intptr_t exinf)   {
+void main_task(intptr_t exinf)   {
     // ロガーインスタンスの取得
     Logger& logger = Logger::getInstance();
 
