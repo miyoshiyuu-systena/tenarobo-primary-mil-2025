@@ -14,9 +14,6 @@ class BlueFloorCloser : public ICloser
 
         void init() override;
         bool isClosed() override;
-
-    private:
-        Perception* mPerc;
 };
 
 #endif // _BLUE_FLOOR_CLOSER_H_

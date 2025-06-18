@@ -28,9 +28,6 @@ class LaneTracingAssist : public IAssist
         void correct(float* speeds) override;
 
     private:
-        TwinWheelDrive* mTwinWheelDrive;
-        FrontArmDrive* mFrontArmDrive;
-        Perception* mPerc;
         float mBaseLeftSpeed;
         float mBaseRightSpeed;
         float mErrorIntegral;
