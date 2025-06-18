@@ -62,7 +62,8 @@ void    main_task_action_chain(intptr_t exinf)   {
         &frontArm,
         perceptionDataAccess,
         start_on_pressure_sensor_action(3.0f),
-        "ボタンが押されるまでハチ公モード！！"
+        "ボタンが押されるまでハチ公モード！！",
+        0
     );
 
     ActionNode* action1 = new ActionNode(
@@ -79,7 +80,8 @@ void    main_task_action_chain(intptr_t exinf)   {
             is_on_blue_line,
             calc_error_on_black_white_border
         ),
-        "黒いラインの右側を走行し、青い線が見つかったら終了"
+        "黒いラインの右側を走行し、青い線が見つかったら終了",
+        0
     );
     action0->setNext(action1);
 
@@ -97,7 +99,8 @@ void    main_task_action_chain(intptr_t exinf)   {
             is_on_black_line,
             calc_error_on_blue_white_border
         ),
-        "青いラインの右側を走行し、黒い線が見つかったら終了"
+        "青いラインの右側を走行し、黒い線が見つかったら終了",
+        0
     );
     action1->setNext(action2);
 
@@ -115,7 +118,8 @@ void    main_task_action_chain(intptr_t exinf)   {
             is_on_blue_line,
             calc_error_on_black_white_border
         ),
-        "黒いラインの左側を走行し、青い線が見つかったら終了"
+        "黒いラインの左側を走行し、青い線が見つかったら終了",
+        0
     );
     action2->setNext(action3);
 
@@ -133,7 +137,8 @@ void    main_task_action_chain(intptr_t exinf)   {
             is_on_black_line,
             calc_error_on_blue_white_border
         ),
-        "青いラインの右側を走行し、黒い線が見つかったら終了"
+        "青いラインの右側を走行し、黒い線が見つかったら終了",
+        0
     );
     action3->setNext(action4);
 
@@ -151,7 +156,8 @@ void    main_task_action_chain(intptr_t exinf)   {
             is_on_blue_line,
             calc_error_on_black_white_border
         ),
-        "黒いラインの右側を走行し、青い線が見つかったら終了(ここから難所)"
+        "黒いラインの右側を走行し、青い線が見つかったら終了(ここから難所)",
+        0
     );
     action4->setNext(action5);
 
@@ -169,7 +175,8 @@ void    main_task_action_chain(intptr_t exinf)   {
             is_on_black_line,
             calc_error_on_blue_white_border
         ),
-        "青いラインの左側を走行し、黒い線が見つかったら終了"
+        "青いラインの左側を走行し、黒い線が見つかったら終了",
+        0
     );
     action5->setNext(action6);
 
@@ -187,7 +194,8 @@ void    main_task_action_chain(intptr_t exinf)   {
             is_on_blue_line,
             calc_error_on_black_white_border
         ),
-        "黒いラインの左側を走行し、青い線が見つかったら終了(ここも難所)"
+        "黒いラインの左側を走行し、青い線が見つかったら終了(ここも難所)",
+        0
     );
     action6->setNext(action7);
 
@@ -205,7 +213,8 @@ void    main_task_action_chain(intptr_t exinf)   {
             is_on_black_line,
             calc_error_on_blue_white_border
         ),
-        "青いラインの右側を走行し、黒い線が見つかったら終了"
+        "青いラインの右側を走行し、黒い線が見つかったら終了",
+        0
     );
     action7->setNext(action8);
 
@@ -223,7 +232,8 @@ void    main_task_action_chain(intptr_t exinf)   {
             is_on_blue_line,
             calc_error_on_black_white_border
         ),
-        "黒いラインの右側を走行し、青い線が見つかったら終了"
+        "黒いラインの右側を走行し、青い線が見つかったら終了",
+        0
     );
     action8->setNext(action9);
 

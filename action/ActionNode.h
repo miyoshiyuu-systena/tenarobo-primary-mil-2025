@@ -28,7 +28,7 @@ public:
         PerceptionDataAccess& percDataAccess,
         std::function<void(ActionNode*&)> actionCall,
         std::string actionName,
-        int vacationTime = 500
+        int vacationTime
     );
 
     /**

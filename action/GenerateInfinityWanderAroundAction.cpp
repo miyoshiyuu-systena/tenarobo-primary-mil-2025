@@ -23,7 +23,8 @@ std::function<void(ActionNode*&)> generate_infinity_wander_around_action()
             100,    // モーターの速度出力mm/s
             1000    // 壁の接近を検知する間隔時間ms
         ),
-        "ペットボトルに激突するまで猪突猛進！！"
+        "ペットボトルに激突するまで猪突猛進！！",
+        0
     );
     next_ptr = runAction;
 
@@ -32,7 +33,8 @@ std::function<void(ActionNode*&)> generate_infinity_wander_around_action()
         &frontArm,
         perceptionDataAccess,
         turn_180_action(1000),
-        "その場でくるりん！！"
+        "その場でくるりん！！",
+        0
     );
     runAction->setNext(turnAction);
 
@@ -41,7 +43,8 @@ std::function<void(ActionNode*&)> generate_infinity_wander_around_action()
         &frontArm,
         perceptionDataAccess,
         generate_infinity_wander_around_action(),
-        "無限に生成する・・・"
+        "無限に生成する・・・",
+        0
     );
     turnAction->setNext(infinityAction);
     };
