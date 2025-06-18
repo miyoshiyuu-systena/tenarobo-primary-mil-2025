@@ -1,9 +1,7 @@
 #ifndef TWIN_WHEEL_DRIVE_H
 #define TWIN_WHEEL_DRIVE_H
 
-#include "spikeapi.h"
-
-using namespace spikeapi;
+#include "Port.h"
 
 /**
  * 2輪駆動クラス
