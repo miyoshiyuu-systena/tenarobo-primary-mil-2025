@@ -1,4 +1,5 @@
 #include "CameraManager.h"
+#include "logging/Logger.h"
 #include <iostream>
 #include <sys/stat.h>
 #include <iomanip>
@@ -17,11 +18,16 @@ CameraManager& CameraManager::getInstance() {
 /**
  * プライベートコンストラクタ
  */
+/**
+ * XXX: 保存する画像のサフィックスを出力できないか
+ */
 CameraManager::CameraManager() 
     : m_initialized(false)
     , m_cameraTaskRunning(false)
-    , m_imageDirectory("/home/mil/work/RasPike-ART/sdk/workspace/img/") {
-}
+    /**
+     * XXX: コンストラクタで注入できないか
+     */
+    , m_imageDirectory("/home/mil/work/RasPike-ART/sdk/workspace/img/")　{}
 
 /**
  * カメラの初期化
@@ -31,11 +37,11 @@ bool CameraManager::initializeCamera() {
         return true; // 既に初期化済み
     }
 
-    std::cout << "カメラの初期化を開始..." << std::endl;
+    Logger::getInstance().logInfo("カメラの初期化を開始...");
 
     // 複数のカメラデバイスを試行
     for (int i = 0; i < 3; i++) {
-        std::cout << "カメラデバイス " << i << " を試行中..." << std::endl;
+        Logger::getInstance().logInfo("カメラデバイス " + std::to_string(i) + " を試行中...");
         m_cap.open(i);
         
         if (m_cap.isOpened()) {
@@ -50,8 +56,8 @@ bool CameraManager::initializeCamera() {
             // テストフレームを取得
             cv::Mat testFrame;
             if (m_cap.read(testFrame) && !testFrame.empty()) {
-                std::cout << "カメラデバイス " << i << " が正常に初期化されました" << std::endl;
-                std::cout << "画像サイズ: " << testFrame.cols << "x" << testFrame.rows << std::endl;
+                Logger::getInstance().logInfo("カメラデバイス " + std::to_string(i) + " が正常に初期化されました");
+                Logger::getInstance().logInfo("画像サイズ: " + std::to_string(testFrame.cols) + "x" + std::to_string(testFrame.rows));
                 
                 // 最新画像として保存
                 {
@@ -62,15 +68,15 @@ bool CameraManager::initializeCamera() {
                 m_initialized.store(true);
                 return true;
             } else {
-                std::cout << "カメラデバイス " << i << " からフレームを取得できませんでした" << std::endl;
+                Logger::getInstance().logInfo("カメラデバイス " + std::to_string(i) + " からフレームを取得できませんでした");
                 m_cap.release();
             }
         } else {
-            std::cout << "カメラデバイス " << i << " を開けませんでした" << std::endl;
+            Logger::getInstance().logInfo("カメラデバイス " + std::to_string(i) + " を開けませんでした");
         }
     }
     
-    std::cout << "カメラの初期化に失敗しました" << std::endl;
+    Logger::getInstance().logInfo("カメラの初期化に失敗しました");
     return false;
 }
 
@@ -81,7 +87,7 @@ void CameraManager::shutdownCamera() {
     if (m_initialized.load()) {
         m_cap.release();
         m_initialized.store(false);
-        std::cout << "カメラを終了しました" << std::endl;
+        Logger::getInstance().logInfo("カメラを終了しました");
     }
 }
 
@@ -114,10 +120,10 @@ std::string CameraManager::saveImage(const cv::Mat& image, const std::string& pr
     bool success = cv::imwrite(filename, image, compression_params);
     
     if (success) {
-        std::cout << "画像を保存しました: " << filename << std::endl;
+        Logger::getInstance().logInfo("画像を保存しました: " + filename);
         return filename;
     } else {
-        std::cerr << "画像の保存に失敗しました: " << filename << std::endl;
+        Logger::getInstance().logError("画像の保存に失敗しました: " + filename);
         return "";
     }
 }
@@ -162,7 +168,7 @@ bool CameraManager::captureImageNow(cv::Mat& image) {
 void CameraManager::startCameraTask() {
     if (!m_cameraTaskRunning.load()) {
         m_cameraTaskRunning.store(true);
-        std::cout << "カメラタスクを開始しました" << std::endl;
+        Logger::getInstance().logInfo("カメラタスクを開始しました");
     }
 }
 
@@ -171,7 +177,7 @@ void CameraManager::startCameraTask() {
  */
 void CameraManager::stopCameraTask() {
     m_cameraTaskRunning.store(false);
-    std::cout << "カメラタスクを停止しました" << std::endl;
+    Logger::getInstance().logInfo("カメラタスクを停止しました");
 }
 
 /**
@@ -179,11 +185,11 @@ void CameraManager::stopCameraTask() {
  */
 void CameraManager::runCameraTask() {
     if (!m_initialized.load()) {
-        std::cout << "カメラが初期化されていません" << std::endl;
+        Logger::getInstance().logError("カメラが初期化されていません");
         return;
     }
 
-    std::cout << "カメラタスク開始" << std::endl;
+    Logger::getInstance().logInfo("カメラタスク開始");
     
     while (m_cameraTaskRunning.load()) {
         // 非ブロッキングでフレームを取得
@@ -205,10 +211,13 @@ void CameraManager::runCameraTask() {
         }
         
         // RTOSの他のタスクにCPU時間を譲る
+        /**
+         * XXX: RTOSのインターフェースを使用できないかdly_tsk
+         */
         usleep(10000); // 10ms待機
     }
     
-    std::cout << "カメラタスク終了" << std::endl;
+    Logger::getInstance().logInfo("カメラタスク終了");
 }
 
 /**
@@ -219,9 +228,9 @@ void CameraManager::createImageDirectory(const std::string& directory) {
     
     if (stat(directory.c_str(), &st) == -1) {
         if (mkdir(directory.c_str(), 0755) == 0) {
-            std::cout << "画像ディレクトリを作成しました: " << directory << std::endl;
+            Logger::getInstance().logInfo("画像ディレクトリを作成しました: " + directory);
         } else {
-            std::cerr << "画像ディレクトリの作成に失敗しました: " << directory << std::endl;
+            Logger::getInstance().logError("画像ディレクトリの作成に失敗しました: " + directory);
         }
     }
 } 

@@ -30,7 +30,10 @@ void    perc_task(intptr_t exinf)   {
          */
         static CameraManager& cameraManager = CameraManager::getInstance();
         static bool initAttempted = false;
-        
+
+        /**
+         * XXX: メインタスクで実装できないか
+         */
         // カメラが初期化されていない場合は初期化を試行（一度だけ）
         if (!cameraManager.isInitialized() && !initAttempted) {
             cameraManager.initializeCamera();
