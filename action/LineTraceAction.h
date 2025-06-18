@@ -49,11 +49,7 @@ std::function<void(ActionNode*&)> line_trace_action(
     std::function<float(int h, int s, int v)> calc_error
 );
 
-/**
- * 青線上にいるかどうかを判定する
- * @return 青線上にいるかどうか
- */
-bool is_on_blue_line(void);
+
 
 /**
  * 黒線上にいるかどうかを判定する
