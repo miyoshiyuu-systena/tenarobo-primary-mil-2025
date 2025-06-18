@@ -18,6 +18,9 @@
 #include    "action/StartOnPressureSensorAction.h"
 #include    "action/GenerateInfinityWanderAroundAction.h"
 #include    "action/LineTraceAction.h"
+#include    "action/TurnAction.h"
+#include    "action/CircleAction.h"
+#include    "action/StraightGoAction.h"
 
 using namespace spikeapi;
 
@@ -66,97 +69,80 @@ void    main_task_action_chain(intptr_t exinf)   {
         0
     );
 
-    ActionNode* action1 = new ActionNode(
-        &twinWheelDrive,
-        &frontArm,
-        perceptionDataAccess,
-        line_trace_action(
-            200,// 速度[mm/s]
-            true,// 右寄りか左寄りか
-            5,// 判定周期[ms]
-            100.0f,// Kp（比例係数）
-            5.0f,// Ki（積分係数）
-            5.0f,// Kd（微分係数）
-            is_on_blue_line,
-            calc_error_on_black_white_border
-        ),
-        "黒いラインの右側を走行し、青い線が見つかったら終了",
-        0
-    );
-    action0->setNext(action1);
+    // ActionNode* action1 = new ActionNode(
+    //     &twinWheelDrive,
+    //     &frontArm,
+    //     perceptionDataAccess,
+    //     line_trace_action(
+    //         200,// 速度[mm/s]
+    //         true,// 右寄りか左寄りか
+    //         5,// 判定周期[ms]
+    //         100.0f,// Kp（比例係数）
+    //         5.0f,// Ki（積分係数）
+    //         5.0f,// Kd（微分係数）
+    //         is_on_blue_line,
+    //         calc_error_on_black_white_border
+    //     ),
+    //     "黒いラインの右側を走行し、青い線が見つかったら終了",
+    //     0
+    // );
+    // action0->setNext(action1);
 
-    ActionNode* action2 = new ActionNode(
-        &twinWheelDrive,
-        &frontArm,
-        perceptionDataAccess,
-        line_trace_action(
-            150,// 速度[mm/s]
-            false,// 右寄りか左寄りか
-            5,// 判定周期[ms]
-            75.0f,// Kp（比例係数）
-            2.5f,// Ki（積分係数）
-            10.0f,// Kd（微分係数）
-            is_on_black_line,
-            calc_error_on_blue_white_border
-        ),
-        "青いラインの右側を走行し、黒い線が見つかったら終了",
-        0
-    );
-    action1->setNext(action2);
+    // ActionNode* action2 = new ActionNode(
+    //     &twinWheelDrive,
+    //     &frontArm,
+    //     perceptionDataAccess,
+    //     line_trace_action(
+    //         150,// 速度[mm/s]
+    //         false,// 右寄りか左寄りか
+    //         5,// 判定周期[ms]
+    //         75.0f,// Kp（比例係数）
+    //         2.5f,// Ki（積分係数）
+    //         10.0f,// Kd（微分係数）
+    //         is_on_black_line,
+    //         calc_error_on_blue_white_border
+    //     ),
+    //     "青いラインの右側を走行し、黒い線が見つかったら終了",
+    //     0
+    // );
+    // action1->setNext(action2);
 
-    ActionNode* action3 = new ActionNode(
-        &twinWheelDrive,
-        &frontArm,
-        perceptionDataAccess,
-        line_trace_action(
-            250,// 速度[mm/s]
-            false,// 右寄りか左寄りか
-            5,// 判定周期[ms]
-            125.0f,// Kp（比例係数）
-            10.0f,// Ki（積分係数）
-            10.0f,// Kd（微分係数）
-            is_on_blue_line,
-            calc_error_on_black_white_border
-        ),
-        "黒いラインの左側を走行し、青い線が見つかったら終了",
-        0
-    );
-    action2->setNext(action3);
+    // ActionNode* action3 = new ActionNode(
+    //     &twinWheelDrive,
+    //     &frontArm,
+    //     perceptionDataAccess,
+    //     turn_action(30, 750, true),
+    //     " 右方向に回転する",
+    //     0
+    // );
+    // action2->setNext(action3);
 
     ActionNode* action4 = new ActionNode(
         &twinWheelDrive,
         &frontArm,
         perceptionDataAccess,
-        line_trace_action(
-            150,// 速度[mm/s]
-            true,// 右寄りか左寄りか
-            5,// 判定周期[ms]
-            100.0f,// Kp（比例係数）
-            25.0f,// Ki（積分係数）
-            10.0f,// Kd（微分係数）
-            is_on_black_line,
-            calc_error_on_blue_white_border
-        ),
-        "青いラインの右側を走行し、黒い線が見つかったら終了",
+        circle_action(400, 280, 6000, false),
+        "左方向に円弧を描きながら移動する",
         0
     );
-    action3->setNext(action4);
+    action0->setNext(action4);
+
+    // ActionNode* action5 = new ActionNode(
+    //     &twinWheelDrive,
+    //     &frontArm,
+    //     perceptionDataAccess,
+    //     straight_go_action(500, 5, is_on_black_line),
+    //     "直線走行する、黒い線が見つかったら終了",
+    //     0
+    // );
+    // action4->setNext(action5);
 
     ActionNode* action5 = new ActionNode(
         &twinWheelDrive,
         &frontArm,
         perceptionDataAccess,
-        line_trace_action(
-            150,// 速度[mm/s]
-            true,// 右寄りか左寄りか
-            3,// 判定周期[ms]
-            100.0f,// Kp（比例係数）
-            25.0f,// Ki（積分係数）
-            10.0f,// Kd（微分係数）
-            is_on_blue_line,
-            calc_error_on_black_white_border
-        ),
-        "黒いラインの右側を走行し、青い線が見つかったら終了(ここから難所)",
+        circle_action(200, 440, 6000, true),
+        "右方向に円弧を描きながら移動する",
         0
     );
     action4->setNext(action5);
@@ -165,77 +151,11 @@ void    main_task_action_chain(intptr_t exinf)   {
         &twinWheelDrive,
         &frontArm,
         perceptionDataAccess,
-        line_trace_action(
-            150,// 速度[mm/s]
-            false,// 右寄りか左寄りか
-            5,// 判定周期[ms]
-            100.0f,// Kp（比例係数）
-            25.0f,// Ki（積分係数）
-            10.0f,// Kd（微分係数）
-            is_on_black_line,
-            calc_error_on_blue_white_border
-        ),
-        "青いラインの左側を走行し、黒い線が見つかったら終了",
+        circle_action(400, 160, 3000, false),
+        "左方向に円弧を描きながら移動する",
         0
     );
     action5->setNext(action6);
-
-    ActionNode* action7 = new ActionNode(
-        &twinWheelDrive,
-        &frontArm,
-        perceptionDataAccess,
-        line_trace_action(
-            150,// 速度[mm/s]
-            false,// 右寄りか左寄りか
-            5,// 判定周期[ms]
-            100.0f,// Kp（比例係数）
-            25.0f,// Ki（積分係数）
-            10.0f,// Kd（微分係数）
-            is_on_blue_line,
-            calc_error_on_black_white_border
-        ),
-        "黒いラインの左側を走行し、青い線が見つかったら終了(ここも難所)",
-        0
-    );
-    action6->setNext(action7);
-
-    ActionNode* action8 = new ActionNode(
-        &twinWheelDrive,
-        &frontArm,
-        perceptionDataAccess,
-        line_trace_action(
-            150,// 速度[mm/s]
-            true,// 右寄りか左寄りか
-            5,// 判定周期[ms]
-            75.0f,// Kp（比例係数）
-            2.5f,// Ki（積分係数）
-            10.0f,// Kd（微分係数）
-            is_on_black_line,
-            calc_error_on_blue_white_border
-        ),
-        "青いラインの右側を走行し、黒い線が見つかったら終了",
-        0
-    );
-    action7->setNext(action8);
-
-    ActionNode* action9 = new ActionNode(
-        &twinWheelDrive,
-        &frontArm,
-        perceptionDataAccess,
-        line_trace_action(
-            200,// 速度[mm/s]
-            true,// 右寄りか左寄りか
-            5,// 判定周期[ms]
-            100.0f,// Kp（比例係数）
-            5.0f,// Ki（積分係数）
-            5.0f,// Kd（微分係数）
-            is_on_blue_line,
-            calc_error_on_black_white_border
-        ),
-        "黒いラインの右側を走行し、青い線が見つかったら終了",
-        0
-    );
-    action8->setNext(action9);
 
     // ダブルループのシナリオ
     // "黒い線の右側をライントレースして、青い線が見つかったら終了"
