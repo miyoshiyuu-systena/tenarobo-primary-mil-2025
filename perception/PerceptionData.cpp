@@ -135,11 +135,17 @@ void setMask(uint8_t mask)
 
 void perception_task()
 {
-    if ((mMask & MASK_ULTRASONIC) != 0b00000000) {
+    if (
+        isPerceptionLoggingIgnoreMask ||
+        (mMask & MASK_ULTRASONIC) != 0b00000000
+    ) {
         mDistance = ultrasonicSensor.getDistance();
     }
     
-    if ((mMask & MASK_COLOR) != 0b00000000) {
+    if (
+        isPerceptionLoggingIgnoreMask ||
+        (mMask & MASK_COLOR) != 0b00000000
+    ) {
         ColorSensor::HSV hsv;
         colorSensor.getHSV(hsv, true);
         loc_cpu();
@@ -149,23 +155,36 @@ void perception_task()
         unl_cpu();
     }
 
-    if ((mMask & MASK_FORCE) != 0b00000000) {
+    if (
+        isPerceptionLoggingIgnoreMask ||
+        (mMask & MASK_FORCE) != 0b00000000
+    ) {
         mForce = forceSensor.getForce();
     }
 
-    if ((mMask & MASK_LEFT_MOTOR) != 0b00000000) {
+    if (
+        isPerceptionLoggingIgnoreMask ||
+        (mMask & MASK_LEFT_MOTOR) != 0b00000000
+    ) {
         mLeftMotorSpeed = twinWheelDrive.getLeftMotorSpeed();
     }
 
-    if ((mMask & MASK_RIGHT_MOTOR) != 0b00000000) {
+    if (
+        isPerceptionLoggingIgnoreMask ||
+        (mMask & MASK_RIGHT_MOTOR) != 0b00000000
+    ) {
         mRightMotorSpeed = twinWheelDrive.getRightMotorSpeed();
     }
 
-    if ((mMask & MASK_FRONT_ARM) != 0b00000000) {
+    if (
+        isPerceptionLoggingIgnoreMask ||
+        (mMask & MASK_FRONT_ARM) != 0b00000000
+    ) {
         mFrontArmSpeed = frontArm.getSpeed();
     }
     
     if (
+        isPerceptionLoggingIgnoreMask ||
         (mMask & MASK_CAMERA) != 0b00000000 &&
         count_cycle % cameraSaveInterval == 0   // カメラの保存間隔
     ) {
