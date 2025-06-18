@@ -138,10 +138,9 @@ float calc_error_on_black_white_border(int h, int s, int v)
 
 /**
  * 青線と白線の境界線からの誤差を計算する
- * 境界線の理想値はH=140であるとする
  * @return 青線と白線の境界線からの誤差(0-100)
  */
 float calc_error_on_blue_white_border(int h, int s, int v)
 {
-    return (float)((170.0f - h) / 255.0f);
+    return (float)(((60.0f - s) / 100.0f) + ((190.0f - h) / 255.0f));
 }
