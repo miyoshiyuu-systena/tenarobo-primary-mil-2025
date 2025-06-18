@@ -70,12 +70,12 @@ void    main_task_action_chain(intptr_t exinf)   {
         &frontArm,
         perceptionDataAccess,
         line_trace_action(
-            250,// 速度[mm/s]
+            200,// 速度[mm/s]
             true,// 右寄りか左寄りか
             5,// 判定周期[ms]
-            125.0f,// Kp（比例係数）
-            10.0f,// Ki（積分係数）
-            10.0f,// Kd（微分係数）
+            100.0f,// Kp（比例係数）
+            5.0f,// Ki（積分係数）
+            5.0f,// Kd（微分係数）
             is_on_blue_line,
             calc_error_on_black_white_border
         ),
@@ -214,12 +214,12 @@ void    main_task_action_chain(intptr_t exinf)   {
         &frontArm,
         perceptionDataAccess,
         line_trace_action(
-            250,// 速度[mm/s]
+            200,// 速度[mm/s]
             true,// 右寄りか左寄りか
             5,// 判定周期[ms]
-            125.0f,// Kp（比例係数）
-            10.0f,// Ki（積分係数）
-            10.0f,// Kd（微分係数）
+            100.0f,// Kp（比例係数）
+            5.0f,// Ki（積分係数）
+            5.0f,// Kd（微分係数）
             is_on_blue_line,
             calc_error_on_black_white_border
         ),
