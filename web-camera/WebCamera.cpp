@@ -1,12 +1,7 @@
 #include "web-camera/WebCamera.h"
 #include "spikeapi.h"
 
-WebCamera::WebCamera(
-    const std::string& imageDirectory,
-    const std::string& imageSuffix
-): 
-    m_imageDirectory(imageDirectory),
-    m_imageSuffix(imageSuffix),
+WebCamera::WebCamera(): 
     m_isInitialized(false),
     m_savedImageCount(0) 
 {

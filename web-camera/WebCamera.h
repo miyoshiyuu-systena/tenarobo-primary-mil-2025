@@ -13,17 +13,7 @@ class WebCamera {
          * コンストラクタ
          * 初期化そのもの
          */
-        WebCamera(
-            /**
-             * 画像を保存するディレクトリ
-             */
-            const std::string& imageDirectory,
-
-            /**
-             * 画像のサフィックス
-             */
-            const std::string& imageSuffix
-        );
+        WebCamera();
 
         /**
          * デストラクタ
@@ -45,16 +35,6 @@ class WebCamera {
         bool isInitialized() const;
 
     private:
-        /**
-         * 画像を保存するディレクトリ
-         */
-        std::string m_imageDirectory;
-
-        /**
-         * 画像のサフィックス
-         */
-        std::string m_imageSuffix;
-
         /**
          * カメラのソフトウェアアクセスの確立に成功したかどうか
          */
