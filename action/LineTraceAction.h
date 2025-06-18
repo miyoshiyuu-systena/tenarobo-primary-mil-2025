@@ -49,17 +49,4 @@ std::function<void(ActionNode*&)> line_trace_action(
     std::function<float(int h, int s, int v)> calc_error
 );
 
-/**
- * 黒線と白線の境界線からの誤差を計算する
- * @return 黒線と白線の境界線からの誤差
- */
-float calc_error_on_black_white_border(int h, int s, int v);
-
-/**
- * 青線と白線の境界線からの誤差を計算する
- * 境界線の理想値はH=100であるとする
- * @return 青線と白線の境界線からの誤差
- */
-float calc_error_on_blue_white_border(int h, int s, int v);
-
 #endif // _LINE_TRACE_ACTION_H_

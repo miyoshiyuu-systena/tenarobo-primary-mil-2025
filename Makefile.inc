@@ -20,6 +20,10 @@ CircleAction.o\
 TurnAction.o\
 StraightGoAction.o\
 CalcPidControl.o\
+CalcErrorOnBlackWhiteBorder.o\
+CalcErrorOnBlueWhiteBorder.o\
+IsOnBlack.o\
+IsOnBlue.o\
 
 SRCLANG := c++
 
@@ -37,6 +41,7 @@ APPL_DIRS += \
 	$(mkfile_path)action \
 	$(mkfile_path)share \
 	$(mkfile_path)logic \
+	$(mkfile_path)judge \
 
 INCLUDES += \
 	-I$(mkfile_path)task\
@@ -45,5 +50,6 @@ INCLUDES += \
 	-I$(mkfile_path)action\
 	-I$(mkfile_path)share\
 	-I$(mkfile_path)logic\
+	-I$(mkfile_path)judge\
 
 COPTS += -std=gnu++11

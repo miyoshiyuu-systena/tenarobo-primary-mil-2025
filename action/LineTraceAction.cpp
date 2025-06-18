@@ -74,23 +74,3 @@ std::function<void(ActionNode*&)> line_trace_action(
         twinWheelDrive.resetRightCount();
     };
 }
-
-/**
- * 黒線と白線の境界線からの誤差を計算する
- * 境界線の理想値はV=45であるとする
- * @return 黒線と白線の境界線からの誤差(0-100)
- */
-float calc_error_on_black_white_border(int h, int s, int v)
-{
-    return (float)((v - 60.0f) / 100.0f);
-    // return (float)((v - 45.0f) / 100.0f);
-}
-
-/**
- * 青線と白線の境界線からの誤差を計算する
- * @return 青線と白線の境界線からの誤差(0-100)
- */
-float calc_error_on_blue_white_border(int h, int s, int v)
-{
-    return (float)(((60.0f - s) / 100.0f) + ((190.0f - h) / 255.0f));
-}

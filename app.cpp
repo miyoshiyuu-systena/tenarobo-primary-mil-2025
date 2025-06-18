@@ -22,6 +22,10 @@
 #include    "action/TurnAction.h"
 #include    "action/CircleAction.h"
 #include    "action/StraightGoAction.h"
+#include    "judge/IsOnBlue.h"
+#include    "judge/IsOnBlack.h"
+#include    "logic/CalcErrorOnBlackWhiteBorder.h"
+#include    "logic/CalcErrorOnBlueWhiteBorder.h"
 
 using namespace spikeapi;
 
@@ -84,7 +88,7 @@ void    main_task_action_chain(intptr_t exinf)   {
             125.0f,
             5.0f,
             0.25f,
-            is_on_blue_line,
+            is_on_blue,
             calc_error_on_black_white_border
         ),
         "黒線の右側を走行する、青色の床面に差し当たったら停止する",
