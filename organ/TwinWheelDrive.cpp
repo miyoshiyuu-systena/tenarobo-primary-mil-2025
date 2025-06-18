@@ -67,19 +67,19 @@ void TwinWheelDrive::rightSpinTurn(int angular_speed)
 void TwinWheelDrive::curveLeftSpeed(float angular_speed, float radius)
 {
     float speeds[2];
-    calculateCurveSpeeds(angular_speed, radius, speeds);
+    calculateCurveSpeeds(angular_speed, true, radius, speeds);
 
-    mRightMotor.setSpeed(speeds[1]);
     mLeftMotor.setSpeed(speeds[0]);
+    mRightMotor.setSpeed(speeds[1]);
 }
 
 void TwinWheelDrive::curveRightSpeed(float angular_speed, float radius)
 {
     float speeds[2];
-    calculateCurveSpeeds(angular_speed, radius, speeds);
+    calculateCurveSpeeds(angular_speed, false, radius, speeds);
 
-    mRightMotor.setSpeed(speeds[0]);
-    mLeftMotor.setSpeed(speeds[1]);
+    mLeftMotor.setSpeed(speeds[0]);
+    mRightMotor.setSpeed(speeds[1]);
 }
     
 void TwinWheelDrive::setPower(int left_power, int right_power)
