@@ -1,4 +1,7 @@
 #include "action/LineTraceTimedAction.h"
+#include "logic/CalcPidControl.h"
+#include "share/ModuleAccess.h"
+#include "share/PerceptionDataAccess.h"
 
 std::function<void(ActionNode*&)> line_trace_timed_action(
     float* speed,
