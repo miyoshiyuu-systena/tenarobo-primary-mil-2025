@@ -19,6 +19,7 @@
 #include    "action/StartOnPressureSensorAction.h"
 #include    "action/GenerateInfinityWanderAroundAction.h"
 #include    "action/LineTraceAction.h"
+#include    "action/LineTraceTimedAction.h"
 #include    "action/TurnAction.h"
 #include    "action/CircleAction.h"
 #include    "action/StraightGoAction.h"
@@ -75,23 +76,22 @@ void    main_task_action_chain(intptr_t exinf)   {
     );
 
     float speeds[2];
-    // calcStraightSpeed(500.0f, speeds);
-    calcCurveSpeeds(60.0f, true, 300.0f, speeds);
+    calcStraightSpeed(500.0f, speeds);
     ActionNode* action1 = new ActionNode(
         &twinWheelDrive,
         &frontArm,
         perceptionDataAccess,
-        line_trace_action(
+        line_trace_timed_action(
             speeds,
             false,
-            5,
-            125.0f,
-            5.0f,
+            3,
+            75.0f,
+            1.0f,
             0.25f,
-            is_on_blue,
+            3000,
             calc_error_on_black_white_border
         ),
-        "黒線の右側を走行する、青色の床面に差し当たったら停止する",
+        "黒直線の右側を走行する、青色の床面に差し当たったら停止する",
         0
     );
     action0->setNext(action1);
