@@ -127,8 +127,8 @@ void    main_task_action_chain(intptr_t exinf)   {
             150,// 速度[mm/s]
             true,// 右寄りか左寄りか
             5,// 判定周期[ms]
-            75.0f,// Kp（比例係数）
-            2.5f,// Ki（積分係数）
+            100.0f,// Kp（比例係数）
+            25.0f,// Ki（積分係数）
             10.0f,// Kd（微分係数）
             is_on_black_line,
             calc_error_on_blue_white_border
@@ -163,8 +163,8 @@ void    main_task_action_chain(intptr_t exinf)   {
             150,// 速度[mm/s]
             false,// 右寄りか左寄りか
             5,// 判定周期[ms]
-            75.0f,// Kp（比例係数）
-            2.5f,// Ki（積分係数）
+            100.0f,// Kp（比例係数）
+            25.0f,// Ki（積分係数）
             10.0f,// Kd（微分係数）
             is_on_black_line,
             calc_error_on_blue_white_border
