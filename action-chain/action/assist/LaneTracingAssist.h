@@ -16,7 +16,31 @@ class LaneTracingAssist : public IAssist
         LaneTracingAssist(
             TwinWheelDrive* twinWheelDrive,
             FrontArmDrive* frontArmDrive,
-            Perception* perc);
+            Perception* perc,
+
+            /**
+             * 右側に走行するかどうか
+             * @note
+             *  true: 右側に走行する
+             *  false: 左側に走行する
+             */
+            bool isRightSide,
+
+            /**
+             * 比例ゲイン
+             */
+            float kp,
+
+            /**
+             * 積分ゲイン
+             */
+            float ki,
+
+            /**
+             * 微分ゲイン
+             */
+            float kd
+        );
         ~LaneTracingAssist();
 
         void init(float baseLeftSpeed, float baseRightSpeed) override;
@@ -32,6 +56,7 @@ class LaneTracingAssist : public IAssist
         float mBaseRightSpeed;
         float mErrorIntegral;
         float mPreviousError;
+        bool mIsRightSide;
         float mKp;
         float mKi;
         float mKd;

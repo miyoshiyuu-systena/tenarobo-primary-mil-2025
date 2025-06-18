@@ -48,10 +48,18 @@ void main_task(intptr_t exinf)   {
         100
     );
 
-    IAssist* assist = new LaneTracingAssist(&twinWheelDrive, &frontArmDrive, &perception);
+    IAssist* assist = new LaneTracingAssist(
+        &twinWheelDrive,
+        &frontArmDrive,
+        &perception,
+        true,
+        100.0f,
+        10.0f,
+        0.5f
+    );
     ICloser* closer = new BlueFloorCloser(&perception);
     ActionNode* actionNode1 = new ActionNode(
-        "レーントレーシングアシストで白黒の境界に沿って正面を走行し、青床を検出すると停止",
+        "レーントレーシングアシストで白黒の境界(右縁)に沿って正面を走行し、青床を検出すると停止",
         &twinWheelDrive,
         &frontArmDrive,
         &perception,
