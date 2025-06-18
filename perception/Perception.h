@@ -1,5 +1,5 @@
-#ifndef _PERCEPTION_DATA_H_
-#define _PERCEPTION_DATA_H_
+#ifndef _PERCEPTION_H_
+#define _PERCEPTION_H_
 
 /**
  * 正面の画像
@@ -115,4 +115,4 @@ void setMask(uint8_t mask);
  */
 void perception_task();
 
-#endif
+#endif // _PERCEPTION_H_
