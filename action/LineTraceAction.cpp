@@ -75,28 +75,6 @@ std::function<void(ActionNode*&)> line_trace_action(
     };
 }
 
-
-
-/**
- * 黒線上にいるかどうかを判定する
- * @return 黒線上にいるかどうか
- */
-bool is_on_black_line(void)
-{
-    const int H_UPPER_THRESHOLD = 255;
-    const int H_LOWER_THRESHOLD = 0;
-    const int S_UPPER_THRESHOLD = 255;
-    const int S_LOWER_THRESHOLD = 0;
-    const int V_UPPER_THRESHOLD = 30;
-    const int V_LOWER_THRESHOLD = 0;
-
-    return (
-        (H_LOWER_THRESHOLD <= perceptionDataAccess.color[0] && perceptionDataAccess.color[0] <= H_UPPER_THRESHOLD) &&
-        (S_LOWER_THRESHOLD <= perceptionDataAccess.color[1] && perceptionDataAccess.color[1] <= S_UPPER_THRESHOLD) &&
-        (V_LOWER_THRESHOLD <= perceptionDataAccess.color[2] && perceptionDataAccess.color[2] <= V_UPPER_THRESHOLD)
-    );
-}
-
 /**
  * 黒線と白線の境界線からの誤差を計算する
  * 境界線の理想値はV=45であるとする

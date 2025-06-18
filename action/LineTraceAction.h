@@ -49,14 +49,6 @@ std::function<void(ActionNode*&)> line_trace_action(
     std::function<float(int h, int s, int v)> calc_error
 );
 
-
-
-/**
- * 黒線上にいるかどうかを判定する
- * @return 黒線上にいるかどうか
- */
-bool is_on_black_line(void);
-
 /**
  * 黒線と白線の境界線からの誤差を計算する
  * @return 黒線と白線の境界線からの誤差
