@@ -7,14 +7,14 @@ ActionNode::ActionNode(
     std::string actionName,
     TwinWheelDrive* twinWheelDrive,
     FrontArmDrive* frontArmDrive,
-    PerceptionData* percData,
+    Perception* perc,
     ActionCall actionCall,
     int vacationTime
 )
     : mActionName(actionName)
     , mTwinWheelDrive(twinWheelDrive)
     , mFrontArmDrive(frontArmDrive)
-    , mPercData(percData)
+    , mPerc(perc)
     , mActionCall(actionCall)
     , mVacationTime(vacationTime)
 {}
@@ -27,7 +27,13 @@ ActionNode::~ActionNode()
 void ActionNode::execute()
 {
     Logger::getInstance().logInfo("ActionNode: " + mActionName + " 実行");
-    mActionCall(mNextAction);
+    mActionCall(
+        this,               // 現在のノード(必ず自分自身のポインタとなる)
+        mNextAction,        // 次のノード(自分自身に登録されている次のノードのポインタを渡す)
+        mTwinWheelDrive,    // ツインホイールドライブ
+        mFrontArmDrive,     // フロントアームドライブ
+        mPerc               // 知覚データ
+    );
     dly_tsk(mVacationTime * 1000);
 }
 

@@ -1,9 +1,16 @@
 #ifndef _ACTION_NODE_H_
 #define _ACTION_NODE_H_
 
+#include "Perception.h"
+#include "TwinWheelDrive.h"
+#include "FrontArmDrive.h"
+
 /**
  * アクションのコールバック関数の型定義
  * @param currAction 現在のアクションのポインタ（必ず自分自身のポインタとなる）
+ * @note
+ *  自分自身を渡すのは、自分のタスクを一旦中断して、後から再実施する、みたいな動きを実現するため
+ *  例えば、ライントレースでラインから大きく外れたとき、一旦ラインを探すアクションを実行してから、もう一度ライントレースを実行する
  * @param nextAction 次のアクションのポインタ(自分自身に登録されているポインタを渡す)
  * @param twinWheelDrive ツインホイールドライブのポインタ
  * @param frontArmDrive フロントアームドライブのポインタ
@@ -14,7 +21,7 @@ typedef std::function<void(
     ActionNode*&,
     TwinWheelDrive*&,
     FrontArmDrive*&,
-    PerceptionData*&
+    Perception*&
 )> ActionCall;
 
 /**
@@ -39,7 +46,7 @@ public:
         std::string actionName,
         TwinWheelDrive* twinWheelDrive,
         FrontArmDrive* frontArmDrive,
-        PerceptionData* percData,
+        Perception* perc,
         ActionCall actionCall,
         int vacationTime
     );
