@@ -91,7 +91,7 @@ void    main_task_action_chain(intptr_t exinf)   {
             150,// 速度[mm/s]
             false,// 右寄りか左寄りか
             5,// 判定周期[ms]
-            100.0f,// Kp（比例係数）
+            75.0f,// Kp（比例係数）
             2.5f,// Ki（積分係数）
             10.0f,// Kd（微分係数）
             is_on_black_line,
@@ -127,7 +127,7 @@ void    main_task_action_chain(intptr_t exinf)   {
             150,// 速度[mm/s]
             true,// 右寄りか左寄りか
             5,// 判定周期[ms]
-            100.0f,// Kp（比例係数）
+            75.0f,// Kp（比例係数）
             2.5f,// Ki（積分係数）
             10.0f,// Kd（微分係数）
             is_on_black_line,
@@ -163,7 +163,7 @@ void    main_task_action_chain(intptr_t exinf)   {
             150,// 速度[mm/s]
             false,// 右寄りか左寄りか
             5,// 判定周期[ms]
-            100.0f,// Kp（比例係数）
+            75.0f,// Kp（比例係数）
             2.5f,// Ki（積分係数）
             10.0f,// Kd（微分係数）
             is_on_black_line,
@@ -187,7 +187,7 @@ void    main_task_action_chain(intptr_t exinf)   {
             is_on_blue_line,
             calc_error_on_black_white_border
         ),
-        "黒いラインの左側を走行し、青い線が見つかったら終了"
+        "黒いラインの左側を走行し、青い線が見つかったら終了(ここも難所)"
     );
     action6->setNext(action7);
 
@@ -199,7 +199,7 @@ void    main_task_action_chain(intptr_t exinf)   {
             150,// 速度[mm/s]
             true,// 右寄りか左寄りか
             5,// 判定周期[ms]
-            100.0f,// Kp（比例係数）
+            75.0f,// Kp（比例係数）
             2.5f,// Ki（積分係数）
             10.0f,// Kd（微分係数）
             is_on_black_line,
