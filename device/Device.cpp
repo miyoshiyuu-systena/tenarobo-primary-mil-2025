@@ -20,6 +20,6 @@ ColorSensor colorSensor(EPort::PORT_E);
 
 UltrasonicSensor ultrasonicSensor(EPort::PORT_F);
 
-// WebCamera webCamera;
+WebCamera webCamera;
 
 IMU imu;
