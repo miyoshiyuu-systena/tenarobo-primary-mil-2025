@@ -71,14 +71,15 @@ void    main_task_action_chain(intptr_t exinf)   {
     );
 
     float speeds[2];
-    calcStraightSpeed(500.0f, speeds);
+    // calcStraightSpeed(500.0f, speeds);
+    calcCurveSpeeds(45.0f, true, 300.0f, speeds);
     ActionNode* action1 = new ActionNode(
         &twinWheelDrive,
         &frontArm,
         perceptionDataAccess,
         line_trace_action(
             speeds,
-            true,
+            false,
             5,
             125.0f,
             1.0f,

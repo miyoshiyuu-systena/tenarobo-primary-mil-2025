@@ -8,7 +8,7 @@ void calcStraightSpeed(float speed, float speeds[2])
     speeds[1] = speed;
 }
 
-void calculateCurveSpeeds(float angular_speed, bool is_right, float radius, float speeds[2])
+void calcCurveSpeeds(float angular_speed, bool is_right, float radius, float speeds[2])
 {
     // 半径が車輪間隔の半分より小さい場合は停止
     if (radius < WHEEL_TREAD_MM / 2.0f) {
@@ -35,10 +35,10 @@ void calculateCurveSpeeds(float angular_speed, bool is_right, float radius, floa
     }
 
     if (is_right) {
-        speeds[0] = inner_speed;
-        speeds[1] = outer_speed;
-    } else {
         speeds[0] = outer_speed;
         speeds[1] = inner_speed;
+    } else {
+        speeds[0] = inner_speed;
+        speeds[1] = outer_speed;
     }
 }

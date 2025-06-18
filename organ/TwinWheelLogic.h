@@ -15,6 +15,6 @@ void calcStraightSpeed(float speed, float speeds[2]);
  * @param radius 半径(mm)
  * @param speeds 速度(mm/s)を格納する配列（[0]: 左輪、[1]: 右輪）
  */
-void calculateCurveSpeeds(float angular_speed, bool is_right, float radius, float speeds[2]);
+void calcCurveSpeeds(float angular_speed, bool is_right, float radius, float speeds[2]);
 
 #endif
