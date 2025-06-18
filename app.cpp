@@ -5,6 +5,8 @@
 #include    <cmath>
 #include    <string>
 #include    <vector>
+#include    <unistd.h>
+#include    "spikeapi.h"
 #include    "syssvc/syslog.h"
 #include    "logging/Logger.h"
 #include    "PerceptionTask.h"
@@ -27,6 +29,7 @@
 #include    "judge/IsOnBlack.h"
 #include    "logic/CalcErrorOnBlackWhiteBorder.h"
 #include    "logic/CalcErrorOnBlueWhiteBorder.h"
+#include    "webcamera/CameraManager.h"
 
 using namespace spikeapi;
 
@@ -132,6 +135,7 @@ void    main_task(intptr_t exinf)   {
     // ロガーインスタンスの取得
     Logger& logger = Logger::getInstance();
 
+    // カメラ初期化は知覚タスクで行うため、ここでは削除
     // 知覚タスクの開始
     sta_cyc(PERC_CYC);
 
