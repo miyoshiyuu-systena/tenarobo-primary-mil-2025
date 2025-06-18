@@ -2,7 +2,7 @@
 #include "IAssist.h"
 #include "ICloser.h"
 
-std::function<ActionCall> goFrontActionFactory(
+ActionCall goFrontActionFactory(
     float speed,
     int detectInterval,
     IAssist* assist,
@@ -21,7 +21,7 @@ std::function<ActionCall> goFrontActionFactory(
         closerPtr->init();
 
         do {
-            assist->do(speeds);
+            assist->correct(speeds);
             twinWheelDrive->setSpeed(speeds[0], speeds[1]);
 
             /**

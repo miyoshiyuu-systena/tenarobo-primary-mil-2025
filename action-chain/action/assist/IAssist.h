@@ -12,11 +12,12 @@
 class IAssist
 {
     public:
-        virtual IAssist(
+        IAssist(
             TwinWheelDrive* twinWheelDrive,
             FrontArmDrive* frontArmDrive,
             Perception* perception
-        ) = default;
+        );
+
         virtual ~IAssist() = default;
 
         /**
@@ -30,7 +31,7 @@ class IAssist
          * 走行補助を行う
          * @param speeds 次の走行速度[mm/s]（構造体を更新することで次の速度を渡す）
          */
-        virtual void do(float* speeds) = 0;
+        virtual void correct(float* speeds) = 0;
 };
 
 #endif // _I_ASSIST_H_

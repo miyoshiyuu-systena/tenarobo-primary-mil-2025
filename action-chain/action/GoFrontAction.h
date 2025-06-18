@@ -20,7 +20,7 @@
  * @param closerPtr 終了判定
  * @return 前方に走るアクション
  */
-std::function<ActionCall> goFrontActionFactory(
+ActionCall goFrontActionFactory(
     float speed,
     int detectInterval,
     IAssist* assistPtr,

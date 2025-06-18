@@ -42,6 +42,11 @@ void ActionNode::setNext(ActionNode* nextAction)
     mNextAction = nextAction;
 }
 
+ActionNode* ActionNode::getNext()
+{
+    return mNextAction;
+}
+
 void ActionNode::deleteNext()
 {
     if (mNextAction == nullptr)

@@ -36,7 +36,7 @@ void LaneTracingAssist::init(float baseLeftSpeed, float baseRightSpeed)
     mKd = 0.1f;
 }
 
-void LaneTracingAssist::do(float* speeds)
+void LaneTracingAssist::correct(float* speeds)
 {
     /**
      * 青白線の境界線からの誤差を計算する

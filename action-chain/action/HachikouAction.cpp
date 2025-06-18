@@ -6,7 +6,7 @@
  * 圧力センサを押すまで忠犬ハチ公！！
  * 圧力センサを押したら次のタスクを始めるよ
  */
-std::function<ActionCall> hachikouActionFactory(
+ActionCall hachikouActionFactory(
     float forceDetectThreshold,
     int detectInterval
 )

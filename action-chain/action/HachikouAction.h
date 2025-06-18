@@ -13,7 +13,7 @@
  * @param detectInterval 圧力センサの検知間隔[ms]
  * @return 忠犬ハチ公アクション
  */
-std::function<ActionCall> hachikouActionFactory(
+ActionCall hachikouActionFactory(
     float forceDetectThreshold,
     int detectInterval
 );

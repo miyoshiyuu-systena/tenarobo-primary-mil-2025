@@ -4,7 +4,9 @@
 #include "ActionNode.h"
 #include "Device.h"
 #include "action-chain/action/assist/LaneTracingAssist.h"
-#include "action-chain/action/closer/BlueFloorCloser.h" 
+#include "action-chain/action/closer/BlueFloorCloser.h"
+#include "action-chain/action/HachikouAction.h"
+#include "action-chain/action/GoFrontAction.h"
 
 using namespace spikeapi;
 
@@ -52,11 +54,13 @@ void    main_task(intptr_t exinf)   {
     );
     actionNode0->setNext(actionNode1);
 
-    actionNode0->execute();
     ActionNode* currentNode = actionNode0;
+    ActionNode* previousNode = nullptr;
     while (currentNode != nullptr) {
         currentNode->execute();
+        previousNode = currentNode;
         currentNode = currentNode->getNext();
+        delete previousNode;
     }
 
     // 知覚タスクの停止

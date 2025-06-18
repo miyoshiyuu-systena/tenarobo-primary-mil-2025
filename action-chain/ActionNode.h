@@ -1,10 +1,13 @@
 #ifndef _ACTION_NODE_H_
 #define _ACTION_NODE_H_
 
-#include "Perception.h"
+class ActionNode;
+
+#include "perception/Perception.h"
 #include "drive/TwinWheelDrive.h"
 #include "drive/FrontArmDrive.h"
 #include <functional>
+
 
 /**
  * アクションのコールバック関数の型定義
@@ -68,6 +71,12 @@ public:
      * @param nextAction 次のアクションのポインタ
      */
     void setNext(ActionNode* nextAction);
+
+    /**
+     * 次のアクションの取得
+     * @return 次のアクションのポインタ
+     */
+    ActionNode* getNext();
 
     /**
      * 次のアクションの削除

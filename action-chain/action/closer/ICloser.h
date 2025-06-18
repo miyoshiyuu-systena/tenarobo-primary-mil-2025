@@ -1,7 +1,7 @@
 #ifndef _I_CLOSER_H_
 #define _I_CLOSER_H_
 
-#include    "Perception.h"
+#include "perception/Perception.h"
 
 /**
  * 終了判定インターフェース
@@ -10,7 +10,7 @@
 class ICloser
 {
     public:
-        virtual ICloser(Perception* perc) = default;
+        ICloser(Perception* perc);
         virtual ~ICloser() = default;
         virtual void init() = 0;
 
