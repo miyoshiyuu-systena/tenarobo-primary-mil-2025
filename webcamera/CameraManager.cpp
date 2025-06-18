@@ -27,7 +27,7 @@ CameraManager::CameraManager()
     /**
      * XXX: コンストラクタで注入できないか
      */
-    , m_imageDirectory("/home/mil/work/RasPike-ART/sdk/workspace/img/")　{}
+    , m_imageDirectory("/home/mil/work/RasPike-ART/sdk/workspace/img/") {}
 
 /**
  * カメラの初期化
