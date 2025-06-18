@@ -6,18 +6,26 @@
  * 圧力センサを押すまで忠犬ハチ公！！
  * 圧力センサを押したら次のタスクを始めるよ
  */
-std::function<void(ActionNode*&)> hachikouActionFactory(float force_detect_threshold)
+std::function<ActionCall> hachikouActionFactory(
+    float forceDetectThreshold,
+    int detectInterval
+)
 {
-    return [force_detect_threshold](ActionNode*& next_ptr) {
-        // 検知間隔時間(100ms)
-        static const int DELAY_TIME = 100 * 1000;
-        
-        // 圧力検知の閾値（3.0N）
-        static const float FORCE_DETECT_THRESHOLD = 3.0f;
-        
+    return [forceDetectThreshold, detectInterval](
+        ActionNode*& curr_ptr,
+        ActionNode*& next_ptr,
+        TwinWheelDrive*& twinWheelDrive,
+        FrontArmDrive*& frontArmDrive,
+        Perception*& perc
+    ) {     
         // 圧力センサが押されるまで暇つぶし
-        while (perceptionDataAccess.force <= FORCE_DETECT_THRESHOLD) {
-            dly_tsk(DELAY_TIME);
+        while (perc->getForce() <= forceDetectThreshold) {
+            /**
+             * 検知間隔を待つ
+             * @note
+             *  dly_tskの引き数は[μs]であることに注意
+             */
+            dly_tsk(detectInterval * 1000);
         }
     };
 }
