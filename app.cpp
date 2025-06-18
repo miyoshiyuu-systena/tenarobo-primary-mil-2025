@@ -56,8 +56,8 @@ void main_task(intptr_t exinf)   {
         &frontArmDrive,
         &perception,
         goFrontActionFactory(
-            100,   // 速度[mm/s]
-            100,  // 検知間隔[ms]
+            500,   // 速度[mm/s]
+            5,  // 検知間隔[ms]
             assist,
             closer
         ),

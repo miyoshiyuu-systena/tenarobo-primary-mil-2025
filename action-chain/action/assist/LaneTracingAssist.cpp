@@ -30,9 +30,9 @@ void LaneTracingAssist::init(float baseLeftSpeed, float baseRightSpeed)
     mBaseRightSpeed = baseRightSpeed;
     mErrorIntegral = 0.0f;
     mPreviousError = 0.0f;
-    mKp = 10.0f;
-    mKi = 1.0f;
-    mKd = 0.1f;
+    mKp = 100.0f;
+    mKi = 10.0f;
+    mKd = 0.5f;
 }
 
 void LaneTracingAssist::correct(float* speeds)
