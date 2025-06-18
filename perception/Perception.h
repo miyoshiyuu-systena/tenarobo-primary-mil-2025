@@ -2,6 +2,7 @@
 #define _PERCEPTION_H_
 
 #include <cstdint>
+#include <opencv2/opencv.hpp>
 
 /**
  * 知覚データを管理するクラス
@@ -96,10 +97,8 @@ public:
      *  カメラによる測定値
      *  Webカメラの時間分解能のため、他の値と比較するとスローペースで更新される可能性があり
      *  仕様書を要確認
-     *  
-     * TODO: カメラの画像を取得する
      */
-    int getFrontImage() const;
+    cv::Mat getFrontImage() const;
 
     /**
      * データ更新を宣言するマスク
@@ -134,7 +133,7 @@ private:
     /**
      * カメラの保存間隔
      */
-    static const int cameraSaveInterval = 1000;
+    static const int cameraSaveInterval = 100;
 
     /**
      * 知覚タスクのサイクル回数
@@ -145,7 +144,7 @@ private:
     /**
      * 取得された知覚データ
      */
-    // int mFrontImage;
+    cv::Mat mFrontImage;
     int mDistance;
     int mColorH;
     int mColorS;

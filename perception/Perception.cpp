@@ -8,7 +8,7 @@ using namespace spikeapi;
 
 Perception::Perception()
     : count_cycle(0),
-      // mFrontImage(-1),
+      mFrontImage(cv::Mat()),
       mDistance(-1),
       mColorH(-1),
       mColorS(-1),
@@ -53,9 +53,9 @@ float Perception::getFrontArmSpeed() const {
     return mFrontArmSpeed;
 }
 
-// int Perception::getFrontImage() const {
-//     return mFrontImage;
-// }
+cv::Mat Perception::getFrontImage() const {
+    return mFrontImage;
+}
 
 void Perception::setMask(uint8_t mask) {
     mMask = mask;
@@ -82,7 +82,7 @@ void Perception::setMask(uint8_t mask) {
         mFrontArmSpeed = -1.0f;
     }
     if ((mMask & MASK_CAMERA) == 0b00000000) {
-        // mFrontImage = -1;
+        mFrontImage = cv::Mat();
     }
 }
 
@@ -139,32 +139,14 @@ void Perception::update() {
         (isPerceptionLoggingIgnoreMask || (mMask & MASK_CAMERA) != 0b00000000) &&
         count_cycle % cameraSaveInterval == 0   // カメラの保存間隔
     ) {
-        // loc_cpu();
-        // // TODO: カメラの画像を保存
-        // /**
-        //  * カメラデータの取得
-        //  */
-        //  static CameraManager& cameraManager = CameraManager::getInstance();
-        //  static bool initAttempted = false;
- 
-        //  /**
-        //   * XXX: メインタスクで実装できないか
-        //   */
-        //  // カメラが初期化されていない場合は初期化を試行（一度だけ）
-        //  if (!cameraManager.isInitialized() && !initAttempted) {
-        //      cameraManager.initializeCamera();
-        //      initAttempted = true;
-        //  }
-        //  // カメラが初期化されている場合のみ処理
-        //  if (cameraManager.isInitialized()) {
-        //      // 1フレーム取得して保存
-        //      cv::Mat frame;
-        //      if (cameraManager.captureImageNow(frame)) {
-        //          // 画像保存の頻度も下げる（100回→500回に1回）
-        //          cameraManager.saveImage(frame, "perc_task");
-        //      }
-        //  }
-        // unl_cpu();
+        loc_cpu();
+        cv::Mat frame;
+        const bool isSuccess = webCamera.captureImage(frame);
+        if (isSuccess) {
+            mFrontImage = frame;
+            Logger::getInstance().logDebug("Camera image saved");
+        }
+        unl_cpu();
     }
 
     if (isPerceptionLoggingEnable) {
