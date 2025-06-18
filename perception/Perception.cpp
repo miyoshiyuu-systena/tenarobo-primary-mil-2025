@@ -1,5 +1,5 @@
-#include "Perception.h"
-#include "Device.h"
+#include "perception/Perception.h"
+#include "device/Device.h"
 #include "debug.h"
 
 using namespace spikeapi;

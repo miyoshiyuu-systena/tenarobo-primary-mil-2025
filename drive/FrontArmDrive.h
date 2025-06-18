@@ -1,7 +1,7 @@
 #ifndef FRONT_ARM_DRIVE_H
 #define FRONT_ARM_DRIVE_H
 
-#include "spikeapi.h"
+#include "Port.h"
 
 /**
  * 前腕駆動クラス

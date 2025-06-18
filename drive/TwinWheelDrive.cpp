@@ -1,7 +1,7 @@
 #include "TwinWheelDrive.h"
 #include "TwinWheelConst.h"
-
-using   namespace   spikeapi;
+#include "Motor.h"
+#include "Port.h"
 
 TwinWheelDrive::TwinWheelDrive(EPort left_port, EPort right_port)
     /**             ポート番号        モーターの回転方向(時計/反時計)               インスタンス化するときにカウントをリセットするか */
