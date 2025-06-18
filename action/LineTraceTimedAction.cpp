@@ -1,4 +1,5 @@
 #include "action/LineTraceTimedAction.h"
+#include "spikeapi.h"
 #include "logic/CalcPidControl.h"
 #include "share/ModuleAccess.h"
 #include "share/PerceptionDataAccess.h"
