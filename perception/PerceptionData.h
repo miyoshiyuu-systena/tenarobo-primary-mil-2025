@@ -69,6 +69,10 @@ float getLeftMotorSpeed();
  */
 float getRightMotorSpeed();
 
+/**
+ * センサーの値を取得するタスク
+ */
+void perception_task();
 
 /**
  * 

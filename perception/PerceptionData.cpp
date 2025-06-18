@@ -48,3 +48,14 @@ float getRightMotorSpeed()
 {
     return mRightMotorSpeed;
 }
+
+void perception_task()
+{
+    mDistance = 0;
+    mColorH = 0;
+    mColorS = 0;
+    mColorV = 0;
+    mForce = 0.0f;
+    mLeftMotorSpeed = 0.0f;
+    mRightMotorSpeed = 0.0f;
+}
