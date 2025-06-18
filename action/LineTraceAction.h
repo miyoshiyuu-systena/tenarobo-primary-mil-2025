@@ -54,9 +54,22 @@ std::function<void(ActionNode*&)> line_trace_action(
 bool is_on_blue_line(void);
 
 /**
+ * 黒線上にいるかどうかを判定する
+ * @return 黒線上にいるかどうか
+ */
+bool is_on_black_line(void);
+
+/**
  * 黒線と白線の境界線からの誤差を計算する
  * @return 黒線と白線の境界線からの誤差
  */
 float calc_error_on_black_white_border(int h, int s, int v);
+
+/**
+ * 青線と白線の境界線からの誤差を計算する
+ * 境界線の理想値はH=100であるとする
+ * @return 青線と白線の境界線からの誤差
+ */
+float calc_error_on_blue_white_border(int h, int s, int v);
 
 #endif // _LINE_TRACE_ACTION_H_

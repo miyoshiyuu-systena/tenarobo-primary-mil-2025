@@ -27,7 +27,7 @@ std::function<void(ActionNode*&)> line_trace_action(
     return [speed, is_right_side, duration, Kp, Ki, Kd, judge, calc_error](ActionNode*& next_ptr) {
         float integral = 0.0f;  // 積分項の累積値
         float previous_error = 0.0f;  // 前回のエラー値（微分項計算用）
-        const float integral_limit = 100.0f;  // 積分飽和防止用の制限値
+        const float integral_limit = 2.0f;  // 積分飽和防止用の制限値
 
         const int side_symbol = is_right_side ? 1 : -1;
         
@@ -107,11 +107,41 @@ bool is_on_blue_line(void)
 }
 
 /**
+ * 黒線上にいるかどうかを判定する
+ * @return 黒線上にいるかどうか
+ */
+bool is_on_black_line(void)
+{
+    const int H_UPPER_THRESHOLD = 255;
+    const int H_LOWER_THRESHOLD = 0;
+    const int S_UPPER_THRESHOLD = 255;
+    const int S_LOWER_THRESHOLD = 0;
+    const int V_UPPER_THRESHOLD = 40;
+    const int V_LOWER_THRESHOLD = 0;
+
+    return (
+        (H_LOWER_THRESHOLD <= perceptionDataAccess.color[0] && perceptionDataAccess.color[0] <= H_UPPER_THRESHOLD) &&
+        (S_LOWER_THRESHOLD <= perceptionDataAccess.color[1] && perceptionDataAccess.color[1] <= S_UPPER_THRESHOLD) &&
+        (V_LOWER_THRESHOLD <= perceptionDataAccess.color[2] && perceptionDataAccess.color[2] <= V_UPPER_THRESHOLD)
+    );
+}
+
+/**
  * 黒線と白線の境界線からの誤差を計算する
  * 境界線の理想値はV=45であるとする
- * @return 黒線と白線の境界線からの誤差
+ * @return 黒線と白線の境界線からの誤差(0-100)
  */
 float calc_error_on_black_white_border(int h, int s, int v)
 {
-    return (float)(v - 45.0f);
+    return (float)((v - 45.0f) / 100.0f);
+}
+
+/**
+ * 青線と白線の境界線からの誤差を計算する
+ * 境界線の理想値はH=140であるとする
+ * @return 青線と白線の境界線からの誤差(0-100)
+ */
+float calc_error_on_blue_white_border(int h, int s, int v)
+{
+    return (float)((170.0f - h) / 255.0f);
 }
