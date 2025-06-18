@@ -1,10 +1,12 @@
 #include "GoFrontAction.h"
+#include "IAssist.h"
+#include "ICloser.h"
 
 std::function<ActionCall> goFrontActionFactory(
     float speed,
     int detectInterval,
-    Assist* assist,
-    Closer* closerPtr
+    IAssist* assist,
+    ICloser* closerPtr
 )
 {
     return [speed, detectInterval, assist, closerPtr](
@@ -15,7 +17,7 @@ std::function<ActionCall> goFrontActionFactory(
         Perception*& perc
     ) {
         float speeds[2] = {0.0f, 0.0f};
-        assist->init(speed);
+        assist->init(speed, speed);
         closerPtr->init();
 
         do {

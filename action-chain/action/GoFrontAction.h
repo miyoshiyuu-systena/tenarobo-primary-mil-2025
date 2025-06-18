@@ -2,6 +2,8 @@
 #define _GO_FRONT_ACTION_H_
 
 #include    "ActionNode.h"
+#include    "IAssist.h"
+#include    "ICloser.h"
 #include    <functional>
 
 /**
@@ -15,8 +17,8 @@
 std::function<ActionCall> goFrontActionFactory(
     float speed,
     int detectInterval,
-    Assist* assistPtr,
-    Closer* closerPtr
+    IAssist* assistPtr,
+    ICloser* closerPtr
 );
 
 #endif // _GO_FRONT_ACTION_H_
