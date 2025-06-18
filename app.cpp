@@ -74,12 +74,12 @@ void    main_task_action_chain(intptr_t exinf)   {
         &frontArm,
         perceptionDataAccess,
         line_trace_action(
-            1000,
+            500,
             true,
             2,
-            200,
-            5.0,
-            0.25,
+            125.0f,
+            1.0f,
+            0.25f,
             is_on_blue_line,
             calc_error_on_black_white_border
         ),
