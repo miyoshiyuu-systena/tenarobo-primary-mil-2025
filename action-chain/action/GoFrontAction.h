@@ -7,6 +7,12 @@
 #include    <functional>
 
 /**
+ * HACK: 
+ *  アシスト失敗時の挙動を新しい引数として入れて良いかも
+ *  引数としてIExceptionalを実装する？？
+ */
+
+/**
  * 前方に走るアクションのファクトリー関数
  * @param speed 速度[mm/s]
  * @param detectInterval 検知間隔[ms]
