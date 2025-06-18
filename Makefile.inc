@@ -3,9 +3,7 @@ USE_RASPIKE_ART=1
 mkfile_path := $(dir $(lastword $(MAKEFILE_LIST)))
 
 APPL_CXXOBJS +=\
-	IAssist.o\
 	LaneTracingAssist.o\
-	ICloser.o\
 	BlackFloorCloser.o\
 	BlueFloorCloser.o\
 	GoFrontAction.o\
@@ -14,13 +12,10 @@ APPL_CXXOBJS +=\
 	Device.o\
 	CalcCurveDriveSpeed.o\
 	FrontArmDrive.o\
-	TwinWheelConst.o\
 	TwinWheelDrive.o\
 	Logger.o\
 	Perception.o\
 	CameraManager.o\
-	config.o\
-	debug.o\
 
 SRCLANG := c++
 
