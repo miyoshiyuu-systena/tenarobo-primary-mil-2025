@@ -4,11 +4,11 @@
 WebCamera::WebCamera(
     const std::string& imageDirectory,
     const std::string& imageSuffix
-)
-    : m_imageDirectory(imageDirectory),
+): 
+    m_imageDirectory(imageDirectory),
     m_imageSuffix(imageSuffix),
     m_isInitialized(false),
-    m_savedImageCount(0)
+    m_savedImageCount(0) 
 {
     /**
      * カメラのソフトウェアアクセスの確立
