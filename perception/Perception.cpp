@@ -133,7 +133,7 @@ void setMask(uint8_t mask)
     }
 }
 
-void perception_task()
+void perc_task()
 {
     if (
         isPerceptionLoggingIgnoreMask ||

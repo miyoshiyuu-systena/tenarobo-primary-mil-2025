@@ -1,9 +1,9 @@
 #ifndef _I_ASSIST_H_
 #define _I_ASSIST_H_
 
-#include    "TwinWheelDrive.h"
-#include    "FrontArmDrive.h"
-#include    "Perception.h"
+#include    "drive/TwinWheelDrive.h"
+#include    "drive/FrontArmDrive.h"
+#include    "perception/Perception.h"
 
 /**
  * 走行補助インターフェース

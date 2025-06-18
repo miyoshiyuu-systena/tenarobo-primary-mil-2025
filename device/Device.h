@@ -1,7 +1,8 @@
 #ifndef _DEVICE_H_
 #define _DEVICE_H_
 
-#include "TwinWheelDrive.h"
+#include "drive/TwinWheelDrive.h"
+#include "drive/FrontArmDrive.h"
 #include "Motor.h"
 #include "ForceSensor.h"
 #include "ColorSensor.h"
@@ -25,7 +26,7 @@ extern TwinWheelDrive twinWheelDrive;
 /**
  * 前腕モーター
  */
-extern Motor frontArm;
+extern FrontArmDrive frontArmDrive;
 
 /**
  * 力センサー

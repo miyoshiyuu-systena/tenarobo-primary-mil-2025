@@ -3,6 +3,8 @@
 
 #include "spikeapi.h"
 
+using namespace spikeapi;
+
 /**
  * 2輪駆動クラス
  * このクラスの仕事はロボットの移動に関わるモーターを連動して、ロボットの走行を実現することである
@@ -96,3 +98,5 @@ public:
      */
     float getRightSpeed() const;
 };
+
+#endif // TWIN_WHEEL_DRIVE_H

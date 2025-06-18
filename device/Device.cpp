@@ -10,10 +10,8 @@ TwinWheelDrive twinWheelDrive(
     EPort::PORT_A       // 右モーターのポート
 );
 
-Motor frontArm(
+FrontArmDrive frontArmDrive(
     EPort::PORT_C,                  // 前腕モーターのポート
-    Motor::EDirection::CLOCKWISE,   // 前腕モーターの方向
-    true                            // 前腕モーターのカウンタリセット
 );
 
 ForceSensor forceSensor(EPort::PORT_D);

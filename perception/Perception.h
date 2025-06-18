@@ -113,6 +113,6 @@ void setMask(uint8_t mask);
 /**
  * センサーの値を取得するタスク
  */
-void perception_task();
+void perc_task();
 
 #endif // _PERCEPTION_H_
