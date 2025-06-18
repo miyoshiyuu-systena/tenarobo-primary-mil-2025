@@ -2,6 +2,13 @@
 #define TWIN_WHEEL_LOGIC_H
 
 /**
+ * 左右の輪の速度を計算する
+ * @param speed 左右の輪の速度[mm/s]
+ * @param speeds 速度(mm/s)を格納する配列（[0]: 左輪　、[1]: 右輪）
+ */
+void calcStraightSpeed(float speed, float speeds[2]);
+
+/**
  * 曲線走行の速度を計算する
  * @param angular_speed 角速度(°/s)
  * @param radius 半径(mm)

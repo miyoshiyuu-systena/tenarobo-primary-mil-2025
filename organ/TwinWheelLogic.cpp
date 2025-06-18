@@ -2,6 +2,12 @@
 #include "TwinWheelConst.h"
 #include <cmath>
 
+void calcStraightSpeed(float speed, float speeds[2])
+{
+    speeds[0] = speed;
+    speeds[1] = speed;
+}
+
 void calculateCurveSpeeds(float angular_speed, float radius, float speeds[2])
 {
     // 半径が車輪間隔の半分より小さい場合は停止

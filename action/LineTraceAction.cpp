@@ -3,9 +3,47 @@
 #include "share/ModuleAccess.h"
 #include "share/PerceptionDataAccess.h"
 #include "action/ActionNode.h"
+#include "logging/Logger.h"
 #include <functional>
 
 using   namespace   spikeapi;
+
+/**
+ * PID制御による補正値を計算する
+ * @param error 現在のエラー値
+ * @param integral 積分項の累積値（参照渡しで更新）
+ * @param previous_error 前回のエラー値（参照渡しで更新）
+ * @param Kp 比例係数
+ * @param Ki 積分係数
+ * @param Kd 微分係数
+ * @param integral_limit 積分飽和防止用の制限値
+ * @return PID制御による補正値
+ */
+float calc_pid_control(
+    float error,
+    float& integral,
+    float& previous_error,
+    float Kp,
+    float Ki,
+    float Kd,
+    float integral_limit
+)
+{
+    // 積分項を更新（積分飽和防止のため制限を設ける）
+    integral += error;
+    if (integral > integral_limit) {
+        integral = integral_limit;
+    } else if (integral < -integral_limit) {
+        integral = -integral_limit;
+    }
+    
+    // 微分項を計算（エラーの変化率）
+    const float derivative = error - previous_error;
+    previous_error = error;  // 次回計算のため現在のエラーを保存
+    
+    // PID制御による制御量計算
+    return Kp * error + Ki * integral + Kd * derivative;
+}
 
 /**
  * ライントレースアクションを生成するファクトリー関数
@@ -14,7 +52,7 @@ using   namespace   spikeapi;
  *      PID制御により高精度なライントレースを実現する
  */
 std::function<void(ActionNode*&)> line_trace_action(
-    float speed, 
+    float* speed,
     bool is_right_side,
     int duration, 
     float Kp,
@@ -32,6 +70,7 @@ std::function<void(ActionNode*&)> line_trace_action(
         const int side_symbol = is_right_side ? 1 : -1;
         
         do {
+            Logger::getInstance().logInfo(std::to_string(perceptionDataAccess.color[0]) + " " + std::to_string(perceptionDataAccess.color[1]) + " " + std::to_string(perceptionDataAccess.color[2]));
             /**
              * PID制御による駆動指示
              * errorは、実測した輝度が閾値よりもどのくらい明るかったかを表す。
@@ -56,24 +95,12 @@ std::function<void(ActionNode*&)> line_trace_action(
              */
             const float error = calc_error(perceptionDataAccess.color[0], perceptionDataAccess.color[1], perceptionDataAccess.color[2]);
             
-            // 積分項を更新（積分飽和防止のため制限を設ける）
-            integral += error;
-            if (integral > integral_limit) {
-                integral = integral_limit;
-            } else if (integral < -integral_limit) {
-                integral = -integral_limit;
-            }
-            
-            // 微分項を計算（エラーの変化率）
-            const float derivative = error - previous_error;
-            previous_error = error;  // 次回計算のため現在のエラーを保存
-            
             // PID制御による制御量計算
-            const float control_output = Kp * error + Ki * integral + Kd * derivative;
+            const float control_output = calc_pid_control(error, integral, previous_error, Kp, Ki, Kd, integral_limit);
             
             twinWheelDrive.setSpeed(
-                speed - side_symbol * control_output,     //  左輪
-                speed + side_symbol * control_output      //  右輪
+                speed[0] - side_symbol * control_output,     //  左輪
+                speed[1] + side_symbol * control_output      //  右輪
             );
 
             // 判定周期

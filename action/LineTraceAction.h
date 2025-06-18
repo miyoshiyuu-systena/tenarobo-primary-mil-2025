@@ -6,7 +6,7 @@
 
 /**
  * ライントレースアクションのファクトリー関数（PID制御）
- * @param speed 大体の速度[mm/s]
+ * @param speed 左右の輪の速度[mm/s]([0]は左輪、[1]は右輪)
  * @param isRightSide 右寄りか左寄りか
  * @param duration 判定周期[ms]
  * @param Kp 比例係数
@@ -17,7 +17,7 @@
  * @return ライントレースアクション
  */
 std::function<void(ActionNode*&)> line_trace_action(
-    float speed,
+    float* speed,
     bool is_right_side,
     int duration,
     /**

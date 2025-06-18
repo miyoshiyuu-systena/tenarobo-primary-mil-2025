@@ -9,6 +9,7 @@
 #include    "logging/Logger.h"
 #include    "PerceptionTask.h"
 #include    "organ/TwinWheelDrive.h"
+#include    "organ/TwinWheelLogic.h"
 #include    "action/ActionNode.h"
 #include    "share/ModuleAccess.h"
 #include    "share/PerceptionDataAccess.h"
@@ -69,21 +70,23 @@ void    main_task_action_chain(intptr_t exinf)   {
         0
     );
 
+    float speeds[2];
+    calcStraightSpeed(500.0f, speeds);
     ActionNode* action1 = new ActionNode(
         &twinWheelDrive,
         &frontArm,
         perceptionDataAccess,
         line_trace_action(
-            500,
+            speeds,
             true,
-            2,
+            5,
             125.0f,
             1.0f,
             0.25f,
             is_on_blue_line,
             calc_error_on_black_white_border
         ),
-        "ボタンが押されるまでハチ公モード！！",
+        "黒線の右側を走行する、青色の床面に差し当たったら停止する",
         0
     );
     action0->setNext(action1);
