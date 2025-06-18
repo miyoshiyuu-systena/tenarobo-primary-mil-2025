@@ -1,5 +1,6 @@
 #include "TwinWheelLogic.h"
 #include "TwinWheelConst.h"
+#include <cmath>
 
 void calculateCurveSpeeds(float angular_speed, float radius, float speeds[2])
 {
