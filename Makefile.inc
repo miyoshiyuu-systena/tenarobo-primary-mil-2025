@@ -4,7 +4,7 @@ mkfile_path := $(dir $(lastword $(MAKEFILE_LIST)))
 
 APPL_CXXOBJS +=\
 	IAssist.o\
-	LaneTraceingAssist.o\
+	LaneTracingAssist.o\
 	ICloser.o\
 	BlackFloorCloser.o\
 	BlueFloorCloser.o\
