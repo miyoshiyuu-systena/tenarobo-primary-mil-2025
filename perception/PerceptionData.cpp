@@ -1,13 +1,8 @@
 #include "PerceptionData.h"
 #include "Device.h"
+#include "debug.h"
 
 using namespace spikeapi;
-
-/**
- * ログ出力の有効/無効
- * デバッグ用
- */
-static const bool isLoggingEnable = false;
 
 /**
  * カメラの保存間隔
@@ -45,14 +40,14 @@ static float mFrontArmSpeed = -1.0f;
  * [0] ハブ内蔵IMU
  */
 static uint8_t mMask = 0b00000000;
-#define MASK_CAMERA         (1 << 7)
-#define MASK_ULTRASONIC     (1 << 6)
-#define MASK_COLOR          (1 << 5)
-#define MASK_FORCE          (1 << 4)
-#define MASK_LEFT_MOTOR     (1 << 3)
-#define MASK_RIGHT_MOTOR    (1 << 2)
-#define MASK_FRONT_ARM      (1 << 1)
-#define MASK_IMU            (1 << 0)
+#define MASK_CAMERA         0b10000000
+#define MASK_ULTRASONIC     0b01000000
+#define MASK_COLOR          0b00100000
+#define MASK_FORCE          0b00010000
+#define MASK_LEFT_MOTOR     0b00001000
+#define MASK_RIGHT_MOTOR    0b00000100
+#define MASK_FRONT_ARM      0b00000010
+#define MASK_IMU            0b00000001
 
 // int getFrontImage()
 // {
@@ -102,15 +97,49 @@ float getFrontArmSpeed()
 void setMask(uint8_t mask)
 {
     mMask = mask;
+
+    /**
+     * マスクされたセンサの値は初期化する
+     */
+    
+    if ((mMask & MASK_ULTRASONIC) == 0b00000000) {
+        mDistance = -1;
+    }
+
+    if ((mMask & MASK_COLOR) == 0b00000000) {
+        mColorH = -1;
+        mColorS = -1;
+        mColorV = -1;
+    }
+
+    if ((mMask & MASK_FORCE) == 0b00000000) {
+        mForce = -1.0f;
+    }
+
+    if ((mMask & MASK_LEFT_MOTOR) == 0b00000000) {
+        mLeftMotorSpeed = -1.0f;
+    }
+
+    if ((mMask & MASK_RIGHT_MOTOR) == 0b00000000) {
+        mRightMotorSpeed = -1.0f;
+    }
+
+    if ((mMask & MASK_FRONT_ARM) == 0b00000000) {
+        mFrontArmSpeed = -1.0f;
+    }
+
+    if ((mMask & MASK_CAMERA) == 0b00000000) {
+        // mFrontImage = -1;
+    }
 }
 
 void perception_task()
 {
-    if (mMask & MASK_ULTRASONIC) {
+    if ((mMask & MASK_ULTRASONIC) != 0b00000000) {
         mDistance = ultrasonicSensor.getDistance();
     }
     
-    if (mMask & MASK_COLOR) {
+    if ((mMask & MASK_COLOR) != 0b00000000) {
         ColorSensor::HSV hsv;
         colorSensor.getHSV(hsv, true);
         loc_cpu();
@@ -120,24 +149,24 @@ void perception_task()
         unl_cpu();
     }
 
-    if (mMask & MASK_FORCE) {
+    if ((mMask & MASK_FORCE) != 0b00000000) {
         mForce = forceSensor.getForce();
     }
 
-    if (mMask & MASK_LEFT_MOTOR) {
+    if ((mMask & MASK_LEFT_MOTOR) != 0b00000000) {
         mLeftMotorSpeed = twinWheelDrive.getLeftMotorSpeed();
     }
 
-    if (mMask & MASK_RIGHT_MOTOR) {
+    if ((mMask & MASK_RIGHT_MOTOR) != 0b00000000) {
         mRightMotorSpeed = twinWheelDrive.getRightMotorSpeed();
     }
 
-    if (mMask & MASK_FRONT_ARM) {
+    if ((mMask & MASK_FRONT_ARM) != 0b00000000) {
         mFrontArmSpeed = frontArm.getSpeed();
     }
     
     if (
-        mMask & MASK_CAMERA &&
+        (mMask & MASK_CAMERA) != 0b00000000 &&
         count_cycle % cameraSaveInterval == 0   // カメラの保存間隔
     ) {
         // TODO: カメラの画像を保存
@@ -147,7 +176,7 @@ void perception_task()
         // unl_cpu();
     }
 
-    if (isLoggingEnable) {
+    if (isPerceptionLoggingEnable) {
         Logger logger = Logger::getInstance();
 
         logger.logDebug("--------------------------------");
