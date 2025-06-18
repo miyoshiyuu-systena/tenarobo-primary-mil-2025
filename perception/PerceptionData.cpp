@@ -147,5 +147,24 @@ void perception_task()
         // unl_cpu();
     }
 
+    if (isLoggingEnable) {
+        Logger logger = Logger::getInstance();
+
+        logger.logDebug("--------------------------------");
+        logger.logDebug(
+            "Distance: " + std::to_string(mDistance) +
+            ", ColorH: " + std::to_string(mColorH) +
+            ", ColorS: " + std::to_string(mColorS) +
+            ", ColorV: " + std::to_string(mColorV) +
+            ", Force: " + std::to_string(mForce)
+        );
+        logger.logDebug(
+            "LeftMotorSpeed: " + std::to_string(mLeftMotorSpeed) +
+            ", RightMotorSpeed: " + std::to_string(mRightMotorSpeed) +
+            ", FrontArmSpeed: " + std::to_string(mFrontArmSpeed)
+        );
+        logger.logDebug("--------------------------------");
+    }
+
     count_cycle++;
 }
