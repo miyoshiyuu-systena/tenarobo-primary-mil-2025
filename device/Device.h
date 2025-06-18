@@ -8,7 +8,7 @@
 #include "ColorSensor.h"
 #include "UltrasonicSensor.h"
 #include "IMU.h"
-#include "WebCamera.h"
+#include "web-camera/WebCamera.h"
 
 using namespace spikeapi;
 

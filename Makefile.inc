@@ -19,6 +19,7 @@ APPL_CXXOBJS +=\
 	Logger.o\
 	Perception.o\
 	CameraManager.o\
+	WebCamera.o\
 
 SRCLANG := c++
 
