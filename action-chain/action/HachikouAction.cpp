@@ -1,14 +1,12 @@
-#include    "StartOnPressureSensorAction.h"
+#include    "HachikouAction.h"
 #include    "spikeapi.h"
-#include    "share/ModuleAccess.h"
-#include    "share/PerceptionDataAccess.h"
-#include    "action/ActionNode.h"
+#include    "ActionNode.h"
 
 /**
  * 圧力センサを押すまで忠犬ハチ公！！
  * 圧力センサを押したら次のタスクを始めるよ
  */
-std::function<void(ActionNode*&)> start_on_pressure_sensor_action(float force_detect_threshold)
+std::function<void(ActionNode*&)> hachikouActionFactory(float force_detect_threshold)
 {
     return [force_detect_threshold](ActionNode*& next_ptr) {
         // 検知間隔時間(100ms)
