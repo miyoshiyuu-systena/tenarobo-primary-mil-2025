@@ -17,7 +17,6 @@ ActionCall goFrontActionFactory(
         FrontArmDrive*& frontArmDrive,
         Perception*& perc
     ) {
-        Logger::getInstance().logInfo("GoFrontAction: 実行中");
         float speeds[2] = {0.0f, 0.0f};
         assist->init(speed, speed);
         closerPtr->init();
