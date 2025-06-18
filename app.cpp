@@ -88,13 +88,36 @@ void    main_task_action_chain(intptr_t exinf)   {
             75.0f,
             1.0f,
             0.25f,
-            3000,
+            7000,
             calc_error_on_black_white_border
         ),
-        "黒直線の右側を走行する、青色の床面に差し当たったら停止する",
+        "黒直線の左側を走行する、青色の床面に差し当たったら停止する",
         0
     );
     action0->setNext(action1);
+
+    float speeds2[2];
+    calcCurveSpeeds(15.0f, true, 350.0f, speeds2);
+    ActionNode* action2 = new ActionNode(
+        &twinWheelDrive,
+        &frontArm,
+        perceptionDataAccess,
+        line_trace_action(
+            speeds2,
+            false,
+            3,
+            125.0f,
+            5.0f,
+            0.25f,
+            is_on_blue,
+            calc_error_on_black_white_border
+        ),
+        "黒曲線の左側を走行する、青色の床面に差し当たったら停止する",
+        0
+    );
+    action1->setNext(action2);
+
+
 
 
     // ActionChainの実行

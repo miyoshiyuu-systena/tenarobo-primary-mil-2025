@@ -28,7 +28,7 @@ std::function<void(ActionNode*&)> line_trace_action(
     return [speed, is_right_side, duration, Kp, Ki, Kd, judge, calc_error](ActionNode*& next_ptr) {
         float integral = 0.0f;  // 積分項の累積値
         float previous_error = 0.0f;  // 前回のエラー値（微分項計算用）
-        const float integral_limit = 2.0f;  // 積分飽和防止用の制限値
+        const float integral_limit = 5.0f;  // 積分飽和防止用の制限値
         
         const int side_symbol = is_right_side ? 1 : -1;
         
