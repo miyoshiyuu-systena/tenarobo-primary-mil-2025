@@ -1,6 +1,5 @@
 #include "LaneTracingAssist.h"
 #include "IAssist.h"
-#include "logger/Logger.h"
 
 /**
  * XXX: debug
@@ -38,25 +37,20 @@ void LaneTracingAssist::init(float baseLeftSpeed, float baseRightSpeed)
 
 void LaneTracingAssist::correct(float* speeds)
 {
-    Logger::getInstance().logInfo("LaneTracingAssist: 実行中");
-    Logger::getInstance().logInfo("LaneTracingAssist: mPerc->getColorV(): " + std::to_string(mPerc->getColorV()));
     /**
     * 青白線の境界線からの誤差を計算する
     */
     float error = (float)((mPerc->getColorV() - BLACK_WHITE_BORDER_V_IDEAL) / 100.0f);
-    Logger::getInstance().logInfo("LaneTracingAssist: error: " + std::to_string(error));
-    
+
     mErrorIntegral += error;
     if (mErrorIntegral > INTEGRAL_LIMIT) {
         mErrorIntegral = INTEGRAL_LIMIT;
     } else if (mErrorIntegral < -INTEGRAL_LIMIT) {
         mErrorIntegral = -INTEGRAL_LIMIT;
     }
-    Logger::getInstance().logInfo("LaneTracingAssist: mErrorIntegral: " + std::to_string(mErrorIntegral));
     
     float derivative = error - mPreviousError;
     mPreviousError = error;
-    Logger::getInstance().logInfo("LaneTracingAssist: derivative: " + std::to_string(derivative));
     
     /**
     * PID制御による駆動指示
@@ -81,7 +75,6 @@ void LaneTracingAssist::correct(float* speeds)
     * エラーの変化率に基づいて予測的に制御し、オーバーシュートを抑制してより滑らかな動作を実現する
     */
     float pidControl = mKp * error + mKi * mErrorIntegral + mKd * derivative;
-    Logger::getInstance().logInfo("LaneTracingAssist: pidControl: " + std::to_string(pidControl));
     
     /**
      * HACK: 左右の速度の符号を反転する
