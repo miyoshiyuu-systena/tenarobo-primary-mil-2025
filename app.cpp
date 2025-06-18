@@ -31,7 +31,7 @@ void    main_task(intptr_t exinf)   {
         "背中のボタンが押されるまでハチ公モード！！",
         &twinWheelDrive,
         &frontArmDrive,
-        &perc,
+        &perception,
         hachikouActionFactory(
             1.0f,   // 圧力センサの検知閾値[N]
             1000    // 圧力センサの検知間隔[ms]
@@ -43,12 +43,12 @@ void    main_task(intptr_t exinf)   {
         "レーントレーシングアシストで白黒の境界に沿って正面を走行し、青床を検出すると停止",
         &twinWheelDrive,
         &frontArmDrive,
-        &perc,
+        &perception,
         goFrontActionFactory(
             100,   // 速度[mm/s]
             100,  // 検知間隔[ms]
-            new LaneTracingAssist(&twinWheelDrive, &frontArmDrive, &perc),
-            new BlueFloorCloser(&perc)
+            new LaneTracingAssist(&twinWheelDrive, &frontArmDrive, &perception),
+            new BlueFloorCloser(&perception)
         ),
         1000
     );

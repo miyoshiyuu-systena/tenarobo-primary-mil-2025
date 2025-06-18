@@ -4,137 +4,87 @@
 
 using namespace spikeapi;
 
-/**
- * カメラの保存間隔
- */
-static const int cameraSaveInterval = 1000;
-
-/**
- * 知覚タスクのサイクル回数
- * 測定を間引きするために使用
- */
-static int count_cycle = 0;
-
-// static int mFrontImage = -1;
-static int mDistance = -1;
-static int mColorH = -1;
-static int mColorS = -1;
-static int mColorV = -1;
-static float mForce = -1.0f;
-static float mLeftMotorSpeed = -1.0f;
-static float mRightMotorSpeed = -1.0f;
-static float mFrontArmSpeed = -1.0f;
-
-/**
- * データ更新を宣言するマスク（逆に言うと更新する必要のないデータは更新しない)
- * 0: 更新しない
- * 1: 更新する
- * 
- * [7] Webカメラ
- * [6] 超音波センサー
- * [5] カラーセンサー
- * [4] 圧力センサー
- * [3] 左モーター
- * [2] 右モーター
- * [1] 前腕モーター
- * [0] ハブ内蔵IMU
- */
-static uint8_t mMask = 0b00000000;
-#define MASK_CAMERA         0b10000000
-#define MASK_ULTRASONIC     0b01000000
-#define MASK_COLOR          0b00100000
-#define MASK_FORCE          0b00010000
-#define MASK_LEFT_MOTOR     0b00001000
-#define MASK_RIGHT_MOTOR    0b00000100
-#define MASK_FRONT_ARM      0b00000010
-#define MASK_IMU            0b00000001
-
-// int getFrontImage()
-// {
-//     return mFrontImage;
-// }
-
-int getDistance()
+Perception::Perception()
+    : count_cycle(0),
+      // mFrontImage(-1),
+      mDistance(-1),
+      mColorH(-1),
+      mColorS(-1),
+      mColorV(-1),
+      mForce(-1.0f),
+      mLeftMotorSpeed(-1.0f),
+      mRightMotorSpeed(-1.0f),
+      mFrontArmSpeed(-1.0f),
+      mMask(0b11111111)
 {
+}
+
+int Perception::getDistance() const {
     return mDistance;
 }
 
-int getColorH()
-{
+int Perception::getColorH() const {
     return mColorH;
 }
 
-int getColorS()
-{
+int Perception::getColorS() const {
     return mColorS;
 }
 
-int getColorV()
-{
+int Perception::getColorV() const {
     return mColorV;
 }
 
-float getForce()
-{
+float Perception::getForce() const {
     return mForce;
 }
 
-float getLeftMotorSpeed()
-{
+float Perception::getLeftMotorSpeed() const {
     return mLeftMotorSpeed;
 }
 
-float getRightMotorSpeed()
-{
+float Perception::getRightMotorSpeed() const {
     return mRightMotorSpeed;
 }
 
-float getFrontArmSpeed()
-{
+float Perception::getFrontArmSpeed() {
     return mFrontArmSpeed;
 }
 
-void setMask(uint8_t mask)
-{
+// int Perception::getFrontImage() const {
+//     return mFrontImage;
+// }
+
+void Perception::setMask(uint8_t mask) {
     mMask = mask;
 
-    /**
-     * マスクされたセンサの値は初期化する
-     */
-    
+    // マスクされたセンサの値は初期化する
     if ((mMask & MASK_ULTRASONIC) == 0b00000000) {
         mDistance = -1;
     }
-
     if ((mMask & MASK_COLOR) == 0b00000000) {
         mColorH = -1;
         mColorS = -1;
         mColorV = -1;
     }
-
     if ((mMask & MASK_FORCE) == 0b00000000) {
         mForce = -1.0f;
     }
-
     if ((mMask & MASK_LEFT_MOTOR) == 0b00000000) {
         mLeftMotorSpeed = -1.0f;
     }
-
     if ((mMask & MASK_RIGHT_MOTOR) == 0b00000000) {
         mRightMotorSpeed = -1.0f;
     }
-
     if ((mMask & MASK_FRONT_ARM) == 0b00000000) {
         mFrontArmSpeed = -1.0f;
     }
-
     if ((mMask & MASK_CAMERA) == 0b00000000) {
         // mFrontImage = -1;
     }
 }
 
-void perc_task()
-{
+void Perception::update() {
     if (
         isPerceptionLoggingIgnoreMask ||
         (mMask & MASK_ULTRASONIC) != 0b00000000
@@ -204,7 +154,6 @@ void perc_task()
         //      cameraManager.initializeCamera();
         //      initAttempted = true;
         //  }
-         
         //  // カメラが初期化されている場合のみ処理
         //  if (cameraManager.isInitialized()) {
         //      // 1フレーム取得して保存
@@ -238,3 +187,5 @@ void perc_task()
 
     count_cycle++;
 }
+
+Perception perception;
