@@ -39,6 +39,10 @@ extern ColorSensor colorSensor;
 
 /**
  * 超音波センサー
+ * 
+ * @note 
+ *  カラーセンサの床面に対する角度は前腕の角度と連動しているため
+ *  必ずしも床面から鉛直方向の反射光を取得できているわけではない
  */
 extern UltrasonicSensor ultrasonicSensor;
 
