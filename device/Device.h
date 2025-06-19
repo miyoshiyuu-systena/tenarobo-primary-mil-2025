@@ -54,7 +54,8 @@ extern UltrasonicSensor ultrasonicSensor;
  *  自動初期化されないため、自身で実装する必要がある
  */
 /**
- *  
+ * XXX: カメラクラスを諦めた
+ * カメラクラスを実装したが、カメラの初期化の実装が難しかった
  */
 // extern WebCamera webCamera;
 
