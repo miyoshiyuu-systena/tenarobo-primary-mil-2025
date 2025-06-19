@@ -1,5 +1,6 @@
 #include "CameraManager.h"
 #include "logger/Logger.h"
+#include "../config.h"
 #include <iostream>
 #include <sys/stat.h>
 #include <iomanip>
@@ -23,10 +24,9 @@ CameraManager& CameraManager::getInstance() {
  */
 CameraManager::CameraManager() 
     : m_initialized(false)
-    /**
-     * XXX: コンストラクタで注入できないか
-     */
-    , m_imageDirectory("/home/mil/work/RasPike-ART/sdk/workspace/img/") {}
+    , m_imageDirectory(imgFilePath)
+    , m_imageFileNameSuffix(imgFileNameSuffix)
+    , m_imageCount(0) {}
 
 /**
  * カメラの初期化
@@ -91,7 +91,7 @@ std::string CameraManager::saveImage(const cv::Mat& image) {
     createImageDirectory(m_imageDirectory);
     
     std::ostringstream oss;
-    oss << m_imageCount;
+    oss << m_imageCount << "_" << m_imageFileNameSuffix;
     
     oss << ".jpg";
     
@@ -105,11 +105,11 @@ std::string CameraManager::saveImage(const cv::Mat& image) {
     bool success = cv::imwrite(filename, image, compression_params);
     
     if (success) {
-        Logger::getInstance().logInfo("画像を保存しました: " + filename);
+        Logger::getInstance().logInfoWithoutConsoleLog("画像を保存しました: " + filename);
         m_imageCount++;
         return filename;
     } else {
-        Logger::getInstance().logError("画像の保存に失敗しました: " + filename);
+        Logger::getInstance().logInfoWithoutConsoleLog("画像の保存に失敗しました: " + filename);
         return "";
     }
 }

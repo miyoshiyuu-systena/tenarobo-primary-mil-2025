@@ -5,6 +5,7 @@
 #include <string>
 #include <atomic>
 #include <mutex>
+#include "../config.h"
 
 /**
  * カメラ管理クラス
@@ -73,6 +74,7 @@ private:
     cv::VideoCapture m_cap;                    ///< カメラキャプチャ
     std::mutex m_imageMutex;                   ///< 画像アクセス用ミューテックス
     std::string m_imageDirectory;              ///< 画像保存ディレクトリ
+    std::string m_imageFileNameSuffix;         ///< 画像ファイル名サフィックス
     int m_imageCount;                          ///< 画像カウント
 };
 
