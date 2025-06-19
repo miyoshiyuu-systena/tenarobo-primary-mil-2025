@@ -6,7 +6,7 @@
  * 飽和制限
  * - 連続的な操作における積分飽和を抑制し、安定化をはかる
  */
-static const float INTEGRAL_LIMIT = 5.0f;
+static const float INTEGRAL_LIMIT = 0.5f;
 
 LaneTracingAssist::LaneTracingAssist(
     TwinWheelDrive* twinWheelDrive,
