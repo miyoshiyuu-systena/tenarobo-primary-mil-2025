@@ -23,6 +23,47 @@ void main_task(intptr_t exinf)   {
     // ロガーインスタンスの取得
     Logger& logger = Logger::getInstance();
 
+    ActionNode* action0 = new ActionNode(
+        "action0: 圧力センサを押すまで忠犬ハチ公！！",
+        &device,
+        hachikouActionFactory(
+            1.0f,
+            10
+        ),
+        500
+    );
+
+    IAssist* assist1 = new LaneTracingAssist(
+        &device,
+        true,
+        50.0f,
+        10.0f,
+        10.0f,
+        calcBlackWhiteBorderError
+    );
+    ICloser* closer1 = new BlueFloorCloser(&device);
+    ActionNode* action1 = new ActionNode(
+        "action1: 白黒の直線に沿って走行し、青色の床に到達したら終了",
+        &device,
+        goStraightActionFactory(
+            250,
+            10,
+            assist1,
+            closer1
+        ),
+        500
+    );
+    action0->setNext(action1);
+
+    ActionNode* prevAction = nullptr;
+    ActionNode* currentAction = action0;
+    while (currentAction != nullptr) {
+        currentAction->execute();
+        prevAction = currentAction;
+        currentAction = currentAction->getNext();
+        delete prevAction;
+    }
+
     // 最終的なログファイル書き込み
     logger.writeLogsToFile();
     logger.logInfo("ActionChainサンプルプログラム終了");
