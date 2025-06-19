@@ -13,7 +13,7 @@ const std::string logFilePath = "/home/mil/work/RasPike-ART/sdk/workspace/tenaro
 /**
  * ログファイルの出力ファイル名サフィックス
  */
-const std::string logFileNameSuffix = "ダブルループを攻略する";
+const std::string logFileNameSuffix = "ダブルループを攻略する2";
 
 /**
  * 画像ファイルの出力パス
@@ -23,6 +23,6 @@ const std::string imgFilePath = "/home/mil/work/RasPike-ART/sdk/workspace/tenaro
 /**
  * 画像ファイルの出力ファイル名サフィックス
  */
-const std::string imgFileNameSuffix = "ダブルループを攻略する";
+const std::string imgFileNameSuffix = "ダブルループを攻略する2";
 
 #endif // _CONFIG_H_
