@@ -12,17 +12,8 @@
 #include "action-chain/action/HachikouAction.h"
 #include "action-chain/action/GoStraightAction.h"
 #include "action-chain/action/GoCurveAction.h"
-#include "perception/Perception.h"
 
 using namespace spikeapi;
-
-/**
- * 知覚タスク
- * @param exinf 拡張情報
- */
-void perc_task(intptr_t exinf) {
-    perception.update();
-}
 
 /**
  * メイン処理
@@ -31,10 +22,6 @@ void perc_task(intptr_t exinf) {
 void main_task(intptr_t exinf)   {
     // ロガーインスタンスの取得
     Logger& logger = Logger::getInstance();
-
-    // カメラ初期化は知覚タスクで行うため、ここでは削除
-    // 知覚タスクの開始
-    sta_cyc(PERC_CYC);
 
     /**
      * ----------------------------
@@ -517,9 +504,6 @@ void main_task(intptr_t exinf)   {
         currentNode = currentNode->getNext();
         delete previousNode;
     }
-
-    // 知覚タスクの停止
-    stp_cyc(PERC_CYC);
 
     // 最終的なログファイル書き込み
     logger.writeLogsToFile();

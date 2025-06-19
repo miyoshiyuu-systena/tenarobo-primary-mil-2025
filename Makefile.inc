@@ -20,7 +20,6 @@ APPL_CXXOBJS +=\
 	FrontArmDrive.o\
 	TwinWheelDrive.o\
 	Logger.o\
-	Perception.o\
 	CameraManager.o\
 
 SRCLANG := c++
