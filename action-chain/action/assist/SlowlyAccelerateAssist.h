@@ -2,6 +2,16 @@
 #define SLOWLY_ACCELERATE_ASSIST_H
 
 #include "IAssist.h"
+#include "IAssistGenerator.h"
+
+/**
+ * ゆっくりと加速する補助のファクトリー関数
+ */
+IAssistGenerator slowlyAccelerateAssistGenerator(
+    Device* device,
+    int stepCount,
+    int stepInterval
+);
 
 /**
  * ゆっくりと加速する補助
@@ -40,6 +50,7 @@ class SlowlyAccelerateAssist : public IAssist
              */
             int stepInterval
         );
+        ~SlowlyAccelerateAssist();
 
         void init() override;
 
