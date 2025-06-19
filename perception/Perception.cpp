@@ -135,7 +135,7 @@ void Perception::update() {
     }
 
     // カメラ処理の頻度を下げる
-    if (count_cycle % cameraSaveInterval == 0) {
+    if (count_cycle % shutterCameraFrequency == 0) {
         loc_cpu();
         /**
          * カメラデータの取得
@@ -156,9 +156,9 @@ void Perception::update() {
         if (cameraManager.isInitialized()) {
             // 1フレーム取得して保存
             cv::Mat frame;
-            if (cameraManager.captureImageNow(frame)) {
-                // 画像保存の頻度も下げる（100回→500回に1回）
-                cameraManager.saveImage(frame);
+            bool isSuccess = cameraManager.captureImageNow(frame);
+            if (isSuccess) {
+                mFrontImage = frame;
             }
         }
         unl_cpu();
@@ -181,6 +181,13 @@ void Perception::update() {
             ", FrontArmSpeed: " + std::to_string(mFrontArmSpeed)
         );
         logger.logDebug("--------------------------------");
+    }
+
+    if (
+        isSaveCameraImage &&
+        count_cycle % saveCameraImageFrequency== 0
+    ) {
+        CameraManager::getInstance().saveImage(mFrontImage);
     }
 
     count_cycle++;

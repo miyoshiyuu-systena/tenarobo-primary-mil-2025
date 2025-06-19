@@ -24,6 +24,12 @@ const bool isPerceptionLoggingIgnoreMask = isPerceptionLoggingEnable && false;
  * Webカメラの画像を保存するか
  * デバッグ用
  */
-const bool isSaveCameraImage = false;
+const bool isSaveCameraImage = true;
+
+/**
+ * カメラの画像を保存する頻度
+ * ロボットの知覚頻度よりも大きくしなければ意味がない
+ */
+const int saveCameraImageFrequency = 1000; // 1000msに1回
 
 #endif // _DEBUG_H_

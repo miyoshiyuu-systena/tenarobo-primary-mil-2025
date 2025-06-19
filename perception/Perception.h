@@ -133,7 +133,7 @@ private:
     /**
      * カメラの保存間隔
      */
-    static const int cameraSaveInterval = 100;
+    static const int shutterCameraFrequency = 100;
 
     /**
      * 知覚タスクのサイクル回数
