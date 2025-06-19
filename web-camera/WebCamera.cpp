@@ -1,6 +1,7 @@
 #include "web-camera/WebCamera.h"
 #include "spikeapi.h"
 #include "logger/Logger.h"
+#include <unistd.h>  // usleep()のために追加
 
 WebCamera::WebCamera(): 
     m_isInitialized(false),
@@ -30,7 +31,7 @@ void WebCamera::init() {
             m_camera.set(cv::CAP_PROP_FPS, 5);                  // フレームレート
                                                                 // 1秒間に取得する画像の枚数（撮影のペース）
             
-            dly_tsk(100 * 1000);     // 100ms待機
+            usleep(100 * 1000);     // 100ms待機 (POSIXの標準関数を使用)
                                     // 上記設定を適用するためのディレイ
             
             cv::Mat testFrame;
