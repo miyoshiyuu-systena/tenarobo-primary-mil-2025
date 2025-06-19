@@ -23,7 +23,6 @@ CameraManager& CameraManager::getInstance() {
  */
 CameraManager::CameraManager() 
     : m_initialized(false)
-    , m_cameraTaskRunning(false)
     /**
      * XXX: コンストラクタで注入できないか
      */
@@ -51,19 +50,13 @@ bool CameraManager::initializeCamera() {
             m_cap.set(cv::CAP_PROP_FPS, 5);  // 低フレームレート
             
             // 設定を適用するために少し待機
-            usleep(100000); // 100ms待機
+            usleep(100 * 1000); // 100ms待機
             
             // テストフレームを取得
             cv::Mat testFrame;
             if (m_cap.read(testFrame) && !testFrame.empty()) {
                 Logger::getInstance().logInfo("カメラデバイス " + std::to_string(i) + " が正常に初期化されました");
                 Logger::getInstance().logInfo("画像サイズ: " + std::to_string(testFrame.cols) + "x" + std::to_string(testFrame.rows));
-                
-                // 最新画像として保存
-                {
-                    std::lock_guard<std::mutex> lock(m_imageMutex);
-                    testFrame.copyTo(m_latestImage);
-                }
                 
                 m_initialized.store(true);
                 return true;
@@ -94,19 +87,11 @@ void CameraManager::shutdownCamera() {
 /**
  * 画像を保存
  */
-std::string CameraManager::saveImage(const cv::Mat& image, const std::string& prefix) {
+std::string CameraManager::saveImage(const cv::Mat& image) {
     createImageDirectory(m_imageDirectory);
     
-    // ファイル名を生成（日時 + プレフィックス）
-    std::time_t now = std::time(nullptr);
-    std::tm* timeinfo = std::localtime(&now);
-    
     std::ostringstream oss;
-    oss << std::put_time(timeinfo, "%Y%m%d-%H%M%S");
-    
-    if (!prefix.empty()) {
-        oss << "-" << prefix;
-    }
+    oss << m_imageCount;
     
     oss << ".jpg";
     
@@ -121,28 +106,12 @@ std::string CameraManager::saveImage(const cv::Mat& image, const std::string& pr
     
     if (success) {
         Logger::getInstance().logInfo("画像を保存しました: " + filename);
+        m_imageCount++;
         return filename;
     } else {
         Logger::getInstance().logError("画像の保存に失敗しました: " + filename);
         return "";
     }
-}
-
-/**
- * 最新の画像を取得
- */
-bool CameraManager::getLatestImage(cv::Mat& image) {
-    if (!m_initialized.load()) {
-        return false;
-    }
-    
-    std::lock_guard<std::mutex> lock(m_imageMutex);
-    if (!m_latestImage.empty()) {
-        m_latestImage.copyTo(image);
-        return true;
-    }
-    
-    return false;
 }
 
 /**
@@ -160,64 +129,6 @@ bool CameraManager::captureImageNow(cv::Mat& image) {
         }
     }
     return false;
-}
-
-/**
- * カメラタスクを開始
- */
-void CameraManager::startCameraTask() {
-    if (!m_cameraTaskRunning.load()) {
-        m_cameraTaskRunning.store(true);
-        Logger::getInstance().logInfo("カメラタスクを開始しました");
-    }
-}
-
-/**
- * カメラタスクを停止
- */
-void CameraManager::stopCameraTask() {
-    m_cameraTaskRunning.store(false);
-    Logger::getInstance().logInfo("カメラタスクを停止しました");
-}
-
-/**
- * カメラタスクの実行関数
- */
-void CameraManager::runCameraTask() {
-    if (!m_initialized.load()) {
-        Logger::getInstance().logError("カメラが初期化されていません");
-        return;
-    }
-
-    Logger::getInstance().logInfo("カメラタスク開始");
-    
-    while (m_cameraTaskRunning.load()) {
-        // 非ブロッキングでフレームを取得
-        if (m_cap.grab()) {
-            cv::Mat frame;
-            if (m_cap.retrieve(frame) && !frame.empty()) {
-                // 最新画像を更新
-                {
-                    std::lock_guard<std::mutex> lock(m_imageMutex);
-                    frame.copyTo(m_latestImage);
-                }
-                
-                // 定期的に画像を保存（10フレームごと）
-                static int frameCount = 0;
-                if (++frameCount % 10 == 0) {
-                    saveImage(frame, "camera_task");
-                }
-            }
-        }
-        
-        // RTOSの他のタスクにCPU時間を譲る
-        /**
-         * XXX: RTOSのインターフェースを使用できないかdly_tsk
-         */
-        usleep(10000); // 10ms待機
-    }
-    
-    Logger::getInstance().logInfo("カメラタスク終了");
 }
 
 /**

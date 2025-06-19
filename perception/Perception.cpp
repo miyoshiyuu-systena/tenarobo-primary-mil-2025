@@ -158,7 +158,7 @@ void Perception::update() {
             cv::Mat frame;
             if (cameraManager.captureImageNow(frame)) {
                 // 画像保存の頻度も下げる（100回→500回に1回）
-                cameraManager.saveImage(frame, "perc_task");
+                cameraManager.saveImage(frame);
             }
         }
         unl_cpu();
