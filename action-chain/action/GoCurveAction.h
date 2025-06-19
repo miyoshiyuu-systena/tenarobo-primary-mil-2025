@@ -7,6 +7,7 @@
 #include "IAssistGenerator.h"
 #include "ICloserGenerator.h"
 #include <functional>
+#include <vector>
 
 /**
  * HACK:
@@ -21,7 +22,7 @@
  * @param radius 半径[mm]
  * @param isGoRight 右に曲がるかどうか
  * @param detectInterval 検知間隔[ms]
- * @param assistPtrGenerator 走行補助
+ * @param assistPtrGenerators 走行補助ジェネレータのリスト（複数のアシストを順次適用）
  * @param closerPtrGenerator 終了判定
  * @return 曲線走行アクション
  */
@@ -30,7 +31,7 @@ ActionCall goCurveActionFactory(
     float radius,
     bool isGoRight,
     int detectInterval,
-    IAssistGenerator assistPtrGenerator,
+    std::vector<IAssistGenerator> assistPtrGenerators,
     ICloserGenerator closerPtrGenerator
 );
 
