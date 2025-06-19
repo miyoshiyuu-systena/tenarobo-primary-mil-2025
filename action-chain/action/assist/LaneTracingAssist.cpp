@@ -35,7 +35,7 @@ void LaneTracingAssist::init(float baseLeftSpeed, float baseRightSpeed)
 {
     mBaseLeftSpeed = baseLeftSpeed;
     mBaseRightSpeed = baseRightSpeed;
-    mErrorHistory = {0};
+    mErrorHistory = new float[mTotalHistory]();
     mErrorHistoryIndex = 0;
     mErrorIntegral = 0;
 }
