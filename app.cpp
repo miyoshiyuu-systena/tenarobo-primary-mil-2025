@@ -39,7 +39,7 @@ void main_task(intptr_t exinf)   {
     std::vector<IAssistGenerator> assistGenerators1 = {
         laneTracingAssistGenerator(
             &device,
-            true,
+            false,
             150.0f,
             10.0f,
             10.0f,
@@ -48,7 +48,7 @@ void main_task(intptr_t exinf)   {
         slowlyAccelerateAssistGenerator(
             &device,
             100,
-            10
+            1
         )
     };
     std::vector<ICloserGenerator> closerGenerators1 = {
@@ -58,8 +58,8 @@ void main_task(intptr_t exinf)   {
         "action1: 白黒の直線に沿って走行し、青色の床に到達したら終了",
         &device,
         goCurveActionFactory(
-            250.0f,
-            200.0f,
+            350.0f,
+            350.0f,
             false,
             10,
             assistGenerators1,
@@ -73,15 +73,15 @@ void main_task(intptr_t exinf)   {
         laneTracingAssistGenerator(
             &device,
             true,
-            150.0f,
-            10.0f,
-            10.0f,
+            50.0f,
+            5.0f,
+            5.0f,
             calcBlueWhiteBorderError
         ),
         slowlyAccelerateAssistGenerator(
             &device,
-            100,
-            10
+            10,
+            1
         )
     };
     std::vector<ICloserGenerator> closerGenerators2 = {
@@ -91,9 +91,9 @@ void main_task(intptr_t exinf)   {
         "action2: 白青の直線に沿って走行し、黒い床に到達したら終了",
         &device,
         goCurveActionFactory(
-            250.0f,
-            100.0f,
-            true,
+            150.0f,
+            350.0f,
+            false,
             10,
             assistGenerators2,
             closerGenerators2
@@ -102,13 +102,46 @@ void main_task(intptr_t exinf)   {
     );
     action1->setNext(action2);
 
+    std::vector<IAssistGenerator> assistGenerators3 = {
+        laneTracingAssistGenerator(
+            &device,
+            true,
+            25.0f,
+            1.0f,
+            1.0f,
+            calcBlackWhiteBorderError
+        ),
+        slowlyAccelerateAssistGenerator(
+            &device,
+            100,
+            1
+        )
+    };
+    std::vector<ICloserGenerator> closerGenerators3 = {
+        blueFloorCloserGenerator(&device)
+    };
     ActionNode* action3 = new ActionNode(
-        "action3: 停止",
+        "action3: 白黒の曲線に沿って走行し、青色の床に到達したら終了",
         &device,
-        stopActionFactory(),
-        1000
+        goCurveActionFactory(
+            100.0f,
+            150.0f,
+            true,
+            10,
+            assistGenerators3,
+            closerGenerators3
+        ),
+        0
     );
     action2->setNext(action3);
+
+    ActionNode* action4 = new ActionNode(
+        "action4: 停止",
+        &device,
+        stopActionFactory(),
+        0
+    );
+    action3->setNext(action4);
 
     ActionNode* prevAction = nullptr;
     ActionNode* currentAction = action0;
