@@ -13,6 +13,7 @@
 #include "action-chain/action/HachikouAction.h"
 #include "action-chain/action/GoStraightAction.h"
 #include "action-chain/action/GoCurveAction.h"
+#include "action-chain/action/StopAction.h"
 
 using namespace spikeapi;
 
@@ -31,13 +32,13 @@ void main_task(intptr_t exinf)   {
             1.0f,
             10
         ),
-        500
+        0
     );
 
     IAssistGenerator assist1 = laneTracingAssistGenerator(
         &device,
         true,
-        50.0f,
+        150.0f,
         10.0f,
         10.0f,
         calcBlackWhiteBorderError
@@ -50,19 +51,19 @@ void main_task(intptr_t exinf)   {
         "action1: 白黒の直線に沿って走行し、青色の床に到達したら終了",
         &device,
         goStraightActionFactory(
-            250,
+            150,
             10,
             assistGenerators1,
             closer1
         ),
-        500
+        0
     );
     action0->setNext(action1);
 
     IAssistGenerator assist2 = laneTracingAssistGenerator(
         &device,
         true,
-        50.0f,
+        150.0f,
         10.0f,
         10.0f,
         calcBlueWhiteBorderError
@@ -75,14 +76,22 @@ void main_task(intptr_t exinf)   {
         "action2: 白青の直線に沿って走行し、黒い床に到達したら終了",
         &device,
         goStraightActionFactory(
-            250,
+            150,
             10,
             assistGenerators2,
             closer2
         ),
-        500
+        0
     );
     action1->setNext(action2);
+
+    ActionNode* action3 = new ActionNode(
+        "action3: 停止",
+        &device,
+        stopActionFactory(),
+        1000
+    );
+    action2->setNext(action3);
 
     ActionNode* prevAction = nullptr;
     ActionNode* currentAction = action0;
