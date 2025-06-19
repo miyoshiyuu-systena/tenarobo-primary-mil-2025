@@ -18,11 +18,11 @@ const std::string logFileNameSuffix = "アーキテクチャ開発中";
 /**
  * 画像ファイルの出力パス
  */
-const std::string imgFilePath = "/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img/";
+const std::string imgFilePath = "/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/";
 
 /**
  * 画像ファイルの出力ファイル名サフィックス
  */
-const std::string imgFileNameSuffix = "アーキテクチャ開発中";
+const std::string imgFileNameSuffix = "アーキテクチャ開発中6";
 
 #endif // _CONFIG_H_
