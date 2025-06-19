@@ -100,11 +100,9 @@ void Perception::update() {
     ) {
         ColorSensor::HSV hsv;
         colorSensor.getHSV(hsv, true);
-        loc_cpu();
         mColorH = hsv.h;
         mColorS = hsv.s;
         mColorV = hsv.v;
-        unl_cpu();
     }
 
     if (
@@ -139,14 +137,12 @@ void Perception::update() {
         (isPerceptionLoggingIgnoreMask || (mMask & MASK_CAMERA) != 0b00000000) &&
         count_cycle % cameraSaveInterval == 0   // カメラの保存間隔
     ) {
-        loc_cpu();
         cv::Mat frame;
         const bool isSuccess = webCamera.captureImage(frame);
         if (isSuccess) {
             mFrontImage = frame;
             Logger::getInstance().logDebug("Camera image saved");
         }
-        unl_cpu();
     }
 
     if (isPerceptionLoggingEnable) {
