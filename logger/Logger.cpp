@@ -1,4 +1,5 @@
 #include "Logger.h"
+#include "../config.h"
 #include <fstream>
 #include <iostream>
 #include <iomanip>
@@ -19,15 +20,11 @@ Logger& Logger::getInstance() {
  * プライベートコンストラクタ
  */
 Logger::Logger() {
-    // 現在の作業ディレクトリを取得
-    char currentPath[1024];
-    if (getcwd(currentPath, sizeof(currentPath)) != nullptr) {
-        m_logDirectory = std::string(currentPath) + "/log/";
-    } else {
-        // フォールバック: 絶対パスを使用
-        m_logDirectory = "/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/log/";
-    }
-    
+    // config.hの設定を使用
+    m_logDirectory = logFilePath;
+    m_logFileNameSuffix = logFileNameSuffix;
+    m_logFileCount = 0;
+
     // ログディレクトリの存在確認と作成
     createLogDirectory();
     
@@ -166,16 +163,12 @@ void Logger::writeLogsToFile() {
 }
 
 /**
- * 日時フォーマットでファイル名を生成
+ * ファイル名を決定する
  */
-std::string Logger::generateLogFileName() const {
-    std::time_t now = std::time(nullptr);
-    std::tm* timeinfo = std::localtime(&now);
-    
+std::string Logger::generateLogFileName() {
     std::ostringstream oss;
-    oss << std::put_time(timeinfo, "%Y%m%d-%H%M%S");
-    oss << "-log.txt";
-    
+    oss << m_logFileCount << "-" << m_logFileNameSuffix << "-log.txt";
+    m_logFileCount++;
     return oss.str();
 }
 

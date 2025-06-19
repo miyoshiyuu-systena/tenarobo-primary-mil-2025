@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 #include <ctime>
+#include "../config.h"
 
 /**
  * ログレベル列挙型
@@ -112,10 +113,10 @@ private:
     void createLogDirectory();
 
     /**
-     * 日時フォーマットでファイル名を生成
-     * @return ファイル名（yyyymmdd-hhmmss-log.txt）
+     * ファイル名を決定する
+     * @return ファイル名（[カウント]-[サフィックス]-log.txt）
      */
-    std::string generateLogFileName() const;
+    std::string generateLogFileName();
 
     /**
      * ログレベルを文字列に変換
@@ -133,6 +134,8 @@ private:
 
     std::vector<LogEntry> m_logEntries;  ///< ログエントリのリスト
     std::string m_logDirectory;          ///< ログファイル出力ディレクトリ
+    std::string m_logFileNameSuffix;     ///< ログファイル名サフィックス
+    int m_logFileCount;                  ///< ログファイルのカウント
 };
 
 #endif // LOGGER_H 
