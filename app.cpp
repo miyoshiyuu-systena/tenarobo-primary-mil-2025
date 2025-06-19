@@ -47,6 +47,9 @@ void main_task(intptr_t exinf)   {
         assist1
     };
     ICloserGenerator closer1 = blueFloorCloserGenerator(&device);
+    std::vector<ICloserGenerator> closerGenerators1 = {
+        closer1
+    };
     ActionNode* action1 = new ActionNode(
         "action1: 白黒の直線に沿って走行し、青色の床に到達したら終了",
         &device,
@@ -54,7 +57,7 @@ void main_task(intptr_t exinf)   {
             150,
             10,
             assistGenerators1,
-            closer1
+            closerGenerators1
         ),
         0
     );
@@ -72,6 +75,9 @@ void main_task(intptr_t exinf)   {
         assist2
     };
     ICloserGenerator closer2 = blackFloorCloserGenerator(&device);
+    std::vector<ICloserGenerator> closerGenerators2 = {
+        closer2
+    };
     ActionNode* action2 = new ActionNode(
         "action2: 白青の直線に沿って走行し、黒い床に到達したら終了",
         &device,
@@ -79,7 +85,7 @@ void main_task(intptr_t exinf)   {
             150,
             10,
             assistGenerators2,
-            closer2
+            closerGenerators2
         ),
         0
     );
