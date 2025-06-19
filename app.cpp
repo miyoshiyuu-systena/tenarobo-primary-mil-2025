@@ -54,68 +54,68 @@ void main_task(intptr_t exinf)   {
         1000
     );
 
-    IAssist* assist1 = new LaneTracingAssist(
-        &twinWheelDrive,
-        &frontArmDrive,
-        &perception,
-        true,
-        50.0f,
-        25.0f,
-        0.5f,
-        calcBlackWhiteBorderError
-    );
-    ICloser* closer1 = new TimedCloser(&perception, 800);
-    ActionNode* actionNode1 = new ActionNode(
-        "白黒の境界(右縁)に沿って正面を走行し、8秒後に停止する",
-        &twinWheelDrive,
-        &frontArmDrive,
-        &perception,
-        0b00100000,
-        goStraightActionFactory(
-            500.0f,   // 速度[mm/s]
-            10,  // 検知間隔[ms]
-            assist1,
-            closer1
-        ),
-        100
-    );
-    actionNode0->setNext(actionNode1);
+    // IAssist* assist1 = new LaneTracingAssist(
+    //     &twinWheelDrive,
+    //     &frontArmDrive,
+    //     &perception,
+    //     true,
+    //     50.0f,
+    //     25.0f,
+    //     0.5f,
+    //     calcBlackWhiteBorderError
+    // );
+    // ICloser* closer1 = new TimedCloser(&perception, 1200);
+    // ActionNode* actionNode1 = new ActionNode(
+    //     "白黒の境界(右縁)に沿って正面を走行し、12秒後に停止する",
+    //     &twinWheelDrive,
+    //     &frontArmDrive,
+    //     &perception,
+    //     0b00100000,
+    //     goStraightActionFactory(
+    //         500.0f,   // 速度[mm/s]
+    //         10,  // 検知間隔[ms]
+    //         assist1,
+    //         closer1
+    //     ),
+    //     100
+    // );
+    // actionNode0->setNext(actionNode1);
 
-    IAssist* assist2 = new LaneTracingAssist(
-        &twinWheelDrive,
-        &frontArmDrive,
-        &perception,
-        true,
-        25.0f,
-        1.0f,
-        0.05f,
-        calcBlackWhiteBorderError
-    );
-    ICloser* closer2 = new TimedCloser(&perception, 800);
-    ActionNode* actionNode2 = new ActionNode(
-        "白黒の境界(右縁)に沿って右まがりに走行し、8秒後に停止する",
-        &twinWheelDrive,
-        &frontArmDrive,
-        &perception,
-        0b00100000,
-        goCurveActionFactory(
-            100.0f,   // 速度[mm/s]
-            100.0f,   // 半径[mm]
-            true,
-            10,  // 検知間隔[ms]
-            assist2,
-            closer2
-        ),
-        100
-    );
-    actionNode1->setNext(actionNode2);
+    // IAssist* assist2 = new LaneTracingAssist(
+    //     &twinWheelDrive,
+    //     &frontArmDrive,
+    //     &perception,
+    //     true,
+    //     250.0f,
+    //     50.0f,
+    //     0.5f,
+    //     calcBlackWhiteBorderError
+    // );
+    // ICloser* closer2 = new TimedCloser(&perception, 300);
+    // ActionNode* actionNode2 = new ActionNode(
+    //     "白黒の境界(右縁)に沿って右まがりに走行し、3秒後に停止する",
+    //     &twinWheelDrive,
+    //     &frontArmDrive,
+    //     &perception,
+    //     0b00100000,
+    //     goCurveActionFactory(
+    //         100.0f,   // 速度[mm/s]
+    //         200.0f,   // 半径[mm]
+    //         true,
+    //         10,  // 検知間隔[ms]
+    //         assist2,
+    //         closer2
+    //     ),
+    //     100
+    // );
+    // actionNode1->setNext(actionNode2);
 
     IAssist* assist3 = new LaneTracingAssist(
         &twinWheelDrive,
         &frontArmDrive,
         &perception,
         true,
-        50.0f,
+        100.0f,
         25.0f,
         0.05f,
         calcBlackWhiteBorderError
@@ -128,14 +128,14 @@ void main_task(intptr_t exinf)   {
         &perception,
         0b00100000,
         goStraightActionFactory(
-            500.0f,   // 速度[mm/s]
+            250.0f,   // 速度[mm/s]
             10,  // 検知間隔[ms]
             assist3,
             closer3
         ),
         100
     );
-    actionNode2->setNext(actionNode3);
+    actionNode0->setNext(actionNode3);
 
     IAssist* assist4 = new LaneTracingAssist(
         &twinWheelDrive,
@@ -149,15 +149,13 @@ void main_task(intptr_t exinf)   {
     );
     ICloser* closer4 = new BlackFloorCloser(&perception);
     ActionNode* actionNode4 = new ActionNode(
-        "白青の境界(右縁)に沿って右まがりに走行し、黒床を検出すると停止(ダブルループ開始)",
+        "白青の境界(右縁)に沿って正面に走行し、黒床を検出すると停止(ダブルループ開始)4",
         &twinWheelDrive,
         &frontArmDrive,
         &perception,
         0b00100000,
-        goCurveActionFactory(
-            100.0f,   // 速度[mm/s]
-            400.0f,   // 半径[mm]
-            true,
+        goStraightActionFactory(
+            250.0f,   // 速度[mm/s]
             10,  // 検知間隔[ms]
             assist4,
             closer4
@@ -171,22 +169,20 @@ void main_task(intptr_t exinf)   {
         &frontArmDrive,
         &perception,
         true,
-        50.0f,
         25.0f,
-        0.05f,
-        calcBlackWhiteBorderError
+        1.0f,
+        0.5f,
+        calcBlueWhiteBorderError
     );
-    ICloser* closer5 = new BlueFloorCloser(&perception);
+    ICloser* closer5 = new TimedCloser(&perception, 50);
     ActionNode* actionNode5 = new ActionNode(
-        "白黒の境界(右縁)に沿って右まがりに走行し、青床を検出すると停止",
+        "白青の境界(右縁)に沿って正面に走行し、0.5秒経過したら停止5",
         &twinWheelDrive,
         &frontArmDrive,
         &perception,
         0b00100000,
-        goCurveActionFactory(
-            500.0f,   // 速度[mm/s]
-            400.0f,   // 半径[mm]
-            true,
+        goStraightActionFactory(
+            250.0f,   // 速度[mm/s]
             10,  // 検知間隔[ms]
             assist5,
             closer5
@@ -199,23 +195,23 @@ void main_task(intptr_t exinf)   {
         &twinWheelDrive,
         &frontArmDrive,
         &perception,
-        false,
+        true,
+        100.0f,
         25.0f,
-        1.0f,
-        0.5f,
-        calcBlueWhiteBorderError
+        0.05f,
+        calcBlackWhiteBorderError
     );
-    ICloser* closer6 = new BlackFloorCloser(&perception);
+    ICloser* closer6 = new BlueFloorCloser(&perception);
     ActionNode* actionNode6 = new ActionNode(
-        "白青の境界(左縁)に沿って左まがりに走行し、黒床を検出すると停止",
+        "白黒の境界(右縁)に沿って右まがりに走行し、青床を検出すると停止6",
         &twinWheelDrive,
         &frontArmDrive,
         &perception,
         0b00100000,
         goCurveActionFactory(
-            100.0f,   // 速度[mm/s]
-            200.0f,   // 半径[mm]
-            false,
+            200.0f,   // 速度[mm/s]
+            425.0f,   // 半径[mm]
+            true,
             10,  // 検知間隔[ms]
             assist6,
             closer6
@@ -229,22 +225,22 @@ void main_task(intptr_t exinf)   {
         &frontArmDrive,
         &perception,
         false,
-        25.0f,
-        1.0f,
+        50.0f,
+        100.0f,
         0.5f,
-        calcBlackWhiteBorderError
+        calcBlueWhiteBorderError
     );
-    ICloser* closer7 = new BlueFloorCloser(&perception);
+    ICloser* closer7 = new BlackFloorCloser(&perception);
     ActionNode* actionNode7 = new ActionNode(
-        "白黒の境界(左縁)に沿って左まがりに走行し、青床を検出すると停止",
+        "白青の境界(左縁)に沿って右曲がりに走行し、黒床を検出すると停止7",
         &twinWheelDrive,
         &frontArmDrive,
         &perception,
         0b00100000,
         goCurveActionFactory(
-            250.0f,   // 速度[mm/s]
-            200.0f,   // 半径[mm]
-            false,
+            100.0f,   // 速度[mm/s]
+            425.0f,// 半径[mm]
+            true,
             10,  // 検知間隔[ms]
             assist7,
             closer7
@@ -257,22 +253,22 @@ void main_task(intptr_t exinf)   {
         &twinWheelDrive,
         &frontArmDrive,
         &perception,
-        true,
+        false,
+        125.0f,
         25.0f,
-        1.0f,
         0.5f,
-        calcBlueWhiteBorderError
+        calcBlackWhiteBorderError
     );
-    ICloser* closer8 = new BlackFloorCloser(&perception);
+    ICloser* closer8 = new BlueFloorCloser(&perception);
     ActionNode* actionNode8 = new ActionNode(
-        "白青の境界(右縁)に沿って右まがりに走行し、黒床を検出すると停止",
+        "白黒の境界(左縁)に沿って右まがりに走行し、0.5秒経過したら停止8",
         &twinWheelDrive,
         &frontArmDrive,
         &perception,
         0b00100000,
         goCurveActionFactory(
-            100.0f,   // 速度[mm/s]
-            400.0f,   // 半径[mm]
+            250.0f,   // 速度[mm/s]
+            425.0f,
             true,
             10,  // 検知間隔[ms]
             assist8,
@@ -286,23 +282,23 @@ void main_task(intptr_t exinf)   {
         &twinWheelDrive,
         &frontArmDrive,
         &perception,
-        true,
-        50.0f,
+        false,
+        125.0f,
         25.0f,
-        0.05f,
+        0.5f,
         calcBlackWhiteBorderError
     );
     ICloser* closer9 = new BlueFloorCloser(&perception);
     ActionNode* actionNode9 = new ActionNode(
-        "白黒の境界(右縁)に沿って右まがりに走行し、青床を検出すると停止",
+        "白黒の境界(左縁)に沿って左まがりに走行し、青床を検出すると停止9",
         &twinWheelDrive,
         &frontArmDrive,
         &perception,
         0b00100000,
         goCurveActionFactory(
-            500.0f,   // 速度[mm/s]
-            400.0f,   // 半径[mm]
-            true,
+            250.0f,   // 速度[mm/s]
+            200.0f,   // 半径[mm]
+            false,
             10,  // 検知間隔[ms]
             assist9,
             closer9
@@ -315,15 +311,71 @@ void main_task(intptr_t exinf)   {
         &twinWheelDrive,
         &frontArmDrive,
         &perception,
+        true,
+        50.0f,
+        25.0f,
+        0.5f,
+        calcBlueWhiteBorderError
+    );
+    ICloser* closer10 = new BlackFloorCloser(&perception);
+    ActionNode* actionNode10 = new ActionNode(
+        "白青の境界(右縁)に沿って正面に走行し、黒床を検出すると停止10",
+        &twinWheelDrive,
+        &frontArmDrive,
+        &perception,
+        0b00100000,
+        goStraightActionFactory(
+            100.0f,   // 速度[mm/s]
+            10,  // 検知間隔[ms]
+            assist8,
+            closer8
+        ),
+        100
+    );
+    actionNode9->setNext(actionNode10);
+
+    IAssist* assist11 = new LaneTracingAssist(
+        &twinWheelDrive,
+        &frontArmDrive,
+        &perception,
+        true,
+        125.0f,
+        25.0f,
+        0.05f,
+        calcBlackWhiteBorderError
+    );
+    ICloser* closer11 = new BlueFloorCloser(&perception);
+    ActionNode* actionNode11 = new ActionNode(
+        "白黒の境界(右縁)に沿って右まがりに走行し、青床を検出すると停止11",
+        &twinWheelDrive,
+        &frontArmDrive,
+        &perception,
+        0b00100000,
+        goCurveActionFactory(
+            250.0f,   // 速度[mm/s]
+            400.0f,   // 半径[mm]
+            true,
+            10,  // 検知間隔[ms]
+            assist11,
+            closer11
+        ),
+        100
+    );
+    actionNode10->setNext(actionNode11);
+
+    IAssist* assist12 = new LaneTracingAssist(
+        &twinWheelDrive,
+        &frontArmDrive,
+        &perception,
         false,
         25.0f,
         1.0f,
         0.5f,
         calcBlueWhiteBorderError
     );
-    ICloser* closer10 = new BlackFloorCloser(&perception);
-    ActionNode* actionNode10 = new ActionNode(
-        "白青の境界(左縁)に沿って右まがりに走行し、黒床を検出すると停止（ダブルループ終了）",
+    ICloser* closer12 = new BlackFloorCloser(&perception);
+    ActionNode* actionNode12 = new ActionNode(
+        "白青の境界(左縁)に沿って右まがりに走行し、黒床を検出すると停止（ダブルループ終了）12",
         &twinWheelDrive,
         &frontArmDrive,
         &perception,
@@ -338,21 +390,21 @@ void main_task(intptr_t exinf)   {
         ),
         100
     );
-    actionNode9->setNext(actionNode10);
+    actionNode11->setNext(actionNode12);
 
-    IAssist* assist11 = new LaneTracingAssist(
+    IAssist* assist13 = new LaneTracingAssist(
         &twinWheelDrive,
         &frontArmDrive,
         &perception,
         false,
+        250.0f,
         50.0f,
-        25.0f,
         0.05f,
         calcBlackWhiteBorderError
     );
-    ICloser* closer11 = new TimedCloser(&perception, 200);
-    ActionNode* actionNode11 = new ActionNode(
-        "白黒の境界(左縁)に沿って正面を走行し、2秒後に停止",
+    ICloser* closer13 = new TimedCloser(&perception, 200);
+    ActionNode* actionNode13 = new ActionNode(
+        "白黒の境界(左縁)に沿って正面を走行し、2秒後に停止13",
         &twinWheelDrive,
         &frontArmDrive,
         &perception,
@@ -365,9 +417,9 @@ void main_task(intptr_t exinf)   {
         ),
         100
     );
-    actionNode10->setNext(actionNode11);
+    actionNode12->setNext(actionNode13);
 
-    IAssist* assist12 = new LaneTracingAssist(
+    IAssist* assist14 = new LaneTracingAssist(
         &twinWheelDrive,
         &frontArmDrive,
         &perception,
@@ -377,9 +429,9 @@ void main_task(intptr_t exinf)   {
         0.5f,
         calcBlackWhiteBorderError
     );
-    ICloser* closer12 = new TimedCloser(&perception, 800);
-    ActionNode* actionNode12 = new ActionNode(
-        "白黒の境界(左縁)に沿って右まがりに走行し、8秒後に停止",
+    ICloser* closer14= new TimedCloser(&perception, 400);
+    ActionNode* actionNode14 = new ActionNode(
+        "白黒の境界(左縁)に沿って右まがりに走行し、4秒後に停止14",
         &twinWheelDrive,
         &frontArmDrive,
         &perception,
@@ -389,26 +441,26 @@ void main_task(intptr_t exinf)   {
             100.0f,   // 半径[mm]
             true,
             10,  // 検知間隔[ms]
-            assist12,
-            closer12
+            assist14,
+            closer14
         ),
         100
     );
-    actionNode11->setNext(actionNode12);
+    actionNode13->setNext(actionNode14);
 
-    IAssist* assist13 = new LaneTracingAssist(
+    IAssist* assist15 = new LaneTracingAssist(
         &twinWheelDrive,
         &frontArmDrive,
         &perception,
         true,
+        250.0f,
         50.0f,
-        25.0f,
         0.05f,
         calcBlackWhiteBorderError
     );
-    ICloser* closer13 = new BlueFloorCloser(&perception);
-    ActionNode* actionNode13 = new ActionNode(
-        "白黒の境界(左縁)に沿って正面を走行し、青床を検出すると停止",
+    ICloser* closer15 = new BlueFloorCloser(&perception);
+    ActionNode* actionNode15 = new ActionNode(
+        "白黒の境界(左縁)に沿って正面を走行し、青床を検出すると停止15",
         &twinWheelDrive,
         &frontArmDrive,
         &perception,
@@ -416,13 +468,12 @@ void main_task(intptr_t exinf)   {
         goStraightActionFactory(
             500.0f,   // 速度[mm/s]
             10,  // 検知間隔[ms]
-            assist13,
-            closer13
+            assist15,
+            closer15
         ),
         100
     );
-    actionNode12->setNext(actionNode13);
-
+    actionNode14->setNext(actionNode15);
 
     /** 
      * ----------------------------
