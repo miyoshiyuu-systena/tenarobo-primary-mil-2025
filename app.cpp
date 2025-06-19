@@ -50,7 +50,7 @@ void main_task(intptr_t exinf)   {
     cameraManager.saveImage(img3);
 
     cv::Mat img4;
-    cv::Canny(img3, img4, 100, 200);
+    cv::Canny(img3, img4, 500, 700);
 
     cameraManager.saveImage(img4);
 
