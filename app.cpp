@@ -38,7 +38,6 @@ void main_task(intptr_t exinf)   {
 
     std::vector<IAssistGenerator> assistGenerators1 = {
         laneTracingAssistGenerator(
-            &device,
             false,
             150.0f,
             10.0f,
@@ -46,13 +45,12 @@ void main_task(intptr_t exinf)   {
             calcBlackWhiteBorderError
         ),
         slowlyAccelerateAssistGenerator(
-            &device,
             100,
             1
         )
     };
     std::vector<ICloserGenerator> closerGenerators1 = {
-        blueFloorCloserGenerator(&device)
+        blueFloorCloserGenerator()
     };
     ActionNode* action1 = new ActionNode(
         "action1: 白黒の直線に沿って走行し、青色の床に到達したら終了",
@@ -71,7 +69,6 @@ void main_task(intptr_t exinf)   {
 
     std::vector<IAssistGenerator> assistGenerators2 = {
         laneTracingAssistGenerator(
-            &device,
             true,
             50.0f,
             5.0f,
@@ -79,13 +76,12 @@ void main_task(intptr_t exinf)   {
             calcBlueWhiteBorderError
         ),
         slowlyAccelerateAssistGenerator(
-            &device,
             10,
             1
         )
     };
     std::vector<ICloserGenerator> closerGenerators2 = {
-        blackFloorCloserGenerator(&device)
+        blackFloorCloserGenerator()
     };
     ActionNode* action2 = new ActionNode(
         "action2: 白青の直線に沿って走行し、黒い床に到達したら終了",
@@ -104,7 +100,6 @@ void main_task(intptr_t exinf)   {
 
     std::vector<IAssistGenerator> assistGenerators3 = {
         laneTracingAssistGenerator(
-            &device,
             true,
             25.0f,
             1.0f,
@@ -112,13 +107,12 @@ void main_task(intptr_t exinf)   {
             calcBlackWhiteBorderError
         ),
         slowlyAccelerateAssistGenerator(
-            &device,
             100,
             1
         )
     };
     std::vector<ICloserGenerator> closerGenerators3 = {
-        blueFloorCloserGenerator(&device)
+        blueFloorCloserGenerator()
     };
     ActionNode* action3 = new ActionNode(
         "action3: 白黒の曲線に沿って走行し、青色の床に到達したら終了",

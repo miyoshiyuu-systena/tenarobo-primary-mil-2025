@@ -3,6 +3,7 @@
 #include "ICloser.h"
 #include "spikeapi.h"
 #include "device/Device.h"
+#include "device/PerceptionReport.h"
 #include <vector>
 
 ActionCall goStraightActionFactory(
@@ -17,6 +18,8 @@ ActionCall goStraightActionFactory(
         ActionNode*& next_ptr,
         Device*& device
     ) {
+        PerceptionReport report;
+
         float speeds[2] = {0.0f, 0.0f};
         
         // 複数のアシストオブジェクトを生成
@@ -38,10 +41,23 @@ ActionCall goStraightActionFactory(
             // 基準速度から開始
             speeds[0] = speed; // 左輪
             speeds[1] = speed; // 右輪
+
+            // 知覚データを取得
+            writePerceptionReport(
+                device,
+                report,
+                (
+                    // PERCEPTION_REPORT_MASK_ULTRASONIC |      //超音波使わない
+                    // PERCEPTION_REPORT_MASK_FORCE |           //力センサー使わない
+                    PERCEPTION_REPORT_MASK_COLOR |
+                    // PERCEPTION_REPORT_MASK_IMAGE |           //画像使わない
+                    0b00000000
+                )
+            );
             
             // 複数のアシストを順次適用
             for (IAssist* assist : assists) {
-                assist->correct(speeds);
+                assist->correct(speeds, &report);
             }
             
             device->twinWheelDrive.setSpeed(speeds[0], speeds[1]);
@@ -55,7 +71,7 @@ ActionCall goStraightActionFactory(
 
             // 複数の終了判定を順次適用
             for (ICloser* closer : closers) {
-                if (closer->isClosed())
+                if (closer->isClosed(&report))
                     return;
             }
         } while (true);

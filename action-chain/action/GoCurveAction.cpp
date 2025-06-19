@@ -2,6 +2,7 @@
 #include "spikeapi.h"
 #include "CalcCurveDriveSpeed.h"
 #include "device/Device.h"
+#include "device/PerceptionReport.h"
 #include <vector>
 
 ActionCall goCurveActionFactory(
@@ -18,6 +19,8 @@ ActionCall goCurveActionFactory(
         ActionNode*& next_ptr,
         Device*& device
     ) {
+        PerceptionReport report;
+
         float speeds[2] = {0.0f, 0.0f};
         float baseSpeed[2] = {0.0f, 0.0f};
         calcCurveSpeedsByLinearSpeed(speed, radius, baseSpeed);
@@ -46,10 +49,23 @@ ActionCall goCurveActionFactory(
                 speeds[0] = baseSpeed[1]; // 左輪（内輪）
                 speeds[1] = baseSpeed[0]; // 右輪（外輪）
             }
+
+            // 知覚データを取得
+            writePerceptionReport(
+                device,
+                report,
+                (
+                    // PERCEPTION_REPORT_MASK_ULTRASONIC |      //超音波使わない
+                    // PERCEPTION_REPORT_MASK_FORCE |           //力センサー使わない
+                    PERCEPTION_REPORT_MASK_COLOR |
+                    // PERCEPTION_REPORT_MASK_IMAGE |           //画像使わない
+                    0b00000000
+                )
+            );
             
             // 複数のアシストを順次適用
             for (IAssist* assist : assists) {
-                assist->correct(speeds);
+                assist->correct(speeds, &report);
             }
             
             device->twinWheelDrive.setSpeed(speeds[0], speeds[1]);
@@ -63,7 +79,7 @@ ActionCall goCurveActionFactory(
 
             // 複数の終了判定を順次適用
             for (ICloser* closer : closers) {
-                if (closer->isClosed())
+                if (closer->isClosed(&report))
                     return;
             }
         } while (true);

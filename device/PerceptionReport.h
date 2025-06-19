@@ -18,6 +18,45 @@
 #define     PERCEPTION_REPORT_MASK_COLOR        0b00100000
 #define     PERCEPTION_REPORT_MASK_IMAGE        0b00010000
 
+
+/**
+* 観測結果を格納する構造体
+*/
+typedef struct {
+    /**
+    * 超音波センサーの距離
+    */
+    float distance;
+    
+    /**
+    * 力センサーの力
+    */
+    float force;
+    
+    /**
+    * カラーセンサーの色
+    * HSVのH
+    */
+    int h;
+    
+    /**
+    * カラーセンサーの色
+    * HSVのS
+    */
+    int s;
+    
+    /**
+    * カラーセンサーの色
+    * HSVのV
+    */
+    int v;
+    
+    /**
+    * Webカメラの画像
+    */
+    cv::Mat image;
+} PerceptionReport;
+
 /**
  * 知覚データを更新して、格納する
  * 
@@ -34,43 +73,5 @@ void writePerceptionReport(
     PerceptionReport& report,
     uint8_t mask
 );
-
-/**
- * 観測結果を格納する構造体
- */
-typedef struct {
-    /**
-     * 超音波センサーの距離
-     */
-    float distance;
-
-    /**
-     * 力センサーの力
-     */
-    float force;
-
-    /**
-     * カラーセンサーの色
-     * HSVのH
-     */
-    int h;
-
-    /**
-     * カラーセンサーの色
-     * HSVのS
-     */
-    int s;
-
-    /**
-     * カラーセンサーの色
-     * HSVのV
-     */
-    int v;
-
-    /**
-     * Webカメラの画像
-     */
-    cv::Mat image;
-} PerceptionReport;
 
 #endif

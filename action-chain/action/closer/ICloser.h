@@ -1,7 +1,7 @@
 #ifndef _I_CLOSER_H_
 #define _I_CLOSER_H_
 
-#include "device/Device.h"
+#include "device/PerceptionReport.h"
 
 /**
  * 終了判定インターフェース
@@ -10,18 +10,16 @@
 class ICloser
 {
     public:
-        ICloser(Device* device);
+        ICloser();
         virtual ~ICloser() = default;
         virtual void init() = 0;
 
         /**
          * 終了判定を行う
+         * @param report 知覚データ
          * @return 終了判定（終了したらtrue, 終了しない場合はfalse）
          */
-        virtual bool isClosed() = 0;
-
-    protected:
-        Device* mDevice;
+        virtual bool isClosed(PerceptionReport* report) = 0;
 };
 
 #endif // _I_CLOSER_H_

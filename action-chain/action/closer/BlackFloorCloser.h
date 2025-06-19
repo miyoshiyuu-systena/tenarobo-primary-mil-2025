@@ -2,15 +2,13 @@
 #define _BLACK_FLOOR_CLOSER_H_
 
 #include "ICloser.h"
-#include "device/Device.h"
 #include "ICloserGenerator.h"
 
 /**
  * 黒色の床に近づいたら終了判定を出すクラスのファクトリー関数
- * @param device デバイス
  * @return 黒色の床に近づいたら終了判定を出すクラスのファクトリー関数
  */
-ICloserGenerator blackFloorCloserGenerator(Device* device);
+ICloserGenerator blackFloorCloserGenerator();
 
 /**
  * 黒色の床に近づいたら終了判定を出すクラス
@@ -18,11 +16,11 @@ ICloserGenerator blackFloorCloserGenerator(Device* device);
 class BlackFloorCloser : public ICloser
 {
     public:
-        BlackFloorCloser(Device* device);
+        BlackFloorCloser();
         ~BlackFloorCloser();
 
         void init() override;
-        bool isClosed() override;
+        bool isClosed(PerceptionReport* report) override;
 };
 
 #endif // _BLACK_FLOOR_CLOSER_H_
