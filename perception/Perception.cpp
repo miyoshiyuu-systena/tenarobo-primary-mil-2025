@@ -88,51 +88,51 @@ void Perception::setMask(uint8_t mask) {
 }
 
 void Perception::update() {
-    if (
-        isPerceptionLoggingIgnoreMask ||
-        (mMask & MASK_ULTRASONIC) != 0b00000000
-    ) {
-        mDistance = ultrasonicSensor.getDistance();
-    }
+    // if (
+    //     isPerceptionLoggingIgnoreMask ||
+    //     (mMask & MASK_ULTRASONIC) != 0b00000000
+    // ) {
+    //     mDistance = ultrasonicSensor.getDistance();
+    // }
     
-    if (
-        isPerceptionLoggingIgnoreMask ||
-        (mMask & MASK_COLOR) != 0b00000000
-    ) {
-        ColorSensor::HSV hsv;
-        colorSensor.getHSV(hsv, true);
-        mColorH = hsv.h;
-        mColorS = hsv.s;
-        mColorV = hsv.v;
-    }
+    // if (
+    //     isPerceptionLoggingIgnoreMask ||
+    //     (mMask & MASK_COLOR) != 0b00000000
+    // ) {
+    //     ColorSensor::HSV hsv;
+    //     colorSensor.getHSV(hsv, true);
+    //     mColorH = hsv.h;
+    //     mColorS = hsv.s;
+    //     mColorV = hsv.v;
+    // }
 
-    if (
-        isPerceptionLoggingIgnoreMask ||
-        (mMask & MASK_FORCE) != 0b00000000
-    ) {
-        mForce = forceSensor.getForce();
-    }
+    // if (
+    //     isPerceptionLoggingIgnoreMask ||
+    //     (mMask & MASK_FORCE) != 0b00000000
+    // ) {
+    //     mForce = forceSensor.getForce();
+    // }
 
-    if (
-        isPerceptionLoggingIgnoreMask ||
-        (mMask & MASK_LEFT_MOTOR) != 0b00000000
-    ) {
-        mLeftMotorSpeed = twinWheelDrive.getLeftSpeed();
-    }
+    // if (
+    //     isPerceptionLoggingIgnoreMask ||
+    //     (mMask & MASK_LEFT_MOTOR) != 0b00000000
+    // ) {
+    //     mLeftMotorSpeed = twinWheelDrive.getLeftSpeed();
+    // }
 
-    if (
-        isPerceptionLoggingIgnoreMask ||
-        (mMask & MASK_RIGHT_MOTOR) != 0b00000000
-    ) {
-        mRightMotorSpeed = twinWheelDrive.getRightSpeed();
-    }
+    // if (
+    //     isPerceptionLoggingIgnoreMask ||
+    //     (mMask & MASK_RIGHT_MOTOR) != 0b00000000
+    // ) {
+    //     mRightMotorSpeed = twinWheelDrive.getRightSpeed();
+    // }
 
-    if (
-        isPerceptionLoggingIgnoreMask ||
-        (mMask & MASK_FRONT_ARM) != 0b00000000
-    ) {
-        mFrontArmSpeed = frontArmDrive.getSpeed();
-    }
+    // if (
+    //     isPerceptionLoggingIgnoreMask ||
+    //     (mMask & MASK_FRONT_ARM) != 0b00000000
+    // ) {
+    //     mFrontArmSpeed = frontArmDrive.getSpeed();
+    // }
 
     // カメラ処理の頻度を下げる
     if (count_cycle % shutterCameraFrequency == 0) {
@@ -164,24 +164,24 @@ void Perception::update() {
         unl_cpu();
     }
 
-    if (isPerceptionLoggingEnable) {
-        Logger& logger = Logger::getInstance();
+    // if (isPerceptionLoggingEnable) {
+    //     Logger& logger = Logger::getInstance();
 
-        logger.logDebug("--------------------------------");
-        logger.logDebug(
-            "Distance: " + std::to_string(mDistance) +
-            ", ColorH: " + std::to_string(mColorH) +
-            ", ColorS: " + std::to_string(mColorS) +
-            ", ColorV: " + std::to_string(mColorV) +
-            ", Force: " + std::to_string(mForce)
-        );
-        logger.logDebug(
-            "LeftMotorSpeed: " + std::to_string(mLeftMotorSpeed) +
-            ", RightMotorSpeed: " + std::to_string(mRightMotorSpeed) +
-            ", FrontArmSpeed: " + std::to_string(mFrontArmSpeed)
-        );
-        logger.logDebug("--------------------------------");
-    }
+    //     logger.logDebug("--------------------------------");
+    //     logger.logDebug(
+    //         "Distance: " + std::to_string(mDistance) +
+    //         ", ColorH: " + std::to_string(mColorH) +
+    //         ", ColorS: " + std::to_string(mColorS) +
+    //         ", ColorV: " + std::to_string(mColorV) +
+    //         ", Force: " + std::to_string(mForce)
+    //     );
+    //     logger.logDebug(
+    //         "LeftMotorSpeed: " + std::to_string(mLeftMotorSpeed) +
+    //         ", RightMotorSpeed: " + std::to_string(mRightMotorSpeed) +
+    //         ", FrontArmSpeed: " + std::to_string(mFrontArmSpeed)
+    //     );
+    //     logger.logDebug("--------------------------------");
+    // }
 
     if (
         isSaveCameraImage &&
