@@ -12,6 +12,7 @@ APPL_CXXOBJS +=\
 	BlueFloorCloser.o\
 	TimedCloser.o\
 	GoStraightAction.o\
+	GoCurveAction.o\
 	HachikouAction.o\
 	ActionNode.o\
 	Device.o\
