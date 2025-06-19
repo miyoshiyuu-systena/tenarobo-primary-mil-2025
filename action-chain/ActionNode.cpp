@@ -11,6 +11,7 @@ ActionNode::ActionNode(
     int vacationTime
 )
     : mActionName(actionName)
+    , mNextAction(nullptr)
     , mDevice(device)
     , mActionCall(actionCall)
     , mVacationTime(vacationTime)
