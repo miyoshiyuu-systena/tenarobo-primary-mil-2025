@@ -56,9 +56,9 @@ void main_task(intptr_t exinf)   {
         &frontArmDrive,
         &perception,
         true,
-        100.0f,
-        5.0f,
-        0.5f,
+        0.0f,
+        0.0f,
+        0.0f,
         calcBlackWhiteBorderError
     );
     ICloser* closer = new TimedCloser(&perception, 300);
