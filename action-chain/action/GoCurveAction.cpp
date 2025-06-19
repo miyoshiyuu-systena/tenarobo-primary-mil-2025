@@ -5,6 +5,8 @@
 #include "device/PerceptionReport.h"
 #include <vector>
 
+#include "logger/Logger.h"
+
 ActionCall goCurveActionFactory(
     float speed,
     float radius,
@@ -19,6 +21,8 @@ ActionCall goCurveActionFactory(
         ActionNode*& next_ptr,
         Device*& device
     ) {
+        int count = 0;
+        bool isClosed = false;
         PerceptionReport report;
 
         float speeds[2] = {0.0f, 0.0f};
@@ -80,9 +84,10 @@ ActionCall goCurveActionFactory(
             // 複数の終了判定を順次適用
             for (ICloser* closer : closers) {
                 if (closer->isClosed(&report))
-                    return;
+                    isClosed = true;
             }
-        } while (true);
+            count++;
+        } while (!isClosed);
 
         // 全てのアシストオブジェクトを削除
         for (IAssist* assist : assists) {
@@ -91,5 +96,7 @@ ActionCall goCurveActionFactory(
         for (ICloser* closer : closers) {
             delete closer;
         }
+
+        Logger::getInstance().logInfo("GoCurveAction: count = " + std::to_string(count));
     };
 }

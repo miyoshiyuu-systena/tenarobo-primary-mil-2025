@@ -67,75 +67,75 @@ void main_task(intptr_t exinf)   {
     );
     action0->setNext(action1);
 
-    std::vector<IAssistGenerator> assistGenerators2 = {
-        laneTracingAssistGenerator(
-            true,
-            50.0f,
-            5.0f,
-            5.0f,
-            calcBlueWhiteBorderError
-        ),
-        slowlyAccelerateAssistGenerator(
-            10,
-            1
-        )
-    };
-    std::vector<ICloserGenerator> closerGenerators2 = {
-        blackFloorCloserGenerator()
-    };
-    ActionNode* action2 = new ActionNode(
-        "action2: 白青の直線に沿って走行し、黒い床に到達したら終了",
-        &device,
-        goCurveActionFactory(
-            150.0f,
-            350.0f,
-            false,
-            10,
-            assistGenerators2,
-            closerGenerators2
-        ),
-        0
-    );
-    action1->setNext(action2);
+    // std::vector<IAssistGenerator> assistGenerators2 = {
+    //     laneTracingAssistGenerator(
+    //         true,
+    //         50.0f,
+    //         5.0f,
+    //         5.0f,
+    //         calcBlueWhiteBorderError
+    //     ),
+    //     slowlyAccelerateAssistGenerator(
+    //         10,
+    //         1
+    //     )
+    // };
+    // std::vector<ICloserGenerator> closerGenerators2 = {
+    //     blackFloorCloserGenerator()
+    // };
+    // ActionNode* action2 = new ActionNode(
+    //     "action2: 白青の直線に沿って走行し、黒い床に到達したら終了",
+    //     &device,
+    //     goCurveActionFactory(
+    //         150.0f,
+    //         350.0f,
+    //         false,
+    //         10,
+    //         assistGenerators2,
+    //         closerGenerators2
+    //     ),
+    //     0
+    // );
+    // action1->setNext(action2);
 
-    std::vector<IAssistGenerator> assistGenerators3 = {
-        laneTracingAssistGenerator(
-            true,
-            25.0f,
-            1.0f,
-            1.0f,
-            calcBlackWhiteBorderError
-        ),
-        slowlyAccelerateAssistGenerator(
-            100,
-            1
-        )
-    };
-    std::vector<ICloserGenerator> closerGenerators3 = {
-        blueFloorCloserGenerator()
-    };
-    ActionNode* action3 = new ActionNode(
-        "action3: 白黒の曲線に沿って走行し、青色の床に到達したら終了",
-        &device,
-        goCurveActionFactory(
-            100.0f,
-            150.0f,
-            true,
-            10,
-            assistGenerators3,
-            closerGenerators3
-        ),
-        0
-    );
-    action2->setNext(action3);
+    // std::vector<IAssistGenerator> assistGenerators3 = {
+    //     laneTracingAssistGenerator(
+    //         true,
+    //         25.0f,
+    //         1.0f,
+    //         1.0f,
+    //         calcBlackWhiteBorderError
+    //     ),
+    //     slowlyAccelerateAssistGenerator(
+    //         100,
+    //         1
+    //     )
+    // };
+    // std::vector<ICloserGenerator> closerGenerators3 = {
+    //     blueFloorCloserGenerator()
+    // };
+    // ActionNode* action3 = new ActionNode(
+    //     "action3: 白黒の曲線に沿って走行し、青色の床に到達したら終了",
+    //     &device,
+    //     goCurveActionFactory(
+    //         100.0f,
+    //         150.0f,
+    //         true,
+    //         10,
+    //         assistGenerators3,
+    //         closerGenerators3
+    //     ),
+    //     0
+    // );
+    // action2->setNext(action3);
 
-    ActionNode* action4 = new ActionNode(
-        "action4: 停止",
-        &device,
-        stopActionFactory(),
-        0
-    );
-    action3->setNext(action4);
+    // ActionNode* action4 = new ActionNode(
+    //     "action4: 停止",
+    //     &device,
+    //     stopActionFactory(),
+    //     0
+    // );
+    // action3->setNext(action4);
 
     ActionNode* prevAction = nullptr;
     ActionNode* currentAction = action0;

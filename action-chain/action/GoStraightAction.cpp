@@ -18,6 +18,7 @@ ActionCall goStraightActionFactory(
         ActionNode*& next_ptr,
         Device*& device
     ) {
+        bool isClosed = false;
         PerceptionReport report;
 
         float speeds[2] = {0.0f, 0.0f};
@@ -72,9 +73,9 @@ ActionCall goStraightActionFactory(
             // 複数の終了判定を順次適用
             for (ICloser* closer : closers) {
                 if (closer->isClosed(&report))
-                    return;
+                    isClosed = true;
             }
-        } while (true);
+        } while (!isClosed);
 
         // 全てのアシストオブジェクトを削除
         for (IAssist* assist : assists) {
