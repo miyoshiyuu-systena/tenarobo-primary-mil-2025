@@ -42,6 +42,9 @@ void main_task(intptr_t exinf)   {
         10.0f,
         calcBlackWhiteBorderError
     );
+    std::vector<IAssistGenerator> assistGenerators1 = {
+        assist1
+    };
     ICloserGenerator closer1 = blueFloorCloserGenerator(&device);
     ActionNode* action1 = new ActionNode(
         "action1: 白黒の直線に沿って走行し、青色の床に到達したら終了",
@@ -49,7 +52,7 @@ void main_task(intptr_t exinf)   {
         goStraightActionFactory(
             250,
             10,
-            assist1,
+            assistGenerators1,
             closer1
         ),
         500

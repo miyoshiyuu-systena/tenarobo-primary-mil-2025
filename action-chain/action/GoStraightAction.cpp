@@ -3,28 +3,46 @@
 #include "ICloser.h"
 #include "spikeapi.h"
 #include "device/Device.h"
+#include <vector>
 
 ActionCall goStraightActionFactory(
     float speed,
     int detectInterval,
-    IAssistGenerator assistPtrGenerator,
+    std::vector<IAssistGenerator> assistGenerators,
     ICloserGenerator closerPtrGenerator
 )
 {
-    return [speed, detectInterval, assistPtrGenerator, closerPtrGenerator](
+    return [speed, detectInterval, assistGenerators, closerPtrGenerator](
         ActionNode*& curr_ptr,
         ActionNode*& next_ptr,
         Device*& device
     ) {
         float speeds[2] = {0.0f, 0.0f};
-        IAssist* assist = assistPtrGenerator();
+        
+        // 複数のアシストオブジェクトを生成
+        std::vector<IAssist*> assists;
+        for (const auto& assistGenerator : assistGenerators) {
+            assists.push_back(assistGenerator());
+        }
+        
         ICloser* closer = closerPtrGenerator();
         
-        assist->init(speed, speed);
+        // 全てのアシストを初期化
+        for (IAssist* assist : assists) {
+            assist->init(speed, speed);
+        }
         closer->init();
         
         do {
-            assist->correct(speeds);
+            // 基準速度から開始
+            speeds[0] = speed; // 左輪
+            speeds[1] = speed; // 右輪
+            
+            // 複数のアシストを順次適用
+            for (IAssist* assist : assists) {
+                assist->correct(speeds);
+            }
+            
             device->twinWheelDrive.setSpeed(speeds[0], speeds[1]);
 
             /**
@@ -35,7 +53,10 @@ ActionCall goStraightActionFactory(
             dly_tsk(detectInterval * 1000);
         } while (!closer->isClosed());
 
-        delete assist;
+        // 全てのアシストオブジェクトを削除
+        for (IAssist* assist : assists) {
+            delete assist;
+        }
         delete closer;
     };
 }
