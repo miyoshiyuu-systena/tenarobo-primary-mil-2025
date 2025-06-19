@@ -15,6 +15,7 @@
 #include "action-chain/action/GoStraightAction.h"
 #include "action-chain/action/GoCurveAction.h"
 #include "action-chain/action/StopAction.h"
+#include "web-camera/CameraManager.h"
 
 using namespace spikeapi;
 
@@ -25,6 +26,9 @@ using namespace spikeapi;
 void main_task(intptr_t exinf)   {
     // ロガーインスタンスの取得
     Logger& logger = Logger::getInstance();
+
+    // カメラマネージャの起動
+    CameraManager::getInstance().initializeCamera();
 
     ActionNode* action0 = new ActionNode(
         "action0: 圧力センサを押すまで忠犬ハチ公！！",
