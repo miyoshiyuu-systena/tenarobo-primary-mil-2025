@@ -25,4 +25,8 @@ const std::string imgFilePath = "/home/mil/work/RasPike-ART/sdk/workspace/tenaro
  */
 const std::string imgFileNameSuffix = "アーキテクチャ開発中6";
 
+/**
+ * このデバッグソフトでは真っ直ぐ撮影できたところだけを検証しているが、無理がある。
+ */
+
 #endif // _CONFIG_H_

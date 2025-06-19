@@ -42,7 +42,7 @@ void main_task(intptr_t exinf)   {
     cameraManager.saveImage(img2);
 
     cv::Mat img2_2;
-    cv::GaussianBlur(img2, img2_2, cv::Size(31, 101), 0);
+    cv::GaussianBlur(img2, img2_2, cv::Size(5, 101), 0);
     cameraManager.saveImage(img2_2);
 
     cv::Mat img3;
