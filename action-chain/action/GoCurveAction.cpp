@@ -10,10 +10,10 @@ ActionCall goCurveActionFactory(
     bool isGoRight,
     int detectInterval,
     std::vector<IAssistGenerator> assistPtrGenerators,
-    ICloserGenerator closerPtrGenerator
+    std::vector<ICloserGenerator> closerPtrGenerators
 )
 {
-    return [speed, radius, isGoRight, detectInterval, assistPtrGenerators, closerPtrGenerator](
+    return [speed, radius, isGoRight, detectInterval, assistPtrGenerators, closerPtrGenerators](
         ActionNode*& curr_ptr,
         ActionNode*& next_ptr,
         Device*& device
@@ -30,8 +30,12 @@ ActionCall goCurveActionFactory(
             assists.push_back(assist);
         }
         
-        ICloser* closer = closerPtrGenerator();
-        closer->init();
+        std::vector<ICloser*> closers;
+        for (const auto& closerPtrGenerator : closerPtrGenerators) {
+            ICloser* closer = closerPtrGenerator();
+            closer->init();
+            closers.push_back(closer);
+        }
 
         do {
             // 基準速度から開始
@@ -56,12 +60,20 @@ ActionCall goCurveActionFactory(
              *  dly_tskの引き数は[μs]であることに注意
              */
             dly_tsk(detectInterval * 1000);
-        } while (!closer->isClosed());
+
+            // 複数の終了判定を順次適用
+            for (ICloser* closer : closers) {
+                if (closer->isClosed())
+                    return;
+            }
+        } while (true);
 
         // 全てのアシストオブジェクトを削除
         for (IAssist* assist : assists) {
             delete assist;
         }
-        delete closer;
+        for (ICloser* closer : closers) {
+            delete closer;
+        }
     };
 }

@@ -23,7 +23,7 @@
  * @param isGoRight 右に曲がるかどうか
  * @param detectInterval 検知間隔[ms]
  * @param assistPtrGenerators 走行補助ジェネレータのリスト（複数のアシストを順次適用）
- * @param closerPtrGenerator 終了判定
+ * @param closerPtrGenerators 終了判定ジェネレータのリスト（複数の終了判定を順次適用）
  * @return 曲線走行アクション
  */
 ActionCall goCurveActionFactory(
@@ -32,7 +32,7 @@ ActionCall goCurveActionFactory(
     bool isGoRight,
     int detectInterval,
     std::vector<IAssistGenerator> assistPtrGenerators,
-    ICloserGenerator closerPtrGenerator
+    std::vector<ICloserGenerator> closerPtrGenerators
 );
 
 #endif // _GO_CURVE_ACTION_H_
