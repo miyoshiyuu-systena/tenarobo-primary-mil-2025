@@ -9,6 +9,7 @@ ActionNode::ActionNode(
     TwinWheelDrive* twinWheelDrive,
     FrontArmDrive* frontArmDrive,
     Perception* perc,
+    uint8_t perc_mask,
     ActionCall actionCall,
     int vacationTime
 )
@@ -16,9 +17,12 @@ ActionNode::ActionNode(
     , mTwinWheelDrive(twinWheelDrive)
     , mFrontArmDrive(frontArmDrive)
     , mPerc(perc)
+    , mPercMask(perc_mask)
     , mActionCall(actionCall)
     , mVacationTime(vacationTime)
-{}
+{
+    mPerc->setMask(mPercMask);
+}
 
 ActionNode::~ActionNode()
 {
@@ -28,6 +32,7 @@ ActionNode::~ActionNode()
 void ActionNode::execute()
 {
     Logger::getInstance().logInfo("ActionNode: " + mActionName + " 実行");
+    mPerc->setMask(0b11111111);
     ActionNode* curr_ptr = this;
     ActionNode*& curr_ptr_ref = curr_ptr;
     mActionCall(

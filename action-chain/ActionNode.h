@@ -43,6 +43,7 @@ public:
      * @param twinWheelDrive 2輪インスタンスへのポインタ
      * @param frontArmDrive フロントアームへのポインタ
      * @param percData 知覚データのポインタ
+     * @param perc_mask 知覚データのマスク
      * @param actionCall アクションのコールバック関数
      * @param vacationTime アクション終了後のクーリングタイム(ms)
      */
@@ -51,6 +52,7 @@ public:
         TwinWheelDrive* twinWheelDrive,
         FrontArmDrive* frontArmDrive,
         Perception* perc,
+        uint8_t perc_mask,
         ActionCall actionCall,
         int vacationTime
     );
@@ -89,6 +91,7 @@ private:
     TwinWheelDrive* mTwinWheelDrive;
     FrontArmDrive* mFrontArmDrive;
     Perception* mPerc;
+    uint8_t mPercMask;
     ActionCall mActionCall;
     int mVacationTime;
 };

@@ -42,6 +42,7 @@ void main_task(intptr_t exinf)   {
         &twinWheelDrive,
         &frontArmDrive,
         &perception,
+        0b00010000,
         hachikouActionFactory(
             1.0f,   // 圧力センサの検知閾値[N]
             100    // 圧力センサの検知間隔[ms]
@@ -65,6 +66,7 @@ void main_task(intptr_t exinf)   {
         &twinWheelDrive,
         &frontArmDrive,
         &perception,
+        0b00100000,
         goFrontActionFactory(
             750,   // 速度[mm/s]
             3,  // 検知間隔[ms]
