@@ -5,10 +5,13 @@
 #include "device/Device.h"
 #include "action-chain/action/assist/LaneTracingAssist.h"
 #include "action-chain/action/assist/CalcBlackWhiteBorderError.h"
+#include "action-chain/action/assist/CalcBlueWhiteBorderError.h"
 #include "action-chain/action/closer/BlueFloorCloser.h"
+#include "action-chain/action/closer/BlackFloorCloser.h"
 #include "action-chain/action/closer/TimedCloser.h"
 #include "action-chain/action/HachikouAction.h"
 #include "action-chain/action/GoStraightAction.h"
+#include "action-chain/action/GoCurveAction.h"
 #include "perception/Perception.h"
 
 using namespace spikeapi;
