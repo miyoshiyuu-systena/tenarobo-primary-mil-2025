@@ -9,6 +9,7 @@ APPL_CXXOBJS +=\
 	ICloser.o\
 	BlackFloorCloser.o\
 	BlueFloorCloser.o\
+	TimedCloser.o\
 	GoFrontAction.o\
 	HachikouAction.o\
 	ActionNode.o\
