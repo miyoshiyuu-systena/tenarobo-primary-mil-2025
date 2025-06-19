@@ -1,6 +1,7 @@
 #include "GoCurveAction.h"
 #include "spikeapi.h"
 #include "CalcCurveDriveSpeed.h"
+#include "device/Device.h"
 
 ActionCall goCurveActionFactory(
     float speed,
@@ -14,9 +15,7 @@ ActionCall goCurveActionFactory(
     return [speed, radius, isGoRight, detectInterval, assist, closer](
         ActionNode*& curr_ptr,
         ActionNode*& next_ptr,
-        TwinWheelDrive*& twinWheelDrive,
-        FrontArmDrive*& frontArmDrive,
-        Perception*& perc
+        Device*& device
     ) {
         float speeds[2] = {0.0f, 0.0f};
 
@@ -41,7 +40,7 @@ ActionCall goCurveActionFactory(
 
         do {
             assist->correct(speeds);
-            twinWheelDrive->setSpeed(speeds[0], speeds[1]);
+            device->twinWheelDrive.setSpeed(speeds[0], speeds[1]);
 
             /**
              * 検知間隔を待つ
@@ -50,9 +49,6 @@ ActionCall goCurveActionFactory(
              */
             dly_tsk(detectInterval * 1000);
         } while (!closer->isClosed());
-
-        twinWheelDrive->stop();
-        twinWheelDrive->resetCount();
 
         delete assist;
         delete closer;

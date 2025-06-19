@@ -2,9 +2,7 @@
 #define LANE_TRACING_ASSIST_H
 
 #include "IAssist.h"
-#include "drive/TwinWheelDrive.h"
-#include "drive/FrontArmDrive.h"
-#include "perception/Perception.h"
+#include "device/Device.h"
 #include "CalcErrorFunc.h"
 
 /**
@@ -15,9 +13,7 @@ class LaneTracingAssist : public IAssist
 {
     public:
         LaneTracingAssist(
-            TwinWheelDrive* twinWheelDrive,
-            FrontArmDrive* frontArmDrive,
-            Perception* perc,
+            Device* device,
 
             /**
              * 右側に走行するかどうか
@@ -60,8 +56,6 @@ class LaneTracingAssist : public IAssist
     private:
         float mBaseLeftSpeed;
         float mBaseRightSpeed;
-        // float mErrorIntegral;
-        // float mPreviousError;
         bool mIsRightSide;
         float mKp;
         float mKi;

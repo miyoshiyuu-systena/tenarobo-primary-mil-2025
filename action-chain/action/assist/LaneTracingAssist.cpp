@@ -1,6 +1,7 @@
 #include "LaneTracingAssist.h"
 #include "IAssist.h"
 #include "CalcErrorFunc.h"
+#include "ColorSensor.h"
 
 /**
  * 飽和制限
@@ -9,16 +10,14 @@
 static const float INTEGRAL_LIMIT = 0.5f;
 
 LaneTracingAssist::LaneTracingAssist(
-    TwinWheelDrive* twinWheelDrive,
-    FrontArmDrive* frontArmDrive,
-    Perception* perc,
+    Device* device,
     bool isRightSide,
     float kp,
     float ki,
     float kd,
     CalcErrorFunc calcError
 ):
-    IAssist(twinWheelDrive, frontArmDrive, perc)
+    IAssist(device)
     , mIsRightSide(isRightSide)
     , mKp(kp)
     , mKi(ki)
@@ -45,7 +44,9 @@ void LaneTracingAssist::correct(float* speeds)
     /**
     * 青白線の境界線からの誤差を計算する
     */
-    float error = mCalcError(mPerc->getColorH(), mPerc->getColorS(), mPerc->getColorV());
+    ColorSensor::HSV hsv;
+    mDevice->colorSensor.getHSV(hsv, true);
+    float error = mCalcError(hsv.h, hsv.s, hsv.v);
     
     /**
      * 過去のエラー値を集計する

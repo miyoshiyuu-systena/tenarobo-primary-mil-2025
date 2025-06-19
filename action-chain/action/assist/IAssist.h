@@ -1,9 +1,7 @@
 #ifndef _I_ASSIST_H_
 #define _I_ASSIST_H_
 
-#include    "drive/TwinWheelDrive.h"
-#include    "drive/FrontArmDrive.h"
-#include    "perception/Perception.h"
+#include    "device/Device.h"
 
 /**
  * 走行補助インターフェース
@@ -13,9 +11,7 @@ class IAssist
 {
     public:
         IAssist(
-            TwinWheelDrive* twinWheelDrive,
-            FrontArmDrive* frontArmDrive,
-            Perception* perc
+            Device* device
         );
 
         virtual ~IAssist() = default;
@@ -34,9 +30,7 @@ class IAssist
         virtual void correct(float* speeds) = 0;
 
     protected:
-        TwinWheelDrive* mTwinWheelDrive;
-        FrontArmDrive* mFrontArmDrive;
-        Perception* mPerc;
+        Device* mDevice;
 };
 
 #endif // _I_ASSIST_H_

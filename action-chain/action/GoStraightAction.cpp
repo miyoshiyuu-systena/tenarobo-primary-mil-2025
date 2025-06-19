@@ -2,6 +2,7 @@
 #include "IAssist.h"
 #include "ICloser.h"
 #include "spikeapi.h"
+#include "device/Device.h"
 
 ActionCall goStraightActionFactory(
     float speed,
@@ -13,9 +14,7 @@ ActionCall goStraightActionFactory(
     return [speed, detectInterval, assist, closerPtr](
         ActionNode*& curr_ptr,
         ActionNode*& next_ptr,
-        TwinWheelDrive*& twinWheelDrive,
-        FrontArmDrive*& frontArmDrive,
-        Perception*& perc
+        Device*& device
     ) {
         float speeds[2] = {0.0f, 0.0f};
         assist->init(speed, speed);
@@ -23,7 +22,7 @@ ActionCall goStraightActionFactory(
         
         do {
             assist->correct(speeds);
-            twinWheelDrive->setSpeed(speeds[0], speeds[1]);
+            device->twinWheelDrive.setSpeed(speeds[0], speeds[1]);
 
             /**
              * 検知間隔を待つ
@@ -32,9 +31,6 @@ ActionCall goStraightActionFactory(
              */
             dly_tsk(detectInterval * 1000);
         } while (!closerPtr->isClosed());
-
-        twinWheelDrive->stop();
-        twinWheelDrive->resetCount();
 
         delete assist;
         delete closerPtr;

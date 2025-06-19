@@ -1,8 +1,9 @@
 #include "TimedCloser.h"
 #include "ICloser.h"
+#include "device/Device.h"
 
-TimedCloser::TimedCloser(Perception* perc, int max)
-    : ICloser(perc)
+TimedCloser::TimedCloser(Device* device, int max)
+    : ICloser(device)
     , mMax(max + 1)
 {    
 }

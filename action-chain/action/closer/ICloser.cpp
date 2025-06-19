@@ -1,6 +1,6 @@
 #include "ICloser.h"
 
-ICloser::ICloser(Perception* perc)
-    : mPerc(perc)
+ICloser::ICloser(Device* device)
+    : mDevice(device)
 {
 }
