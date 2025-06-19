@@ -5,6 +5,7 @@
 #include "IAssist.h"
 #include "ICloser.h"
 #include "IAssistGenerator.h"
+#include "ICloserGenerator.h"
 #include <functional>
 
 /**
@@ -21,7 +22,7 @@
  * @param isGoRight 右に曲がるかどうか
  * @param detectInterval 検知間隔[ms]
  * @param assistPtr 走行補助
- * @param closerPtr 終了判定
+ * @param closerPtrGenerator 終了判定
  * @return 曲線走行アクション
  */
 ActionCall goCurveActionFactory(
@@ -30,7 +31,7 @@ ActionCall goCurveActionFactory(
     bool isGoRight,
     int detectInterval,
     IAssistGenerator assistPtrGenerator,
-    ICloser* closer
+    ICloserGenerator closerPtrGenerator
 );
 
 #endif // _GO_CURVE_ACTION_H_

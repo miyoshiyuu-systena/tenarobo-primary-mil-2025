@@ -8,19 +8,20 @@ ActionCall goStraightActionFactory(
     float speed,
     int detectInterval,
     IAssistGenerator assistPtrGenerator,
-    ICloser* closerPtr
+    ICloserGenerator closerPtrGenerator
 )
 {
-    return [speed, detectInterval, assistPtrGenerator, closerPtr](
+    return [speed, detectInterval, assistPtrGenerator, closerPtrGenerator](
         ActionNode*& curr_ptr,
         ActionNode*& next_ptr,
         Device*& device
     ) {
         float speeds[2] = {0.0f, 0.0f};
         IAssist* assist = assistPtrGenerator();
+        ICloser* closer = closerPtrGenerator();
         
         assist->init(speed, speed);
-        closerPtr->init();
+        closer->init();
         
         do {
             assist->correct(speeds);
@@ -32,9 +33,9 @@ ActionCall goStraightActionFactory(
              *  dly_tskの引き数は[μs]であることに注意
              */
             dly_tsk(detectInterval * 1000);
-        } while (!closerPtr->isClosed());
+        } while (!closer->isClosed());
 
         delete assist;
-        delete closerPtr;
+        delete closer;
     };
 }

@@ -1,6 +1,13 @@
 #include "BlueFloorCloser.h"
 #include "ICloser.h"
 #include "ColorSensor.h"
+#include "ICloserGenerator.h"
+
+ICloserGenerator blueFloorCloserGenerator(Device* device) {
+    return [device]() {
+        return new BlueFloorCloser(device);
+    };
+}
 
 static const int H_UPPER_THRESHOLD = 220;
 static const int H_LOWER_THRESHOLD = 180;

@@ -1,6 +1,13 @@
 #include "TimedCloser.h"
 #include "ICloser.h"
 #include "device/Device.h"
+#include "ICloserGenerator.h"
+
+ICloserGenerator timedCloserGenerator(Device* device, int max) {
+    return [device, max]() {
+        return new TimedCloser(device, max);
+    };
+}
 
 TimedCloser::TimedCloser(Device* device, int max)
     : ICloser(device)

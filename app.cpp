@@ -42,7 +42,7 @@ void main_task(intptr_t exinf)   {
         10.0f,
         calcBlackWhiteBorderError
     );
-    ICloser* closer1 = new BlueFloorCloser(&device);
+    ICloserGenerator closer1 = blueFloorCloserGenerator(&device);
     ActionNode* action1 = new ActionNode(
         "action1: 白黒の直線に沿って走行し、青色の床に到達したら終了",
         &device,

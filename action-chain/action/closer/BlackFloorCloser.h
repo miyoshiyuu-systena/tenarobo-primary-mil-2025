@@ -3,6 +3,14 @@
 
 #include "ICloser.h"
 #include "device/Device.h"
+#include "ICloserGenerator.h"
+
+/**
+ * 黒色の床に近づいたら終了判定を出すクラスのファクトリー関数
+ * @param device デバイス
+ * @return 黒色の床に近づいたら終了判定を出すクラスのファクトリー関数
+ */
+ICloserGenerator blackFloorCloserGenerator(Device* device);
 
 /**
  * 黒色の床に近づいたら終了判定を出すクラス
