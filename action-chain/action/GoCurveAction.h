@@ -21,7 +21,7 @@
  * @param radius 半径[mm]
  * @param isGoRight 右に曲がるかどうか
  * @param detectInterval 検知間隔[ms]
- * @param assistPtr 走行補助
+ * @param assistPtrGenerator 走行補助
  * @param closerPtrGenerator 終了判定
  * @return 曲線走行アクション
  */

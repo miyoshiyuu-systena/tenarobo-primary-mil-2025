@@ -8,11 +8,11 @@
 ActionCall goStraightActionFactory(
     float speed,
     int detectInterval,
-    std::vector<IAssistGenerator> assistGenerators,
+    std::vector<IAssistGenerator> assistPtrGenerators,
     ICloserGenerator closerPtrGenerator
 )
 {
-    return [speed, detectInterval, assistGenerators, closerPtrGenerator](
+    return [speed, detectInterval, assistPtrGenerators, closerPtrGenerator](
         ActionNode*& curr_ptr,
         ActionNode*& next_ptr,
         Device*& device
@@ -21,8 +21,8 @@ ActionCall goStraightActionFactory(
         
         // 複数のアシストオブジェクトを生成
         std::vector<IAssist*> assists;
-        for (const auto& assistGenerator : assistGenerators) {
-            assists.push_back(assistGenerator());
+        for (const auto& assistPtrGenerator : assistPtrGenerators) {
+            assists.push_back(assistPtrGenerator());
         }
         
         ICloser* closer = closerPtrGenerator();
