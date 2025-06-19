@@ -224,15 +224,15 @@ void main_task(intptr_t exinf)   {
         &twinWheelDrive,
         &frontArmDrive,
         &perception,
-        false,
+        true,
         50.0f,
-        100.0f,
+        50.0f,
         0.5f,
         calcBlueWhiteBorderError
     );
     ICloser* closer7 = new BlackFloorCloser(&perception);
     ActionNode* actionNode7 = new ActionNode(
-        "白青の境界(左縁)に沿って右曲がりに走行し、黒床を検出すると停止7",
+        "白青の境界(右縁)に沿って右曲がりに走行し、黒床を検出すると停止7",
         &twinWheelDrive,
         &frontArmDrive,
         &perception,
@@ -259,9 +259,9 @@ void main_task(intptr_t exinf)   {
         0.5f,
         calcBlackWhiteBorderError
     );
-    ICloser* closer8 = new TimedCloser(&perception, 50);
+    ICloser* closer8 = new TimedCloser(&perception, 100);
     ActionNode* actionNode8 = new ActionNode(
-        "白黒の境界(左縁)に沿って右まがりに走行し、0.5秒経過したら停止8",
+        "白黒の境界(左縁)に沿って右まがりに走行し、1秒経過したら停止8",
         &twinWheelDrive,
         &frontArmDrive,
         &perception,
@@ -297,7 +297,7 @@ void main_task(intptr_t exinf)   {
         0b00100000,
         goCurveActionFactory(
             150.0f,   // 速度[mm/s]
-            200.0f,   // 半径[mm]
+            225.0f,   // 半径[mm]
             false,
             10,  // 検知間隔[ms]
             assist9,
@@ -311,7 +311,7 @@ void main_task(intptr_t exinf)   {
         &twinWheelDrive,
         &frontArmDrive,
         &perception,
-        true,
+        false,
         50.0f,
         25.0f,
         0.5f,
@@ -319,13 +319,15 @@ void main_task(intptr_t exinf)   {
     );
     ICloser* closer10 = new BlackFloorCloser(&perception);
     ActionNode* actionNode10 = new ActionNode(
-        "白青の境界(右縁)に沿って正面に走行し、黒床を検出すると停止10",
+        "白青の境界(左縁)に沿って左まがりに走行し、黒床を検出すると停止10",
         &twinWheelDrive,
         &frontArmDrive,
         &perception,
         0b00100000,
-        goStraightActionFactory(
+        goCurveActionFactory(
             100.0f,   // 速度[mm/s]
+            225.0f,   // 半径[mm]
+            false,
             10,  // 検知間隔[ms]
             assist10,
             closer10
