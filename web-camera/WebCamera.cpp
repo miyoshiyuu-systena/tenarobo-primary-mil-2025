@@ -1,5 +1,5 @@
 #include "web-camera/WebCamera.h"
-#include "spikeapi.h"
+#include <unistd.h>
 
 WebCamera::WebCamera(): 
     m_isInitialized(false),
@@ -18,16 +18,14 @@ WebCamera::WebCamera():
             m_camera.set(cv::CAP_PROP_FPS, 5);                  // フレームレート
                                                                 // 1秒間に取得する画像の枚数（撮影のペース）
             
-            dly_tsk(100 * 1000);    // 100ms待機
+            usleep(100 * 1000);     // 100ms待機
                                     // 上記設定を適用するためのディレイ
             
             cv::Mat testFrame;
             /**
              * 1度撮影に成功したら、カメラのソフトウェアアクセスの確立に成功したとみなす
              */
-            loc_cpu();
             const bool isSuccess = m_camera.read(testFrame) && !testFrame.empty();
-            unl_cpu();
             if (isSuccess) {
                 m_isInitialized = true;
                 return;
@@ -60,13 +58,10 @@ bool WebCamera::captureImage(cv::Mat& image) {
         return false;
     }
 
-    loc_cpu();
     /**
      * カメラから画像を取得する
      * 同時に取得に成功したかどうかをチェックしている
      */
     const bool isSuccess = m_camera.read(image) && !image.empty();
-    unl_cpu();
-
     return isSuccess;
 }
