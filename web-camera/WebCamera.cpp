@@ -17,6 +17,8 @@ WebCamera::~WebCamera()
 }
 
 void WebCamera::init() {
+    std::lock_guard<std::mutex> lock(m_cameraMutex);
+    
     /**
      * カメラのソフトウェアアクセスの確立
      * Raspberry Piは、USB経由でビデオの提供を受けているが、USBの数だけ同時に撮影ができるように複数のポートを設けている
@@ -61,14 +63,21 @@ bool WebCamera::isInitialized() const {
 
 bool WebCamera::captureImage(cv::Mat& image) {
     Logger::getInstance().logDebug("WebCamera::captureImage() - try to capture image");
+    
+    std::lock_guard<std::mutex> lock(m_cameraMutex);
+    
     if (!m_isInitialized) {
         return false;
     }
 
     /**
-     * カメラから画像を取得する
-     * 同時に取得に成功したかどうかをチェックしている
+     * カメラから画像を取得する（非ブロッキング処理）
+     * grab()でフレームをキャプチャし、retrieve()でデータを取得する
+     * これによりRTOSタスクスケジューリングとの競合を軽減
      */
-    const bool isSuccess = m_camera.read(image) && !image.empty();
-    return isSuccess;
+    if (m_camera.grab()) {
+        const bool isSuccess = m_camera.retrieve(image) && !image.empty();
+        return isSuccess;
+    }
+    return false;
 }

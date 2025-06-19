@@ -3,6 +3,7 @@
 
 #include <opencv2/opencv.hpp>
 #include <string>
+#include <mutex>
 
 /**
  * Webカメラ
@@ -54,6 +55,11 @@ class WebCamera {
          * 保存した画像の枚数
          */
         int m_savedImageCount;
+
+        /**
+         * 複数タスクからの同時アクセスを防ぐミューテックス
+         */
+        std::mutex m_cameraMutex;
 };
 
 #endif // WEB_CAMERA_H
