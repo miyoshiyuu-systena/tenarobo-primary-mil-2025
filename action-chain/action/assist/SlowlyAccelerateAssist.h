@@ -46,6 +46,7 @@ class SlowlyAccelerateAssist : public IAssist
         void correct(float* speeds) override;
 
     private:
+        int mStepCount;
         int mStepInterval;
         int mStepIndex;
 };
