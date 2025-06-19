@@ -34,6 +34,11 @@ class WebCamera {
          */
         bool isInitialized() const;
 
+        /**
+         * 初期化
+         */
+        void init();
+
     private:
         /**
          * カメラのソフトウェアアクセスの確立に成功したかどうか
