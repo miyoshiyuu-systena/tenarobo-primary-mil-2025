@@ -2,6 +2,20 @@
 #include "IAssist.h"
 #include "CalcErrorFunc.h"
 #include "ColorSensor.h"
+#include "IAssistGenerator.h"
+
+IAssistGenerator laneTracingAssistGenerator(
+    Device* device,
+    bool isRightSide,
+    float kp,
+    float ki,
+    float kd,
+    CalcErrorFunc calcError
+) {
+    return [device, isRightSide, kp, ki, kd, calcError]() {
+        return new LaneTracingAssist(device, isRightSide, kp, ki, kd, calcError);
+    };
+}
 
 /**
  * 飽和制限

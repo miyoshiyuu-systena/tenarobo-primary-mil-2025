@@ -4,6 +4,7 @@
 #include    "ActionNode.h"
 #include    "IAssist.h"
 #include    "ICloser.h"
+#include    "IAssistGenerator.h"
 #include    <functional>
 
 /**
@@ -16,14 +17,14 @@
  * 直線走行アクションのファクトリー関数
  * @param speed 速度[mm/s]
  * @param detectInterval 検知間隔[ms]
- * @param assistPtr 走行補助
+ * @param assistPtrGenerator 走行補助
  * @param closerPtr 終了判定
  * @return 直線走行アクション
  */
 ActionCall goStraightActionFactory(
     float speed,
     int detectInterval,
-    IAssist* assistPtr,
+    IAssistGenerator assistPtrGenerator,
     ICloser* closerPtr
 );
 

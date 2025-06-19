@@ -4,6 +4,7 @@
 #include "ActionNode.h"
 #include "IAssist.h"
 #include "ICloser.h"
+#include "IAssistGenerator.h"
 #include <functional>
 
 /**
@@ -28,7 +29,7 @@ ActionCall goCurveActionFactory(
     float radius,
     bool isGoRight,
     int detectInterval,
-    IAssist* assist,
+    IAssistGenerator assistPtrGenerator,
     ICloser* closer
 );
 

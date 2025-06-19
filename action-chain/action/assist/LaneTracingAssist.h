@@ -4,6 +4,26 @@
 #include "IAssist.h"
 #include "device/Device.h"
 #include "CalcErrorFunc.h"
+#include "IAssistGenerator.h"
+
+/**
+ * 青白線に沿って走行する補助クラスのファクトリー関数
+ * @param device デバイス
+ * @param isRightSide 右側に走行するかどうか
+ * @param kp 比例ゲイン
+ * @param ki 積分ゲイン
+ * @param kd 微分ゲイン
+ * @param calcError 誤差を計算する関数
+ * @return 青白線に沿って走行する補助クラスのファクトリー関数
+ */
+IAssistGenerator laneTracingAssistGenerator(
+    Device* device,
+    bool isRightSide,
+    float kp,
+    float ki,
+    float kd,
+    CalcErrorFunc calcError
+);
 
 /**
  * 青白線に沿って走行する補助クラス

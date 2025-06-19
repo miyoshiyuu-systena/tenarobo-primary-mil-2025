@@ -6,6 +6,7 @@
 #include "action-chain/action/assist/LaneTracingAssist.h"
 #include "action-chain/action/assist/CalcBlackWhiteBorderError.h"
 #include "action-chain/action/assist/CalcBlueWhiteBorderError.h"
+#include "action-chain/action/assist/IAssistGenerator.h"
 #include "action-chain/action/closer/BlueFloorCloser.h"
 #include "action-chain/action/closer/BlackFloorCloser.h"
 #include "action-chain/action/closer/TimedCloser.h"
@@ -33,7 +34,7 @@ void main_task(intptr_t exinf)   {
         500
     );
 
-    IAssist* assist1 = new LaneTracingAssist(
+    IAssistGenerator assist1 = laneTracingAssistGenerator(
         &device,
         true,
         50.0f,

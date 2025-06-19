@@ -7,16 +7,18 @@
 ActionCall goStraightActionFactory(
     float speed,
     int detectInterval,
-    IAssist* assist,
+    IAssistGenerator assistPtrGenerator,
     ICloser* closerPtr
 )
 {
-    return [speed, detectInterval, assist, closerPtr](
+    return [speed, detectInterval, assistPtrGenerator, closerPtr](
         ActionNode*& curr_ptr,
         ActionNode*& next_ptr,
         Device*& device
     ) {
         float speeds[2] = {0.0f, 0.0f};
+        IAssist* assist = assistPtrGenerator();
+        
         assist->init(speed, speed);
         closerPtr->init();
         

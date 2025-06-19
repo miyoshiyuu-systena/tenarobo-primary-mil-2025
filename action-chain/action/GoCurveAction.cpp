@@ -8,16 +8,17 @@ ActionCall goCurveActionFactory(
     float radius,
     bool isGoRight,
     int detectInterval,
-    IAssist* assist,
+    IAssistGenerator assistPtrGenerator,
     ICloser* closer
 )
 {
-    return [speed, radius, isGoRight, detectInterval, assist, closer](
+    return [speed, radius, isGoRight, detectInterval, assistPtrGenerator, closer](
         ActionNode*& curr_ptr,
         ActionNode*& next_ptr,
         Device*& device
     ) {
         float speeds[2] = {0.0f, 0.0f};
+        IAssist* assist = assistPtrGenerator();
 
         float baseSpeed[2] = {0.0f, 0.0f};
         calcCurveSpeedsByLinearSpeed(speed, radius, baseSpeed);
