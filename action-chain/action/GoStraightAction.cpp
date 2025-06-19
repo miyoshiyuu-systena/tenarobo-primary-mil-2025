@@ -53,6 +53,8 @@ ActionCall goStraightActionFactory(
             dly_tsk(detectInterval * 1000);
         } while (!closer->isClosed());
 
+        device->twinWheelDrive.stop();
+
         // 全てのアシストオブジェクトを削除
         for (IAssist* assist : assists) {
             delete assist;

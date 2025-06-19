@@ -59,6 +59,31 @@ void main_task(intptr_t exinf)   {
     );
     action0->setNext(action1);
 
+    IAssistGenerator assist2 = laneTracingAssistGenerator(
+        &device,
+        true,
+        50.0f,
+        10.0f,
+        10.0f,
+        calcBlueWhiteBorderError
+    );
+    std::vector<IAssistGenerator> assistGenerators2 = {
+        assist2
+    };
+    ICloserGenerator closer2 = blackFloorCloserGenerator(&device);
+    ActionNode* action2 = new ActionNode(
+        "action2: 白青の直線に沿って走行し、黒い床に到達したら終了",
+        &device,
+        goStraightActionFactory(
+            250,
+            10,
+            assistGenerators2,
+            closer2
+        ),
+        500
+    );
+    action1->setNext(action2);
+
     ActionNode* prevAction = nullptr;
     ActionNode* currentAction = action0;
     while (currentAction != nullptr) {
