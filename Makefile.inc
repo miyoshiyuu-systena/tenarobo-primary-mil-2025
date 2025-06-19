@@ -18,6 +18,7 @@ APPL_CXXOBJS +=\
 	TwinWheelDrive.o\
 	Logger.o\
 	Perception.o\
+	CameraManager.o\
 	WebCamera.o\
 
 SRCLANG := c++

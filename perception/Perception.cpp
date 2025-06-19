@@ -3,6 +3,7 @@
 #include "debug.h"
 #include "spikeapi.h"
 #include "logger/Logger.h"
+#include "web-camera/CameraManager.h"
 
 using namespace spikeapi;
 
@@ -133,16 +134,46 @@ void Perception::update() {
         mFrontArmSpeed = frontArmDrive.getSpeed();
     }
     
-    if (
-        (isPerceptionLoggingIgnoreMask || (mMask & MASK_CAMERA) != 0b00000000) &&
-        count_cycle % cameraSaveInterval == 0   // カメラの保存間隔
-    ) {
-        cv::Mat frame;
-        const bool isSuccess = webCamera.captureImage(frame);
-        if (isSuccess) {
-            mFrontImage = frame;
-            Logger::getInstance().logDebug("Camera image saved");
+    // if (
+    //     (isPerceptionLoggingIgnoreMask || (mMask & MASK_CAMERA) != 0b00000000) &&
+    //     count_cycle % cameraSaveInterval == 0   // カメラの保存間隔
+    // ) {
+    //     cv::Mat frame;
+    //     const bool isSuccess = webCamera.captureImage(frame);
+    //     if (isSuccess) {
+    //         mFrontImage = frame;
+    //         Logger::getInstance().logDebug("Camera image saved");
+    //     }
+    // }
+
+    // カメラ処理の頻度を下げる
+    if (count_cycle % cameraSaveInterval == 0) {
+        loc_cpu();
+        /**
+         * カメラデータの取得
+         */
+        static CameraManager& cameraManager = CameraManager::getInstance();
+        static bool initAttempted = false;
+
+        /**
+         * XXX: メインタスクで実装できないか
+         */
+        // カメラが初期化されていない場合は初期化を試行（一度だけ）
+        if (!cameraManager.isInitialized() && !initAttempted) {
+            cameraManager.initializeCamera();
+            initAttempted = true;
         }
+        
+        // カメラが初期化されている場合のみ処理
+        if (cameraManager.isInitialized()) {
+            // 1フレーム取得して保存
+            cv::Mat frame;
+            if (cameraManager.captureImageNow(frame)) {
+                // 画像保存の頻度も下げる（100回→500回に1回）
+                cameraManager.saveImage(frame, "perc_task");
+            }
+        }
+        unl_cpu();
     }
 
     if (isPerceptionLoggingEnable) {

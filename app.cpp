@@ -28,7 +28,7 @@ void main_task(intptr_t exinf)   {
     // ロガーインスタンスの取得
     Logger& logger = Logger::getInstance();
 
-    webCamera.init();
+    // webCamera.init();
 
     // カメラ初期化は知覚タスクで行うため、ここでは削除
     // 知覚タスクの開始
