@@ -399,7 +399,7 @@ void main_task(intptr_t exinf)   {
         &frontArmDrive,
         &perception,
         false,
-        250.0f,
+        200.0f,
         50.0f,
         0.05f,
         calcBlackWhiteBorderError
@@ -412,7 +412,7 @@ void main_task(intptr_t exinf)   {
         &perception,
         0b00100000,
         goStraightActionFactory(
-            250.0f,   // 速度[mm/s]
+            200.0f,   // 速度[mm/s]
             10,  // 検知間隔[ms]
             assist13,
             closer13
