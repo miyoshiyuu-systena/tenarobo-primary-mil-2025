@@ -12,7 +12,7 @@ ActionCall goStraightActionFactory(
     std::vector<ICloserGenerator> closerPtrGenerators
 )
 {
-    return [speed, detectInterval, assistPtrGenerators, closerPtrGenerator](
+    return [speed, detectInterval, assistPtrGenerators, closerPtrGenerators](
         ActionNode*& curr_ptr,
         ActionNode*& next_ptr,
         Device*& device
