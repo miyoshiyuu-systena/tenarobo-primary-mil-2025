@@ -53,7 +53,7 @@ void LaneTracingAssist::correct(float* speeds)
      * - 新しいデータを追加する
      */
     mErrorIntegral -= mErrorHistory[mErrorHistoryIndex];
-    mErrorIntegral += error
+    mErrorIntegral += error;
     
     float errorIntegral = mErrorIntegral;
     
