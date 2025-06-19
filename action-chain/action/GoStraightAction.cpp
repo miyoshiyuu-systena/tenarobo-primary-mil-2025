@@ -22,15 +22,12 @@ ActionCall goStraightActionFactory(
         // 複数のアシストオブジェクトを生成
         std::vector<IAssist*> assists;
         for (const auto& assistPtrGenerator : assistPtrGenerators) {
-            assists.push_back(assistPtrGenerator());
+            IAssist* assist = assistPtrGenerator();
+            assist->init();
+            assists.push_back(assist);
         }
         
         ICloser* closer = closerPtrGenerator();
-        
-        // 全てのアシストを初期化
-        for (IAssist* assist : assists) {
-            assist->init(speed, speed);
-        }
         closer->init();
         
         do {

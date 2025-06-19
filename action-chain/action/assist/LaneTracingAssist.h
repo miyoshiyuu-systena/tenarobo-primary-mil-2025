@@ -65,7 +65,7 @@ class LaneTracingAssist : public IAssist
         );
         ~LaneTracingAssist();
 
-        void init(float baseLeftSpeed, float baseRightSpeed) override;
+        void init() override;
 
         /**
          * 青白線に沿って走行する

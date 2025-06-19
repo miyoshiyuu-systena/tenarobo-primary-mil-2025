@@ -15,6 +15,11 @@ class IAssist
         );
 
         virtual ~IAssist() = default;
+
+        /**
+         * 走行補助を初期化する
+         */
+        virtual void init() = 0;
         
         /**
          * 走行補助を行う

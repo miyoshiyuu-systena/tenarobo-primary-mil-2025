@@ -48,6 +48,10 @@ LaneTracingAssist::~LaneTracingAssist()
     delete[] mErrorHistory;
 }
 
+void LaneTracingAssist::init()
+{
+}
+
 void LaneTracingAssist::correct(float* speeds)
 {
     /**

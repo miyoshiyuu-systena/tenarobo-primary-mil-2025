@@ -19,36 +19,18 @@ ActionCall goCurveActionFactory(
         Device*& device
     ) {
         float speeds[2] = {0.0f, 0.0f};
+        float baseSpeed[2] = {0.0f, 0.0f};
+        calcCurveSpeedsByLinearSpeed(speed, radius, baseSpeed);
         
         // 複数のアシストオブジェクトを生成
         std::vector<IAssist*> assists;
         for (const auto& assistPtrGenerator : assistPtrGenerators) {
-            assists.push_back(assistPtrGenerator());
+            IAssist* assist = assistPtrGenerator();
+            assist->init();
+            assists.push_back(assist);
         }
         
         ICloser* closer = closerPtrGenerator();
-
-        float baseSpeed[2] = {0.0f, 0.0f};
-        calcCurveSpeedsByLinearSpeed(speed, radius, baseSpeed);
-        
-        // 全てのアシストを初期化
-        for (IAssist* assist : assists) {
-            if (isGoRight) {
-                /**
-                 * - calcCurveSpeedsByLinearSpeed: 返り値の[0]が外輪、[1]が内輪
-                 * - init: 第一引数が左輪、第二引数が右輪
-                 * - 右に曲がる場合は、左が外輪、右が内輪である
-                 */
-                assist->init(baseSpeed[0], baseSpeed[1]);
-            } else {
-                /**
-                 * - calcCurveSpeedsByLinearSpeed: 返り値の[0]が外輪、[1]が内輪
-                 * - init: 第一引数が左輪、第二引数が右輪
-                 * - 左に曲がる場合は、左が内輪、右が外輪である
-                 */
-                assist->init(baseSpeed[1], baseSpeed[0]);
-            }
-        }
         closer->init();
 
         do {
