@@ -77,8 +77,6 @@ class LaneTracingAssist : public IAssist
         void correct(float* speeds) override;
 
     private:
-        float mBaseLeftSpeed;
-        float mBaseRightSpeed;
         bool mIsRightSide;
         float mKp;
         float mKi;
