@@ -8,7 +8,6 @@
 #include "ColorSensor.h"
 #include "UltrasonicSensor.h"
 #include "IMU.h"
-#include "web-camera/WebCamera.h"
 
 using namespace spikeapi;
 
@@ -54,7 +53,10 @@ extern UltrasonicSensor ultrasonicSensor;
  *  このデバイスだけ、Spike経由の制御ではない
  *  自動初期化されないため、自身で実装する必要がある
  */
-extern WebCamera webCamera;
+/**
+ *  
+ */
+// extern WebCamera webCamera;
 
 /**
  * ハブ内蔵IMU

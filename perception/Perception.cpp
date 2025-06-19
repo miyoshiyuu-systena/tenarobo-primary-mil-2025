@@ -133,18 +133,6 @@ void Perception::update() {
     ) {
         mFrontArmSpeed = frontArmDrive.getSpeed();
     }
-    
-    // if (
-    //     (isPerceptionLoggingIgnoreMask || (mMask & MASK_CAMERA) != 0b00000000) &&
-    //     count_cycle % cameraSaveInterval == 0   // カメラの保存間隔
-    // ) {
-    //     cv::Mat frame;
-    //     const bool isSuccess = webCamera.captureImage(frame);
-    //     if (isSuccess) {
-    //         mFrontImage = frame;
-    //         Logger::getInstance().logDebug("Camera image saved");
-    //     }
-    // }
 
     // カメラ処理の頻度を下げる
     if (count_cycle % cameraSaveInterval == 0) {
