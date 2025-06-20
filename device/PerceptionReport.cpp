@@ -1,5 +1,6 @@
 #include "PerceptionReport.h"
 #include "CameraManager.h"
+#include "logger/Logger.h"
 
 void writePerceptionReport(
     Device* device,
@@ -36,6 +37,14 @@ void writePerceptionReport(
             prevIndex = index;
         }
     }
+
+    Logger::getInstance().logDebug("=Report=========================================");
+    Logger::getInstance().logDebug("distance: " + std::to_string(report.distance));
+    Logger::getInstance().logDebug("force: " + std::to_string(report.force));
+    Logger::getInstance().logDebug("h: " + std::to_string(report.h));
+    Logger::getInstance().logDebug("s: " + std::to_string(report.s));
+    Logger::getInstance().logDebug("v: " + std::to_string(report.v));
+    Logger::getInstance().logDebug("================================================");
 
     count++;
 }
