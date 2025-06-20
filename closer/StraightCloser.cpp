@@ -1,4 +1,5 @@
 #include "StraightCloser.h"
+#include "config.h"
 #include "web-camera/CameraManager.h"
 #include <cmath>
 
@@ -19,6 +20,11 @@ StraightCloser::~StraightCloser()
 
 void StraightCloser::init()
 {
+}
+
+int StraightCloser::getSeqCountIsStraightMax()
+{
+    return config.getIntValue("seqCountIsStraightMax", 10);
 }
 
 bool StraightCloser::isClosed(PerceptionReport* report)
@@ -59,7 +65,8 @@ bool StraightCloser::isClosed(PerceptionReport* report)
      * ノイズを軽減するために入れているが、あまり重要ではないかもしれない
      * 処理全体が遅くなってしまうかも。
      */
-    cv::GaussianBlur(image, image, cv::Size(5, 5), 0);
+    static int gaussianKernelSize = config.getIntValue("straightGaussianKernelSize", 5);
+    cv::GaussianBlur(image, image, cv::Size(gaussianKernelSize, gaussianKernelSize), 0);
 
     /**
      * エッジ検出
@@ -71,7 +78,9 @@ bool StraightCloser::isClosed(PerceptionReport* report)
      *  エッジ検出は、画像中のエッジを検出するための手法
      *  エッジは、画像中の明るさの変化が激しい部分を指す
      */
-    cv::Canny(image, image, 100, 200);
+    static int cannyLowerThreshold = config.getIntValue("straightCannyLowerThreshold", 100);
+    static int cannyUpperThreshold = config.getIntValue("straightCannyUpperThreshold", 200);
+    cv::Canny(image, image, cannyLowerThreshold, cannyUpperThreshold);
 
     /**
      * ハフ変換
@@ -88,8 +97,11 @@ bool StraightCloser::isClosed(PerceptionReport* report)
      *  そのパラメータを使って、線分を検出する
      *  
      */
+    static int houghThreshold = config.getIntValue("straightHoughThreshold", 50);
+    static int houghMinLineLength = config.getIntValue("straightHoughMinLineLength", 10);
+    static int houghMaxLineGap = config.getIntValue("straightHoughMaxLineGap", 10);
     std::vector<cv::Vec4i> lines;
-    cv::HoughLinesP(image, lines, 1, CV_PI / 180, 50, 10, 10);
+    cv::HoughLinesP(image, lines, 1, CV_PI / 180, houghThreshold, houghMinLineLength, houghMaxLineGap);
 
     bool isStraight = false;
     for (const auto& l : lines) {
@@ -100,9 +112,12 @@ bool StraightCloser::isClosed(PerceptionReport* report)
         * l[2] 終点のx座標
         * l[3] 終点のy座標
         */
+        static int lineXMin = config.getIntValue("straightLineXMin", 100);
+        static int lineXMax = config.getIntValue("straightLineXMax", 220);
+        static int lineYMin = config.getIntValue("straightLineYMin", 200);
         if (
-            ((100 < l[0]) && (l[0] < 220) && (l[1] > 200)) ||
-            ((100 < l[2]) && (l[2] < 220) && (l[3] > 200))
+            ((lineXMin < l[0]) && (l[0] < lineXMax) && (l[1] > lineYMin)) ||
+            ((lineXMin < l[2]) && (l[2] < lineXMax) && (l[3] > lineYMin))
         ) {
             isStraight = true;
             cv::line(report->image, cv::Point(l[0], l[1]), cv::Point(l[2], l[3]), cv::Scalar(0, 0, 255), 2, cv::LINE_AA);
@@ -117,5 +132,5 @@ bool StraightCloser::isClosed(PerceptionReport* report)
         mSeqCountIsStraight = 0;
     }
     
-    return mSeqCountIsStraight > SEQ_COUNT_IS_STRAIGHT_MAX;
+    return mSeqCountIsStraight > getSeqCountIsStraightMax();
 }

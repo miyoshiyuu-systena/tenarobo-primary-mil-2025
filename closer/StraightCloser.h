@@ -30,7 +30,11 @@ class StraightCloser : public ICloser
          *  1回だけだと誤検出しやすいから短い時間にある程度連続して、検出されないことを基準とする
          */
         int mSeqCountIsStraight;
-        static const int SEQ_COUNT_IS_STRAIGHT_MAX = 10;
+        
+        /**
+         * 設定ファイルから連続して直線と判定する最大回数を取得
+         */
+        int getSeqCountIsStraightMax();
 };
 
 #endif // _STRAIGHT_CLOSER_H_
