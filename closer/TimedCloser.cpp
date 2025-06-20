@@ -1,7 +1,4 @@
 #include "TimedCloser.h"
-#include "ICloser.h"
-#include "device/Device.h"
-#include "ICloserGenerator.h"
 
 ICloserGenerator timedCloserGenerator(int max) {
     return [max]() {

@@ -1,7 +1,4 @@
 #include "BlueFloorCloser.h"
-#include "ICloser.h"
-#include "ColorSensor.h"
-#include "ICloserGenerator.h"
 
 ICloserGenerator blueFloorCloserGenerator() {
     return []() {

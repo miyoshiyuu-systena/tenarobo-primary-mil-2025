@@ -3,7 +3,6 @@
 
 #include    "ICloser.h"
 #include    "ICloserGenerator.h"
-#include    "PerceptionReport.h"
 
 /**
  * 曲がり角に差し掛かったら終了判定を出すクラスのファクトリー関数

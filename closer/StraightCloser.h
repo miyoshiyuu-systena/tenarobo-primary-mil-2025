@@ -3,7 +3,6 @@
 
 #include "ICloser.h"
 #include "ICloserGenerator.h"
-#include "PerceptionReport.h"
 
 /**
  * 直線を検知したら終了判定を出すクラスのファクトリー関数

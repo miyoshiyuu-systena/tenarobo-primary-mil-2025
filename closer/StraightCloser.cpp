@@ -1,5 +1,5 @@
-#include "web-camera/CameraManager.h"
 #include "StraightCloser.h"
+#include "web-camera/CameraManager.h"
 #include <cmath>
 
 ICloserGenerator straightCloserGenerator() {
