@@ -3,7 +3,6 @@
 
 #include "IAssist.h"
 #include "IAssistGenerator.h"
-#include "PerceptionReport.h"
 
 /**
  * ゆっくりと加速する補助のファクトリー関数
