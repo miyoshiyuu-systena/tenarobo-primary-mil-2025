@@ -19,9 +19,6 @@ CameraManager& CameraManager::getInstance() {
 /**
  * プライベートコンストラクタ
  */
-/**
- * XXX: 保存する画像のサフィックスを出力できないか
- */
 CameraManager::CameraManager() 
     : m_initialized(false)
     , m_imageDirectory(imgFilePath)
@@ -32,6 +29,8 @@ CameraManager::CameraManager()
  * カメラの初期化
  */
 bool CameraManager::initializeCamera() {
+    Logger::getInstance().logInfo("カメラの初期化時のロックを開始...");
+    std::lock_guard<std::mutex> lock(m_imageMutex);
     if (m_initialized.load()) {
         return true; // 既に初期化済み
     }
@@ -57,8 +56,9 @@ bool CameraManager::initializeCamera() {
             if (m_cap.read(testFrame) && !testFrame.empty()) {
                 Logger::getInstance().logInfo("カメラデバイス " + std::to_string(i) + " が正常に初期化されました");
                 Logger::getInstance().logInfo("画像サイズ: " + std::to_string(testFrame.cols) + "x" + std::to_string(testFrame.rows));
-                
                 m_initialized.store(true);
+                
+                Logger::getInstance().logInfo("カメラの初期化時のロックを終了...");
                 return true;
             } else {
                 Logger::getInstance().logInfo("カメラデバイス " + std::to_string(i) + " からフレームを取得できませんでした");
@@ -77,11 +77,14 @@ bool CameraManager::initializeCamera() {
  * カメラの終了処理
  */
 void CameraManager::shutdownCamera() {
+    Logger::getInstance().logInfo("カメラの終了処理時のロックを開始...");
+    std::lock_guard<std::mutex> lock(m_imageMutex);
     if (m_initialized.load()) {
         m_cap.release();
         m_initialized.store(false);
         Logger::getInstance().logInfo("カメラを終了しました");
     }
+    Logger::getInstance().logInfo("カメラの終了処理時のロックを終了...");
 }
 
 /**
@@ -118,16 +121,19 @@ std::string CameraManager::saveImage(const cv::Mat& image) {
  * その瞬間の画像を取得
  */
 bool CameraManager::captureImageNow(cv::Mat& image) {
+    Logger::getInstance().logInfo("カメラの画像取得時のロックを開始...");
+    std::lock_guard<std::mutex> lock(m_imageMutex);
     if (!m_initialized.load()) {
         return false;
     }
     // スレッドセーフにVideoCaptureを使う
-    std::lock_guard<std::mutex> lock(m_imageMutex);
     if (m_cap.isOpened()) {
         if (m_cap.read(image) && !image.empty()) {
+            Logger::getInstance().logInfo("カメラの画像取得時のロックを終了...");
             return true;
         }
     }
+    Logger::getInstance().logInfo("カメラの画像取得時のロックを終了...");
     return false;
 }
 
