@@ -1,37 +1,28 @@
 #include "LaneTracingAssist.h"
 #include "IAssist.h"
 #include "CalcErrorFunc.h"
-#include "ColorSensor.h"
 #include "IAssistGenerator.h"
 
 IAssistGenerator laneTracingAssistGenerator(
-    Device* device,
     bool isRightSide,
     float kp,
     float ki,
     float kd,
     CalcErrorFunc calcError
 ) {
-    return [device, isRightSide, kp, ki, kd, calcError]() {
-        return new LaneTracingAssist(device, isRightSide, kp, ki, kd, calcError);
+    return [isRightSide, kp, ki, kd, calcError]() {
+        return new LaneTracingAssist(isRightSide, kp, ki, kd, calcError);
     };
 }
 
-/**
- * 飽和制限
- * - 連続的な操作における積分飽和を抑制し、安定化をはかる
- */
-static const float INTEGRAL_LIMIT = 0.5f;
-
 LaneTracingAssist::LaneTracingAssist(
-    Device* device,
     bool isRightSide,
     float kp,
     float ki,
     float kd,
     CalcErrorFunc calcError
 ):
-    IAssist(device)
+    IAssist()
     , mIsRightSide(isRightSide)
     , mKp(kp)
     , mKi(ki)
@@ -52,14 +43,12 @@ void LaneTracingAssist::init()
 {
 }
 
-void LaneTracingAssist::correct(float* speeds)
+void LaneTracingAssist::correct(float* speeds, PerceptionReport* report)
 {
     /**
     * 青白線の境界線からの誤差を計算する
     */
-    ColorSensor::HSV hsv;
-    mDevice->colorSensor.getHSV(hsv, true);
-    float error = mCalcError(hsv.h, hsv.s, hsv.v);
+    float error = mCalcError(report->h, report->s, report->v);
     
     /**
      * 過去のエラー値を集計する
@@ -71,10 +60,10 @@ void LaneTracingAssist::correct(float* speeds)
     
     float errorIntegral = mErrorIntegral;
     
-    if (errorIntegral > INTEGRAL_LIMIT) {           // 上限飽和の防止
-        errorIntegral = INTEGRAL_LIMIT;
-    } else if (errorIntegral < -INTEGRAL_LIMIT) {   // 下限飽和の防止
-        errorIntegral = -INTEGRAL_LIMIT;
+    if (errorIntegral > mIntegralLimit) {           // 上限飽和の防止
+        errorIntegral = mIntegralLimit;
+    } else if (errorIntegral < -mIntegralLimit) {   // 下限飽和の防止
+        errorIntegral = -mIntegralLimit;
     }    
     
     /**

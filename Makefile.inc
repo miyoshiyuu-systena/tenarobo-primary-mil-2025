@@ -11,6 +11,7 @@ APPL_CXXOBJS +=\
 	ICloser.o\
 	BlackFloorCloser.o\
 	BlueFloorCloser.o\
+	CurveCloser.o\
 	TimedCloser.o\
 	GoStraightAction.o\
 	GoCurveAction.o\
@@ -18,11 +19,13 @@ APPL_CXXOBJS +=\
 	StopAction.o\
 	ActionNode.o\
 	Device.o\
+	PerceptionReport.o\
 	CalcCurveDriveSpeed.o\
 	FrontArmDrive.o\
 	TwinWheelDrive.o\
 	Logger.o\
 	CameraManager.o\
+	config.o\
 
 SRCLANG := c++
 

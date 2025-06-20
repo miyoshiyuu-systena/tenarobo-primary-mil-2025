@@ -21,14 +21,15 @@ Logger& Logger::getInstance() {
  */
 Logger::Logger() {
     // config.hの設定を使用
-    m_logDirectory = logFilePath;
-    m_logFileNameSuffix = logFileNameSuffix;
+    m_logDirectory = config.getLogFilePath();
+    m_logFileNameSuffix = config.getLogFileNameSuffix();
     m_logFileCount = 0;
 
     // ログディレクトリの存在確認と作成
     createLogDirectory();
     
     std::cout << "ログディレクトリ: " << m_logDirectory << std::endl;
+    std::cout << "ログファイルサフィックス: " << m_logFileNameSuffix << std::endl;
 }
 
 /**
@@ -51,6 +52,25 @@ void Logger::createLogDirectory() {
  */
 Logger::~Logger() {
     writeLogsToFile();
+}
+
+/**
+ * 設定を再読み込みして、ログ設定を更新
+ */
+void Logger::reloadConfig() {
+    // 現在のログを保存してから設定を更新
+    writeLogsToFile();
+    
+    // 新しい設定値を読み込み
+    m_logDirectory = config.getLogFilePath();
+    m_logFileNameSuffix = config.getLogFileNameSuffix();
+    
+    // 新しいディレクトリの作成
+    createLogDirectory();
+    
+    logInfo("設定を再読み込みしました");
+    std::cout << "新しいログディレクトリ: " << m_logDirectory << std::endl;
+    std::cout << "新しいログファイルサフィックス: " << m_logFileNameSuffix << std::endl;
 }
 
 /**

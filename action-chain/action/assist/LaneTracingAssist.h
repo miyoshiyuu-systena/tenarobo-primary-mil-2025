@@ -2,13 +2,12 @@
 #define LANE_TRACING_ASSIST_H
 
 #include "IAssist.h"
-#include "device/Device.h"
 #include "CalcErrorFunc.h"
 #include "IAssistGenerator.h"
+#include "device/PerceptionReport.h"
 
 /**
  * 青白線に沿って走行する補助クラスのファクトリー関数
- * @param device デバイス
  * @param isRightSide 右側に走行するかどうか
  * @param kp 比例ゲイン
  * @param ki 積分ゲイン
@@ -17,7 +16,6 @@
  * @return 青白線に沿って走行する補助クラスのファクトリー関数
  */
 IAssistGenerator laneTracingAssistGenerator(
-    Device* device,
     bool isRightSide,
     float kp,
     float ki,
@@ -33,8 +31,6 @@ class LaneTracingAssist : public IAssist
 {
     public:
         LaneTracingAssist(
-            Device* device,
-
             /**
              * 右側に走行するかどうか
              * @note
@@ -70,11 +66,12 @@ class LaneTracingAssist : public IAssist
         /**
          * 青白線に沿って走行する
          * @param speeds 走行速度[°/s](構造体の中身を更新することで次の速度を渡す)
+         * @param report 知覚データ
          * @note
          *  speeds[0]: 左輪の速度[°/s]
          *  speeds[1]: 右輪の速度[°/s]
          */
-        void correct(float* speeds) override;
+        void correct(float* speeds, PerceptionReport* report) override;
 
     private:
         bool mIsRightSide;
@@ -84,9 +81,14 @@ class LaneTracingAssist : public IAssist
         CalcErrorFunc mCalcError;
 
         /**
+         * 積分飽和の最大値
+         */
+        static constexpr float mIntegralLimit = 0.5f;
+
+        /**
          * エラーヒストリー
          */
-        static const int mTotalHistory = 5; // とりあえず過去5回分
+        static const int mTotalHistory = 5; // とりあえず過去10回分
         float* mErrorHistory;
         int mErrorHistoryIndex;
         float mErrorIntegral;   // 計算の効率化のため前回の値を記憶
