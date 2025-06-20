@@ -5,7 +5,7 @@
 ICloserGenerator straightCloserGenerator() {
     return []() {
         return new StraightCloser();
-    }
+    };
 }
 
 StraightCloser::StraightCloser() : ICloser()
