@@ -2,7 +2,11 @@
 #include "spikeapi.h"
 #include "config.h"
 #include "logger/Logger.h"
-#include "action-chain/ActionNode.h"
+#include "action/ActionNode.h"
+#include "action/HachikouAction.h"
+#include "action/GoStraightAction.h"
+#include "action/GoCurveAction.h"
+#include "action/StopAction.h"
 #include "device/Device.h"
 #include "assist/LaneTracingAssist.h"
 #include "assist/CalcBlackWhiteBorderError.h"
@@ -14,10 +18,6 @@
 #include "closer/StraightCloser.h"
 #include "closer/CurveCloser.h"
 #include "closer/TimedCloser.h"
-#include "action-chain/HachikouAction.h"
-#include "action-chain/GoStraightAction.h"
-#include "action-chain/GoCurveAction.h"
-#include "action-chain/StopAction.h"
 #include "web-camera/CameraManager.h"
 
 using namespace spikeapi;

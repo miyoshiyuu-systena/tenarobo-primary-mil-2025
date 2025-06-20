@@ -38,7 +38,7 @@ include $(EV3RT_SDK_LIB_DIR)/libcpp-spike/Makefile
 endif
 
 APPL_DIRS += \
-	$(mkfile_path)action-chain \
+	$(mkfile_path)action \
 	$(mkfile_path)assist \
 	$(mkfile_path)closer \
 	$(mkfile_path)device \
@@ -49,7 +49,7 @@ APPL_DIRS += \
 	$(mkfile_path)web-camera \
 
 INCLUDES += \
-	-I$(mkfile_path)action-chain \
+	-I$(mkfile_path)action \
 	-I$(mkfile_path)assist \
 	-I$(mkfile_path)closer \
 	-I$(mkfile_path)device \
