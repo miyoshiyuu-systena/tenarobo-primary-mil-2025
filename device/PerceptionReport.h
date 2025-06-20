@@ -17,6 +17,7 @@
 #define     PERCEPTION_REPORT_MASK_FORCE        0b01000000
 #define     PERCEPTION_REPORT_MASK_COLOR        0b00100000
 #define     PERCEPTION_REPORT_MASK_IMAGE        0b00010000
+#define     PERCEPTION_REPORT_MASK_MOTOR_SPEED  0b00001000
 
 
 /**
@@ -55,6 +56,16 @@ typedef struct {
     * Webカメラの画像
     */
     cv::Mat image;
+
+    /**
+     * 左モーターの回転速度
+     */
+    float leftMotorSpeed;
+
+    /**
+     * 右モーターの回転速度
+     */
+    float rightMotorSpeed;
 } PerceptionReport;
 
 /**
