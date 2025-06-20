@@ -28,6 +28,9 @@ class CurveCloser : public ICloser
     private:
         /**
          * 正面の直線を連続して見失った回数
+         * @note
+         *  ○回連続して正面に直線がなかったら曲がり角に差し掛かったとみなす
+         *  1回だけだと誤検出しやすいから短い時間にある程度連続して、検出されないことを基準とする
          */
         int mSeqCountIsCurve;
         static const int SEQ_COUNT_IS_CURVE_MAX = 10;
