@@ -29,6 +29,6 @@ class StraightCloser : public ICloser
          */
         int mSeqCountIsStraight;
         static const int SEQ_COUNT_IS_STRAIGHT_MAX = 10;
-}
+};
 
 #endif // _STRAIGHT_CLOSER_H_
