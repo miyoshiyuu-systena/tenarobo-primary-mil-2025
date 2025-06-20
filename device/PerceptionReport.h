@@ -61,7 +61,7 @@ typedef struct {
  * カメラの撮影に最適な間隔
  * [ms]
  */
-const int cameraInterval = 33;
+const int cameraInterval = 50;
 
 /**
  * 知覚データを更新して、格納する

@@ -58,6 +58,7 @@ ActionCall goCurveActionFactory(
             writePerceptionReport(
                 device,
                 report,
+                detectInterval,
                 (
                     PERCEPTION_REPORT_MASK_ULTRASONIC |      //超音波使わない
                     PERCEPTION_REPORT_MASK_FORCE |           //力センサー使わない

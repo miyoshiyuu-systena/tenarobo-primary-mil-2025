@@ -49,7 +49,7 @@ void main_task(intptr_t exinf)   {
             calcBlackWhiteBorderError
         ),
         slowlyAccelerateAssistGenerator(
-            100,
+            10,
             10
         )
     };
@@ -60,7 +60,7 @@ void main_task(intptr_t exinf)   {
         "action1: 白黒の直線に沿って走行し、青色の床に到達したら終了",
         &device,
         goCurveActionFactory(
-            350.0f,
+            700.0f,
             350.0f,
             false,
             10,

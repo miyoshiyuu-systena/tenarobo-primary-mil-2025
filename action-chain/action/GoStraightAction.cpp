@@ -4,6 +4,7 @@
 #include "spikeapi.h"
 #include "device/Device.h"
 #include "device/PerceptionReport.h"
+#include "logger/Logger.h"
 #include <vector>
 
 ActionCall goStraightActionFactory(
@@ -18,6 +19,7 @@ ActionCall goStraightActionFactory(
         ActionNode*& next_ptr,
         Device*& device
     ) {
+        int count = 0;
         bool isClosed = false;
         PerceptionReport report;
 
@@ -47,11 +49,12 @@ ActionCall goStraightActionFactory(
             writePerceptionReport(
                 device,
                 report,
+                detectInterval,
                 (
-                    // PERCEPTION_REPORT_MASK_ULTRASONIC |      //超音波使わない
-                    // PERCEPTION_REPORT_MASK_FORCE |           //力センサー使わない
+                    PERCEPTION_REPORT_MASK_ULTRASONIC |      //超音波使わない
+                    PERCEPTION_REPORT_MASK_FORCE |           //力センサー使わない
                     PERCEPTION_REPORT_MASK_COLOR |
-                    // PERCEPTION_REPORT_MASK_IMAGE |           //画像使わない
+                    PERCEPTION_REPORT_MASK_IMAGE |           //画像使わない
                     0b00000000
                 )
             );
@@ -75,6 +78,7 @@ ActionCall goStraightActionFactory(
                 if (closer->isClosed(&report))
                     isClosed = true;
             }
+            count++;
         } while (!isClosed);
 
         // 全てのアシストオブジェクトを削除
@@ -84,5 +88,7 @@ ActionCall goStraightActionFactory(
         for (ICloser* closer : closers) {
             delete closer;
         }
+
+        Logger::getInstance().logInfo("GoStraightAction: count = " + std::to_string(count));
     };
 }
