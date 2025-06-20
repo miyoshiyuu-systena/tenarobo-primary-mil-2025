@@ -1,5 +1,4 @@
 #include "CalcBlueWhiteBorderError.h"
-#include "CalcErrorFunc.h"
 #include <cmath>
 
 static const float BLUE_HUE_IDEAL = 240.0f; // 青色の理想的なH値

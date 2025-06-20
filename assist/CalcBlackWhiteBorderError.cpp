@@ -1,5 +1,4 @@
 #include "CalcBlackWhiteBorderError.h"
-#include "CalcErrorFunc.h"
 
 /**
  * XXX: debug
