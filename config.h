@@ -13,7 +13,7 @@ const std::string logFilePath = "/home/mil/work/RasPike-ART/sdk/workspace/tenaro
 /**
  * ログファイルの出力ファイル名サフィックス
  */
-const std::string logFileNameSuffix = "ちゃんと狙い通りのサイクルで判定できているかチェック8";
+const std::string logFileNameSuffix = "ちゃんと狙い通りのサイクルで判定できているかチェック9";
 
 /**
  * 画像ファイルの出力パス
