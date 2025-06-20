@@ -150,6 +150,9 @@ void main_task(intptr_t exinf)   {
         delete prevAction;
     }
 
+    // カメラマネージャの終了
+    CameraManager::getInstance().shutdownCamera();
+
     // 最終的なログファイル書き込み
     logger.writeLogsToFile();
     logger.logInfo("ActionChainサンプルプログラム終了");
