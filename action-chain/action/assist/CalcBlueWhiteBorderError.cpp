@@ -1,4 +1,4 @@
-#include "CalcBlackWhiteBorderError.h"
+#include "CalcBlueWhiteBorderError.h"
 #include "CalcErrorFunc.h"
 #include <cmath>
 
