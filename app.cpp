@@ -11,6 +11,7 @@
 #include "action-chain/action/assist/SlowlyAccelerateAssist.h"
 #include "action-chain/action/closer/BlueFloorCloser.h"
 #include "action-chain/action/closer/BlackFloorCloser.h"
+#include "action-chain/action/closer/CurveCloser.h"
 #include "action-chain/action/closer/TimedCloser.h"
 #include "action-chain/action/HachikouAction.h"
 #include "action-chain/action/GoStraightAction.h"
@@ -57,25 +58,21 @@ void main_task(intptr_t exinf)   {
     std::vector<IAssistGenerator> assistGenerators1 = {
         laneTracingAssistGenerator(
             false,
-            150.0f,
-            10.0f,
-            10.0f,
+            0.0f,
+            0.0f,
+            0.0f,
             calcBlackWhiteBorderError
-        ),
-        slowlyAccelerateAssistGenerator(
-            10,
-            10
         )
     };
     std::vector<ICloserGenerator> closerGenerators1 = {
-        blueFloorCloserGenerator()
+        curveCloserGenerator()
     };
     ActionNode* action1 = new ActionNode(
         "action1: 白黒の直線に沿って走行し、青色の床に到達したら終了",
         &device,
         goStraightActionFactory(
-            250.0f,
-            10,
+            0.0f,
+            1000,
             assistGenerators1,
             closerGenerators1
         ),
@@ -94,7 +91,7 @@ void main_task(intptr_t exinf)   {
     //     slowlyAccelerateAssistGenerator(
     //         10,
     //         1
-    //     )
+    //     )cd 
     // };
     // std::vector<ICloserGenerator> closerGenerators2 = {
     //     blackFloorCloserGenerator()
