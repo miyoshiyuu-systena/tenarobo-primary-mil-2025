@@ -24,6 +24,10 @@ void CurveCloser::init()
 
 bool CurveCloser::isClosed(PerceptionReport* report)
 {
+    if (!report->isImageUpdated) {
+        return false;
+    }
+
     cv::Mat image;
 
     /**

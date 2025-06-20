@@ -35,6 +35,9 @@ void writePerceptionReport(
         if (index != prevIndex) {
             CameraManager::getInstance().captureImageNow(report.image);
             prevIndex = index;
+            report.isImageUpdated = true;
+        } else {
+            report.isImageUpdated = false;
         }
     }
 

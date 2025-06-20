@@ -58,6 +58,11 @@ typedef struct {
     cv::Mat image;
 
     /**
+     * 画像の更新フラグ
+     */
+    bool isImageUpdated;
+
+    /**
      * 左モーターの回転速度
      */
     float leftMotorSpeed;
