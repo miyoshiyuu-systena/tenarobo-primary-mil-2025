@@ -13,6 +13,7 @@
 #include "action-chain/action/closer/BlackFloorCloser.h"
 #include "action-chain/action/closer/CurveCloser.h"
 #include "action-chain/action/closer/TimedCloser.h"
+#include "action-chain/action/closer/StraightCloser.h"
 #include "action-chain/action/HachikouAction.h"
 #include "action-chain/action/GoStraightAction.h"
 #include "action-chain/action/GoCurveAction.h"
@@ -88,18 +89,26 @@ void main_task(intptr_t exinf)   {
                 laneTracingAssistGenerator(
                     false,
                     50.0f,
-                    10.0f,
-                    10.0f,
+                    50.0f,
+                    50.0f,
                     calcBlackWhiteBorderError
                 )
             },
             {
-                blueFloorCloserGenerator()
+                straightCloserGenerator()
             }
         ),
         0
     );
     action1->setNext(action2);
+
+    ActionNode * action3 = new ActionNode(
+        "action3: とまる",
+        &device,
+        stopActionFactory(),
+        0
+    );
+    action2->setNext(action3);
 
     ActionNode* prevAction = nullptr;
     ActionNode* currentAction = action0;
