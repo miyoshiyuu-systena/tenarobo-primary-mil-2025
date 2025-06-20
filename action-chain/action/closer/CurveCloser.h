@@ -29,6 +29,7 @@ class CurveCloser : public ICloser
          * 曲線が続いた回数
          */
         int mSeqCountIsCurve;
+        static const int SEQ_COUNT_IS_CURVE_MAX = 10;
 };
 
 #endif
