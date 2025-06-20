@@ -59,7 +59,7 @@ void main_task(intptr_t exinf)   {
         laneTracingAssistGenerator(
             false,
             100.0f,
-            10.0f,
+            1.0f,
             10.0f,
             calcBlackWhiteBorderError
         )
@@ -71,7 +71,7 @@ void main_task(intptr_t exinf)   {
         "action1: 白黒の直線に沿って走行し、曲がり角に到達したら終了",
         &device,
         goStraightActionFactory(
-            250.0f,
+            400.0f,
             10,
             assistGenerators1,
             closerGenerators1
