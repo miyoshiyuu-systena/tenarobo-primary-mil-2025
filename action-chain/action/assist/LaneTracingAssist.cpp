@@ -15,12 +15,6 @@ IAssistGenerator laneTracingAssistGenerator(
     };
 }
 
-/**
- * 飽和制限
- * - 連続的な操作における積分飽和を抑制し、安定化をはかる
- */
-static const float INTEGRAL_LIMIT = 0.5f;
-
 LaneTracingAssist::LaneTracingAssist(
     bool isRightSide,
     float kp,
@@ -66,10 +60,10 @@ void LaneTracingAssist::correct(float* speeds, PerceptionReport* report)
     
     float errorIntegral = mErrorIntegral;
     
-    if (errorIntegral > INTEGRAL_LIMIT) {           // 上限飽和の防止
-        errorIntegral = INTEGRAL_LIMIT;
-    } else if (errorIntegral < -INTEGRAL_LIMIT) {   // 下限飽和の防止
-        errorIntegral = -INTEGRAL_LIMIT;
+    if (errorIntegral > mIntegralLimit) {           // 上限飽和の防止
+        errorIntegral = mIntegralLimit;
+    } else if (errorIntegral < -mIntegralLimit) {   // 下限飽和の防止
+        errorIntegral = -mIntegralLimit;
     }    
     
     /**
