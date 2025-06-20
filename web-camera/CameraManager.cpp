@@ -47,7 +47,7 @@ bool CameraManager::initializeCamera() {
             // カメラ設定を最小限に
             m_cap.set(cv::CAP_PROP_FRAME_WIDTH, 320);
             m_cap.set(cv::CAP_PROP_FRAME_HEIGHT, 240);
-            m_cap.set(cv::CAP_PROP_FPS, 5);  // 低フレームレート
+            m_cap.set(cv::CAP_PROP_FPS, 30); // フレームレート
             
             // 設定を適用するために少し待機
             usleep(100 * 1000); // 100ms待機
