@@ -73,10 +73,8 @@ void main_task(intptr_t exinf)   {
     ActionNode* action1 = new ActionNode(
         "action1: 白黒の直線に沿って走行し、青色の床に到達したら終了",
         &device,
-        goCurveActionFactory(
-            700.0f,
-            350.0f,
-            false,
+        goStraightActionFactory(
+            250.0f,
             10,
             assistGenerators1,
             closerGenerators1
