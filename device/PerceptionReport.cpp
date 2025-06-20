@@ -2,6 +2,8 @@
 #include "CameraManager.h"
 
 void writePerceptionReport(Device* device, PerceptionReport& report, uint8_t mask) {
+    static int count = 0;
+
     if (mask & PERCEPTION_REPORT_MASK_ULTRASONIC) {
         report.distance = device->ultrasonicSensor.getDistance();
     }
@@ -19,6 +21,10 @@ void writePerceptionReport(Device* device, PerceptionReport& report, uint8_t mas
     }
 
     if (mask & PERCEPTION_REPORT_MASK_IMAGE) {
-        CameraManager::getInstance().captureImageNow(report.image);
+        if (count % 10 == 0) {
+            CameraManager::getInstance().captureImageNow(report.image);
+        }
     }
+
+    count++;
 }
