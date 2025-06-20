@@ -12,6 +12,7 @@ APPL_CXXOBJS +=\
 	BlackFloorCloser.o\
 	BlueFloorCloser.o\
 	CurveCloser.o\
+	StraightCloser.o\
 	TimedCloser.o\
 	GoStraightAction.o\
 	GoCurveAction.o\
