@@ -21,7 +21,7 @@ void writePerceptionReport(Device* device, PerceptionReport& report, uint8_t mas
     }
 
     if (mask & PERCEPTION_REPORT_MASK_IMAGE) {
-        if (count % 3 == 0) {
+        if (count % 10 == 0) {
             if (CameraManager::getInstance().captureImageNow(report.image)) {
                 CameraManager::getInstance().saveImage(report.image);
             }
