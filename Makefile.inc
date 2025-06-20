@@ -43,6 +43,7 @@ APPL_DIRS += \
 	$(mkfile_path)action-chain/action/assist \
 	$(mkfile_path)action-chain/action/closer \
 	$(mkfile_path)device \
+	$(mkfile_path)perception \
 	$(mkfile_path)drive \
 	$(mkfile_path)logger \
 	$(mkfile_path)perception \
@@ -54,6 +55,7 @@ INCLUDES += \
 	-I$(mkfile_path)action-chain/action/assist \
 	-I$(mkfile_path)action-chain/action/closer \
 	-I$(mkfile_path)device \
+	-I$(mkfile_path)perception \
 	-I$(mkfile_path)drive \
 	-I$(mkfile_path)logger \
 	-I$(mkfile_path)perception \

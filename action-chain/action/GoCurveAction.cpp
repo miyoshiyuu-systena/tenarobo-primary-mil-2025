@@ -2,7 +2,7 @@
 #include "spikeapi.h"
 #include "CalcCurveDriveSpeed.h"
 #include "device/Device.h"
-#include "device/PerceptionReport.h"
+#include "PerceptionReport.h"
 #include <vector>
 
 #include "logger/Logger.h"

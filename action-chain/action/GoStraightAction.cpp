@@ -3,7 +3,7 @@
 #include "ICloser.h"
 #include "spikeapi.h"
 #include "device/Device.h"
-#include "device/PerceptionReport.h"
+#include "PerceptionReport.h"
 #include "logger/Logger.h"
 #include <vector>
 

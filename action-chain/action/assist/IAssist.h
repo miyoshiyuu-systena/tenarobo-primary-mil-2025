@@ -1,7 +1,7 @@
 #ifndef _I_ASSIST_H_
 #define _I_ASSIST_H_
 
-#include "device/PerceptionReport.h"
+#include "PerceptionReport.h"
 
 /**
  * 走行補助インターフェース

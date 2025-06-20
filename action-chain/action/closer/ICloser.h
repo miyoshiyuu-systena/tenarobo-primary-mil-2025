@@ -1,7 +1,7 @@
 #ifndef _I_CLOSER_H_
 #define _I_CLOSER_H_
 
-#include "device/PerceptionReport.h"
+#include "PerceptionReport.h"
 
 /**
  * 終了判定インターフェース
