@@ -58,9 +58,9 @@ void main_task(intptr_t exinf)   {
     std::vector<IAssistGenerator> assistGenerators1 = {
         laneTracingAssistGenerator(
             false,
-            0.0f,
-            0.0f,
-            0.0f,
+            150.0f,
+            10.0f,
+            10.0f,
             calcBlackWhiteBorderError
         )
     };
@@ -71,7 +71,7 @@ void main_task(intptr_t exinf)   {
         "action1: 白黒の直線に沿って走行し、曲がり角に到達したら終了",
         &device,
         goStraightActionFactory(
-            0.0f,
+            250.0f,
             1000,
             assistGenerators1,
             closerGenerators1
