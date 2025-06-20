@@ -1,6 +1,5 @@
 #include    "web-camera/CameraManager.h"
 #include    "CurveCloser.h"
-#include    "logger/Logger.h"
 #include    <cmath>
 
 ICloserGenerator curveCloserGenerator() {
