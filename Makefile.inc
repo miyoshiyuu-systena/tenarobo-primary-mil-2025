@@ -39,9 +39,8 @@ endif
 
 APPL_DIRS += \
 	$(mkfile_path)action-chain \
-	$(mkfile_path)action-chain/action \
-	$(mkfile_path)action-chain/action/assist \
-	$(mkfile_path)action-chain/action/closer \
+	$(mkfile_path)assist \
+	$(mkfile_path)closer \
 	$(mkfile_path)device \
 	$(mkfile_path)perception \
 	$(mkfile_path)drive \
@@ -51,9 +50,8 @@ APPL_DIRS += \
 
 INCLUDES += \
 	-I$(mkfile_path)action-chain \
-	-I$(mkfile_path)action-chain/action \
-	-I$(mkfile_path)action-chain/action/assist \
-	-I$(mkfile_path)action-chain/action/closer \
+	-I$(mkfile_path)assist \
+	-I$(mkfile_path)closer \
 	-I$(mkfile_path)device \
 	-I$(mkfile_path)perception \
 	-I$(mkfile_path)drive \
