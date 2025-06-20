@@ -7,8 +7,6 @@
 #include "ForceSensor.h"
 #include "ColorSensor.h"
 #include "UltrasonicSensor.h"
-// #include "IMU.h"
-// #include "WebCamera.h"
 
 using namespace spikeapi;
 

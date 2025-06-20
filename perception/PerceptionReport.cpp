@@ -1,6 +1,6 @@
 #include "PerceptionReport.h"
 #include "CameraManager.h"
-#include "logger/Logger.h"
+#include "Logger.h"
 
 void writePerceptionReport(
     Device* device,

@@ -5,7 +5,7 @@
 #include <string>
 #include <atomic>
 #include <mutex>
-#include "../config.h"
+#include "config.h"
 
 /**
  * カメラ管理クラス
