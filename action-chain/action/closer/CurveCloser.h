@@ -23,6 +23,9 @@ class CurveCloser : public ICloser
 
         void init() override;
         bool isClosed(PerceptionReport* report) override;
+
+    private:
+        bool mPrevIsCurve;
 };
 
 #endif

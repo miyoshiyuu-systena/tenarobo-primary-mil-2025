@@ -11,6 +11,7 @@ ICloserGenerator curveCloserGenerator() {
 
 CurveCloser::CurveCloser() : ICloser()
 {
+    mPrevIsCurve = false;
 }
 
 CurveCloser::~CurveCloser()
@@ -87,7 +88,7 @@ bool CurveCloser::isClosed(PerceptionReport* report)
     std::vector<cv::Vec4i> lines;
     cv::HoughLinesP(image, lines, 1, CV_PI / 180, 50, 50, 10);
 
-    bool isClosed = true;
+    bool isCurve = true;
     for (const auto& l : lines) {
         /**
         * 線分の始点と終点に着目し、ロボットの足元からスタートしているかどうかを判定する
@@ -97,20 +98,23 @@ bool CurveCloser::isClosed(PerceptionReport* report)
         * l[3] 終点のy座標
         */
         if (
-            ((100 < l[0]) && (l[0] < 220) && (l[1] < 200)) ||
-            ((100 < l[2]) && (l[2] < 220) && (l[3] < 200))
+            ((100 < l[0]) && (l[0] < 220) && (l[1] > 200)) ||
+            ((100 < l[2]) && (l[2] < 220) && (l[3] > 200))
         ) {
             /**
             * 線分の始点と終点の距離が十分に長いとき、ロボットの足元に直線のガイドがあるものと判断する
             */
-            if (std::pow(l[0] - l[2], 2) + std::pow(l[1] - l[3], 2) > std::pow(100, 2)) {
-                isClosed = false;
+            if (std::pow(l[0] - l[2], 2) + std::pow(l[1] - l[3], 2) > std::pow(50, 2)) {
+                isCurve = false;
                 cv::line(report->image, cv::Point(l[0], l[1]), cv::Point(l[2], l[3]), cv::Scalar(0, 0, 255), 2, cv::LINE_AA);
                 // line(画像, 始点, 終点, 色(BGR), 太さ, アンチエイリアス)
             }
         }
     }
     CameraManager::getInstance().saveImage(report->image);
+
+    bool isClosed = mPrevIsCurve && isCurve; // 連続して曲線だったときに終了する
+    mPrevIsCurve = isCurve;
 
     return isClosed;
 }
