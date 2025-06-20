@@ -72,7 +72,7 @@ void main_task(intptr_t exinf)   {
         &device,
         goStraightActionFactory(
             250.0f,
-            1000,
+            10,
             assistGenerators1,
             closerGenerators1
         ),
