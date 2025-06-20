@@ -6,14 +6,15 @@
 #include    "PerceptionReport.h"
 
 /**
- * 曲線に近づいたら終了判定を出すクラスのファクトリー関数
- * @return 曲線に近づいたら終了判定を出すクラスのファクトリー関数
+ * 曲がり角に差し掛かったら終了判定を出すクラスのファクトリー関数
+ * 正面に直線がなくなったことを曲がり角に差し掛かったとみなす
+ * @return 曲がり角に差し掛かったら終了判定を出すクラス
  */
 ICloserGenerator curveCloserGenerator();
 
 
 /**
- * 曲線に近づいたら終了判定を出すクラス
+ * 曲がり角に差し掛かったら終了判定を出すクラス
  */
 class CurveCloser : public ICloser
 {
@@ -26,10 +27,10 @@ class CurveCloser : public ICloser
 
     private:
         /**
-         * 曲線が続いた回数
+         * 正面の直線を連続して見失った回数
          */
         int mSeqCountIsCurve;
         static const int SEQ_COUNT_IS_CURVE_MAX = 10;
 };
 
-#endif
+#endif  // _CURVE_CLOSER_H_
