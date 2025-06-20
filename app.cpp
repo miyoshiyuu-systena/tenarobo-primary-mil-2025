@@ -14,10 +14,10 @@
 #include "action-chain/action/closer/StraightCloser.h"
 #include "action-chain/action/closer/CurveCloser.h"
 #include "action-chain/action/closer/TimedCloser.h"
-#include "action-chain/action/HachikouAction.h"
-#include "action-chain/action/GoStraightAction.h"
-#include "action-chain/action/GoCurveAction.h"
-#include "action-chain/action/StopAction.h"
+#include "action-chain/HachikouAction.h"
+#include "action-chain/GoStraightAction.h"
+#include "action-chain/GoCurveAction.h"
+#include "action-chain/StopAction.h"
 #include "web-camera/CameraManager.h"
 
 using namespace spikeapi;
