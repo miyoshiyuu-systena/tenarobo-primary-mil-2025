@@ -80,6 +80,14 @@ void main_task(intptr_t exinf)   {
     );
     action0->setNext(action1);
 
+    ActionNode* action2 = new ActionNode(
+        "action2: 停止",
+        &device,
+        stopActionFactory(),
+        0
+    );
+    action1->setNext(action2);
+
     // std::vector<IAssistGenerator> assistGenerators2 = {
     //     laneTracingAssistGenerator(
     //         true,
