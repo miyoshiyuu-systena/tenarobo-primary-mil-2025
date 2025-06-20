@@ -1,6 +1,6 @@
 #include "CameraManager.h"
-#include "logger/Logger.h"
 #include "../config.h"
+#include "logger/Logger.h"
 #include "spikeapi.h"
 #include <iostream>
 #include <sys/stat.h>
@@ -30,17 +30,13 @@ CameraManager::CameraManager()
  * カメラの初期化
  */
 bool CameraManager::initializeCamera() {
-    Logger::getInstance().logInfo("カメラの初期化時のロックを開始...");
     loc_cpu();
     if (m_initialized.load()) {
         return true; // 既に初期化済み
     }
 
-    Logger::getInstance().logInfo("カメラの初期化を開始...");
-
     // 複数のカメラデバイスを試行
     for (int i = 0; i < 3; i++) {
-        Logger::getInstance().logInfo("カメラデバイス " + std::to_string(i) + " を試行中...");
         m_cap.open(i);
         
         if (m_cap.isOpened()) {
@@ -55,19 +51,14 @@ bool CameraManager::initializeCamera() {
             // テストフレームを取得
             cv::Mat testFrame;
             if (m_cap.read(testFrame) && !testFrame.empty()) {
-                Logger::getInstance().logInfo("カメラデバイス " + std::to_string(i) + " が正常に初期化されました");
-                Logger::getInstance().logInfo("画像サイズ: " + std::to_string(testFrame.cols) + "x" + std::to_string(testFrame.rows));
                 m_initialized.store(true);
-                
-                Logger::getInstance().logInfo("カメラの初期化時のロックを終了...");
+                Logger::getInstance().logInfo("カメラの初期化に成功しました");
                 unl_cpu();
                 return true;
             } else {
-                Logger::getInstance().logInfo("カメラデバイス " + std::to_string(i) + " からフレームを取得できませんでした");
                 m_cap.release();
             }
         } else {
-            Logger::getInstance().logInfo("カメラデバイス " + std::to_string(i) + " を開けませんでした");
         }
     }
     
@@ -112,11 +103,9 @@ std::string CameraManager::saveImage(const cv::Mat& image) {
     bool success = cv::imwrite(filename, image, compression_params);
     
     if (success) {
-        Logger::getInstance().logInfoWithoutConsoleLog("画像を保存しました: " + filename);
         m_imageCount++;
         return filename;
     } else {
-        Logger::getInstance().logInfoWithoutConsoleLog("画像の保存に失敗しました: " + filename);
         return "";
     }
 }
@@ -125,7 +114,6 @@ std::string CameraManager::saveImage(const cv::Mat& image) {
  * その瞬間の画像を取得
  */
 bool CameraManager::captureImageNow(cv::Mat& image) {
-    Logger::getInstance().logInfo("カメラの画像取得時のロックを開始...");
     loc_cpu();
     if (!m_initialized.load()) {
         return false;
@@ -133,11 +121,9 @@ bool CameraManager::captureImageNow(cv::Mat& image) {
     // スレッドセーフにVideoCaptureを使う
     if (m_cap.isOpened()) {
         if (m_cap.read(image) && !image.empty()) {
-            Logger::getInstance().logInfo("カメラの画像取得時のロックを終了...");
             return true;
         }
     }
-    Logger::getInstance().logInfo("カメラの画像取得時のロックを終了...");
     unl_cpu();
     return false;
 }
