@@ -24,6 +24,7 @@ APPL_CXXOBJS +=\
 	TwinWheelDrive.o\
 	Logger.o\
 	CameraManager.o\
+	config.o\
 
 SRCLANG := c++
 
