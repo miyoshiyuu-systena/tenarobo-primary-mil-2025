@@ -25,7 +25,10 @@ class CurveCloser : public ICloser
         bool isClosed(PerceptionReport* report) override;
 
     private:
-        bool mPrevIsCurve;
+        /**
+         * 曲線が続いた回数
+         */
+        int mSeqCountIsCurve;
 };
 
 #endif

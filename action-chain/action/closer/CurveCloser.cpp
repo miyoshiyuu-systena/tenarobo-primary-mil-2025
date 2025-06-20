@@ -11,7 +11,7 @@ ICloserGenerator curveCloserGenerator() {
 
 CurveCloser::CurveCloser() : ICloser()
 {
-    mPrevIsCurve = false;
+    mSeqCountIsCurve = 0;
 }
 
 CurveCloser::~CurveCloser()
@@ -113,8 +113,11 @@ bool CurveCloser::isClosed(PerceptionReport* report)
     }
     CameraManager::getInstance().saveImage(report->image);
 
-    bool isClosed = mPrevIsCurve && isCurve; // 連続して曲線だったときに終了する
-    mPrevIsCurve = isCurve;
-
-    return isClosed;
+    if (isCurve) {
+        mSeqCountIsCurve++;
+    } else {
+        mSeqCountIsCurve = 0;
+    }
+    
+    return mSeqCountIsCurve > 3;
 }
