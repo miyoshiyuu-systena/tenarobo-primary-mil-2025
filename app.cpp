@@ -1,5 +1,6 @@
 #include "app.h"
 #include "spikeapi.h"
+#include "config.h"
 #include "logger/Logger.h"
 #include "action-chain/ActionNode.h"
 #include "device/Device.h"
@@ -24,9 +25,22 @@ using namespace spikeapi;
  * @param   exinf     拡張情報
  */
 void main_task(intptr_t exinf)   {
+    // 設定ファイルの読み込みと設定情報のログ出力
+    std::cout << "=== メインタスク開始 ===" << std::endl;
+    
+    if (config.loadConfig()) {
+        std::cout << "設定ファイルの読み込みに成功しました" << std::endl;
+        config.printConfig();  // 設定情報をコンソールに出力
+    } else {
+        std::cout << "設定ファイルの読み込みに失敗しました。診断情報を表示します。" << std::endl;
+        config.printDiagnostics();  // 診断情報を表示
+        std::cout << "デフォルト値を使用して続行します。" << std::endl;
+        config.printConfig();  // デフォルト値での設定情報を表示
+    }
+
     // ロガーインスタンスの取得
     Logger& logger = Logger::getInstance();
-
+    
     // カメラマネージャの起動
     CameraManager::getInstance().initializeCamera();
 
