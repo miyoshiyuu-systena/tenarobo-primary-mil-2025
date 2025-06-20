@@ -91,7 +91,7 @@ ConfigLoader customConfig("path/to/your/config.conf");
 
 ## デフォルト値
 設定ファイルが見つからない場合や、キーが存在しない場合は、以下のデフォルト値が使用されます：
-- `logFilePath`: `/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/log/`
+- `logFilePath`: `/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/log-debug/`
 - `logFileNameSuffix`: 空文字列
 - `imgFilePath`: `/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/`
 - `imgFileNameSuffix`: `logFileNameSuffix` と同じ値

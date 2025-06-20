@@ -5,6 +5,8 @@
 #include <fstream>
 #include <map>
 #include <iostream>
+#include <vector>
+#include <cstdlib>
 
 /**
  * 実行時の設定を外部ファイルから読み込むクラス
@@ -15,17 +17,42 @@ private:
     std::string configFilePath;
     
     // デフォルト値
-    const std::string DEFAULT_LOG_PATH = "/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/log/";
-    const std::string DEFAULT_LOG_SUFFIX = "";
+    const std::string DEFAULT_LOG_PATH = "/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/log-debug/";
+    const std::string DEFAULT_LOG_SUFFIX = "default";
     const std::string DEFAULT_IMG_PATH = "/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/";
     
     /**
      * 設定ファイルを解析する
      */
     bool parseConfigFile() {
-        std::ifstream file(configFilePath);
+        // 複数のパスを試行
+        std::vector<std::string> possiblePaths = {
+            configFilePath,  // 元のパス
+            "./" + configFilePath,  // 現在のディレクトリ
+            "/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/" + configFilePath,  // 絶対パス
+            std::string(getenv("PWD") ? getenv("PWD") : ".") + "/" + configFilePath  // 環境変数PWDからのパス
+        };
+        
+        std::string actualPath;
+        std::ifstream file;
+        
+        for (const auto& path : possiblePaths) {
+            std::cout << "設定ファイルを試行中: " << path << std::endl;
+            file.open(path);
+            if (file.is_open()) {
+                actualPath = path;
+                std::cout << "設定ファイルが見つかりました: " << actualPath << std::endl;
+                break;
+            }
+            file.clear(); // エラーフラグをクリア
+        }
+        
         if (!file.is_open()) {
-            std::cerr << "設定ファイルが開けません: " << configFilePath << std::endl;
+            std::cerr << "設定ファイルが開けません。以下のパスを試行しました:" << std::endl;
+            for (const auto& path : possiblePaths) {
+                std::cerr << "  - " << path << std::endl;
+            }
+            std::cerr << "現在のワーキングディレクトリ: " << (getenv("PWD") ? getenv("PWD") : "不明") << std::endl;
             return false;
         }
         
@@ -138,6 +165,20 @@ public:
         std::cout << "logFileNameSuffix: " << getLogFileNameSuffix() << std::endl;
         std::cout << "imgFilePath: " << getImgFilePath() << std::endl;
         std::cout << "imgFileNameSuffix: " << getImgFileNameSuffix() << std::endl;
+    }
+    
+    /**
+     * ファイルアクセス診断情報を表示（トラブルシューティング用）
+     */
+    void printDiagnostics() {
+        std::cout << "=== 設定ファイル診断情報 ===" << std::endl;
+        std::cout << "設定ファイルパス: " << configFilePath << std::endl;
+        std::cout << "現在のワーキングディレクトリ: " << (getenv("PWD") ? getenv("PWD") : "不明") << std::endl;
+        
+        // ファイル存在チェック
+        std::ifstream testFile(configFilePath);
+        std::cout << "ファイル存在チェック: " << (testFile.good() ? "OK" : "NG") << std::endl;
+        testFile.close();
     }
 };
 
