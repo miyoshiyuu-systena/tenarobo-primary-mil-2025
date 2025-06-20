@@ -109,7 +109,7 @@ bool CurveCloser::isClosed(PerceptionReport* report)
             // line(画像, 始点, 終点, 色(BGR), 太さ, アンチエイリアス)
         }
     }
-    CameraManager::getInstance().saveImage(report->image);
+    // CameraManager::getInstance().saveImage(report->image);
 
     if (isCurve) {
         mSeqCountIsCurve++;
