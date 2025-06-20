@@ -1,6 +1,7 @@
 #include "CameraManager.h"
 #include "logger/Logger.h"
 #include "../config.h"
+#include "spikeapi.h"
 #include <iostream>
 #include <sys/stat.h>
 #include <iomanip>
@@ -30,7 +31,7 @@ CameraManager::CameraManager()
  */
 bool CameraManager::initializeCamera() {
     Logger::getInstance().logInfo("カメラの初期化時のロックを開始...");
-    std::lock_guard<std::mutex> lock(m_imageMutex);
+    loc_cpu();
     if (m_initialized.load()) {
         return true; // 既に初期化済み
     }
@@ -59,6 +60,7 @@ bool CameraManager::initializeCamera() {
                 m_initialized.store(true);
                 
                 Logger::getInstance().logInfo("カメラの初期化時のロックを終了...");
+                unl_cpu();
                 return true;
             } else {
                 Logger::getInstance().logInfo("カメラデバイス " + std::to_string(i) + " からフレームを取得できませんでした");
@@ -70,6 +72,7 @@ bool CameraManager::initializeCamera() {
     }
     
     Logger::getInstance().logInfo("カメラの初期化に失敗しました");
+    unl_cpu();
     return false;
 }
 
@@ -78,13 +81,14 @@ bool CameraManager::initializeCamera() {
  */
 void CameraManager::shutdownCamera() {
     Logger::getInstance().logInfo("カメラの終了処理時のロックを開始...");
-    std::lock_guard<std::mutex> lock(m_imageMutex);
+    loc_cpu();
     if (m_initialized.load()) {
         m_cap.release();
         m_initialized.store(false);
         Logger::getInstance().logInfo("カメラを終了しました");
     }
     Logger::getInstance().logInfo("カメラの終了処理時のロックを終了...");
+    unl_cpu();
 }
 
 /**
@@ -122,7 +126,7 @@ std::string CameraManager::saveImage(const cv::Mat& image) {
  */
 bool CameraManager::captureImageNow(cv::Mat& image) {
     Logger::getInstance().logInfo("カメラの画像取得時のロックを開始...");
-    std::lock_guard<std::mutex> lock(m_imageMutex);
+    loc_cpu();
     if (!m_initialized.load()) {
         return false;
     }
@@ -134,6 +138,7 @@ bool CameraManager::captureImageNow(cv::Mat& image) {
         }
     }
     Logger::getInstance().logInfo("カメラの画像取得時のロックを終了...");
+    unl_cpu();
     return false;
 }
 
