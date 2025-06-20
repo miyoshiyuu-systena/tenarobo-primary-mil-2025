@@ -50,7 +50,7 @@ void main_task(intptr_t exinf)   {
         ),
         slowlyAccelerateAssistGenerator(
             100,
-            1
+            10
         )
     };
     std::vector<ICloserGenerator> closerGenerators1 = {
