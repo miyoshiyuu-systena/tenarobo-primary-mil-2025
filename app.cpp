@@ -16,6 +16,7 @@
 #include "action-chain/action/GoCurveAction.h"
 #include "action-chain/action/StopAction.h"
 #include "web-camera/CameraManager.h"
+#include "web-camera/CameraTask.h"
 
 using namespace spikeapi;
 
@@ -29,6 +30,7 @@ void main_task(intptr_t exinf)   {
 
     // カメラマネージャの起動
     CameraManager::getInstance().initializeCamera();
+    sta_cyc(CAMERA_CYC);
 
     ActionNode* action0 = new ActionNode(
         "action0: 圧力センサを押すまで忠犬ハチ公！！",
@@ -152,6 +154,7 @@ void main_task(intptr_t exinf)   {
 
     // カメラマネージャの終了
     CameraManager::getInstance().shutdownCamera();
+    stp_cyc(CAMERA_CYC);
 
     // 最終的なログファイル書き込み
     logger.writeLogsToFile();

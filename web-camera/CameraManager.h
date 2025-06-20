@@ -49,16 +49,21 @@ public:
 
     /**
      * その瞬間の画像を取得
-     * @param image 取得した画像を格納
      * @return 取得成功時true
      */
-    bool captureImageNow(cv::Mat& image);
+    bool captureImageNow();
 
     /**
      * カメラが初期化されているかチェック
      * @return 初期化済みの場合true
      */
     bool isInitialized() const { return m_initialized.load(); }
+
+    /**
+     * 一番最近の画像を取得
+     * @return 画像
+     */
+    cv::Mat getLatestImage() const { return m_latestImage; }
 
 private:
     /**
@@ -87,6 +92,7 @@ private:
     std::string m_imageDirectory;              ///< 画像保存ディレクトリ
     std::string m_imageFileNameSuffix;         ///< 画像ファイル名サフィックス
     int m_imageCount;                          ///< 画像カウント
+    cv::Mat m_latestImage;                           ///< 一番最近の画像
 };
 
 #endif // CAMERA_MANAGER_H 

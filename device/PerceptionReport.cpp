@@ -20,11 +20,11 @@ void writePerceptionReport(Device* device, PerceptionReport& report, uint8_t mas
         report.v = hsv.v;
     }
 
-    if (mask & PERCEPTION_REPORT_MASK_IMAGE) {
-        if (count % 10 == 0) {
-            CameraManager::getInstance().captureImageNow(report.image);
-        }
-    }
+    // if (mask & PERCEPTION_REPORT_MASK_IMAGE) {
+    //     if (count % 10 == 0) {
+    //         CameraManager::getInstance().captureImageNow(report.image);
+    //     }
+    // }
 
     count++;
 }

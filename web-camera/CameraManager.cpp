@@ -23,7 +23,8 @@ CameraManager::CameraManager()
     : m_initialized(false)
     , m_imageDirectory(imgFilePath)
     , m_imageFileNameSuffix(imgFileNameSuffix)
-    , m_imageCount(0) {}
+    , m_imageCount(0)
+    , m_latestImage(cv::Mat()) {}
 
 /**
  * カメラの初期化
@@ -120,7 +121,7 @@ std::string CameraManager::saveImage(const cv::Mat& image) {
 /**
  * その瞬間の画像を取得
  */
-bool CameraManager::captureImageNow(cv::Mat& image) {
+bool CameraManager::captureImageNow() {
     Logger::getInstance().logInfo("カメラの画像取得時のロックを開始...");
     std::lock_guard<std::mutex> lock(m_imageMutex);
     if (!m_initialized.load()) {
@@ -128,7 +129,7 @@ bool CameraManager::captureImageNow(cv::Mat& image) {
     }
     // スレッドセーフにVideoCaptureを使う
     if (m_cap.isOpened()) {
-        if (m_cap.read(image) && !image.empty()) {
+            if (m_cap.read(m_latestImage) && !m_latestImage.empty()) {
             Logger::getInstance().logInfo("カメラの画像取得時のロックを終了...");
             return true;
         }
