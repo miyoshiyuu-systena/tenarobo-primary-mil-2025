@@ -1,9 +1,5 @@
 #include "GoStraightAction.h"
-#include "IAssist.h"
-#include "ICloser.h"
 #include "spikeapi.h"
-#include "device/Device.h"
-#include "PerceptionReport.h"
 #include "logger/Logger.h"
 #include <vector>
 

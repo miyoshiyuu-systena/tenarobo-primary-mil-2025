@@ -1,7 +1,6 @@
 #include    "HachikouAction.h"
 #include    "spikeapi.h"
-#include    "ActionNode.h"
-#include    "device/Device.h"
+
 
 /**
  * 圧力センサを押すまで忠犬ハチ公！！
