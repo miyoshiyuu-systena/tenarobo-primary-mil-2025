@@ -1,6 +1,6 @@
 #include "CameraManager.h"
 #include "../config.h"
-#include "logger/Logger.h"
+#include "../logger/Logger.h"
 #include "spikeapi.h"
 #include <iostream>
 #include <sys/stat.h>
@@ -22,9 +22,14 @@ CameraManager& CameraManager::getInstance() {
  */
 CameraManager::CameraManager() 
     : m_initialized(false)
-    , m_imageDirectory(imgFilePath)
-    , m_imageFileNameSuffix(imgFileNameSuffix)
-    , m_imageCount(0) {}
+    , m_imageCount(0) {
+    // config.hの設定を使用
+    m_imageDirectory = config.getImgFilePath();
+    m_imageFileNameSuffix = config.getImgFileNameSuffix();
+    
+    std::cout << "画像ディレクトリ: " << m_imageDirectory << std::endl;
+    std::cout << "画像ファイルサフィックス: " << m_imageFileNameSuffix << std::endl;
+}
 
 /**
  * カメラの初期化
@@ -139,4 +144,20 @@ void CameraManager::createImageDirectory(const std::string& directory) {
             Logger::getInstance().logError("画像ディレクトリの作成に失敗しました: " + directory);
         }
     }
+}
+
+/**
+ * 設定を再読み込みして、カメラ設定を更新
+ */
+void CameraManager::reloadConfig() {
+    // 新しい設定値を読み込み
+    m_imageDirectory = config.getImgFilePath();
+    m_imageFileNameSuffix = config.getImgFileNameSuffix();
+    
+    // 新しいディレクトリの作成
+    createImageDirectory(m_imageDirectory);
+    
+    Logger::getInstance().logInfo("カメラ設定を再読み込みしました");
+    std::cout << "新しい画像ディレクトリ: " << m_imageDirectory << std::endl;
+    std::cout << "新しい画像ファイルサフィックス: " << m_imageFileNameSuffix << std::endl;
 } 

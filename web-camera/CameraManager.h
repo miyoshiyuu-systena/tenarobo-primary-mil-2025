@@ -49,6 +49,11 @@ public:
      */
     bool isInitialized() const { return m_initialized.load(); }
 
+    /**
+     * 設定を再読み込みして、カメラ設定を更新
+     */
+    void reloadConfig();
+
 private:
     /**
      * プライベートコンストラクタ（シングルトンパターン）
