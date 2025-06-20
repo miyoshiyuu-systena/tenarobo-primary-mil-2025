@@ -17,7 +17,7 @@
 #define     PERCEPTION_REPORT_MASK_FORCE        0b01000000
 #define     PERCEPTION_REPORT_MASK_COLOR        0b00100000
 #define     PERCEPTION_REPORT_MASK_IMAGE        0b00010000
-#define     PERCEPTION_REPORT_MASK_MOTOR_SPEED  0b00001000
+#define     PERCEPTION_REPORT_MASK_MOTOR_ENCODE 0b00001000
 
 
 /**
@@ -63,14 +63,20 @@ typedef struct {
     bool isImageUpdated;
 
     /**
-     * 左モーターの回転速度
+     * 左モーターのエンコード数
+     * @note
+     *  エンコード数はタイヤの回転角度を表している
+     *  おそらく1つ分が1°を表しているが、要検証
      */
-    float leftMotorSpeed;
+    int leftMotorEncode;
 
     /**
-     * 右モーターの回転速度
+     * 右モーターのエンコード数
+     * @note
+     *  エンコード数はタイヤの回転角度を表している
+     *  おそらく1つ分が1°を表しているが、要検証
      */
-    float rightMotorSpeed;
+    int rightMotorEncode;
 } PerceptionReport;
 
 /**

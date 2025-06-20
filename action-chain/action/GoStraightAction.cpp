@@ -55,7 +55,7 @@ ActionCall goStraightActionFactory(
                     PERCEPTION_REPORT_MASK_FORCE |           //力センサー使わない
                     PERCEPTION_REPORT_MASK_COLOR |
                     PERCEPTION_REPORT_MASK_IMAGE |           //画像使わない
-                    PERCEPTION_REPORT_MASK_MOTOR_SPEED |
+                    PERCEPTION_REPORT_MASK_MOTOR_ENCODE |
                     0b00000000
                 )
             );

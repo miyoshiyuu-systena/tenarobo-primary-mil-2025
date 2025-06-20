@@ -97,3 +97,13 @@ float TwinWheelDrive::getRightSpeed() const
 {
     return mRightMotor.getSpeed();
 }
+
+int TwinWheelDrive::getLeftEncode() const
+{
+    return mLeftMotor.getCount();
+}
+
+int TwinWheelDrive::getRightEncode() const
+{
+    return mRightMotor.getCount();
+}
