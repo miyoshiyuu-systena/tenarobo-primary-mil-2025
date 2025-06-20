@@ -71,14 +71,12 @@ bool CameraManager::initializeCamera() {
  * カメラの終了処理
  */
 void CameraManager::shutdownCamera() {
-    Logger::getInstance().logInfo("カメラの終了処理時のロックを開始...");
     loc_cpu();
     if (m_initialized.load()) {
         m_cap.release();
         m_initialized.store(false);
         Logger::getInstance().logInfo("カメラを終了しました");
     }
-    Logger::getInstance().logInfo("カメラの終了処理時のロックを終了...");
     unl_cpu();
 }
 
