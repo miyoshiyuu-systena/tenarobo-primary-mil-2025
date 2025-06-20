@@ -90,7 +90,7 @@ bool CurveCloser::isClosed(PerceptionReport* report)
      *  
      */
     std::vector<cv::Vec4i> lines;
-    cv::HoughLinesP(image, lines, 1, 2 * CV_PI / 180, 50, 15, 10);
+    cv::HoughLinesP(image, lines, 1, CV_PI / 180, 50, 10, 10);
 
     bool isCurve = true;
     for (const auto& l : lines) {

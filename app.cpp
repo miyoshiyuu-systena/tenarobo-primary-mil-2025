@@ -58,9 +58,9 @@ void main_task(intptr_t exinf)   {
     std::vector<IAssistGenerator> assistGenerators1 = {
         laneTracingAssistGenerator(
             false,
-            150.0f,
+            100.0f,
             10.0f,
-            50.0f,
+            10.0f,
             calcBlackWhiteBorderError
         )
     };
