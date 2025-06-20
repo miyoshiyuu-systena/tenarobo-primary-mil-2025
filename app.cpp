@@ -11,9 +11,9 @@
 #include "action-chain/action/assist/SlowlyAccelerateAssist.h"
 #include "action-chain/action/closer/BlueFloorCloser.h"
 #include "action-chain/action/closer/BlackFloorCloser.h"
+// #include "action-chain/action/closer/StraightCloser.h"
 #include "action-chain/action/closer/CurveCloser.h"
 #include "action-chain/action/closer/TimedCloser.h"
-#include "action-chain/action/closer/StraightCloser.h"
 #include "action-chain/action/HachikouAction.h"
 #include "action-chain/action/GoStraightAction.h"
 #include "action-chain/action/GoCurveAction.h"
@@ -95,7 +95,7 @@ void main_task(intptr_t exinf)   {
                 )
             },
             {
-                straightCloserGenerator()
+                curveCloserGenerator()
             }
         ),
         0
