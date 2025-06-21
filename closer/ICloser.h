@@ -1,7 +1,7 @@
 #ifndef _I_CLOSER_H_
 #define _I_CLOSER_H_
 
-#include "PerceptionReport.h"
+#include <cstdint>
 
 /**
  * 終了判定インターフェース
@@ -16,12 +16,14 @@ class ICloser
 
         /**
          * 終了判定を行う
-         * @param report 知覚データ
          * @return 終了判定（終了したらtrue, 終了しない場合はfalse）
          */
-        virtual bool isClosed(PerceptionReport* report) = 0;
+        virtual bool isClosed() = 0;
 
-        static const uint8_t mask = 0b11111111;
+        /**
+         * 知覚データのうちどのデータを使って終了判定を行うか
+         */
+        uint8_t mask;
 };
 
 #endif // _I_CLOSER_H_

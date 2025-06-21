@@ -5,7 +5,6 @@
  * 設定ファイルから白黒境界のV値理想値を取得する関数
  */
 static float getBlackWhiteBorderVIdeal() {
-    // デフォルト値は60.0f（三好家の床での最適値）
     return config.getFloatValue("blackWhiteBorderVIdeal", 60.0f);
 }
 
