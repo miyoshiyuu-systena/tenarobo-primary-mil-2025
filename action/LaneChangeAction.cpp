@@ -81,7 +81,7 @@ ActionCall laneChangeActionFactory(
                 go_right_lane,
                 closerPtrGenerators
             ),
-            1000
+            0
         );
         action3->setNext(action4);
 
