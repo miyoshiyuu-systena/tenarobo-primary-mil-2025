@@ -21,6 +21,7 @@ APPL_CXXOBJS +=\
 	SpinTurnAction.o\
 	HachikouAction.o\
 	StopAction.o\
+	LaneChangeAction.o\
 	ActionNode.o\
 	Device.o\
 	PerceptionReport.o\
