@@ -9,6 +9,7 @@
 #include "PivotTurnAction.h"
 #include "SpinTurnAction.h"
 #include "LaneChangeAction.h"
+#include "SinpleLaneChangeAction.h"
 #include "StopAction.h"
 #include "Device.h"
 #include "LaneTracingAssist.h"
@@ -67,7 +68,7 @@ void main_task(intptr_t exinf)   {
     ActionNode* action1 = new ActionNode(
         "action1: 車線変更",
         &device,
-        laneChangeActionFactory(true),
+        simpleLaneChangeActionFactory(true),
         0
     );
     action0->setNext(action1);
