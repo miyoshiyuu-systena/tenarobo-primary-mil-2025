@@ -18,6 +18,7 @@ APPL_CXXOBJS +=\
 	GoStraightAction.o\
 	GoCurveAction.o\
 	PivotTurnAction.o\
+	SpinTurnAction.o\
 	HachikouAction.o\
 	StopAction.o\
 	ActionNode.o\
