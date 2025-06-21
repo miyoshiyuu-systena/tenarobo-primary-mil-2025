@@ -19,10 +19,11 @@
 #include "BlueFloorCloser.h"
 #include "BlackFloorCloser.h"
 #include "StraightCloser.h"
+#include "StraightStrictCloser.h"
+#include "WhiteFloorAndStraightStrictCloser.h"
 #include "CurveCloser.h"
 #include "TimedCloser.h"
 #include "CameraManager.h"
-#include "StraightStrictCloser.h"
 
 using namespace spikeapi;
 
@@ -59,26 +60,32 @@ void main_task(intptr_t exinf)   {
         ),
         0
     );
+
     ActionNode* action1 = new ActionNode(
         "action1: 車線変更",
         &device,
         laneChangeActionFactory(
             true,
             {
-                straightStrictCloserGenerator()
+                whiteFloorAndStraightStrictGenerator()
             }
         ),
         0
     );
     action0->setNext(action1);
-
-    ActionNode* action2 = new ActionNode(
-        "action2: とまる",
-        &device,
-        stopActionFactory(),
-        100
-    );
-    action1->setNext(action2);
+    
+    // ActionNode* action2 = new ActionNode(
+    //     "action2: 車線変更",
+    //     &device,
+    //     laneChangeActionFactory(
+    //         false,
+    //         {
+    //             whiteFloorAndStraightStrictGenerator()
+    //         }
+    //     ),
+    //     0
+    // );
+    // action1->setNext(action2);
 
     ActionNode* prevAction = nullptr;
     ActionNode* currentAction = action0;
