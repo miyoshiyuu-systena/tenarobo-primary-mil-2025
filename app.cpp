@@ -62,7 +62,7 @@ void main_task(intptr_t exinf)   {
         "action1: その場で回転",
         &device,
         turnActionFactory(
-            20.0f,
+            25.0f,
             true,
             10,
             {
@@ -74,7 +74,7 @@ void main_task(intptr_t exinf)   {
     action0->setNext(action1);
 
     ActionNode* action2 = new ActionNode(
-        "action2: その場で回転",
+        "action2: 直線を進む",
         &device,
         goStraightActionFactory(
             150.0f,
