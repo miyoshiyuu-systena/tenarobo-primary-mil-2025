@@ -22,11 +22,7 @@
 #include "StraightStrictCloser.h"
 #include "CurveCloser.h"
 #include "TimedCloser.h"
-#include "OnRightEdgeCloser.h"
 #include "CameraManager.h"
-
-#include "PerceptionMask.h"
-#include "PerceptionReporter.h"
 
 using namespace spikeapi;
 
@@ -54,53 +50,48 @@ void main_task(intptr_t exinf)   {
     // カメラマネージャの起動
     CameraManager::getInstance().initializeCamera();
 
-    PerceptionReporter::getInstance().update(10, PERCEPTION_REPORT_MASK_IMAGE);
-    ICloser* closer = onRightEdgeCloserGenerator()();
-    bool isClosed = closer->isClosed();
-    std::cout << "isClosed: " << isClosed << std::endl;
+    ActionNode* action0 = new ActionNode(
+        "action0: 圧力センサを押すまで忠犬ハチ公！！",
+        &device,
+        hachikouActionFactory(
+            1.0f,
+            10
+        ),
+        0
+    );
 
-    // ActionNode* action0 = new ActionNode(
-    //     "action0: 圧力センサを押すまで忠犬ハチ公！！",
-    //     &device,
-    //     hachikouActionFactory(
-    //         1.0f,
-    //         10
-    //     ),
-    //     0
-    // );
-
-    // ActionNode* action1 = new ActionNode(
-    //     "action1: 車線変更",
-    //     &device,
-    //     laneChangeActionFactory(
-    //         true,
-    //         {}
-    //     ),
-    //     0
-    // );
-    // action0->setNext(action1);
+    ActionNode* action1 = new ActionNode(
+        "action1: 車線変更",
+        &device,
+        laneChangeActionFactory(true),
+        0
+    );
+    action0->setNext(action1);
     
     // ActionNode* action2 = new ActionNode(
     //     "action2: 車線変更",
     //     &device,
-    //     laneChangeActionFactory(
-    //         false,
-    //         {
-    //             whiteFloorAndStraightStrictGenerator()
-    //         }
-    //     ),
+    //     laneChangeActionFactory(false),
     //     0
     // );
     // action1->setNext(action2);
 
-    // ActionNode* prevAction = nullptr;
-    // ActionNode* currentAction = action0;
-    // while (currentAction != nullptr) {
-    //     currentAction->execute();
-    //     prevAction = currentAction;
-    //     currentAction = currentAction->getNext();
-    //     delete prevAction;
-    // }
+    ActionNode* action3 = new ActionNode(
+        "action2: 止まる",
+        &device,
+        stopActionFactory(),
+        0
+    );
+    action1->setNext(action3);
+
+    ActionNode* prevAction = nullptr;
+    ActionNode* currentAction = action0;
+    while (currentAction != nullptr) {
+        currentAction->execute();
+        prevAction = currentAction;
+        currentAction = currentAction->getNext();
+        delete prevAction;
+    }
 
     // カメラマネージャの終了
     CameraManager::getInstance().shutdownCamera();
