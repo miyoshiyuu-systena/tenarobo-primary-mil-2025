@@ -1,4 +1,5 @@
 #include "LaneChangeCompleteJudge.h"
+#include "LaneChangeAction.h"
 #include "spikeapi.h"
 
 ActionCall laneChangeCompleteJudgeFactory(
@@ -31,7 +32,7 @@ ActionCall laneChangeCompleteJudgeFactory(
         bool is_closed = false;
         for (auto closerPtrGenerator : closerPtrGenerators) {
             ICloser* closer = closerPtrGenerator();
-            if (closer->isClosed(report)) {
+            if (closer->isClosed(&report)) {
                 is_closed = true;
                 break;
             }
@@ -55,6 +56,7 @@ ActionCall laneChangeCompleteJudgeFactory(
                 go_right_lane,
                 closerPtrGenerators
             ),
+            0
         );
         next_ptr = action;
         action->setNext(next_ptr_wait);
