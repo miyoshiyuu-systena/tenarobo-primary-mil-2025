@@ -23,11 +23,16 @@ ActionCall laneChangeActionFactory(
          */
         ActionNode* next_ptr_wait = next_ptr;
 
+        /**
+         * 信地回転: 一方の車輪を固定して、もう一方の車輪を回転させる
+         * これによって車体の方向を変えることができる
+         * これを左右逆に同程度の角度繰り返すと、車体の方向はそのままに正中線だけずらすことができる
+         */
         ActionNode* action0 = new ActionNode(
             "sub-action0: 信地回転",
             device,
             spinTurnActionFactory(
-                45.0f,
+                60.0f,
                 !go_right_lane,
                 10,
                 {
@@ -52,7 +57,7 @@ ActionCall laneChangeActionFactory(
             "sub-action2: 信地回転 - 逆",
             device,
             spinTurnActionFactory(
-                45.0f,
+                60.0f,
                 go_right_lane,
                 10,
                 closerPtrGenerators_2
