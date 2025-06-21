@@ -19,7 +19,7 @@ ActionCall goCurveActionFactory(
         ActionNode*& next_ptr,
         Device*& device
     ) {
-        int count = 0;　//debug
+        int count = 0;
         bool isClosed = false;
         PerceptionReport report;
         uint8_t mask = 0b00000000;
@@ -82,7 +82,7 @@ ActionCall goCurveActionFactory(
                 if (closer->isClosed(&report))
                     isClosed = true;
             }
-            count++; //debug
+            count++;
         } while (!isClosed);
 
         // 全てのアシストオブジェクトを削除
@@ -93,6 +93,6 @@ ActionCall goCurveActionFactory(
             delete closer;
         }
 
-        Logger::getInstance().logInfo("GoCurveAction: count = " + std::to_string(count)); //debug
+        Logger::getInstance().logInfo("GoCurveAction: count = " + std::to_string(count));
     };
 }
