@@ -19,7 +19,7 @@ static int getBlueFloorHLowerThreshold() {
 }
 
 static int getBlueFloorSUpperThreshold() {
-    return config.getIntValue("blueFloorSUpperThreshold", 200);
+    return config.getIntValue("blueFloorSUpperThreshold", 100);
 }
 
 static int getBlueFloorSLowerThreshold() {

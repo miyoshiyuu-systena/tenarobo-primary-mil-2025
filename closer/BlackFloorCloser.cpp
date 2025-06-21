@@ -11,7 +11,7 @@ ICloserGenerator blackFloorCloserGenerator() {
  * 設定ファイルから黒床検出のしきい値を取得する関数群
  */
 static int getBlackFloorHUpperThreshold() {
-    return config.getIntValue("blackFloorHUpperThreshold", 255);
+    return config.getIntValue("blackFloorHUpperThreshold", 360);
 }
 
 static int getBlackFloorHLowerThreshold() {
@@ -19,7 +19,7 @@ static int getBlackFloorHLowerThreshold() {
 }
 
 static int getBlackFloorSUpperThreshold() {
-    return config.getIntValue("blackFloorSUpperThreshold", 255);
+    return config.getIntValue("blackFloorSUpperThreshold", 100);
 }
 
 static int getBlackFloorSLowerThreshold() {
