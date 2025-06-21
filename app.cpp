@@ -20,7 +20,6 @@
 #include "BlackFloorCloser.h"
 #include "StraightCloser.h"
 #include "StraightStrictCloser.h"
-#include "WhiteFloorAndStraightStrictCloser.h"
 #include "CurveCloser.h"
 #include "TimedCloser.h"
 #include "OnRightEdgeCloser.h"

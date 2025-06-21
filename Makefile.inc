@@ -15,7 +15,6 @@ APPL_CXXOBJS +=\
 	StraightCloser.o\
 	StraightStrictCloser.o\
 	OnRightEdgeCloser.o\
-	WhiteFloorAndStraightStrictCloser.o\
 	TimedCloser.o\
 	GoStraightAction.o\
 	GoCurveAction.o\
