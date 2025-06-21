@@ -59,14 +59,16 @@ void main_task(intptr_t exinf)   {
     );
 
     ActionNode* action1 = new ActionNode(
-        "action1: その場で回転",
+        "action1: 少しの間左に曲がる",
         &device,
-        turnActionFactory(
-            30.0f,
-            true,
+        goCurveActionFactory(
+            200.0f,
+            500.0f,  
+            false,
             10,
+            {},
             {
-                straightStrictCloserGenerator()
+                timedCloserGenerator(50)
             }
         ),
         0
@@ -74,49 +76,24 @@ void main_task(intptr_t exinf)   {
     action0->setNext(action1);
 
     ActionNode* action2 = new ActionNode(
-        "action2: 直線を進む",
+        "action2: とまる",
         &device,
-        goStraightActionFactory(
-            250.0f,
-            10,
-            {
-                laneTracingAssistGenerator(
-                    true,
-                    100.0f,
-                    1.0f,
-                    10.0f,
-                    calcBlackWhiteBorderError
-                ),
-                slowlyAccelerateAssistGenerator(
-                    5,
-                    5
-                )
-            },
-            {
-                timedCloserGenerator(100)
-            }
-        ),
-        0
+        stopActionFactory(),
+        100
     );
     action1->setNext(action2);
 
     ActionNode* action3 = new ActionNode(
-        "action3: 直線を進む",
+        "action3: 少しの間右に曲がる",
         &device,
-        goStraightActionFactory(
-            250.0f,
+        goCurveActionFactory(
+            200.0f,
+            500.0f,  
+            true,
             10,
+            {},
             {
-                laneTracingAssistGenerator(
-                    true,
-                    100.0f,
-                    1.0f,
-                    10.0f,
-                    calcBlackWhiteBorderError
-                )
-            },
-            {
-                curveCloserGenerator()
+                timedCloserGenerator(50)
             }
         ),
         0
@@ -127,7 +104,7 @@ void main_task(intptr_t exinf)   {
         "action4: とまる",
         &device,
         stopActionFactory(),
-        0
+        100
     );
     action3->setNext(action4);
 
