@@ -1,5 +1,5 @@
-#ifndef TURN_ACTION_H
-#define TURN_ACTION_H
+#ifndef PIVOT_TURN_ACTION_H
+#define PIVOT_TURN_ACTION_H
 
 #include "ActionNode.h"
 #include "ICloserGenerator.h"
@@ -9,7 +9,7 @@
  * その場で回転アクションのファクトリー関数
  * @return 回転アクション
  */
-ActionCall turnActionFactory(
+ActionCall pivotTurnActionFactory(
     /**
      * その場回転速度[°/s]
      */

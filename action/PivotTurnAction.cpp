@@ -1,7 +1,7 @@
-#include "TurnAction.h"
+#include "PivotTurnAction.h"
 #include "spikeapi.h"
 
-ActionCall turnActionFactory(
+ActionCall pivotTurnActionFactory(
     float angular_speed,
     bool is_clockwise,
     int detectInterval,
