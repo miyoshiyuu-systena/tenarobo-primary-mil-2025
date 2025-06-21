@@ -19,9 +19,10 @@ ActionCall goCurveActionFactory(
         ActionNode*& next_ptr,
         Device*& device
     ) {
-        // int count = 0;　//debug
+        int count = 0;　//debug
         bool isClosed = false;
         PerceptionReport report;
+        uint8_t mask = 0b00000000;
 
         float speeds[2] = {0.0f, 0.0f};
         float baseSpeed[2] = {0.0f, 0.0f};
@@ -32,6 +33,7 @@ ActionCall goCurveActionFactory(
         for (const auto& assistPtrGenerator : assistPtrGenerators) {
             IAssist* assist = assistPtrGenerator();
             assist->init();
+            mask |= assist->mask;
             assists.push_back(assist);
         }
         
@@ -39,6 +41,7 @@ ActionCall goCurveActionFactory(
         for (const auto& closerPtrGenerator : closerPtrGenerators) {
             ICloser* closer = closerPtrGenerator();
             closer->init();
+            mask |= closer->mask;
             closers.push_back(closer);
         }
 
@@ -57,14 +60,7 @@ ActionCall goCurveActionFactory(
                 device,
                 report,
                 detectInterval,
-                (
-                    // PERCEPTION_REPORT_MASK_ULTRASONIC |      //超音波使わない
-                    // PERCEPTION_REPORT_MASK_FORCE |           //力センサー使わない
-                    PERCEPTION_REPORT_MASK_COLOR |
-                    PERCEPTION_REPORT_MASK_IMAGE |           //画像使わない
-                    // PERCEPTION_REPORT_MASK_MOTOR_ENCODE |    //回転角度使わない
-                    0b00000000
-                )
+                mask
             );
             
             // 複数のアシストを順次適用
@@ -86,7 +82,7 @@ ActionCall goCurveActionFactory(
                 if (closer->isClosed(&report))
                     isClosed = true;
             }
-            // count++; //debug
+            count++; //debug
         } while (!isClosed);
 
         // 全てのアシストオブジェクトを削除
@@ -97,6 +93,6 @@ ActionCall goCurveActionFactory(
             delete closer;
         }
 
-        // Logger::getInstance().logInfo("GoCurveAction: count = " + std::to_string(count)); //debug
+        Logger::getInstance().logInfo("GoCurveAction: count = " + std::to_string(count)); //debug
     };
 }
