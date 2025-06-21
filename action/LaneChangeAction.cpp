@@ -27,11 +27,11 @@ ActionCall laneChangeActionFactory(
             "sub-action0: 信地回転",
             device,
             spinTurnActionFactory(
-                100.0f,
+                45.0f,
                 !go_right_lane,
                 10,
                 {
-                    timedCloserGenerator(25)
+                    timedCloserGenerator(50)
                 }
             ),
             0
@@ -47,12 +47,12 @@ ActionCall laneChangeActionFactory(
         action0->setNext(action1);
 
         std::vector<ICloserGenerator> closerPtrGenerators_2 = closerPtrGenerators;
-        closerPtrGenerators_2.push_back(timedCloserGenerator(25));
+        closerPtrGenerators_2.push_back(timedCloserGenerator(50));
         ActionNode* action2 = new ActionNode(
             "sub-action2: 信地回転 - 逆",
             device,
             spinTurnActionFactory(
-                100.0f,
+                45.0f,
                 go_right_lane,
                 10,
                 closerPtrGenerators_2
@@ -69,20 +69,20 @@ ActionCall laneChangeActionFactory(
         );
         action2->setNext(action3);
 
-        // ActionNode* action4 = new ActionNode(
-        //     "sub-action4: 車線変更完了判定",
-        //     device,
-        //     laneChangeCompleteJudgeFactory(
-        //         go_right_lane,
-        //         closerPtrGenerators
-        //     ),
-        //     1000
-        // );
-        // action3->setNext(action4);
+        ActionNode* action4 = new ActionNode(
+            "sub-action4: 車線変更完了判定",
+            device,
+            laneChangeCompleteJudgeFactory(
+                go_right_lane,
+                closerPtrGenerators
+            ),
+            1000
+        );
+        action3->setNext(action4);
 
         /**
          * 次のアクションは車線変更の後に実行する
          */
-        action3->setNext(next_ptr_wait);
+        action4->setNext(next_ptr_wait);
     };
 }

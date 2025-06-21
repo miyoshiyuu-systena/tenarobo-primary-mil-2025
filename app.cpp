@@ -66,9 +66,7 @@ void main_task(intptr_t exinf)   {
         &device,
         laneChangeActionFactory(
             true,
-            {
-                whiteFloorAndStraightStrictGenerator()
-            }
+            {}
         ),
         0
     );

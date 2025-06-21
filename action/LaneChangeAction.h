@@ -8,6 +8,7 @@
 /**
  * 車線変更アクションのファクトリー関数
  * 線の右側を走るか、左側を走るかをスイッチできる
+ * 俗にいうエッジ切り替え
  * @return 車線変更アクション
  */
 ActionCall laneChangeActionFactory(
