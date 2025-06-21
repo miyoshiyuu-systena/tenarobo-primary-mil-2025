@@ -58,20 +58,20 @@ void main_task(intptr_t exinf)   {
         0
     );
 
-    ActionNode* action1 = new ActionNode(
-        "action1: その場で回転",
-        &device,
-        turnActionFactory(
-            25.0f,
-            true,
-            10,
-            {
-                straightStrictCloserGenerator()
-            }
-        ),
-        0
-    );
-    action0->setNext(action1);
+    // ActionNode* action1 = new ActionNode(
+    //     "action1: その場で回転",
+    //     &device,
+    //     turnActionFactory(
+    //         25.0f,
+    //         true,
+    //         10,
+    //         {
+    //             straightStrictCloserGenerator()
+    //         }
+    //     ),
+    //     0
+    // );
+    // action0->setNext(action1);
 
     ActionNode* action2 = new ActionNode(
         "action2: 直線を進む",
@@ -82,14 +82,14 @@ void main_task(intptr_t exinf)   {
             {
                 laneTracingAssistGenerator(
                     true,
-                    50.0f,
-                    0.5f,
+                    100.0f,
                     10.0f,
+                    25.0f,
                     calcBlackWhiteBorderError
                 ),
                 slowlyAccelerateAssistGenerator(
                     10,
-                    10
+                    5
                 )
             },
             {
@@ -98,7 +98,7 @@ void main_task(intptr_t exinf)   {
         ),
         0
     );
-    action1->setNext(action2);
+    action0->setNext(action2);
 
     ActionNode* action3 = new ActionNode(
         "action3: とまる",
