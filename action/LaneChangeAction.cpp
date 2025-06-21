@@ -42,7 +42,7 @@ ActionCall laneChangeActionFactory(
             "sub-action1: 停止",
             device,
             stopActionFactory(),
-            10
+            0
         );
         action0->setNext(action1);
 
@@ -65,7 +65,7 @@ ActionCall laneChangeActionFactory(
             "sub-action3: 停止",
             device,
             stopActionFactory(),
-            10
+            0
         );
         action2->setNext(action3);
 

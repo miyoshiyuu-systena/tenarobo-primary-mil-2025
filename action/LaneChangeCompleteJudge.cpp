@@ -26,7 +26,7 @@ ActionCall laneChangeCompleteJudgeFactory(
             device,
             report,
             10,
-            0b11111111
+            PERCEPTION_REPORT_MASK_COLOR
         );
 
         bool is_closed = false;
