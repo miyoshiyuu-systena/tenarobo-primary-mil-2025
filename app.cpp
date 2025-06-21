@@ -20,9 +20,17 @@
 #include "BlackFloorCloser.h"
 #include "StraightCloser.h"
 #include "StraightStrictCloser.h"
+<<<<<<< HEAD
+=======
+#include "WhiteFloorAndStraightStrictCloser.h"
+>>>>>>> 34204c898e32b3c45f8782b83dc8437a3320ffd1
 #include "CurveCloser.h"
 #include "TimedCloser.h"
+#include "OnRightEdgeCloser.h"
 #include "CameraManager.h"
+
+#include "PerceptionMask.h"
+#include "PerceptionReporter.h"
 
 using namespace spikeapi;
 
@@ -50,15 +58,10 @@ void main_task(intptr_t exinf)   {
     // カメラマネージャの起動
     CameraManager::getInstance().initializeCamera();
 
-    ActionNode* action0 = new ActionNode(
-        "action0: 圧力センサを押すまで忠犬ハチ公！！",
-        &device,
-        hachikouActionFactory(
-            1.0f,
-            10
-        ),
-        0
-    );
+    PerceptionReporter::getInstance().update(10, PERCEPTION_REPORT_MASK_IMAGE);
+    ICloser* closer = onRightEdgeCloserGenerator()();
+    bool isClosed = closer->isClosed();
+    std::cout << "isClosed: " << isClosed << std::endl;
 
     ActionNode* action1 = new ActionNode(
         "action1: 車線変更",
