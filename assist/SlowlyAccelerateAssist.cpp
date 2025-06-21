@@ -17,6 +17,7 @@ SlowlyAccelerateAssist::SlowlyAccelerateAssist(
     , mStepCount(stepCount)
     , mStepInterval(stepInterval)
 {
+    mask = 0b00000000;
 }
 
 SlowlyAccelerateAssist::~SlowlyAccelerateAssist()

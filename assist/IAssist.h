@@ -26,7 +26,7 @@ class IAssist
          */
         virtual void correct(float* speeds, PerceptionReport* report) = 0;
 
-        uint8_t mask = 0b00000000;
+        uint8_t mask;
 };
 
 #endif // _I_ASSIST_H_

@@ -52,11 +52,6 @@ class SlowlyAccelerateAssist : public IAssist
 
         void correct(float* speeds, PerceptionReport* report) override;
 
-        /**
-         * 知覚データの更新は不要
-         */
-        static const uint8_t mask = 0b00000000;
-
     private:
         int mStepCount;
         int mStepInterval;

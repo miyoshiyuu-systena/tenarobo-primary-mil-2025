@@ -73,11 +73,6 @@ class LaneTracingAssist : public IAssist
          */
         void correct(float* speeds, PerceptionReport* report) override;
 
-        /**
-         * 知覚データのうちカラーセンサ値が必要
-         */
-        static const uint8_t mask = PERCEPTION_REPORT_MASK_COLOR;
-
     private:
         bool mIsRightSide;
         float mKp;
