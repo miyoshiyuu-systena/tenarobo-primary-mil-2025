@@ -6,13 +6,11 @@
 #include "spikeapi.h"
 
 ActionCall laneChangeActionFactory(
-    bool go_right_lane,
-    std::vector<ICloserGenerator> closerPtrGenerators
+    bool go_right_lane
 )
 {
     return [
-        go_right_lane,
-        closerPtrGenerators
+        go_right_lane
     ](
         ActionNode*& curr_ptr,
         ActionNode*& next_ptr,
@@ -43,8 +41,6 @@ ActionCall laneChangeActionFactory(
         );
         next_ptr = action0;
 
-        std::vector<ICloserGenerator> closerPtrGenerators_2 = closerPtrGenerators;
-        closerPtrGenerators_2.push_back(timedCloserGenerator(50));
         ActionNode* action2 = new ActionNode(
             "sub-action2: 信地回転 - 逆",
             device,
@@ -52,7 +48,9 @@ ActionCall laneChangeActionFactory(
                 120.0f,
                 go_right_lane,
                 10,
-                closerPtrGenerators_2
+                {
+                    timedCloserGenerator(50)
+                }
             ),
             0
         );
@@ -62,8 +60,7 @@ ActionCall laneChangeActionFactory(
             "sub-action4: 車線変更完了判定",
             device,
             laneChangeCompleteJudgeFactory(
-                go_right_lane,
-                closerPtrGenerators
+                go_right_lane
             ),
             0
         );

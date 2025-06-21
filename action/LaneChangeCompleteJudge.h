@@ -16,13 +16,7 @@ ActionCall laneChangeCompleteJudgeFactory(
      * true: 右車線への車線変更
      * false: 左車線への車線変更
      */
-    bool go_right_lane,
-    
-    /**
-     * 終了判定ジェネレータのリスト（複数の終了判定を順次適用）
-     * 何を基準にして車線変更が完了したとみなすか
-     */
-    std::vector<ICloserGenerator> closerPtrGenerators
+    bool go_right_lane
 );
 
 #endif // _LANE_CHANGE_COMPLETE_JUDGE_H_

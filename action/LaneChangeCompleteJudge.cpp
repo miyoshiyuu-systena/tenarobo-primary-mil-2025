@@ -3,32 +3,30 @@
 #include "spikeapi.h"
 #include "PerceptionReporter.h"
 #include "PerceptionMask.h"
+#include "OnLeftEdgeCloser.h"
+#include "OnRightEdgeCloser.h"
 
 ActionCall laneChangeCompleteJudgeFactory(
-    bool go_right_lane,
-    std::vector<ICloserGenerator> closerPtrGenerators
+    bool go_right_lane
 )
 {
     return [
-        go_right_lane,
-        closerPtrGenerators
+        go_right_lane
     ](
         ActionNode*& curr_ptr,
         ActionNode*& next_ptr,
         Device*& device
     ) {
-        // XXX 一旦マスクはカラーセンサと画像
+        // XXX 一旦マスクは画像
         // 画像を最新にするために初期化する
         PerceptionReporter::getInstance().init();
-        PerceptionReporter::getInstance().update(10, PERCEPTION_REPORT_MASK_COLOR | PERCEPTION_REPORT_MASK_IMAGE);
+        PerceptionReporter::getInstance().update(10, PERCEPTION_REPORT_MASK_IMAGE);
 
         bool is_closed = false;
-        for (auto closerPtrGenerator : closerPtrGenerators) {
-            ICloser* closer = closerPtrGenerator();
-            if (closer->isClosed()) {
-                is_closed = true;
-                break;
-            }
+        if (go_right_lane) {
+            is_closed = onRightEdgeCloserGenerator()()->isClosed();
+        } else {
+            is_closed = onLeftEdgeCloserGenerator()()->isClosed();
         }
 
         if (is_closed) {
@@ -46,8 +44,7 @@ ActionCall laneChangeCompleteJudgeFactory(
             "sub-action: 車線変更 - もう一度",
             device,
             laneChangeActionFactory(
-                go_right_lane,
-                closerPtrGenerators
+                go_right_lane
             ),
             0
         );
