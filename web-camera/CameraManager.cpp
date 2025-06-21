@@ -118,11 +118,13 @@ std::string CameraManager::saveImage(const cv::Mat& image) {
 bool CameraManager::captureImageNow(cv::Mat& image) {
     loc_cpu();
     if (!m_initialized.load()) {
+        unl_cpu();
         return false;
     }
     // スレッドセーフにVideoCaptureを使う
     if (m_cap.isOpened()) {
         if (m_cap.read(image) && !image.empty()) {
+            unl_cpu();
             return true;
         }
     }
