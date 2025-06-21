@@ -63,13 +63,13 @@ void main_task(intptr_t exinf)   {
         "action1: 少しの間左に曲がる",
         &device,
         goCurveActionFactory(
-            200.0f,
+            100.0f,
             500.0f,  
             false,
             10,
             {},
             {
-                timedCloserGenerator(50)
+                timedCloserGenerator(100)
             }
         ),
         0
@@ -88,13 +88,13 @@ void main_task(intptr_t exinf)   {
         "action3: 少しの間右に曲がる",
         &device,
         goCurveActionFactory(
-            200.0f,
+            100.0f,
             500.0f,  
             true,
             10,
             {},
             {
-                timedCloserGenerator(50)
+                timedCloserGenerator(100)
             }
         ),
         0
