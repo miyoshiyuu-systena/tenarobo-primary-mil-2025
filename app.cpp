@@ -8,6 +8,7 @@
 #include "GoCurveAction.h"
 #include "PivotTurnAction.h"
 #include "SpinTurnAction.h"
+#include "LaneChangeAction.h"
 #include "StopAction.h"
 #include "Device.h"
 #include "LaneTracingAssist.h"
@@ -58,18 +59,13 @@ void main_task(intptr_t exinf)   {
         ),
         0
     );
-
     ActionNode* action1 = new ActionNode(
-        "action1: 少しの間左に曲がる",
+        "action1: 車線変更",
         &device,
-        goCurveActionFactory(
-            150.0f,
-            500.0f,  
-            false,
-            10,
-            {},
+        laneChangeActionFactory(
+            true,
             {
-                timedCloserGenerator(50)
+                straightStrictCloserGenerator()
             }
         ),
         0
@@ -83,31 +79,6 @@ void main_task(intptr_t exinf)   {
         100
     );
     action1->setNext(action2);
-
-    ActionNode* action3 = new ActionNode(
-        "action3: 少しの間右に曲がる",
-        &device,
-        goCurveActionFactory(
-            150.0f,
-            500.0f,  
-            true,
-            10,
-            {},
-            {
-                timedCloserGenerator(50)
-            }
-        ),
-        0
-    );
-    action2->setNext(action3);
-
-    ActionNode* action4 = new ActionNode(
-        "action4: とまる",
-        &device,
-        stopActionFactory(),
-        100
-    );
-    action3->setNext(action4);
 
     ActionNode* prevAction = nullptr;
     ActionNode* currentAction = action0;
