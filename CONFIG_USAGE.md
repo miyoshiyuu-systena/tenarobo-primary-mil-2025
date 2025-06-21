@@ -7,7 +7,6 @@
 - `config.h` - ConfigLoaderクラスの定義
 - `config.cpp` - ConfigLoaderのグローバルインスタンス定義
 - `settings.conf` - 設定ファイル（サンプル）
-- `config_test.cpp` - 使用例とテストプログラム
 
 ## 設定ファイル形式
 設定ファイルは `key=value` 形式で記述します：
@@ -71,15 +70,6 @@ C++コード：
 ```cpp
 bool debugMode = (config.getValue("debugMode", "false") == "true");
 int maxRetryCount = std::stoi(config.getValue("maxRetryCount", "1"));
-```
-
-## テスト実行
-```bash
-# コンパイル
-g++ -o config_test config_test.cpp config.cpp
-
-# 実行
-./config_test
 ```
 
 ## 設定ファイルのパス変更
