@@ -29,7 +29,7 @@ void PerceptionReporter::init()
 {
     mLatestReport = PerceptionReport();
     mCount = 0;
-    mPrevIndex = 0;
+    mPrevIndex = -1;
     mIsImageUpdated = false;
     mIsLogOutput = config.getValue("perceptionLogOutput") == "1";
 }
