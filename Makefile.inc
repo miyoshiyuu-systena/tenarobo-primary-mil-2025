@@ -22,6 +22,7 @@ APPL_CXXOBJS +=\
 	HachikouAction.o\
 	StopAction.o\
 	LaneChangeAction.o\
+	LaneChangeCompleteJudge.o\
 	ActionNode.o\
 	Device.o\
 	PerceptionReport.o\
