@@ -29,9 +29,8 @@ class PerceptionReporter {
         /**
         * 観測結果を更新する
         * @param detectInterval 検知間隔[ms]
-        * @param mask 更新する情報を制限するマスク（必要なデータだけ取得する）
         */
-        void update(int detectInterval, uint8_t mask);
+        void update(int detectInterval);
 
         /**
          * 初期化

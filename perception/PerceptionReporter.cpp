@@ -44,41 +44,52 @@ bool PerceptionReporter::isImageUpdated() const
     return mIsImageUpdated;
 }
 
-void PerceptionReporter::update(int detectInterval, uint8_t mask)
+void PerceptionReporter::update(int detectInterval)
 {
-    if (mask & PERCEPTION_REPORT_MASK_ULTRASONIC) {
-        mLatestReport.distance = device.ultrasonicSensor.getDistance();
-    }
 
-    if (mask & PERCEPTION_REPORT_MASK_FORCE) {
-        mLatestReport.force = device.forceSensor.getForce();
-    }
+    /**
+     * 超音波センサの距離を更新する
+     */
+    mLatestReport.distance = device.ultrasonicSensor.getDistance();
 
-    if (mask & PERCEPTION_REPORT_MASK_COLOR) {
-        ColorSensor::HSV hsv;
-        device.colorSensor.getHSV(hsv, true);
-        mLatestReport.h = hsv.h;
-        mLatestReport.s = hsv.s;
-        mLatestReport.v = hsv.v;
-    }
+    /**
+     * 力センサの力を更新する
+     */
+    mLatestReport.force = device.forceSensor.getForce();
 
-    if (mask & PERCEPTION_REPORT_MASK_IMAGE) {
-        int index = (int)((mCount * detectInterval) / CAMERA_INTERVAL);
-        if (index != mPrevIndex) {
-            CameraManager::getInstance().captureImageNow(mLatestReport.image);
-            mIsImageUpdated = true;
-        } else {
-            mIsImageUpdated = false;
-        }
-        mPrevIndex = index;
-    }
+    /**
+     * カラーセンサの色を更新する
+     */
+    ColorSensor::HSV hsv;
+    device.colorSensor.getHSV(hsv, true);
+    mLatestReport.h = hsv.h;
+    mLatestReport.s = hsv.s;
+    mLatestReport.v = hsv.v;
 
-    if (mask & PERCEPTION_REPORT_MASK_MOTOR_ENCODE) {
-        mLatestReport.leftMotorEncode = device.twinWheelDrive.getLeftEncode();
-        mLatestReport.rightMotorEncode = device.twinWheelDrive.getRightEncode();
+    /**
+     * カメラの画像を更新する
+     * カメラは最大30fpsのものを使用しているため、
+     * Spike-artの他のセンサと同じペースで取得し続けても意味がない
+     * 更新のペースに合わせて取得する
+     */
+    int index = (int)((mCount * detectInterval) / CAMERA_INTERVAL);
+    if (index != mPrevIndex) {
+        CameraManager::getInstance().captureImageNow(mLatestReport.image);
+        mIsImageUpdated = true;
+    } else {
+        mIsImageUpdated = false;
     }
+    mPrevIndex = index;
 
-    
+    /**
+     * モータのエンコーダの値を更新する
+     */
+    mLatestReport.leftMotorEncode = device.twinWheelDrive.getLeftEncode();
+    mLatestReport.rightMotorEncode = device.twinWheelDrive.getRightEncode();
+
+    /**
+     * ログ出力
+     */
     if (mIsLogOutput) {
         Logger::getInstance().logDebug("=Report=========================================");
         Logger::getInstance().logDebug("distance: " + std::to_string(mLatestReport.distance) + " [mm]");
