@@ -16,6 +16,7 @@ APPL_CXXOBJS +=\
 	TimedCloser.o\
 	GoStraightAction.o\
 	GoCurveAction.o\
+	TurnAction.o\
 	HachikouAction.o\
 	StopAction.o\
 	ActionNode.o\

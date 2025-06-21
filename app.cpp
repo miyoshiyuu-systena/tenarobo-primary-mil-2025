@@ -6,6 +6,7 @@
 #include "HachikouAction.h"
 #include "GoStraightAction.h"
 #include "GoCurveAction.h"
+#include "TurnAction.h"
 #include "StopAction.h"
 #include "Device.h"
 #include "LaneTracingAssist.h"
@@ -57,22 +58,14 @@ void main_task(intptr_t exinf)   {
     );
 
     ActionNode* action1 = new ActionNode(
-        "action1: 白黒の直線に沿って走行し、曲がり角に到達したら終了",
+        "action1: その場で回転",
         &device,
-        goStraightActionFactory(
-            500.0f,
+        turnActionFactory(
+            100.0f,
+            true,
             10,
             {
-                laneTracingAssistGenerator(
-                    false,
-                    100.0f,
-                    0.5f,
-                    10.0f,
-                    calcBlackWhiteBorderError
-                )
-            },
-            {
-                curveCloserGenerator()
+                timedCloserGenerator(2000)
             }
         ),
         0
@@ -80,35 +73,81 @@ void main_task(intptr_t exinf)   {
     action0->setNext(action1);
 
     ActionNode* action2 = new ActionNode(
-        "action2: 白黒の曲線に沿って徐行し、直線を検知したら終了",
+        "action2: その場で回転",
         &device,
-        goStraightActionFactory(
-            150.0f,
+        turnActionFactory(
+            200.0f,
+            false,
             10,
             {
-                laneTracingAssistGenerator(
-                    false,
-                    50.0f,
-                    50.0f,
-                    50.0f,
-                    calcBlackWhiteBorderError
-                )
-            },
-            {
-                straightCloserGenerator()
+                timedCloserGenerator(2000)
             }
         ),
         0
     );
     action1->setNext(action2);
 
-    ActionNode * action3 = new ActionNode(
+    ActionNode* action3 = new ActionNode(
         "action3: とまる",
         &device,
         stopActionFactory(),
         0
     );
     action2->setNext(action3);
+
+    // ActionNode* action1 = new ActionNode(
+    //     "action1: 白黒の直線に沿って走行し、曲がり角に到達したら終了",
+    //     &device,
+    //     goStraightActionFactory(
+    //         500.0f,
+    //         10,
+    //         {
+    //             laneTracingAssistGenerator(
+    //                 false,
+    //                 100.0f,
+    //                 0.5f,
+    //                 10.0f,
+    //                 calcBlackWhiteBorderError
+    //             )
+    //         },
+    //         {
+    //             curveCloserGenerator()
+    //         }
+    //     ),
+    //     0
+    // );
+    // action0->setNext(action1);
+
+    // ActionNode* action2 = new ActionNode(
+    //     "action2: 白黒の曲線に沿って徐行し、直線を検知したら終了",
+    //     &device,
+    //     goStraightActionFactory(
+    //         150.0f,
+    //         10,
+    //         {
+    //             laneTracingAssistGenerator(
+    //                 false,
+    //                 50.0f,
+    //                 50.0f,
+    //                 50.0f,
+    //                 calcBlackWhiteBorderError
+    //             )
+    //         },
+    //         {
+    //             straightCloserGenerator()
+    //         }
+    //     ),
+    //     0
+    // );
+    // action1->setNext(action2);
+
+    // ActionNode * action3 = new ActionNode(
+    //     "action3: とまる",
+    //     &device,
+    //     stopActionFactory(),
+    //     0
+    // );
+    // action2->setNext(action3);
 
     ActionNode* prevAction = nullptr;
     ActionNode* currentAction = action0;
