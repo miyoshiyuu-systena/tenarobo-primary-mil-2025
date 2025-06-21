@@ -12,6 +12,7 @@ ICloserGenerator curveCloserGenerator() {
 CurveCloser::CurveCloser() : ICloser()
 {
     mSeqCountIsCurve = 0;
+    mask = PERCEPTION_REPORT_MASK_IMAGE;
 }
 
 CurveCloser::~CurveCloser()

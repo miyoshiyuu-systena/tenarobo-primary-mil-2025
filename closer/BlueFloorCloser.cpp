@@ -36,6 +36,7 @@ static int getBlueFloorVLowerThreshold() {
 
 BlueFloorCloser::BlueFloorCloser() : ICloser()
 {
+    mask = PERCEPTION_REPORT_MASK_COLOR;
 }
 
 BlueFloorCloser::~BlueFloorCloser()

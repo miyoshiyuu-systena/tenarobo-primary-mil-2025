@@ -12,6 +12,7 @@ ICloserGenerator straightCloserGenerator() {
 StraightCloser::StraightCloser() : ICloser()
 {
     mSeqCountIsStraight = 0;
+    mask = PERCEPTION_REPORT_MASK_IMAGE;
 }
 
 StraightCloser::~StraightCloser()

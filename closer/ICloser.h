@@ -21,7 +21,10 @@ class ICloser
          */
         virtual bool isClosed(PerceptionReport* report) = 0;
 
-        uint8_t mask = 0b00000000;
+        /**
+         * 知覚データのうちどのデータを使って終了判定を行うか
+         */
+        uint8_t mask;
 };
 
 #endif // _I_CLOSER_H_

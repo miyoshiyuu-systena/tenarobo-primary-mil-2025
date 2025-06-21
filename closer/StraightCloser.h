@@ -22,11 +22,6 @@ class StraightCloser : public ICloser
         void init() override;
         bool isClosed(PerceptionReport* report) override;
 
-        /**
-         * 知覚データのうち画像が必要
-         */
-        static const uint8_t mask = PERCEPTION_REPORT_MASK_IMAGE;
-
     private:
         /**
          * 正面の直線が連続して観測された回数

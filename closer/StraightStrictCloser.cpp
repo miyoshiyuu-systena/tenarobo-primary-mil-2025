@@ -12,6 +12,7 @@ ICloserGenerator straightStrictCloserGenerator() {
 
 StraightStrictCloser::StraightStrictCloser() : ICloser()
 {
+    mask = PERCEPTION_REPORT_MASK_IMAGE;
 }
 
 StraightStrictCloser::~StraightStrictCloser()
