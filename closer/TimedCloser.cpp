@@ -10,7 +10,6 @@ TimedCloser::TimedCloser(int max)
     : ICloser()
     , mMax(max + 1)
 {    
-    mask = 0b00000000;
 }
 
 TimedCloser::~TimedCloser()

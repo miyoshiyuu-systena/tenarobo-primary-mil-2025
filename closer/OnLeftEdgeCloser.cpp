@@ -1,5 +1,4 @@
 #include "OnLeftEdgeCloser.h"
-#include "PerceptionMask.h"
 #include "PerceptionReporter.h"
 #include "CameraManager.h"
 
@@ -11,10 +10,6 @@ ICloserGenerator onLeftEdgeCloserGenerator() {
 
 OnLeftEdgeCloser::OnLeftEdgeCloser() : ICloser() 
 {
-    mask = (
-        PERCEPTION_REPORT_MASK_IMAGE |
-        PERCEPTION_REPORT_MASK_COLOR
-    );
 }
 
 OnLeftEdgeCloser::~OnLeftEdgeCloser()

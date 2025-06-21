@@ -1,7 +1,6 @@
 #include "WhiteFloorAndStraightStrictCloser.h"
 #include "PerceptionReporter.h"
 #include "PerceptionReport.h"
-#include "PerceptionMask.h"
 
 ICloserGenerator whiteFloorAndStraightStrictGenerator() {
     return []() -> ICloser* {
@@ -11,7 +10,6 @@ ICloserGenerator whiteFloorAndStraightStrictGenerator() {
 
 WhiteFloorAndStraightStrict::WhiteFloorAndStraightStrict() : ICloser()
 {
-    mask = PERCEPTION_REPORT_MASK_COLOR;
 }
 
 WhiteFloorAndStraightStrict::~WhiteFloorAndStraightStrict()

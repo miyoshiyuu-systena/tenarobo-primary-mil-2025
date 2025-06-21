@@ -1,5 +1,4 @@
 #include "OnRightEdgeCloser.h"
-#include "PerceptionMask.h"
 #include "PerceptionReporter.h"
 #include "CameraManager.h"
 
@@ -11,10 +10,6 @@ ICloserGenerator onRightEdgeCloserGenerator() {
 
 OnRightEdgeCloser::OnRightEdgeCloser() : ICloser() 
 {
-    mask = (
-        PERCEPTION_REPORT_MASK_IMAGE |
-        PERCEPTION_REPORT_MASK_COLOR
-    );
 }
 
 OnRightEdgeCloser::~OnRightEdgeCloser()
@@ -76,7 +71,6 @@ bool OnRightEdgeCloser::isClosed() {
      * countNonZero()は0以外の画素数を返すので、
      * 全画素数と比較して黒い画素があるかを判定
      */
-    int totalPixels = bottomRightRegion.rows * bottomRightRegion.cols;
     int whitePixels = cv::countNonZero(bottomRightRegion);
     
     // 白い画素がない（すべて黒い）場合にtrueを返す

@@ -1,7 +1,6 @@
 #include "BlackFloorCloser.h"
 #include "PerceptionReporter.h"
 #include "PerceptionReport.h"
-#include "PerceptionMask.h"
 #include "config.h"
 
 ICloserGenerator blackFloorCloserGenerator() {
@@ -39,7 +38,6 @@ static int getBlackFloorVLowerThreshold() {
 
 BlackFloorCloser::BlackFloorCloser() : ICloser()
 {
-    mask = PERCEPTION_REPORT_MASK_COLOR;
 }
 
 BlackFloorCloser::~BlackFloorCloser()

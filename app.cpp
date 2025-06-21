@@ -26,9 +26,6 @@
 #include "OnRightEdgeCloser.h"
 #include "CameraManager.h"
 
-#include "PerceptionMask.h"
-#include "PerceptionReporter.h"
-
 using namespace spikeapi;
 
 /**

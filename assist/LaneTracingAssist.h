@@ -86,7 +86,7 @@ class LaneTracingAssist : public IAssist
         /**
          * エラーヒストリー
          */
-        static const int mTotalHistory = 5; // とりあえず過去10回分
+        static const int mTotalHistory = 5; // とりあえず過去5回分
         float* mErrorHistory;
         int mErrorHistoryIndex;
         float mErrorIntegral;   // 計算の効率化のため前回の値を記憶

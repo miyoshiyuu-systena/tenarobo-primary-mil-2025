@@ -23,7 +23,6 @@ ActionCall goCurveActionFactory(
     ) {
         int count = 0;
         bool isClosed = false;
-        uint8_t mask = 0b00000000;
 
         float speeds[2] = {0.0f, 0.0f};
         float baseSpeed[2] = {0.0f, 0.0f};
@@ -34,7 +33,6 @@ ActionCall goCurveActionFactory(
         for (const auto& assistPtrGenerator : assistPtrGenerators) {
             IAssist* assist = assistPtrGenerator();
             assist->init();
-            mask |= assist->mask;
             assists.push_back(assist);
         }
         
@@ -42,7 +40,6 @@ ActionCall goCurveActionFactory(
         for (const auto& closerPtrGenerator : closerPtrGenerators) {
             ICloser* closer = closerPtrGenerator();
             closer->init();
-            mask |= closer->mask;
             closers.push_back(closer);
         }
 
@@ -57,7 +54,7 @@ ActionCall goCurveActionFactory(
             }
 
             // 知覚データを取得
-            PerceptionReporter::getInstance().update(detectInterval, mask);
+            PerceptionReporter::getInstance().update(detectInterval);
             
             // 複数のアシストを順次適用
             for (IAssist* assist : assists) {

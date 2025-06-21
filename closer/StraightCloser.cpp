@@ -1,7 +1,6 @@
 #include "StraightCloser.h"
 #include "PerceptionReporter.h"
 #include "PerceptionReport.h"
-#include "PerceptionMask.h"
 #include "config.h"
 #include "web-camera/CameraManager.h"
 #include <cmath>
@@ -15,7 +14,6 @@ ICloserGenerator straightCloserGenerator() {
 StraightCloser::StraightCloser() : ICloser()
 {
     mSeqCountIsStraight = 0;
-    mask = PERCEPTION_REPORT_MASK_IMAGE;
 }
 
 StraightCloser::~StraightCloser()
@@ -126,11 +124,8 @@ bool StraightCloser::isClosed()
             ((lineXMin < l[2]) && (l[2] < lineXMax) && (l[3] > lineYMin))
         ) {
             isStraight = true;
-            cv::line(report.image, cv::Point(l[0], l[1]), cv::Point(l[2], l[3]), cv::Scalar(0, 0, 255), 2, cv::LINE_AA);
-            // line(画像, 始点, 終点, 色(BGR), 太さ, アンチエイリアス)
         }
     }
-    // CameraManager::getInstance().saveImage(report.image);
 
     if (isStraight) {
         mSeqCountIsStraight++;

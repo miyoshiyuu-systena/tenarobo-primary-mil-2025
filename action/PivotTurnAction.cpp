@@ -20,13 +20,11 @@ ActionCall pivotTurnActionFactory(
         Device*& device
     ) {
         bool isClosed = false;
-        uint8_t mask = 0b00000000;
 
         std::vector<ICloser*> closers;
         for (const auto& closerPtrGenerator : closerPtrGenerators) {
             ICloser* closer = closerPtrGenerator();
             closer->init();
-            mask |= closer->mask;
             closers.push_back(closer);
         }
 
@@ -37,7 +35,7 @@ ActionCall pivotTurnActionFactory(
                 device->twinWheelDrive.rightPivotTurn(angular_speed);
             }
 
-            PerceptionReporter::getInstance().update(detectInterval, mask);
+            PerceptionReporter::getInstance().update(detectInterval);
 
             dly_tsk(detectInterval * 1000);
             

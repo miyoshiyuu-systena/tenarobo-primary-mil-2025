@@ -19,11 +19,6 @@ class ICloser
          * @return 終了判定（終了したらtrue, 終了しない場合はfalse）
          */
         virtual bool isClosed() = 0;
-
-        /**
-         * 知覚データのうちどのデータを使って終了判定を行うか
-         */
-        uint8_t mask;
 };
 
 #endif // _I_CLOSER_H_

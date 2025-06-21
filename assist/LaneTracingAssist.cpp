@@ -1,7 +1,6 @@
 #include "LaneTracingAssist.h"
 #include "PerceptionReporter.h"
 #include "PerceptionReport.h"
-#include "PerceptionMask.h"
 
 IAssistGenerator laneTracingAssistGenerator(
     bool isRightSide,
@@ -32,7 +31,6 @@ LaneTracingAssist::LaneTracingAssist(
     , mErrorHistoryIndex(0)
     , mErrorIntegral(0)
 {
-    mask = PERCEPTION_REPORT_MASK_COLOR;
 }
 
 LaneTracingAssist::~LaneTracingAssist()

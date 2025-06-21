@@ -3,7 +3,6 @@
 #include "Logger.h"
 #include "Device.h"
 #include "config.h"
-#include "PerceptionMask.h"
 
 /**
  * シングルトンインスタンス取得

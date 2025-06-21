@@ -1,7 +1,6 @@
 #include    "CurveCloser.h"
 #include    "PerceptionReporter.h"
 #include    "PerceptionReport.h"
-#include    "PerceptionMask.h"
 #include    "config.h"
 #include    "web-camera/CameraManager.h"
 #include    <cmath>
@@ -15,7 +14,6 @@ ICloserGenerator curveCloserGenerator() {
 CurveCloser::CurveCloser() : ICloser()
 {
     mSeqCountIsCurve = 0;
-    mask = PERCEPTION_REPORT_MASK_IMAGE;
 }
 
 CurveCloser::~CurveCloser()
