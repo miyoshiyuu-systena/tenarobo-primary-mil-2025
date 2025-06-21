@@ -20,7 +20,7 @@ class BlueFloorCloser : public ICloser
         ~BlueFloorCloser();
 
         void init() override;
-        bool isClosed(PerceptionReport* report) override;;
+        bool isClosed() override;;
 };
 
 #endif // _BLUE_FLOOR_CLOSER_H_

@@ -50,7 +50,7 @@ class SlowlyAccelerateAssist : public IAssist
 
         void init() override;
 
-        void correct(float* speeds, PerceptionReport* report) override;
+        void correct(float* speeds) override;
 
     private:
         int mStepCount;

@@ -22,7 +22,7 @@ class StraightStrictCloser : public ICloser
         ~StraightStrictCloser();
 
         void init() override;
-        bool isClosed(PerceptionReport* report) override;
+        bool isClosed() override;
 
     private:
         /**

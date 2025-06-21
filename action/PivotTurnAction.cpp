@@ -1,5 +1,6 @@
 #include "PivotTurnAction.h"
 #include "spikeapi.h"
+#include "PerceptionReporter.h"
 
 ActionCall pivotTurnActionFactory(
     float angular_speed,
@@ -19,7 +20,6 @@ ActionCall pivotTurnActionFactory(
         Device*& device
     ) {
         bool isClosed = false;
-        PerceptionReport report;
         uint8_t mask = 0b00000000;
 
         std::vector<ICloser*> closers;
@@ -37,17 +37,12 @@ ActionCall pivotTurnActionFactory(
                 device->twinWheelDrive.rightPivotTurn(angular_speed);
             }
 
-            writePerceptionReport(
-                device,
-                report,
-                detectInterval,
-                mask
-            );
+            PerceptionReporter::getInstance().update(detectInterval, mask);
 
             dly_tsk(detectInterval * 1000);
             
             for (ICloser* closer : closers) {
-                if (closer->isClosed(&report))
+                if (closer->isClosed())
                     isClosed = true;
             }
         } while (!isClosed);

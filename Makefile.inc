@@ -26,7 +26,7 @@ APPL_CXXOBJS +=\
 	LaneChangeCompleteJudge.o\
 	ActionNode.o\
 	Device.o\
-	PerceptionReport.o\
+	PerceptionReporter.o\
 	CalcCurveDriveSpeed.o\
 	FrontArmDrive.o\
 	TwinWheelDrive.o\

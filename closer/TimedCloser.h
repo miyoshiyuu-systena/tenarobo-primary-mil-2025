@@ -22,7 +22,7 @@ class TimedCloser : public ICloser
         ~TimedCloser();
 
         void init() override;
-        bool isClosed(PerceptionReport* report) override;
+        bool isClosed() override;
 
     private:
         int mCount;

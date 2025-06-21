@@ -20,7 +20,7 @@ class BlackFloorCloser : public ICloser
         ~BlackFloorCloser();
 
         void init() override;
-        bool isClosed(PerceptionReport* report) override;
+        bool isClosed() override;
 };
 
 #endif // _BLACK_FLOOR_CLOSER_H_

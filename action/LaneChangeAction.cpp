@@ -32,7 +32,7 @@ ActionCall laneChangeActionFactory(
             "sub-action0: 信地回転",
             device,
             spinTurnActionFactory(
-                60.0f,
+                120.0f,
                 !go_right_lane,
                 10,
                 {
@@ -49,7 +49,7 @@ ActionCall laneChangeActionFactory(
             "sub-action2: 信地回転 - 逆",
             device,
             spinTurnActionFactory(
-                60.0f,
+                120.0f,
                 go_right_lane,
                 10,
                 closerPtrGenerators_2

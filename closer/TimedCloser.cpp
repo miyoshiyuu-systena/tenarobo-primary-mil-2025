@@ -22,7 +22,7 @@ void TimedCloser::init()
     mCount = 0;
 }
 
-bool TimedCloser::isClosed(PerceptionReport* report)
+bool TimedCloser::isClosed()
 {
     mCount++;
     return mCount > mMax;

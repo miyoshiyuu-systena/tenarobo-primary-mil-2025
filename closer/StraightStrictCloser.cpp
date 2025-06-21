@@ -1,5 +1,7 @@
-
 #include "StraightStrictCloser.h"
+#include "PerceptionReporter.h"
+#include "PerceptionReport.h"
+#include "PerceptionMask.h"
 #include "config.h"
 #include "web-camera/CameraManager.h"
 #include <cmath>
@@ -28,9 +30,11 @@ int StraightStrictCloser::getSeqCountIsStraightMax()
     return config.getIntValue("straightStrictSeqCountIsStraightMax", 5);
 }
 
-bool StraightStrictCloser::isClosed(PerceptionReport* report)
+bool StraightStrictCloser::isClosed()
 {
-    if (!report->isImageUpdated) {
+    PerceptionReport report = PerceptionReporter::getInstance().getLatest();
+
+    if (!PerceptionReporter::getInstance().isImageUpdated()) {
         return false;
     }
     
@@ -39,7 +43,7 @@ bool StraightStrictCloser::isClosed(PerceptionReport* report)
     /**
      * グレースケールに変換
      */
-    cv::cvtColor(report->image, image, cv::COLOR_BGR2GRAY);
+    cv::cvtColor(report.image, image, cv::COLOR_BGR2GRAY);
 
     /**
      * ガウシアンぼかし
@@ -77,10 +81,10 @@ bool StraightStrictCloser::isClosed(PerceptionReport* report)
             ((lineXMin < l[2]) && (l[2] < lineXMax) && (l[3] > lineYMin))
         ) {
             isStraight = true;
-            cv::line(report->image, cv::Point(l[0], l[1]), cv::Point(l[2], l[3]), cv::Scalar(0, 0, 255), 2, cv::LINE_AA);
+            cv::line(report.image, cv::Point(l[0], l[1]), cv::Point(l[2], l[3]), cv::Scalar(0, 0, 255), 2, cv::LINE_AA);
         }
     }
-    CameraManager::getInstance().saveImage(report->image);
+    // CameraManager::getInstance().saveImage(report.image);
 
     if (isStraight) {
         mSeqCountIsStraight++;

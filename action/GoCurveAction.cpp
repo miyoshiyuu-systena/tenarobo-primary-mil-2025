@@ -1,6 +1,8 @@
 #include "GoCurveAction.h"
 #include "spikeapi.h"
 #include "CalcCurveDriveSpeed.h"
+#include "PerceptionReporter.h"
+#include "PerceptionReport.h"
 #include <vector>
 
 #include "logger/Logger.h"
@@ -21,7 +23,6 @@ ActionCall goCurveActionFactory(
     ) {
         int count = 0;
         bool isClosed = false;
-        PerceptionReport report;
         uint8_t mask = 0b00000000;
 
         float speeds[2] = {0.0f, 0.0f};
@@ -56,16 +57,11 @@ ActionCall goCurveActionFactory(
             }
 
             // 知覚データを取得
-            writePerceptionReport(
-                device,
-                report,
-                detectInterval,
-                mask
-            );
+            PerceptionReporter::getInstance().update(detectInterval, mask);
             
             // 複数のアシストを順次適用
             for (IAssist* assist : assists) {
-                assist->correct(speeds, &report);
+                assist->correct(speeds);
             }
             
             device->twinWheelDrive.setSpeed(speeds[0], speeds[1]);
@@ -79,7 +75,7 @@ ActionCall goCurveActionFactory(
 
             // 複数の終了判定を順次適用
             for (ICloser* closer : closers) {
-                if (closer->isClosed(&report))
+                if (closer->isClosed())
                     isClosed = true;
             }
             count++;

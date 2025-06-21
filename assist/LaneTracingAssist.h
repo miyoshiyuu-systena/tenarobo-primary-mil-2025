@@ -4,7 +4,6 @@
 #include "IAssist.h"
 #include "CalcErrorFunc.h"
 #include "IAssistGenerator.h"
-#include "PerceptionReport.h"
 
 /**
  * 青白線に沿って走行する補助クラスのファクトリー関数
@@ -66,12 +65,11 @@ class LaneTracingAssist : public IAssist
         /**
          * 青白線に沿って走行する
          * @param speeds 走行速度[°/s](構造体の中身を更新することで次の速度を渡す)
-         * @param report 知覚データ
          * @note
          *  speeds[0]: 左輪の速度[°/s]
          *  speeds[1]: 右輪の速度[°/s]
          */
-        void correct(float* speeds, PerceptionReport* report) override;
+        void correct(float* speeds) override;
 
     private:
         bool mIsRightSide;

@@ -20,7 +20,7 @@ class WhiteFloorAndStraightStrict : public ICloser
         ~WhiteFloorAndStraightStrict();
 
         void init() override;
-        bool isClosed(PerceptionReport* report) override;
+        bool isClosed() override;
 };
 
 #endif

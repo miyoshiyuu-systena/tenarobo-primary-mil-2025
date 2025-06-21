@@ -1,6 +1,8 @@
 #include "LaneChangeCompleteJudge.h"
 #include "LaneChangeAction.h"
 #include "spikeapi.h"
+#include "PerceptionReporter.h"
+#include "PerceptionMask.h"
 
 ActionCall laneChangeCompleteJudgeFactory(
     bool go_right_lane,
@@ -15,24 +17,12 @@ ActionCall laneChangeCompleteJudgeFactory(
         ActionNode*& next_ptr,
         Device*& device
     ) {
-        PerceptionReport report;
-
-        /**
-         * XXXX やばい
-         * わんちゃんカメラの画像が取得できないサイクルがあって実行時エラーを起こしうる
-         * writePerceptionReport自体を諦めるのが良いかもしれない（ちゃんとクラスにする、最新のレポートは持っており、新しく取得しない方式）
-         */
-        writePerceptionReport(
-            device,
-            report,
-            10,
-            PERCEPTION_REPORT_MASK_COLOR
-        );
+        PerceptionReporter::getInstance().update(10, PERCEPTION_REPORT_MASK_COLOR);
 
         bool is_closed = false;
         for (auto closerPtrGenerator : closerPtrGenerators) {
             ICloser* closer = closerPtrGenerator();
-            if (closer->isClosed(&report)) {
+            if (closer->isClosed()) {
                 is_closed = true;
                 break;
             }

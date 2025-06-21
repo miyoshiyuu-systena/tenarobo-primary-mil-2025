@@ -1,4 +1,7 @@
 #include "BlueFloorCloser.h"
+#include "PerceptionReporter.h"
+#include "PerceptionReport.h"
+#include "PerceptionMask.h"
 #include "config.h"
 
 ICloserGenerator blueFloorCloserGenerator() {
@@ -47,7 +50,7 @@ void BlueFloorCloser::init()
 {
 }
 
-bool BlueFloorCloser::isClosed(PerceptionReport* report)
+bool BlueFloorCloser::isClosed()
 {
     static int H_UPPER_THRESHOLD = getBlueFloorHUpperThreshold();
     static int H_LOWER_THRESHOLD = getBlueFloorHLowerThreshold();
@@ -55,10 +58,12 @@ bool BlueFloorCloser::isClosed(PerceptionReport* report)
     static int S_LOWER_THRESHOLD = getBlueFloorSLowerThreshold();
     static int V_UPPER_THRESHOLD = getBlueFloorVUpperThreshold();
     static int V_LOWER_THRESHOLD = getBlueFloorVLowerThreshold();
+
+    PerceptionReport report = PerceptionReporter::getInstance().getLatest();
     
     return (
-        (H_LOWER_THRESHOLD <= report->h && report->h <= H_UPPER_THRESHOLD) &&
-        (S_LOWER_THRESHOLD <= report->s && report->s <= S_UPPER_THRESHOLD) &&
-        (V_LOWER_THRESHOLD <= report->v && report->v <= V_UPPER_THRESHOLD)
+        (H_LOWER_THRESHOLD <= report.h && report.h <= H_UPPER_THRESHOLD) &&
+        (S_LOWER_THRESHOLD <= report.s && report.s <= S_UPPER_THRESHOLD) &&
+        (V_LOWER_THRESHOLD <= report.v && report.v <= V_UPPER_THRESHOLD)
     );
 }

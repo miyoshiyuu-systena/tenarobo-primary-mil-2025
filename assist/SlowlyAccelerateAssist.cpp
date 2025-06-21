@@ -29,7 +29,7 @@ void SlowlyAccelerateAssist::init()
     mStepIndex = 0;
 }
 
-void SlowlyAccelerateAssist::correct(float* speeds, PerceptionReport* report)
+void SlowlyAccelerateAssist::correct(float* speeds)
 {
     int level = (int)(mStepIndex / mStepInterval) + 1;
     if (level > mStepCount) {

@@ -20,7 +20,7 @@ class StraightCloser : public ICloser
         ~StraightCloser();
 
         void init() override;
-        bool isClosed(PerceptionReport* report) override;
+        bool isClosed() override;
 
     private:
         /**

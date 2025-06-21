@@ -1,5 +1,7 @@
 #include "SpinTurnAction.h"
 #include "spikeapi.h"
+#include "PerceptionReporter.h"
+#include "PerceptionReport.h"
 
 ActionCall spinTurnActionFactory(
     float angular_speed,
@@ -19,7 +21,6 @@ ActionCall spinTurnActionFactory(
         Device*& device
     ) {
         bool isClosed = false;
-        PerceptionReport report;
         uint8_t mask = 0b00000000;
 
         std::vector<ICloser*> closers;
@@ -37,17 +38,12 @@ ActionCall spinTurnActionFactory(
                 device->twinWheelDrive.rightSpinTurn(angular_speed);
             }
 
-            writePerceptionReport(
-                device,
-                report,
-                detectInterval,
-                mask
-            );
+            PerceptionReporter::getInstance().update(detectInterval, mask);
 
             dly_tsk(detectInterval * 1000);
 
             for (ICloser* closer : closers) {
-                if (closer->isClosed(&report))
+                if (closer->isClosed())
                     isClosed = true;
             }
         } while (!isClosed);

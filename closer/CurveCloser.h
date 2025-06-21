@@ -22,7 +22,7 @@ class CurveCloser : public ICloser
         ~CurveCloser();
 
         void init() override;
-        bool isClosed(PerceptionReport* report) override;
+        bool isClosed() override;
 
     private:
         /**

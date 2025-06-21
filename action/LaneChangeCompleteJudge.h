@@ -3,6 +3,7 @@
 
 #include "ActionNode.h"
 #include "ICloserGenerator.h"
+#include <vector>
 
 /**
  * 車線変更完了判定のファクトリー関数

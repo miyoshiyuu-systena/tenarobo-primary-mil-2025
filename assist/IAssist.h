@@ -1,7 +1,7 @@
 #ifndef _I_ASSIST_H_
 #define _I_ASSIST_H_
 
-#include "PerceptionReport.h"
+#include <cstdint>
 
 /**
  * 走行補助インターフェース
@@ -22,9 +22,8 @@ class IAssist
         /**
          * 走行補助を行う
          * @param speeds 次の走行速度[mm/s]（構造体を更新することで次の速度を渡す）
-         * @param report 知覚データ
          */
-        virtual void correct(float* speeds, PerceptionReport* report) = 0;
+        virtual void correct(float* speeds) = 0;
 
         uint8_t mask;
 };
