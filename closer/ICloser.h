@@ -21,7 +21,7 @@ class ICloser
          */
         virtual bool isClosed(PerceptionReport* report) = 0;
 
-        static const uint8_t mask = 0b11111111;
+        uint8_t mask = 0b00000000;
 };
 
 #endif // _I_CLOSER_H_
