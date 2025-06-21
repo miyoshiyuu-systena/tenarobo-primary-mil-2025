@@ -14,7 +14,7 @@ ActionCall laneChangeCompleteJudgeFactory(
         ActionNode*& next_ptr,
         Device*& device
     ) {
-        PerceptionReport* report;
+        PerceptionReport report;
 
         /**
          * XXXX やばい
