@@ -42,14 +42,6 @@ ActionCall laneChangeActionFactory(
             0
         );
         next_ptr = action0;
-        
-        // ActionNode* action1 = new ActionNode(
-        //     "sub-action1: 停止",
-        //     device,
-        //     stopActionFactory(),
-        //     0
-        // );
-        // action0->setNext(action1);
 
         std::vector<ICloserGenerator> closerPtrGenerators_2 = closerPtrGenerators;
         closerPtrGenerators_2.push_back(timedCloserGenerator(50));
@@ -65,14 +57,6 @@ ActionCall laneChangeActionFactory(
             0
         );
         action0->setNext(action2);
-
-        // ActionNode* action3 = new ActionNode(
-        //     "sub-action3: 停止",
-        //     device,
-        //     stopActionFactory(),
-        //     0
-        // );
-        // action2->setNext(action3);
 
         ActionNode* action4 = new ActionNode(
             "sub-action4: 車線変更完了判定",
