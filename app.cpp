@@ -63,13 +63,13 @@ void main_task(intptr_t exinf)   {
         "action1: 少しの間左に曲がる",
         &device,
         goCurveActionFactory(
-            100.0f,
+            150.0f,
             500.0f,  
             false,
             10,
             {},
             {
-                timedCloserGenerator(100)
+                timedCloserGenerator(50)
             }
         ),
         0
@@ -88,13 +88,13 @@ void main_task(intptr_t exinf)   {
         "action3: 少しの間右に曲がる",
         &device,
         goCurveActionFactory(
-            100.0f,
+            150.0f,
             500.0f,  
             true,
             10,
             {},
             {
-                timedCloserGenerator(100)
+                timedCloserGenerator(50)
             }
         ),
         0
@@ -108,60 +108,6 @@ void main_task(intptr_t exinf)   {
         100
     );
     action3->setNext(action4);
-
-    // ActionNode* action1 = new ActionNode(
-    //     "action1: 白黒の直線に沿って走行し、曲がり角に到達したら終了",
-    //     &device,
-    //     goStraightActionFactory(
-    //         500.0f,
-    //         10,
-    //         {
-    //             laneTracingAssistGenerator(
-    //                 false,
-    //                 100.0f,
-    //                 0.5f,
-    //                 10.0f,
-    //                 calcBlackWhiteBorderError
-    //             )
-    //         },
-    //         {
-    //             curveCloserGenerator()
-    //         }
-    //     ),
-    //     0
-    // );
-    // action0->setNext(action1);
-
-    // ActionNode* action2 = new ActionNode(
-    //     "action2: 白黒の曲線に沿って徐行し、直線を検知したら終了",
-    //     &device,
-    //     goStraightActionFactory(
-    //         150.0f,
-    //         10,
-    //         {
-    //             laneTracingAssistGenerator(
-    //                 false,
-    //                 50.0f,
-    //                 50.0f,
-    //                 50.0f,
-    //                 calcBlackWhiteBorderError
-    //             )
-    //         },
-    //         {
-    //             straightCloserGenerator()
-    //         }
-    //     ),
-    //     0
-    // );
-    // action1->setNext(action2);
-
-    // ActionNode * action3 = new ActionNode(
-    //     "action3: とまる",
-    //     &device,
-    //     stopActionFactory(),
-    //     0
-    // );
-    // action2->setNext(action3);
 
     ActionNode* prevAction = nullptr;
     ActionNode* currentAction = action0;
