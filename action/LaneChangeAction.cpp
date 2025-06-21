@@ -31,7 +31,7 @@ ActionCall laneChangeActionFactory(
             device,
             spinTurnActionFactory(
                 120.0f,
-                !go_right_lane,
+                go_right_lane,
                 10,
                 {
                     timedCloserGenerator(50)
@@ -46,7 +46,7 @@ ActionCall laneChangeActionFactory(
             device,
             spinTurnActionFactory(
                 120.0f,
-                go_right_lane,
+                !go_right_lane,
                 10,
                 {
                     timedCloserGenerator(50)
