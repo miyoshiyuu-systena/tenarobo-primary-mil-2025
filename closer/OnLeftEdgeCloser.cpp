@@ -71,7 +71,6 @@ bool OnLeftEdgeCloser::isClosed() {
      * countNonZero()は0以外の画素数を返すので、
      * 全画素数と比較して黒い画素があるかを判定
      */
-    int totalPixels = bottomLeftRegion.rows * bottomLeftRegion.cols;
     int whitePixels = cv::countNonZero(bottomLeftRegion);
     
     // 白い画素がない（すべて黒い）場合にtrueを返す
