@@ -66,28 +66,70 @@ void main_task(intptr_t exinf)   {
     );
 
     ActionNode* action1 = new ActionNode(
-        "action1: 車線変更",
+        "action1: 左エッジ直進",
+        &device,
+        goStraightActionFactory(
+            250.0f,
+            10,
+            {
+                laneTracingAssistGenerator(
+                    false,
+                    100.0f,
+                    1.0f,
+                    10.0f,
+                    calcBlackWhiteBorderError
+                )
+            },
+            {
+                timedCloserGenerator(
+                    200
+                )
+            }
+        ),
+        0
+    );
+    action0->setNext(action1);
+
+    ActionNode* action2 = new ActionNode(
+        "action2: 車線変更",
         &device,
         simpleLaneChangeActionFactory(true),
         0
     );
-    action0->setNext(action1);
-    
-    // ActionNode* action2 = new ActionNode(
-    //     "action2: 車線変更",
-    //     &device,
-    //     laneChangeActionFactory(false),
-    //     0
-    // );
-    // action1->setNext(action2);
+    action1->setNext(action2);
 
     ActionNode* action3 = new ActionNode(
-        "action2: 止まる",
+        "action3: 右エッジ直進",
+        &device,
+        goStraightActionFactory(
+            250.0f,
+            10,
+            {
+                laneTracingAssistGenerator(
+                    true,
+                    100.0f,
+                    1.0f,
+                    10.0f,
+                    calcBlackWhiteBorderError
+                )
+            },
+            {
+                timedCloserGenerator(
+                    200
+                )
+            }
+        ),
+        0
+    );
+    action2->setNext(action3);
+
+    ActionNode* action4 = new ActionNode(
+        "action4: 止まる",
         &device,
         stopActionFactory(),
         0
     );
-    action1->setNext(action3);
+    action3->setNext(action4);
 
     ActionNode* prevAction = nullptr;
     ActionNode* currentAction = action0;
