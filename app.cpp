@@ -58,38 +58,61 @@ void main_task(intptr_t exinf)   {
         0
     );
 
-    // ActionNode* action1 = new ActionNode(
-    //     "action1: その場で回転",
-    //     &device,
-    //     turnActionFactory(
-    //         25.0f,
-    //         true,
-    //         10,
-    //         {
-    //             straightStrictCloserGenerator()
-    //         }
-    //     ),
-    //     0
-    // );
-    // action0->setNext(action1);
+    ActionNode* action1 = new ActionNode(
+        "action1: その場で回転",
+        &device,
+        turnActionFactory(
+            30.0f,
+            true,
+            10,
+            {
+                straightStrictCloserGenerator()
+            }
+        ),
+        0
+    );
+    action0->setNext(action1);
 
     ActionNode* action2 = new ActionNode(
         "action2: 直線を進む",
         &device,
         goStraightActionFactory(
-            150.0f,
+            250.0f,
             10,
             {
                 laneTracingAssistGenerator(
                     true,
                     100.0f,
+                    1.0f,
                     10.0f,
-                    25.0f,
                     calcBlackWhiteBorderError
                 ),
                 slowlyAccelerateAssistGenerator(
-                    10,
+                    5,
                     5
+                )
+            },
+            {
+                timedCloserGenerator(100)
+            }
+        ),
+        0
+    );
+    action1->setNext(action2);
+
+    ActionNode* action3 = new ActionNode(
+        "action3: 直線を進む",
+        &device,
+        goStraightActionFactory(
+            250.0f,
+            10,
+            {
+                laneTracingAssistGenerator(
+                    true,
+                    100.0f,
+                    1.0f,
+                    10.0f,
+                    calcBlackWhiteBorderError
                 )
             },
             {
@@ -98,15 +121,15 @@ void main_task(intptr_t exinf)   {
         ),
         0
     );
-    action0->setNext(action2);
+    action2->setNext(action3);
 
-    ActionNode* action3 = new ActionNode(
-        "action3: とまる",
+    ActionNode* action4 = new ActionNode(
+        "action4: とまる",
         &device,
         stopActionFactory(),
         0
     );
-    action2->setNext(action3);
+    action3->setNext(action4);
 
     // ActionNode* action1 = new ActionNode(
     //     "action1: 白黒の直線に沿って走行し、曲がり角に到達したら終了",
