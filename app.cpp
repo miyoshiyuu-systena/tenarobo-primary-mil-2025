@@ -20,6 +20,7 @@
 #include "CurveCloser.h"
 #include "TimedCloser.h"
 #include "CameraManager.h"
+#include "StraightStrictCloser.h"
 
 using namespace spikeapi;
 
@@ -61,11 +62,11 @@ void main_task(intptr_t exinf)   {
         "action1: その場で回転",
         &device,
         turnActionFactory(
-            100.0f,
+            20.0f,
             true,
             10,
             {
-                timedCloserGenerator(2000)
+                straightStrictCloserGenerator()
             }
         ),
         0
@@ -75,12 +76,24 @@ void main_task(intptr_t exinf)   {
     ActionNode* action2 = new ActionNode(
         "action2: その場で回転",
         &device,
-        turnActionFactory(
-            200.0f,
-            false,
+        goStraightActionFactory(
+            150.0f,
             10,
             {
-                timedCloserGenerator(2000)
+                laneTracingAssistGenerator(
+                    true,
+                    50.0f,
+                    0.5f,
+                    10.0f,
+                    calcBlackWhiteBorderError
+                ),
+                slowlyAccelerateAssistGenerator(
+                    10,
+                    10
+                )
+            },
+            {
+                curveCloserGenerator()
             }
         ),
         0
