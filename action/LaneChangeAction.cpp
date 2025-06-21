@@ -1,6 +1,8 @@
 #include "LaneChangeAction.h"
 #include "SpinTurnAction.h"
+#include "StopAction.h"
 #include "TimedCloser.h"
+#include "LaneChangeCompleteJudge.h"
 #include "spikeapi.h"
 
 ActionCall laneChangeActionFactory(
@@ -25,35 +27,54 @@ ActionCall laneChangeActionFactory(
             "sub-action0: 信地回転",
             device,
             spinTurnActionFactory(
-                150.0f,
+                100.0f,
                 !go_right_lane,
                 10,
                 {
-                    timedCloserGenerator(50)
+                    timedCloserGenerator(25)
                 }
             ),
             0
         );
         next_ptr = action0;
 
-        std::vector<ICloserGenerator> closerPtrGenerators_ = closerPtrGenerators;
-        closerPtrGenerators_.push_back(timedCloserGenerator(50));
+        std::vector<ICloserGenerator> closerPtrGenerators_1 = closerPtrGenerators;
+        closerPtrGenerators_1.push_back(timedCloserGenerator(25));
         ActionNode* action1 = new ActionNode(
-            "sub-action1: 車線変更",
+            "sub-action1: 信地回転 - 逆",
             device,
             spinTurnActionFactory(
-                150.0f,
+                100.0f,
                 go_right_lane,
                 10,
-                closerPtrGenerators_
+                closerPtrGenerators_1
             ),
             0
         );
         action0->setNext(action1);
 
+        ActionNode* action2 = new ActionNode(
+            "sub-action2: 停止",
+            device,
+            stopActionFactory(),
+            0
+        );
+        action1->setNext(action2);
+
+        ActionNode* action3 = new ActionNode(
+            "sub-action3: 車線変更完了判定",
+            device,
+            laneChangeCompleteJudgeFactory(
+                go_right_lane,
+                closerPtrGenerators
+            ),
+            0
+        );
+        action2->setNext(action3);
+
         /**
          * 次のアクションは車線変更の後に実行する
          */
-        action1->setNext(next_ptr_wait);
+        action3->setNext(next_ptr_wait);
     };
 }
