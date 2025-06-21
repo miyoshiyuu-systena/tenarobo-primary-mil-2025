@@ -1,6 +1,7 @@
 #include "PerceptionReport.h"
 #include "CameraManager.h"
 #include "Logger.h"
+#include "config.h"
 
 void writePerceptionReport(
     Device* device,
@@ -46,15 +47,17 @@ void writePerceptionReport(
         report.rightMotorEncode = device->twinWheelDrive.getRightEncode();
     }
 
-    Logger::getInstance().logDebug("=Report=========================================");
-    Logger::getInstance().logDebug("distance: " + std::to_string(report.distance));
-    Logger::getInstance().logDebug("force: " + std::to_string(report.force));
-    Logger::getInstance().logDebug("h: " + std::to_string(report.h));
-    Logger::getInstance().logDebug("s: " + std::to_string(report.s));
-    Logger::getInstance().logDebug("v: " + std::to_string(report.v));
-    Logger::getInstance().logDebug("leftMotorEncode: " + std::to_string(report.leftMotorEncode));
-    Logger::getInstance().logDebug("rightMotorEncode: " + std::to_string(report.rightMotorEncode));
-    Logger::getInstance().logDebug("================================================");
+    if (config.getValue("perceptionLogOutput") == "1") {
+        Logger::getInstance().logDebug("=Report=========================================");
+        Logger::getInstance().logDebug("distance: " + std::to_string(report.distance));
+        Logger::getInstance().logDebug("force: " + std::to_string(report.force));
+        Logger::getInstance().logDebug("h: " + std::to_string(report.h));
+        Logger::getInstance().logDebug("s: " + std::to_string(report.s));
+        Logger::getInstance().logDebug("v: " + std::to_string(report.v));
+        Logger::getInstance().logDebug("leftMotorEncode: " + std::to_string(report.leftMotorEncode));
+        Logger::getInstance().logDebug("rightMotorEncode: " + std::to_string(report.rightMotorEncode));
+        Logger::getInstance().logDebug("================================================");
+    }
 
     count++;
-}
+}   
