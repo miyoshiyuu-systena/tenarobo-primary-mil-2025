@@ -17,7 +17,10 @@ ActionCall laneChangeCompleteJudgeFactory(
         ActionNode*& next_ptr,
         Device*& device
     ) {
-        PerceptionReporter::getInstance().update(10, PERCEPTION_REPORT_MASK_COLOR);
+        // XXX 一旦マスクはカラーセンサと画像
+        // 画像を最新にするために初期化する
+        PerceptionReporter::getInstance().init();
+        PerceptionReporter::getInstance().update(10, PERCEPTION_REPORT_MASK_COLOR | PERCEPTION_REPORT_MASK_IMAGE);
 
         bool is_closed = false;
         for (auto closerPtrGenerator : closerPtrGenerators) {
