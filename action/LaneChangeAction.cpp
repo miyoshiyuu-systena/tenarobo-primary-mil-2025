@@ -41,8 +41,8 @@ ActionCall laneChangeActionFactory(
         );
         next_ptr = action0;
 
-        ActionNode* action2 = new ActionNode(
-            "sub-action2: 信地回転 - 逆",
+        ActionNode* action1 = new ActionNode(
+            "sub-action1: 信地回転 - 逆",
             device,
             spinTurnActionFactory(
                 120.0f,
@@ -54,21 +54,29 @@ ActionCall laneChangeActionFactory(
             ),
             0
         );
-        action0->setNext(action2);
+        action0->setNext(action1);
 
-        ActionNode* action4 = new ActionNode(
-            "sub-action4: 車線変更完了判定",
+        ActionNode* action2 = new ActionNode(
+            "sub-action2: 止まる",
+            device,
+            stopActionFactory(),
+            0
+        );
+        action1->setNext(action2);
+
+        ActionNode* action3 = new ActionNode(
+            "sub-action3: 車線変更完了判定",
             device,
             laneChangeCompleteJudgeFactory(
                 go_right_lane
             ),
             0
         );
-        action2->setNext(action4);
+        action2->setNext(action3);
 
         /**
          * 次のアクションは車線変更の後に実行する
          */
-        action4->setNext(next_ptr_wait);
+        action3->setNext(next_ptr_wait);
     };
 }
