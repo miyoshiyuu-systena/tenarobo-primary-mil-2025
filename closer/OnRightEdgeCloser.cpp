@@ -64,7 +64,7 @@ bool OnRightEdgeCloser::isClosed() {
     int height = binaryImage.rows;
     int width = binaryImage.cols;
     
-    // 右下4分の1の領域を定義 (x: width/2 ~ width, y: height/2 ~ height)
+    // 右下4分の1の領域を定義 (x: width*3/5 ~ width, y: height*9/10 ~ height)
     cv::Rect bottomRightROI((width * 3 / 5), (height * 9 / 10), (width * 2 / 5), (height * 1 / 10));
     cv::Mat bottomRightRegion = binaryImage(bottomRightROI);
     
