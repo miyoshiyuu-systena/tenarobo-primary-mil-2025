@@ -18,3 +18,23 @@ float FrontArmDrive::getSpeed() const
 {
     return mMotor.getSpeed();
 }
+
+int FrontArmDrive::getCount() const
+{
+    return mMotor.getCount();
+}
+
+void FrontArmDrive::resetCount()
+{
+    mMotor.resetCount();
+}
+
+void FrontArmDrive::hold()
+{
+    mMotor.hold();
+}
+
+bool FrontArmDrive::isStalled() const
+{
+    return mMotor.isStalled();
+}
