@@ -11,6 +11,7 @@
 #include "LaneChangeAction.h"
 #include "SinpleLaneChangeAction.h"
 #include "StopAction.h"
+#include "SearchGateAction.h"
 #include "Device.h"
 #include "LaneTracingAssist.h"
 #include "CalcBlackWhiteBorderError.h"
@@ -24,6 +25,7 @@
 #include "CurveCloser.h"
 #include "TimedCloser.h"
 #include "OnRightEdgeCloser.h"
+#include "GateCenterCloser.h"
 #include "CameraManager.h"
 #include "PerceptionReporter.h"
 
@@ -49,32 +51,59 @@ void main_task(intptr_t exinf)   {
 
     // ロガーインスタンスの取得
     Logger& logger = Logger::getInstance();
-    
+
     // カメラマネージャの起動
     CameraManager::getInstance().initializeCamera();
 
-    cv::Mat imageA = cv::imread("/home/mil/work/RasPike-ART/sdk/workspace/img/29_知覚データを取得する2.jpg");
+    ActionNode* action0 = new ActionNode(
+        "action0: 背中のボタンを押されるまで、忠犬ハチ公!!!",
+        &device,
+        hachikouActionFactory(
+            1.0f,
+            100
+        ),
+        0
+    );
 
-    cv::Mat image_blurA;
-    cv::GaussianBlur(imageA, image_blurA, cv::Size(5, 101), 0);
-    CameraManager::getInstance().saveImage(image_blurA);
+    ActionNode* action1 = new ActionNode(
+        "action1: ゲートを検索する",
+        &device,
+        searchGateActionFactory(),
+        0
+    );
+    action0->setNext(action1);
+    
+    ActionNode* action2 = new ActionNode(
+        "action2: 正面に進む",
+        &device,
+        goStraightActionFactory(
+            500.0f,
+            100,
+            {},
+            {
+                timedCloserGenerator(100)
+            }
+        ),
+        0
+    );
+    action1->setNext(action2);
 
-    cv::Mat image_inrangeA;
-    cv::inRange(image_blurA, cv::Scalar(0, 0, 0), cv::Scalar(100, 100, 100), image_inrangeA);
-    CameraManager::getInstance().saveImage(image_inrangeA);
+    ActionNode* action3 = new ActionNode(
+        "action3: 停止する",
+        &device,
+        stopActionFactory(),
+        0
+    );
+    action2->setNext(action3);
 
-    /**
-     * 画像の上から1 / 3のラインをスライス
-     */
-    uchar* row_ptr = image_inrangeA.ptr<uchar>(image_inrangeA.rows / 3);
-    for (int i = 0; i < image_inrangeA.cols; i++) {
-        if (row_ptr[i] == 255) {
-            std::cout << "1";
-        } else {
-            std::cout << "0";
-        }
+    ActionNode* prevAction = nullptr;
+    ActionNode* currentAction = action0;
+    while (currentAction != nullptr) {
+        currentAction->execute();
+        prevAction = currentAction;
+        currentAction = currentAction->getNext();
+        delete prevAction;
     }
-    std::cout << std::endl;
 
     // カメラマネージャの終了
     CameraManager::getInstance().shutdownCamera();
