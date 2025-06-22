@@ -35,6 +35,8 @@ APPL_CXXOBJS +=\
 	Logger.o\
 	CameraManager.o\
 	config.o\
+	ImageAcquisitionTask.o\
+	TaskWrappers.o\
 
 SRCLANG := c++
 
@@ -55,6 +57,7 @@ APPL_DIRS += \
 	$(mkfile_path)logger \
 	$(mkfile_path)perception \
 	$(mkfile_path)web-camera \
+	$(mkfile_path)tasks \
 
 INCLUDES += \
 	-I$(mkfile_path)action \
@@ -66,6 +69,7 @@ INCLUDES += \
 	-I$(mkfile_path)logger \
 	-I$(mkfile_path)perception \
 	-I$(mkfile_path)web-camera \
+	-I$(mkfile_path)tasks \
 	-I/usr/include/opencv4\
 	-I/usr/include/opencv4/opencv2\
 
