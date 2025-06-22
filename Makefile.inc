@@ -27,6 +27,7 @@ APPL_CXXOBJS +=\
 	LaneChangeAction.o\
 	LaneChangeCompleteJudge.o\
 	SinpleLaneChangeAction.o\
+	SearchGateAction.o\
 	ActionNode.o\
 	Device.o\
 	PerceptionReporter.o\
