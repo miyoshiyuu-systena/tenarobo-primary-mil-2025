@@ -36,6 +36,7 @@ CameraManager::CameraManager()
 bool CameraManager::initializeCamera() {
     loc_cpu();
     if (m_initialized.load()) {
+        unl_cpu();
         return true; // 既に初期化済み
     }
 
