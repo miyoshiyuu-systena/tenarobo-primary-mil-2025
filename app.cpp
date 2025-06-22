@@ -25,6 +25,7 @@
 #include "TimedCloser.h"
 #include "OnRightEdgeCloser.h"
 #include "CameraManager.h"
+#include "PerceptionReporter.h"
 
 using namespace spikeapi;
 
@@ -52,106 +53,7 @@ void main_task(intptr_t exinf)   {
     // カメラマネージャの起動
     CameraManager::getInstance().initializeCamera();
 
-    cv::Mat image;
-    CameraManager::getInstance().captureImageNow(image);
-    CameraManager::getInstance().saveImage(image);
-    
-    device.frontArmDrive.resetCount();
-    device.frontArmDrive.setSpeed(200);
-    while (true) {
-        if (device.frontArmDrive.getCount() > 60) {
-            break;
-        }
-        dly_tsk(10 * 1000);
-    }
-    device.frontArmDrive.hold();
-    CameraManager::getInstance().captureImageNow(image);
-    CameraManager::getInstance().saveImage(image);
-
-    // ActionNode* action0 = new ActionNode(
-    //     "action0: Hachikou",
-    //     &device,
-    //     hachikouActionFactory(
-    //         1.0f,
-    //         10
-    //     ),
-    //     0
-    // );
-
-    // ActionNode* action1 = new ActionNode(
-    //     "action1: 左エッジ直進",
-    //     &device,
-    //     goStraightActionFactory(
-    //         250.0f,
-    //         10,
-    //         {
-    //             laneTracingAssistGenerator(
-    //                 false,
-    //                 100.0f,
-    //                 1.0f,
-    //                 10.0f,
-    //                 calcBlackWhiteBorderError
-    //             )
-    //         },
-    //         {
-    //             timedCloserGenerator(
-    //                 200
-    //             )
-    //         }
-    //     ),
-    //     0
-    // );
-    // action0->setNext(action1);
-
-    // ActionNode* action2 = new ActionNode(
-    //     "action2: 車線変更",
-    //     &device,
-    //     simpleLaneChangeActionFactory(true),
-    //     0
-    // );
-    // action1->setNext(action2);
-
-    // ActionNode* action3 = new ActionNode(
-    //     "action3: 右エッジ直進",
-    //     &device,
-    //     goStraightActionFactory(
-    //         250.0f,
-    //         10,
-    //         {
-    //             laneTracingAssistGenerator(
-    //                 true,
-    //                 100.0f,
-    //                 1.0f,
-    //                 10.0f,
-    //                 calcBlackWhiteBorderError
-    //             )
-    //         },
-    //         {
-    //             timedCloserGenerator(
-    //                 200
-    //             )
-    //         }
-    //     ),
-    //     0
-    // );
-    // action2->setNext(action3);
-
-    // ActionNode* action4 = new ActionNode(
-    //     "action4: 止まる",
-    //     &device,
-    //     stopActionFactory(),
-    //     0
-    // );
-    // action3->setNext(action4);
-
-    // ActionNode* prevAction = nullptr;
-    // ActionNode* currentAction = action0;
-    // while (currentAction != nullptr) {
-    //     currentAction->execute();
-    //     prevAction = currentAction;
-    //     currentAction = currentAction->getNext();
-    //     delete prevAction;
-    // }
+    PerceptionReporter::getInstance().update(10);
 
     // カメラマネージャの終了
     CameraManager::getInstance().shutdownCamera();
