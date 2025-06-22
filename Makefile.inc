@@ -33,7 +33,6 @@ APPL_CXXOBJS +=\
 	FrontArmDrive.o\
 	TwinWheelDrive.o\
 	Logger.o\
-	CameraManager.o\
 	config.o\
 	ImageAcquisitionTask.o\
 	TaskWrappers.o\

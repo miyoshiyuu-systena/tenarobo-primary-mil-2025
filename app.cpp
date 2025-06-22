@@ -24,7 +24,6 @@
 #include "CurveCloser.h"
 #include "TimedCloser.h"
 #include "OnRightEdgeCloser.h"
-#include "CameraManager.h"
 
 using namespace spikeapi;
 

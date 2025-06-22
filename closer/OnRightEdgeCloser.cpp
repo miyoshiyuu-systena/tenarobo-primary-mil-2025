@@ -1,6 +1,5 @@
 #include "OnRightEdgeCloser.h"
 #include "PerceptionReporter.h"
-#include "CameraManager.h"
 
 ICloserGenerator onRightEdgeCloserGenerator() {
     return []() {
@@ -34,14 +33,14 @@ bool OnRightEdgeCloser::isClosed() {
      * ノイズを軽減するために5x5のカーネルサイズでぼかしを適用
      */
     cv::GaussianBlur(report.image, image, cv::Size(5, 5), 0);
-    CameraManager::getInstance().saveImage(image);
+    // CameraManager::getInstance().saveImage(image);
 
     /**
      * HSV色空間に変換
      * BGR色空間からHSV色空間に変換して、明度(V)による処理を行いやすくする
      */
     cv::cvtColor(image, image, cv::COLOR_BGR2HSV);
-    CameraManager::getInstance().saveImage(image);
+    // CameraManager::getInstance().saveImage(image);
     
     /**
      * V値による二値化
@@ -51,7 +50,7 @@ bool OnRightEdgeCloser::isClosed() {
      */
     cv::Mat binaryImage;
     cv::inRange(image, cv::Scalar(0, 100, 0), cv::Scalar(179, 255, 100), binaryImage);
-    CameraManager::getInstance().saveImage(binaryImage);
+    // CameraManager::getInstance().saveImage(binaryImage);
 
     /**
      * 画像の右下4分の1の領域を抽出
@@ -64,7 +63,7 @@ bool OnRightEdgeCloser::isClosed() {
     cv::Mat bottomRightRegion = binaryImage(bottomRightROI);
     
     // デバッグ用に右下領域を保存
-    CameraManager::getInstance().saveImage(bottomRightRegion);
+    // CameraManager::getInstance().saveImage(bottomRightRegion);
 
     /**
      * 右下領域に黒い部分（0の画素）があるかチェック

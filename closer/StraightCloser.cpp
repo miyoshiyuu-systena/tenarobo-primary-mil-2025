@@ -2,7 +2,6 @@
 #include "PerceptionReporter.h"
 #include "PerceptionReport.h"
 #include "config.h"
-#include "web-camera/CameraManager.h"
 #include <cmath>
 
 ICloserGenerator straightCloserGenerator() {
