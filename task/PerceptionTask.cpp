@@ -35,6 +35,11 @@ void    perc_task(intptr_t exinf)   {
     perceptionDataAccess.force = forceSensor.getForce();
 
     /**
+     * 力が加わったかどうかの検知
+     */
+    parceptionDateAccess.isTouched = forceSensor.isTouched();
+
+    /**
      * モータデータの取得
      */
     perceptionDataAccess.leftMotor = twinWheelDrive.getLeftCount();
