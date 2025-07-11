@@ -9,6 +9,8 @@ TwinWheelDrive.o\
 ActionChain.o\
 PerceptionDataAccess.o\
 ModuleAccess.o\
+RunUntilWallDetectAction.o\
+Turn180Action.o\
 
 SRCLANG := c++
 

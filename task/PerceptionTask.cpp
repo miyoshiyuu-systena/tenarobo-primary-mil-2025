@@ -1,5 +1,9 @@
 #include    "syssvc/syslog.h"
 #include    "PerceptionTask.h"
+#include    "share/PerceptionDataAccess.h"
+#include    "share/ModuleAccess.h"
+#include    "logging/Logger.h"
+#include    <string>
 
 /**
  * 知覚処理
@@ -14,17 +18,39 @@ void    perc_task(intptr_t exinf)   {
     /**
      * カラーセンサデータの取得
      */
-    //  TODO    miyoshi: カラーセンサデータの取得
+    ColorSensor::HSV hsv;
+    colorSensor.getHSV(hsv, true);
+    perceptionDataAccess.color[0] = hsv.h;
+    perceptionDataAccess.color[1] = hsv.s;
+    perceptionDataAccess.color[2] = hsv.v;
 
     /**
      * 超音波センサデータの取得
      */
-    //  TODO    miyoshi: 超音波センサデータの取得
+    perceptionDataAccess.distance = ultrasonicSensor.getDistance();
 
     /**
-     * 待機
+     * 力センサデータの取得
      */
-    syslog(LOG_WARNING, "Perception_Task is running");
+    perceptionDataAccess.force = forceSensor.getForce();
+
+    /**
+     * モータデータの取得
+     */
+    perceptionDataAccess.leftMotor = twinWheelDrive.getLeftCount();
+    perceptionDataAccess.rightMotor = twinWheelDrive.getRightCount();
+
+    // ログ出力
+    std::string sensorsStr = "Sensors - Force:" + std::to_string(perceptionDataAccess.force) + "N Distance:" + 
+                            std::to_string(perceptionDataAccess.distance) + "mm Color:" + 
+                            std::to_string(perceptionDataAccess.color[0]) + "," + 
+                            std::to_string(perceptionDataAccess.color[1]) + "," + 
+                            std::to_string(perceptionDataAccess.color[2]);
+    Logger::getInstance().logWarning(sensorsStr);
+    
+    std::string motorsStr = "Motors - Left:" + std::to_string(perceptionDataAccess.leftMotor) + 
+                           " Right:" + std::to_string(perceptionDataAccess.rightMotor);
+    Logger::getInstance().logWarning(motorsStr);
 
     //  タスク終了
     ext_tsk();
