@@ -17,13 +17,14 @@ public:
      * @param actionCall アクションの実行
      *          一度実行すればいいだけの場合は、whileループを使用しない
      *          繰り返し実行する場合は、whileループを使用する
+     *          コールバックの引数はこのActionChainの次のポインタ
      * @param actionName アクションの名前（ログ出力のため）
      */
     ActionChain(
         TwinWheelDrive* twinWheelDrive,
         Motor* frontArm,
         PerceptionDataAccess& percDataAccess,
-        void (*actionCall)(void),
+        void (*actionCall)(ActionChain*& next_ptr),
         std::string actionName
     );
 
@@ -78,7 +79,7 @@ private:
     /**
      * アクションの実行
      */
-    void (*mActionCall)(void);
+    void (*mActionCall)(ActionChain*& next_ptr);
 
 
     /**

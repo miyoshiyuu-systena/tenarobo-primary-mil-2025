@@ -2,11 +2,12 @@
 #include    "RunUntilWallDetectAction.h"
 #include    "share/ModuleAccess.h"
 #include    "share/PerceptionDataAccess.h"
+#include    "action/ActionChain.h"
 
 /**
  * 壁を見つけるまで猪突猛進
  */
-void run_until_wall_detect_action()
+void run_until_wall_detect_action(ActionChain*& next_ptr)
 {
     // 壁の接近を検知する距離
     static const int DETECT_DISTANCE_THRESHOLD = 500;

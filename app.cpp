@@ -16,6 +16,7 @@
 #include    "action/Turn180Action.h"
 #include    "action/AroundBottleEdgeAction.h"
 #include    "action/StartOnPressureSensorAction.h"
+#include    "action/GenerateInfinityWanderAroundAction.h"
 
 using namespace spikeapi;
 
@@ -75,42 +76,15 @@ void    main_task_action_chain(intptr_t exinf)   {
         start_on_pressure_sensor_action,
         "ボタンが押されるまでハチ公モード！！"
     );
-    
+
     ActionChain* action1 = new ActionChain(
         &twinWheelDrive,
         &frontArm,
         perceptionDataAccess,
-        run_until_wall_detect_action,
-        "ペットボトルに激突するまで猪突猛進！！"
+        generate_infinity_wander_around_action,
+        "無限にうろうろするよー"
     );
     action0->setNext(action1);
-
-    ActionChain* action2 = new ActionChain(
-        &twinWheelDrive,
-        &frontArm,
-        perceptionDataAccess,
-        turn_180_action,
-        "その場でくるりん！！"
-    );
-    action1->setNext(action2);
-
-    ActionChain* action3 = new ActionChain(
-        &twinWheelDrive,
-        &frontArm,
-        perceptionDataAccess,
-        aroundBottleEdgeAction,
-        "ペットボトルの周りをぐるん！！"
-    );
-    action2->setNext(action3);
-
-    ActionChain* action4 = new ActionChain(
-        &twinWheelDrive,
-        &frontArm,
-        perceptionDataAccess,
-        turn_180_action,
-        "その場でくるりん！！"
-    );
-    action3->setNext(action4);
 
     // ActionChainの実行
     execute_and_haul_action_chain(action0);

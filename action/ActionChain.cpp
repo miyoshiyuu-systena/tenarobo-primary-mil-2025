@@ -7,7 +7,7 @@ ActionChain::ActionChain(
     TwinWheelDrive* twinWheelDrive,
     Motor* frontArm,
     PerceptionDataAccess& percDataAccess,
-    void (*actionCall)(void),
+    void (*actionCall)(ActionChain*& next_ptr),
     std::string actionName
 )
     : mTwinWheelDrive(twinWheelDrive)
@@ -26,7 +26,7 @@ ActionChain::~ActionChain()
 
 void ActionChain::execute()
 {
-    mActionCall();
+    mActionCall(mNextAction);
     mIsEnd = true;
 }
 
