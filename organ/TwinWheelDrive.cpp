@@ -123,6 +123,12 @@ void TwinWheelDrive::setPower(int left_power, int right_power)
     mRightMotor.setPower(right_power);
 }
 
+void TwinWheelDrive::setSpeed(float left_speed, float right_speed)
+{
+    mLeftMotor.setSpeed(left_speed);
+    mRightMotor.setSpeed(right_speed);
+}
+
 void TwinWheelDrive::stop()
 {
     mLeftMotor.stop();
@@ -163,6 +169,16 @@ float TwinWheelDrive::getLeftSpeed() const
 float TwinWheelDrive::getRightSpeed() const
 {
     return mRightMotor.getSpeed();
+}
+
+int TwinWheelDrive::getLeftPower() const
+{
+    return mLeftMotor.getPower();
+}
+
+int TwinWheelDrive::getRightPower() const
+{
+    return mRightMotor.getPower();
 }
 
 bool TwinWheelDrive::isValidRange(int value, int min, int max) const
