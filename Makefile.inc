@@ -6,7 +6,7 @@ APPL_CXXOBJS +=\
 PerceptionTask.o\
 Logger.o\
 TwinWheelDrive.o\
-ActionChain.o\
+ActionNode.o\
 PerceptionDataAccess.o\
 ModuleAccess.o\
 RunUntilWallDetectAction.o\

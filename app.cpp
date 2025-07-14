@@ -9,7 +9,7 @@
 #include    "logging/Logger.h"
 #include    "PerceptionTask.h"
 #include    "organ/TwinWheelDrive.h"
-#include    "action/ActionChain.h"
+#include    "action/ActionNode.h"
 #include    "share/ModuleAccess.h"
 #include    "share/PerceptionDataAccess.h"
 #include    "action/RunUntilWallDetectAction.h"
@@ -21,29 +21,16 @@
 using namespace spikeapi;
 
 /**
- * 指定時間待機する関数
- * @param ms 待機時間（ミリ秒）
- */
-void delay_ms(int ms) {
-    dly_tsk(ms * 1000);  // マイクロ秒単位で待機
-}
-
-/**
  * ActionChainを手繰り寄せながら、順繰りに実行する
  */
-void execute_and_haul_action_chain(ActionChain* firstAction) {
+void execute_and_haul_action_chain(ActionNode* firstAction) {
     Logger& logger = Logger::getInstance();
-    ActionChain* currentAction = firstAction;
-    ActionChain* previousAction = nullptr;
+    ActionNode* currentAction = firstAction;
+    ActionNode* previousAction = nullptr;
     
     while (currentAction != nullptr) {
         logger.logInfo("アクション実行中...");
         currentAction->execute();
-        
-        // アクションが終了するまで待機
-        // while (!currentAction->isEnd()) {
-        //     delay_ms(100);
-        // }
 
         if (!currentAction->isEnd()) {
             logger.logError("アクションが終了していないにもかかわらず、次のアクションに移動しました");
@@ -69,20 +56,25 @@ void    main_task_action_chain(intptr_t exinf)   {
     /**
      * アクションチェーンの形成
      */
-    ActionChain* action0 = new ActionChain(
+    ActionNode* action0 = new ActionNode(
         &twinWheelDrive,
         &frontArm,
         perceptionDataAccess,
-        start_on_pressure_sensor_action,
+        start_on_pressure_sensor_action(3.0f),
         "ボタンが押されるまでハチ公モード！！"
     );
 
-    ActionChain* action1 = new ActionChain(
+    ActionNode* action1 = new ActionNode(
         &twinWheelDrive,
         &frontArm,
         perceptionDataAccess,
-        generate_infinity_wander_around_action,
-        "無限にうろうろするよー"
+        around_bottle_edge_action(
+            250,    // 円弧の半径[mm]
+            120,    // 円弧の角度[°]
+            3000,   // 円弧を描く時間[ms]
+            1000    // 休憩時間[ms]
+        ),
+        "ペットボトルの周りを半円回るよ"
     );
     action0->setNext(action1);
 
@@ -102,7 +94,7 @@ void    main_task(intptr_t exinf)   {
     sta_cyc(PERC_CYC);
 
     // アクションチェーンの処理
-    main_task_action_chain(exinf);
+    main_task_action_chain(0);
 
     // 知覚タスクの停止
     stp_cyc(PERC_CYC);

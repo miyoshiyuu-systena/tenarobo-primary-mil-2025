@@ -5,8 +5,9 @@
 #include "Motor.h"
 #include "share/PerceptionDataAccess.h"
 #include <string>
+#include <functional>
 
-class ActionChain
+class ActionNode
 {
 public:
     /**
@@ -17,14 +18,14 @@ public:
      * @param actionCall アクションの実行
      *          一度実行すればいいだけの場合は、whileループを使用しない
      *          繰り返し実行する場合は、whileループを使用する
-     *          コールバックの引数はこのActionChainの次のポインタ
+     *          コールバックの引数はこのActionNodeの次のポインタ
      * @param actionName アクションの名前（ログ出力のため）
      */
-    ActionChain(
+    ActionNode(
         TwinWheelDrive* twinWheelDrive,
         Motor* frontArm,
         PerceptionDataAccess& percDataAccess,
-        void (*actionCall)(ActionChain*& next_ptr),
+        std::function<void(ActionNode*&)> actionCall,
         std::string actionName
     );
 
@@ -32,7 +33,7 @@ public:
      * デストラクタ
      * アクションの完全終了を宣言する
      */
-    ~ActionChain();
+    ~ActionNode();
 
     /**
      * アクションの実行
@@ -47,12 +48,12 @@ public:
     /**
      * 次のアクションの設定
      */
-    void setNext(ActionChain* nextAction);
+    void setNext(ActionNode* nextAction);
 
     /**
      * 次のアクションの取得
      */
-    ActionChain* getNext();
+    ActionNode* getNext();
 
     /**
      * 次以降のアクションの削除
@@ -79,13 +80,13 @@ private:
     /**
      * アクションの実行
      */
-    void (*mActionCall)(ActionChain*& next_ptr);
+    std::function<void(ActionNode*&)> mActionCall;
 
 
     /**
      * 次のアクション
      */
-    ActionChain* mNextAction;
+    ActionNode* mNextAction;
     
     /**
      * このアクションチェーンが終了している

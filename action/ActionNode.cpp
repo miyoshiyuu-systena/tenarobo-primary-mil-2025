@@ -1,13 +1,13 @@
-#include "ActionChain.h"
+#include "ActionNode.h"
 #include "Logger.h"
 
 using   namespace   spikeapi;
 
-ActionChain::ActionChain(
+ActionNode::ActionNode(
     TwinWheelDrive* twinWheelDrive,
     Motor* frontArm,
     PerceptionDataAccess& percDataAccess,
-    void (*actionCall)(ActionChain*& next_ptr),
+    std::function<void(ActionNode*&)> actionCall,
     std::string actionName
 )
     : mTwinWheelDrive(twinWheelDrive)
@@ -19,33 +19,33 @@ ActionChain::ActionChain(
     , mIsEnd(false)
 {}
 
-ActionChain::~ActionChain()
+ActionNode::~ActionNode()
 {
-    Logger::getInstance().logInfo("ActionChain " + mActionName + " 終了");
+    Logger::getInstance().logInfo("ActionNode " + mActionName + " 終了");
 }
 
-void ActionChain::execute()
+void ActionNode::execute()
 {
     mActionCall(mNextAction);
     mIsEnd = true;
 }
 
-bool ActionChain::isEnd()
+bool ActionNode::isEnd()
 {
     return mIsEnd;
 }
 
-void ActionChain::setNext(ActionChain* nextAction)
+void ActionNode::setNext(ActionNode* nextAction)
 {
     mNextAction = nextAction;
 }
 
-ActionChain* ActionChain::getNext()
+ActionNode* ActionNode::getNext()
 {
     return mNextAction;
 }
 
-void ActionChain::deleteNext()
+void ActionNode::deleteNext()
 {
     if (mNextAction == nullptr)
     {

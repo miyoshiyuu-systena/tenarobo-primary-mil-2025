@@ -2,7 +2,7 @@
 #include    "action/GenerateInfinityWanderAroundAction.h"
 #include    "share/ModuleAccess.h"
 #include    "share/PerceptionDataAccess.h"
-#include    "action/ActionChain.h"
+#include    "action/ActionNode.h"
 #include    "action/RunUntilWallDetectAction.h"
 #include    "action/Turn180Action.h"
 
@@ -11,32 +11,39 @@
  * その場でくるりん
  * を繰り返す
  */
-void generate_infinity_wander_around_action(ActionChain*& next_ptr)
+std::function<void(ActionNode*&)> generate_infinity_wander_around_action()
 {
-    ActionChain* runAction = new ActionChain(
+    return [](ActionNode*& next_ptr) {
+    ActionNode* runAction = new ActionNode(
         &twinWheelDrive,
         &frontArm,
         perceptionDataAccess,
-        run_until_wall_detect_action,
+        run_until_wall_detect_action(
+            400,    // 壁の接近を検知する距離mm
+            100,    // モーターの速度出力mm/s
+            1000,   // 壁の接近を検知する間隔時間ms
+            1000    // 休憩時間ms
+        ),
         "ペットボトルに激突するまで猪突猛進！！"
     );
     next_ptr = runAction;
 
-    ActionChain* turnAction = new ActionChain(
+    ActionNode* turnAction = new ActionNode(
         &twinWheelDrive,
         &frontArm,
         perceptionDataAccess,
-        turn_180_action,
+        turn_180_action(1000),
         "その場でくるりん！！"
     );
     runAction->setNext(turnAction);
 
-    ActionChain* infinityAction = new ActionChain(
+    ActionNode* infinityAction = new ActionNode(
         &twinWheelDrive,
         &frontArm,
         perceptionDataAccess,
-        generate_infinity_wander_around_action,
+        generate_infinity_wander_around_action(),
         "無限に生成する・・・"
     );
     turnAction->setNext(infinityAction);
+    };
 }
