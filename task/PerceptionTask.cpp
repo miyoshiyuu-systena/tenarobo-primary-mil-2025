@@ -12,6 +12,12 @@
 static const bool is_logging_enable = false;
 
 /**
+ * 知覚タスクの回数
+ * オーバーフローしてもよい
+ */
+static int count = 0;
+
+/**
  * 知覚処理
  * @param   exinf     拡張情報
  */
@@ -23,12 +29,25 @@ void    perc_task(intptr_t exinf)   {
 
     /**
      * カラーセンサデータの取得
+     * @note
+     *      一回のタスクでカラーセンサから複数のデータを取得しようとすると、メインタスクが停止する（原因不明）
+     * 　　　そのため知覚タスクのサイクルを2回セットにして別々の値を受ける
      */
-    // ColorSensor::HSV hsv;
-    // colorSensor.getHSV(hsv, true);
-    // perceptionDataAccess.color[0] = hsv.h;
-    // perceptionDataAccess.color[1] = hsv.s;
-    // perceptionDataAccess.color[2] = hsv.v;
+    if (count % 2 == 0) {
+        /**
+         * HSV値の取得（青床の判別に有効）
+         */
+        ColorSensor::HSV hsv;
+        colorSensor.getHSV(hsv, true);
+        perceptionDataAccess.color[0] = hsv.h;
+        perceptionDataAccess.color[1] = hsv.s;
+        perceptionDataAccess.color[2] = hsv.v;
+    } else {
+        /**
+         * 反射値の取得（白黒床の判別に有効）
+         */
+        perceptionDataAccess.brightness = colorSensor.getReflection();
+    }
 
     
     /**
@@ -76,14 +95,6 @@ void    perc_task(intptr_t exinf)   {
         // Logger::getInstance().logWarning(motorsStr3);
     }
     
-    
-    /**
-     * カラーセンサデータの取得
-     * XXXXXX：同じサイクルで輝度を2回取得しようとすると、メインタスクが止まってしまう
-     * XXXXXX：一度に取得するデータの質を厳選した方がいいかもしれない
-     * XXXXXX：つまり、カラーセンサデータの取得は、メインタスクで行い、知覚タスクは撤廃する
-     */
-    perceptionDataAccess.brightness = colorSensor.getReflection();
     
     //  タスク終了
     ext_tsk();
