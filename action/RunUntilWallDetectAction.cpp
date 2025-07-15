@@ -16,8 +16,7 @@
 std::function<void(ActionNode*&)> run_until_wall_detect_action(
     int detect_distance_threshold,
     float speed,
-    int detect_interval,
-    int vacation_time
+    int detect_interval
 )
 {
     return [detect_distance_threshold, speed, detect_interval, vacation_time](ActionNode*& next_ptr) {
@@ -57,8 +56,5 @@ std::function<void(ActionNode*&)> run_until_wall_detect_action(
         twinWheelDrive.stop();
         twinWheelDrive.resetLeftCount();
         twinWheelDrive.resetRightCount();
-
-        // 休憩時間
-        dly_tsk(VACATION_TIME * 1000);
     };
 }

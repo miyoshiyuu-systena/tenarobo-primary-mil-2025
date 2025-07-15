@@ -1,3 +1,4 @@
+#include "spikeapi.h"
 #include "ActionNode.h"
 #include "Logger.h"
 
@@ -8,7 +9,8 @@ ActionNode::ActionNode(
     Motor* frontArm,
     PerceptionDataAccess& percDataAccess,
     std::function<void(ActionNode*&)> actionCall,
-    std::string actionName
+    std::string actionName,
+    int vacationTime = 500
 )
     : mTwinWheelDrive(twinWheelDrive)
     , mFrontArm(frontArm)
@@ -17,6 +19,7 @@ ActionNode::ActionNode(
     , mActionName(actionName)
     , mNextAction(nullptr)
     , mIsEnd(false)
+    , mVacationTime(vacationTIme)
 {}
 
 ActionNode::~ActionNode()
@@ -28,6 +31,7 @@ void ActionNode::execute()
 {
     mActionCall(mNextAction);
     mIsEnd = true;
+    dly_tsk(mVacationTime * 1000);
 }
 
 bool ActionNode::isEnd()
