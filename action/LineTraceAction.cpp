@@ -28,26 +28,16 @@ const float THRESHOLD_DEFAULT = 40.0f;
  */
 const float Kp = 0.5f;
 
+/**
+ * この関数ではラインの右縁を通るように、ライントレースする
+ */
 std::function<void(ActionNode*&)> line_trace_action(float speed, int duration, int vacation_duration, std::function<bool()> judge)
 {
     return [speed, duration, vacation_duration, judge](ActionNode*& next_ptr) {
-        Logger& logger = Logger::getInstance();
         do {
             // P制御による速度制御
             const float error = perceptionDataAccess.brightness - THRESHOLD_DEFAULT;
-            logger.logInfo("輝度: " + std::to_string(perceptionDataAccess.brightness) + " 誤差: " + std::to_string(error));
             twinWheelDrive.setSpeed(speed - Kp * error, speed + Kp * error);
-            if (error > 0) {
-                /**
-                 * 白い床を検出：テープから離れすぎているので左に曲がる
-                 */
-                logger.logInfo("白い床検出: 左に曲がる（テープに近づく）");
-            } else {
-                /**
-                 * 黒いテープを検出：テープの上に乗りすぎているので右に曲がる
-                 */
-                logger.logInfo("黒いテープ検出: 右に曲がる（白い床に近づく）");
-            }
 
             // 判定周期
             dly_tsk(duration * 1000);
