@@ -10,14 +10,21 @@ using   namespace   spikeapi;
 
 
 /**
- * XXX: 実験的に決定してください。
- * ライントレースの白と黒の境目の値とします。
+ * 輝度の閾値
+ * 白と黒の境目部分をロボットの左右中心が通過するように、両輪の速度を調整する
+ * カラーセンサはロボットの左右中心鉛直下方向に取り付けられており、床面の輝度を取得できる
+ * @note
+ *      実験的に確定すること
+ *      輝度の値は大会会場の光学環境と床の材料に影響を受ける
  */
-const float THRESHOLD = 40.0f;
+const float THRESHOLD_DEFAULT = 40.0f;
 
 /**
- * XXX: 実験的に決定してください。
  * 比例定数
+ * @note
+ *      比例定数を大きくすると
+ *      ラインから外れかけたときに鋭く補正がかかる
+ *      ただし、大きく方向が変わるなどの問題もあり得る
  */
 const float Kp = 0.5f;
 
@@ -27,7 +34,7 @@ std::function<void(ActionNode*&)> line_trace_action(float speed, int duration, i
         Logger& logger = Logger::getInstance();
         do {
             // P制御による速度制御
-            const float error = perceptionDataAccess.brightness - THRESHOLD;
+            const float error = perceptionDataAccess.brightness - THRESHOLD_DEFAULT;
             logger.logInfo("輝度: " + std::to_string(perceptionDataAccess.brightness) + " 誤差: " + std::to_string(error));
             twinWheelDrive.setSpeed(speed - Kp * error, speed + Kp * error);
             if (error > 0) {
