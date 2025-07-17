@@ -20,13 +20,15 @@ public:
      *          繰り返し実行する場合は、whileループを使用する
      *          コールバックの引数はこのActionNodeの次のポインタ
      * @param actionName アクションの名前（ログ出力のため）
+     * @param vacationTime アクション終了後のクーリングタイム(ms)
      */
     ActionNode(
         TwinWheelDrive* twinWheelDrive,
         Motor* frontArm,
         PerceptionDataAccess& percDataAccess,
         std::function<void(ActionNode*&)> actionCall,
-        std::string actionName
+        std::string actionName,
+        int vacationTime = 500
     );
 
     /**
@@ -92,6 +94,12 @@ private:
      * このアクションチェーンが終了している
      */
     bool mIsEnd;
+
+    /**
+     * アクション終了時のクーリングタイム
+     * モーターが完全に停止する前に次の処理をすると、想定よりも進まないということがある
+     */
+    int mVacationTime;
 };
 
 #endif // _ACTION_CHAIN_H_

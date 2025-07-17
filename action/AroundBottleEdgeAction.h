@@ -9,7 +9,6 @@
  * @param radius 円弧の半径[mm]
  * @param angle 円弧の角度[°]
  * @param duration 円弧を描く時間[ms]
- * @param vacation_time 休憩時間[ms]
  * @return 円弧を描きながら移動するアクション
  * 
  * 名前の経緯：
@@ -19,8 +18,7 @@
 std::function<void(ActionNode*&)> around_bottle_edge_action(
     float radius,
     float angle,
-    int duration,
-    int vacation_time
+    int duration
 );
 
 #endif // _AROUND_BOTTLE_EDGE_ACTION_H_

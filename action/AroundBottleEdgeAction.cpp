@@ -10,14 +10,12 @@
  * @param radius 円弧の半径[mm]
  * @param angle 円弧の角度[°]
  * @param duration 円弧を描く時間[ms](実際の到着時間にはルーズ、走路状況による、目標時間程度)
- * @param vacation_time 休憩時間[ms]
  * @return 円弧を描きながら移動するアクション
  */
 std::function<void(ActionNode*&)> around_bottle_edge_action(
     float radius,
     float angle,
-    int duration,
-    int vacation_time
+    int duration
 )
 {
     return [radius, angle, duration, vacation_time](ActionNode*& next_ptr) {
@@ -49,8 +47,5 @@ std::function<void(ActionNode*&)> around_bottle_edge_action(
         twinWheelDrive.stop();
         twinWheelDrive.resetLeftCount();
         twinWheelDrive.resetRightCount();
-
-        // 休憩時間
-        dly_tsk(vacation_time * 1000);
     };
 }
