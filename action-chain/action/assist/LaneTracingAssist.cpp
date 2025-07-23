@@ -35,6 +35,7 @@ void LaneTracingAssist::init(float baseLeftSpeed, float baseRightSpeed)
     mBaseRightSpeed = baseRightSpeed;
     mErrorHistory = {0};
     mErrorHistoryIndex = 0;
+    mErrorIntegral = 0;
 }
 
 void LaneTracingAssist::correct(float* speeds)
@@ -43,26 +44,23 @@ void LaneTracingAssist::correct(float* speeds)
     * 青白線の境界線からの誤差を計算する
     */
     float error = mCalcError(mPerc->getColorH(), mPerc->getColorS(), mPerc->getColorV());
-
-    /**
-     * エラーヒストリーを更新する
-     */
-    mErrorHistory[mErrorHistoryIndex] = error;
-
+    
     /**
      * 過去のエラー値を集計する
+     * - もっとも古いデータを差し引いて
+     * - 新しいデータを追加する
      */
-    float errorIntegral = 0;
-    for (int i = 0; i < mTotalHistory; i++) {
-        errorIntegral += mErrorHistory[i];
-    }
-
-    if (errorIntegral > INTEGRAL_LIMIT) {
+    mErrorIntegral -= mErrorHistory[mErrorHistoryIndex];
+    mErrorIntegral += error
+    
+    float errorIntegral = mErrorIntegral;
+    
+    if (errorIntegral > INTEGRAL_LIMIT) {           // 上限飽和の防止
         errorIntegral = INTEGRAL_LIMIT;
-    } else if (errorIntegral < -INTEGRAL_LIMIT) {
+    } else if (errorIntegral < -INTEGRAL_LIMIT) {   // 下限飽和の防止
         errorIntegral = -INTEGRAL_LIMIT;
-    }
-
+    }    
+    
     /**
      * 前回のエラーと比較する
      */
@@ -102,5 +100,10 @@ void LaneTracingAssist::correct(float* speeds)
     speeds[0] = mBaseLeftSpeed - sign * pidControl;
     speeds[1] = mBaseRightSpeed + sign * pidControl;
 
+    /**
+     * 今回のエラーを履歴に加えて
+     * 次回の添え字に更新
+     */
+    mErrorHistory[mErrorHistoryIndex] = error;
     mErrorHistoryIndex ++;
 }

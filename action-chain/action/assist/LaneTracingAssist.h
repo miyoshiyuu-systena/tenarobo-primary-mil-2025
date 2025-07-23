@@ -74,6 +74,8 @@ class LaneTracingAssist : public IAssist
         static const int mTotalHistory = 5; // とりあえず過去5回分
         float mErrorHistory[mTotalHistory];
         int mErrorHistoryIndex;
+        float mErrorIntegral;   // 計算の効率化のため前回の値を記憶
+                                // 毎回mErrorHistoryをfor足し算すると効率が悪いかもしれない
 };
 
 #endif // LANE_TRACING_ASSIST_H
