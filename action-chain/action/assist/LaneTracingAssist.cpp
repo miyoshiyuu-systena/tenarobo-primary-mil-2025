@@ -66,7 +66,7 @@ void LaneTracingAssist::correct(float* speeds)
     /**
      * 前回のエラーと比較する
      */
-    int prevIndex = (mTotalHistory + mErrorHistory - 1) % mTotalHistory;
+    int prevIndex = (mTotalHistory + mErrorHistoryIndex - 1) % mTotalHistory;
     float derivative = mErrorHistory[mErrorHistoryIndex] - mErrorHistory[prevIndex];
     
     /**
