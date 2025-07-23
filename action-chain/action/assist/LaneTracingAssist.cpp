@@ -33,8 +33,6 @@ void LaneTracingAssist::init(float baseLeftSpeed, float baseRightSpeed)
 {
     mBaseLeftSpeed = baseLeftSpeed;
     mBaseRightSpeed = baseRightSpeed;
-    // mErrorIntegral = 0.0f;
-    // mPreviousError = 0.0f;
     mErrorHistory = {0};
     mErrorHistoryIndex = 0;
 }
@@ -64,20 +62,12 @@ void LaneTracingAssist::correct(float* speeds)
     } else if (errorIntegral < -INTEGRAL_LIMIT) {
         errorIntegral = -INTEGRAL_LIMIT;
     }
-    // mErrorIntegral += error;
-    // if (mErrorIntegral > INTEGRAL_LIMIT) {
-    //     mErrorIntegral = INTEGRAL_LIMIT;
-    // } else if (mErrorIntegral < -INTEGRAL_LIMIT) {
-    //     mErrorIntegral = -INTEGRAL_LIMIT;
-    // }
 
     /**
      * 前回のエラーと比較する
      */
     int prevIndex = (mTotalHistory + mErrorHistory - 1) % mTotalHistory;
     float derivative = mErrorHistory[mErrorHistoryIndex] - mErrorHistory[prevIndex];
-    // float derivative = error - mPreviousError;
-    // mPreviousError = error;
     
     /**
      * PID制御による駆動指示
