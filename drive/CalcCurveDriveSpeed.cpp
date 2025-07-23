@@ -2,7 +2,7 @@
 #include "TwinWheelConst.h"
 #include <cmath>
 
-void calcCurveSpeeds(float angular_speed, float radius, float speeds[2])
+void calcCurveSpeedsByAngularSpeed(float angular_speed, float radius, float speeds[2])
 {
     // 半径が車輪間隔の半分より小さい場合は停止
     if (radius < WHEEL_TREAD_MM / 2.0f) {
