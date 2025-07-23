@@ -107,5 +107,5 @@ void LaneTracingAssist::correct(float* speeds)
      * 次回の添え字に更新
      */
     mErrorHistory[mErrorHistoryIndex] = error;
-    mErrorHistoryIndex ++;
+    mErrorHistoryIndex = (mErrorHistoryIndex + 1) % mTotalHistory;
 }
