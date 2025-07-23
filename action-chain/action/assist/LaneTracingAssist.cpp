@@ -58,6 +58,12 @@ void LaneTracingAssist::correct(float* speeds)
     for (int i = 0; i < mTotalHistory; i++) {
         errorIntegral += mErrorHistory[i];
     }
+
+    if (errorIntegral > INTEGRAL_LIMIT) {
+        errorIntegral = INTEGRAL_LIMIT;
+    } else if (errorIntegral < -INTEGRAL_LIMIT) {
+        errorIntegral = -INTEGRAL_LIMIT;
+    }
     // mErrorIntegral += error;
     // if (mErrorIntegral > INTEGRAL_LIMIT) {
     //     mErrorIntegral = INTEGRAL_LIMIT;
