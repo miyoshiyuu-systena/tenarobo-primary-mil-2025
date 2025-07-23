@@ -8,7 +8,7 @@
 #include "action-chain/action/closer/BlueFloorCloser.h"
 #include "action-chain/action/closer/TimedCloser.h"
 #include "action-chain/action/HachikouAction.h"
-#include "action-chain/action/GoFrontAction.h"
+#include "action-chain/action/GoStraightAction.h"
 #include "perception/Perception.h"
 
 using namespace spikeapi;
@@ -68,7 +68,7 @@ void main_task(intptr_t exinf)   {
         &frontArmDrive,
         &perception,
         0b00100000,
-        goFrontActionFactory(
+        goStraightActionFactory(
             750,   // 速度[mm/s]
             10,  // 検知間隔[ms]
             assist,
