@@ -2,8 +2,10 @@
 #include "IAssist.h"
 #include "CalcErrorFunc.h"
 
-// 積分の最大値（最小値）
-// 飽和防止のための制限値
+/**
+ * 飽和制限
+ * - 連続的な操作における積分飽和を抑制し、安定化をはかる
+ */
 static const float INTEGRAL_LIMIT = 5.0f;
 
 LaneTracingAssist::LaneTracingAssist(
