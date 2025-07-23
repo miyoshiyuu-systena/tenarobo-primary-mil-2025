@@ -60,13 +60,20 @@ class LaneTracingAssist : public IAssist
     private:
         float mBaseLeftSpeed;
         float mBaseRightSpeed;
-        float mErrorIntegral;
-        float mPreviousError;
+        // float mErrorIntegral;
+        // float mPreviousError;
         bool mIsRightSide;
         float mKp;
         float mKi;
         float mKd;
         CalcErrorFunc mCalcError;
+
+        /**
+         * エラーヒストリー
+         */
+        static const int mTotalHistory = 5; // とりあえず過去5回分
+        float mErrorHistory[mTotalHistory];
+        int mErrorHistoryIndex;
 };
 
 #endif // LANE_TRACING_ASSIST_H

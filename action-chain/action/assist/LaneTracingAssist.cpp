@@ -33,8 +33,10 @@ void LaneTracingAssist::init(float baseLeftSpeed, float baseRightSpeed)
 {
     mBaseLeftSpeed = baseLeftSpeed;
     mBaseRightSpeed = baseRightSpeed;
-    mErrorIntegral = 0.0f;
-    mPreviousError = 0.0f;
+    // mErrorIntegral = 0.0f;
+    // mPreviousError = 0.0f;
+    mErrorHistory = {0};
+    mErrorHistoryIndex = 0;
 }
 
 void LaneTracingAssist::correct(float* speeds)
@@ -43,16 +45,33 @@ void LaneTracingAssist::correct(float* speeds)
     * 青白線の境界線からの誤差を計算する
     */
     float error = mCalcError(mPerc->getColorH(), mPerc->getColorS(), mPerc->getColorV());
-    
-    mErrorIntegral += error;
-    if (mErrorIntegral > INTEGRAL_LIMIT) {
-        mErrorIntegral = INTEGRAL_LIMIT;
-    } else if (mErrorIntegral < -INTEGRAL_LIMIT) {
-        mErrorIntegral = -INTEGRAL_LIMIT;
+
+    /**
+     * エラーヒストリーを更新する
+     */
+    mErrorHistory[mErrorHistoryIndex] = error;
+
+    /**
+     * 過去のエラー値を集計する
+     */
+    float errorIntegral = 0;
+    for (int i = 0; i < mTotalHistory; i++) {
+        errorIntegral += mErrorHistory[i];
     }
-    
-    float derivative = error - mPreviousError;
-    mPreviousError = error;
+    // mErrorIntegral += error;
+    // if (mErrorIntegral > INTEGRAL_LIMIT) {
+    //     mErrorIntegral = INTEGRAL_LIMIT;
+    // } else if (mErrorIntegral < -INTEGRAL_LIMIT) {
+    //     mErrorIntegral = -INTEGRAL_LIMIT;
+    // }
+
+    /**
+     * 前回のエラーと比較する
+     */
+    int prevIndex = (mTotalHistory + mErrorHistory - 1) % mTotalHistory;
+    float derivative = mErrorHistory[mErrorHistoryIndex] - mErrorHistory[prevIndex];
+    // float derivative = error - mPreviousError;
+    // mPreviousError = error;
     
     /**
      * PID制御による駆動指示
@@ -76,7 +95,7 @@ void LaneTracingAssist::correct(float* speeds)
      * D制御項：
      * エラーの変化率に基づいて予測的に制御し、オーバーシュートを抑制してより滑らかな動作を実現する
      */
-    float pidControl = mKp * error + mKi * mErrorIntegral + mKd * derivative;
+    float pidControl = mKp * error + mKi * errorIntegral + mKd * derivative;
     
     /**
      * 境界の左右どちらに沿って走行するか
