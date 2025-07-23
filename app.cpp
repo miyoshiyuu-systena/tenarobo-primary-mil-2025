@@ -6,6 +6,7 @@
 #include "action-chain/action/assist/LaneTracingAssist.h"
 #include "action-chain/action/assist/CalcBlackWhiteBorderError.h"
 #include "action-chain/action/closer/BlueFloorCloser.h"
+#include "action-chain/action/closer/TimedCloser.h"
 #include "action-chain/action/HachikouAction.h"
 #include "action-chain/action/GoFrontAction.h"
 #include "perception/Perception.h"
@@ -55,12 +56,12 @@ void main_task(intptr_t exinf)   {
         &frontArmDrive,
         &perception,
         true,
-        100.0f,
-        5.0f,
-        0.5f,
+        0.0f,
+        0.0f,
+        0.0f,
         calcBlackWhiteBorderError
     );
-    ICloser* closer = new BlueFloorCloser(&perception);
+    ICloser* closer = new TimedCloser(&perception, 300);
     ActionNode* actionNode1 = new ActionNode(
         "レーントレーシングアシストで白黒の境界(右縁)に沿って正面を走行し、青床を検出すると停止",
         &twinWheelDrive,
@@ -69,7 +70,7 @@ void main_task(intptr_t exinf)   {
         0b00100000,
         goFrontActionFactory(
             750,   // 速度[mm/s]
-            3,  // 検知間隔[ms]
+            10,  // 検知間隔[ms]
             assist,
             closer
         ),

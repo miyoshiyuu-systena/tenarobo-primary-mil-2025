@@ -2,9 +2,11 @@
 #include "IAssist.h"
 #include "CalcErrorFunc.h"
 
-// 積分の最大値（最小値）
-// 飽和防止のための制限値
-static const float INTEGRAL_LIMIT = 5.0f;
+/**
+ * 飽和制限
+ * - 連続的な操作における積分飽和を抑制し、安定化をはかる
+ */
+static const float INTEGRAL_LIMIT = 0.5f;
 
 LaneTracingAssist::LaneTracingAssist(
     TwinWheelDrive* twinWheelDrive,
@@ -33,8 +35,9 @@ void LaneTracingAssist::init(float baseLeftSpeed, float baseRightSpeed)
 {
     mBaseLeftSpeed = baseLeftSpeed;
     mBaseRightSpeed = baseRightSpeed;
-    mErrorIntegral = 0.0f;
-    mPreviousError = 0.0f;
+    mErrorHistory = new float[mTotalHistory]();
+    mErrorHistoryIndex = 0;
+    mErrorIntegral = 0;
 }
 
 void LaneTracingAssist::correct(float* speeds)
@@ -44,15 +47,31 @@ void LaneTracingAssist::correct(float* speeds)
     */
     float error = mCalcError(mPerc->getColorH(), mPerc->getColorS(), mPerc->getColorV());
     
+    /**
+     * 過去のエラー値を集計する
+     * - もっとも古いデータを差し引いて
+     * - 新しいデータを追加する
+     */
+    mErrorIntegral -= mErrorHistory[mErrorHistoryIndex];
     mErrorIntegral += error;
-    if (mErrorIntegral > INTEGRAL_LIMIT) {
-        mErrorIntegral = INTEGRAL_LIMIT;
-    } else if (mErrorIntegral < -INTEGRAL_LIMIT) {
-        mErrorIntegral = -INTEGRAL_LIMIT;
-    }
     
-    float derivative = error - mPreviousError;
-    mPreviousError = error;
+    float errorIntegral = mErrorIntegral;
+    
+    if (errorIntegral > INTEGRAL_LIMIT) {           // 上限飽和の防止
+        errorIntegral = INTEGRAL_LIMIT;
+    } else if (errorIntegral < -INTEGRAL_LIMIT) {   // 下限飽和の防止
+        errorIntegral = -INTEGRAL_LIMIT;
+    }    
+    
+    /**
+     * 前回のエラーと比較する
+     */
+    int prevIndex = (mTotalHistory + mErrorHistoryIndex - 1) % mTotalHistory;
+    float derivative = error - mErrorHistory[prevIndex];
+
+    /**
+     * XXX: ローパスフィルターによる微分値の緩和を適用する
+     */
     
     /**
      * PID制御による駆動指示
@@ -76,7 +95,7 @@ void LaneTracingAssist::correct(float* speeds)
      * D制御項：
      * エラーの変化率に基づいて予測的に制御し、オーバーシュートを抑制してより滑らかな動作を実現する
      */
-    float pidControl = mKp * error + mKi * mErrorIntegral + mKd * derivative;
+    float pidControl = mKp * error + mKi * errorIntegral + mKd * derivative;
     
     /**
      * 境界の左右どちらに沿って走行するか
@@ -86,4 +105,11 @@ void LaneTracingAssist::correct(float* speeds)
     const int sign = mIsRightSide ? 1 : -1;
     speeds[0] = mBaseLeftSpeed - sign * pidControl;
     speeds[1] = mBaseRightSpeed + sign * pidControl;
+
+    /**
+     * 今回のエラーを履歴に加えて
+     * 次回の添え字に更新
+     */
+    mErrorHistory[mErrorHistoryIndex] = error;
+    mErrorHistoryIndex = (mErrorHistoryIndex + 1) % mTotalHistory;
 }
