@@ -68,6 +68,10 @@ void LaneTracingAssist::correct(float* speeds)
      */
     int prevIndex = (mTotalHistory + mErrorHistoryIndex - 1) % mTotalHistory;
     float derivative = error - mErrorHistory[prevIndex];
+
+    /**
+     * XXX: ローパスフィルターによる微分値の緩和を適用する
+     */
     
     /**
      * PID制御による駆動指示
