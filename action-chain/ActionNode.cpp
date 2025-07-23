@@ -21,18 +21,18 @@ ActionNode::ActionNode(
     , mActionCall(actionCall)
     , mVacationTime(vacationTime)
 {
-    mPerc->setMask(mPercMask);
 }
 
 ActionNode::~ActionNode()
 {
+    mPerc->setMask(0b11111111);
     Logger::getInstance().logInfo("ActionNode: " + mActionName + " メモリ解放");
 }
 
 void ActionNode::execute()
 {
     Logger::getInstance().logInfo("ActionNode: " + mActionName + " 実行");
-    mPerc->setMask(0b11111111);
+    mPerc->setMask(mPercMask);
     ActionNode* curr_ptr = this;
     ActionNode*& curr_ptr_ref = curr_ptr;
     mActionCall(
