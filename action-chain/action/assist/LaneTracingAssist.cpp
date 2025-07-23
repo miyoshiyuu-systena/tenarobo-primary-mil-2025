@@ -105,4 +105,6 @@ void LaneTracingAssist::correct(float* speeds)
     const int sign = mIsRightSide ? 1 : -1;
     speeds[0] = mBaseLeftSpeed - sign * pidControl;
     speeds[1] = mBaseRightSpeed + sign * pidControl;
+
+    mErrorHistoryIndex ++;
 }
