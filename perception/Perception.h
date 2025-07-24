@@ -101,6 +101,30 @@ public:
     cv::Mat getFrontImage() const;
 
     /**
+     * 車体の移動距離
+     * @note
+     *  モーターの回転数からの測定値
+     *  単位:[mm]
+     *
+     * TODO:
+     *  左右の回転数の平均から移動距離を取得する。
+     *  最終的にはオドメトリ（車輪回転数と角度から計算）で移動距離を取得する。
+     */
+    float getMoveDistance() const;
+
+    /**
+     * 車体の移動距離（累計）
+     * @note
+     *  モーターの回転数からの測定値
+     *  単位:[mm]
+     *
+     * TODO:
+     *  左右の回転数の平均から移動距離を取得する。
+     *  最終的にはオドメトリ（車輪回転数と角度から計算）で移動距離を取得する。
+     */
+    float getTotalMoveDistance() const;
+
+    /**
      * データ更新を宣言するマスク
      * 逆に言うと更新する必要のないデータは更新しない
      * 
@@ -153,6 +177,9 @@ private:
     float mLeftMotorSpeed;
     float mRightMotorSpeed;
     float mFrontArmSpeed;
+    // m-sekioka 20250724 Add
+    float mMoveDistance;        // 移動距離
+    float mTotalMoveDistance;   // 累計移動距離
 
     /**
      * データ更新を宣言するマスク

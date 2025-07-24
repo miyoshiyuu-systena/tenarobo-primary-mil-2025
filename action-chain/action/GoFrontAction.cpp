@@ -34,7 +34,7 @@ ActionCall goFrontActionFactory(
         } while (!closerPtr->isClosed());
 
         twinWheelDrive->stop();
-        twinWheelDrive->resetCount();
+        twinWheelDrive->resetCount(); // m-sekioka 20250724 Comment: ここでresetCountしている理由は？（ただの後始末？）
 
         delete assist;
         delete closerPtr;

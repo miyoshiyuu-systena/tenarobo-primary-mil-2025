@@ -18,7 +18,10 @@ Perception::Perception()
       mLeftMotorSpeed(-1.0f),
       mRightMotorSpeed(-1.0f),
       mFrontArmSpeed(-1.0f),
-      mMask(0b11111111)
+      mMask(0b11111111),
+      // m-sekioka 20250724 Add
+      mMoveDistance(-1.0f),
+      mTotalMoveDistance(-1.0f)
 {
 }
 
@@ -56,6 +59,14 @@ float Perception::getFrontArmSpeed() const {
 
 cv::Mat Perception::getFrontImage() const {
     return mFrontImage;
+}
+
+float Perception::getMoveDistance() const{
+    return mMoveDistance;
+}
+
+float Perception::getTotalMoveDistance() const{
+    return mTotalMoveDistance;
 }
 
 void Perception::setMask(uint8_t mask) {
