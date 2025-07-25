@@ -38,54 +38,8 @@ void main_task(intptr_t exinf)   {
      * アクションチェーンの作成
      * ----------------------------
      */
-    ActionNode* actionNode0 = new ActionNode(
-        "背中のボタンが押されるまでハチ公モード！！",
-        &twinWheelDrive,
-        &frontArmDrive,
-        &perception,
-        0b00010000,
-        hachikouActionFactory(
-            1.0f,   // 圧力センサの検知閾値[N]
-            100    // 圧力センサの検知間隔[ms]
-        ),
-        1000
-    );
-
-    IAssist* assist = new LaneTracingAssist(
-        &twinWheelDrive,
-        &frontArmDrive,
-        &perception,
-        true,
-        0.0f,
-        0.0f,
-        0.0f,
-        calcBlackWhiteBorderError
-    );
-    ICloser* closer = new TimedCloser(&perception, 300);
-    ActionNode* actionNode1 = new ActionNode(
-        "レーントレーシングアシストで白黒の境界(右縁)に沿って正面を走行し、青床を検出すると停止",
-        &twinWheelDrive,
-        &frontArmDrive,
-        &perception,
-        0b00100000,
-        goFrontActionFactory(
-            750,   // 速度[mm/s]
-            10,  // 検知間隔[ms]
-            assist,
-            closer
-        ),
-        100
-    );
-    actionNode0->setNext(actionNode1);
-
-    ActionNode* currentNode = actionNode0;
-    ActionNode* previousNode = nullptr;
-    while (currentNode != nullptr) {
-        currentNode->execute();
-        previousNode = currentNode;
-        currentNode = currentNode->getNext();
-        delete previousNode;
-    }
+    logger.logInfo("1000秒間待機します。その間に知覚情報を取得して！！");
+    dly_tsk(1000 * 1000 * 1000);
 
     // 知覚タスクの停止
     stp_cyc(PERC_CYC);

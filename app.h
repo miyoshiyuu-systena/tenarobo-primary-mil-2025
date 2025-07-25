@@ -9,7 +9,7 @@ extern "C" {
 #define     MAIN_PRIORITY       (TMIN_APP_TPRI + 2)
 
 /* サイクル起動周期 */
-#define     PERC_PERIOD         (10 * 1000)      // 10ms
+#define     PERC_PERIOD         (100 * 1000)      // 100ms
 
 /* サイクル起動位相（最初に起動するときの遅延時間） */
 #define     PERC_PHS            (0)
