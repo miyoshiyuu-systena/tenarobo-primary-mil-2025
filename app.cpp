@@ -383,7 +383,7 @@ void main_task(intptr_t exinf)   {
         goCurveActionFactory(
             100.0f,   // 速度[mm/s]
             200.0f,   // 半径[mm]
-            false,
+            true,
             10,  // 検知間隔[ms]
             assist12,
             closer12
