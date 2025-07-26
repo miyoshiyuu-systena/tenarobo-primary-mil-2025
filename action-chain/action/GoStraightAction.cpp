@@ -1,9 +1,9 @@
-#include "GoFrontAction.h"
+#include "GoStraightAction.h"
 #include "IAssist.h"
 #include "ICloser.h"
 #include "spikeapi.h"
 
-ActionCall goFrontActionFactory(
+ActionCall goStraightActionFactory(
     float speed,
     int detectInterval,
     IAssist* assist,

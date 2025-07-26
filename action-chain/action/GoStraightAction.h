@@ -1,5 +1,5 @@
-#ifndef _GO_FRONT_ACTION_H_
-#define _GO_FRONT_ACTION_H_
+#ifndef _GO_STRAIGHT_ACTION_H_
+#define _GO_STRAIGHT_ACTION_H_
 
 #include    "ActionNode.h"
 #include    "IAssist.h"
@@ -13,18 +13,18 @@
  */
 
 /**
- * 前方に走るアクションのファクトリー関数
+ * 直線走行アクションのファクトリー関数
  * @param speed 速度[mm/s]
  * @param detectInterval 検知間隔[ms]
  * @param assistPtr 走行補助
  * @param closerPtr 終了判定
- * @return 前方に走るアクション
+ * @return 直線走行アクション
  */
-ActionCall goFrontActionFactory(
+ActionCall goStraightActionFactory(
     float speed,
     int detectInterval,
     IAssist* assistPtr,
     ICloser* closerPtr
 );
 
-#endif // _GO_FRONT_ACTION_H_
+#endif // _GO_STRAIGHT_ACTION_H_

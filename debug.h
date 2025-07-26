@@ -12,13 +12,13 @@
  * 知覚タスクのログ出力の有効/無効
  * デバッグ用
  */
-const bool isPerceptionLoggingEnable = false;
+const bool isPerceptionLoggingEnable = true;
 
 /**
  * 知覚タスクをログ出力するとき、マスクを無視して全てのデータを取得するか
  * デバッグ用
  */
-const bool isPerceptionLoggingIgnoreMask = isPerceptionLoggingEnable && false;
+const bool isPerceptionLoggingIgnoreMask = isPerceptionLoggingEnable && true;
 
 /**
  * Webカメラの画像を保存するか
