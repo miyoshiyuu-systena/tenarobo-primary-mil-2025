@@ -5,12 +5,14 @@ mkfile_path := $(dir $(lastword $(MAKEFILE_LIST)))
 APPL_CXXOBJS +=\
 	IAssist.o\
 	CalcBlackWhiteBorderError.o\
+	CalcBlueWhiteBorderError.o\
 	LaneTracingAssist.o\
 	ICloser.o\
 	BlackFloorCloser.o\
 	BlueFloorCloser.o\
 	TimedCloser.o\
-	GoFrontAction.o\
+	GoStraightAction.o\
+	GoCurveAction.o\
 	HachikouAction.o\
 	ActionNode.o\
 	Device.o\

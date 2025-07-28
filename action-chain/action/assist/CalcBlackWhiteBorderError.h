@@ -4,7 +4,7 @@
 #include "CalcErrorFunc.h"
 
 /**
- * 青白の境界に対する誤差を計算する関数
+ * 黒白の境界に対する誤差を計算する関数
  */
 extern CalcErrorFunc calcBlackWhiteBorderError;
 
