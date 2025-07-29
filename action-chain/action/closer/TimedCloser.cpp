@@ -1,8 +1,16 @@
 #include "TimedCloser.h"
 #include "ICloser.h"
+#include "device/Device.h"
+#include "ICloserGenerator.h"
 
-TimedCloser::TimedCloser(Perception* perc, int max)
-    : ICloser(perc)
+ICloserGenerator timedCloserGenerator(Device* device, int max) {
+    return [device, max]() {
+        return new TimedCloser(device, max);
+    };
+}
+
+TimedCloser::TimedCloser(Device* device, int max)
+    : ICloser(device)
     , mMax(max + 1)
 {    
 }

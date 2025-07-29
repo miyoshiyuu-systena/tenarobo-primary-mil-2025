@@ -14,13 +14,13 @@ APPL_CXXOBJS +=\
 	GoStraightAction.o\
 	GoCurveAction.o\
 	HachikouAction.o\
+	StopAction.o\
 	ActionNode.o\
 	Device.o\
 	CalcCurveDriveSpeed.o\
 	FrontArmDrive.o\
 	TwinWheelDrive.o\
 	Logger.o\
-	Perception.o\
 	CameraManager.o\
 
 SRCLANG := c++

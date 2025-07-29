@@ -1,6 +1,21 @@
 #include "LaneTracingAssist.h"
 #include "IAssist.h"
 #include "CalcErrorFunc.h"
+#include "ColorSensor.h"
+#include "IAssistGenerator.h"
+
+IAssistGenerator laneTracingAssistGenerator(
+    Device* device,
+    bool isRightSide,
+    float kp,
+    float ki,
+    float kd,
+    CalcErrorFunc calcError
+) {
+    return [device, isRightSide, kp, ki, kd, calcError]() {
+        return new LaneTracingAssist(device, isRightSide, kp, ki, kd, calcError);
+    };
+}
 
 /**
  * 飽和制限
@@ -9,35 +24,32 @@
 static const float INTEGRAL_LIMIT = 0.5f;
 
 LaneTracingAssist::LaneTracingAssist(
-    TwinWheelDrive* twinWheelDrive,
-    FrontArmDrive* frontArmDrive,
-    Perception* perc,
+    Device* device,
     bool isRightSide,
     float kp,
     float ki,
     float kd,
     CalcErrorFunc calcError
 ):
-    IAssist(twinWheelDrive, frontArmDrive, perc)
+    IAssist(device)
     , mIsRightSide(isRightSide)
     , mKp(kp)
     , mKi(ki)
     , mKd(kd)
     , mCalcError(calcError)
+    , mErrorHistory(new float[mTotalHistory]())
+    , mErrorHistoryIndex(0)
+    , mErrorIntegral(0)
 {
 }
 
 LaneTracingAssist::~LaneTracingAssist()
 {
+    delete[] mErrorHistory;
 }
 
-void LaneTracingAssist::init(float baseLeftSpeed, float baseRightSpeed)
+void LaneTracingAssist::init()
 {
-    mBaseLeftSpeed = baseLeftSpeed;
-    mBaseRightSpeed = baseRightSpeed;
-    mErrorHistory = new float[mTotalHistory]();
-    mErrorHistoryIndex = 0;
-    mErrorIntegral = 0;
 }
 
 void LaneTracingAssist::correct(float* speeds)
@@ -45,7 +57,9 @@ void LaneTracingAssist::correct(float* speeds)
     /**
     * 青白線の境界線からの誤差を計算する
     */
-    float error = mCalcError(mPerc->getColorH(), mPerc->getColorS(), mPerc->getColorV());
+    ColorSensor::HSV hsv;
+    mDevice->colorSensor.getHSV(hsv, true);
+    float error = mCalcError(hsv.h, hsv.s, hsv.v);
     
     /**
      * 過去のエラー値を集計する
@@ -70,7 +84,7 @@ void LaneTracingAssist::correct(float* speeds)
     float derivative = error - mErrorHistory[prevIndex];
 
     /**
-     * XXX: ローパスフィルターによる微分値の緩和を適用する
+     * HACK: ローパスフィルターによる微分値の緩和を適用する
      */
     
     /**
@@ -103,8 +117,8 @@ void LaneTracingAssist::correct(float* speeds)
      * こう考えた時、mIsRightSide = trueの時は線の右縁に沿って走行すると想定する
      */
     const int sign = mIsRightSide ? 1 : -1;
-    speeds[0] = mBaseLeftSpeed - sign * pidControl;
-    speeds[1] = mBaseRightSpeed + sign * pidControl;
+    speeds[0] = speeds[0] - sign * pidControl;
+    speeds[1] = speeds[1] + sign * pidControl;
 
     /**
      * 今回のエラーを履歴に加えて

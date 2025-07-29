@@ -4,7 +4,10 @@
 #include "ActionNode.h"
 #include "IAssist.h"
 #include "ICloser.h"
+#include "IAssistGenerator.h"
+#include "ICloserGenerator.h"
 #include <functional>
+#include <vector>
 
 /**
  * HACK:
@@ -19,8 +22,8 @@
  * @param radius 半径[mm]
  * @param isGoRight 右に曲がるかどうか
  * @param detectInterval 検知間隔[ms]
- * @param assistPtr 走行補助
- * @param closerPtr 終了判定
+ * @param assistPtrGenerators 走行補助ジェネレータのリスト（複数のアシストを順次適用）
+ * @param closerPtrGenerators 終了判定ジェネレータのリスト（複数の終了判定を順次適用）
  * @return 曲線走行アクション
  */
 ActionCall goCurveActionFactory(
@@ -28,8 +31,8 @@ ActionCall goCurveActionFactory(
     float radius,
     bool isGoRight,
     int detectInterval,
-    IAssist* assist,
-    ICloser* closer
+    std::vector<IAssistGenerator> assistPtrGenerators,
+    std::vector<ICloserGenerator> closerPtrGenerators
 );
 
 #endif // _GO_CURVE_ACTION_H_

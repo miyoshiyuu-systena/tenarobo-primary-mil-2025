@@ -20,4 +20,10 @@ ColorSensor colorSensor(EPort::PORT_E);
 
 UltrasonicSensor ultrasonicSensor(EPort::PORT_F);
 
-IMU imu;
+Device device = {
+    .twinWheelDrive = twinWheelDrive,
+    .frontArmDrive = frontArmDrive,
+    .forceSensor = forceSensor,
+    .colorSensor = colorSensor,
+    .ultrasonicSensor = ultrasonicSensor,
+};

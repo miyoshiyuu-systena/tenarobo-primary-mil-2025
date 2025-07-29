@@ -73,6 +73,7 @@ void TwinWheelDrive::setSpeed(float left_speed, float right_speed)
 void TwinWheelDrive::stop()
 {
     mLeftMotor.setSpeed(0);
+    mRightMotor.setSpeed(0);
 }
 
 void TwinWheelDrive::brake()

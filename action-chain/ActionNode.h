@@ -3,9 +3,7 @@
 
 class ActionNode;
 
-#include "perception/Perception.h"
-#include "drive/TwinWheelDrive.h"
-#include "drive/FrontArmDrive.h"
+#include "device/Device.h"
 #include <string>
 #include <functional>
 
@@ -16,16 +14,12 @@ class ActionNode;
  *  自分自身を渡すのは、自分のタスクを一旦中断して、後から再実施する、みたいな動きを実現するため
  *  例えば、ライントレースでラインから大きく外れたとき、一旦ラインを探すアクションを実行してから、もう一度ライントレースを実行する
  * @param nextAction 次のアクションのポインタ(自分自身に登録されているポインタを渡す)
- * @param twinWheelDrive ツインホイールドライブのポインタ
- * @param frontArmDrive フロントアームドライブのポインタ
- * @param percData 知覚データのポインタ
+ * @param device デバイス類のポインタ
  */
 typedef std::function<void(
     ActionNode*&,
     ActionNode*&,
-    TwinWheelDrive*&,
-    FrontArmDrive*&,
-    Perception*&
+    Device*&
 )> ActionCall;
 
 /**
@@ -40,19 +34,13 @@ public:
      * コンストラクタ
      * このインスタンスが生成されたときに実行する
      * @param actionName アクションの名前
-     * @param twinWheelDrive 2輪インスタンスへのポインタ
-     * @param frontArmDrive フロントアームへのポインタ
-     * @param percData 知覚データのポインタ
-     * @param perc_mask 知覚データのマスク
+     * @param device デバイス類のポインタ
      * @param actionCall アクションのコールバック関数
      * @param vacationTime アクション終了後のクーリングタイム(ms)
      */
     ActionNode(
         std::string actionName,
-        TwinWheelDrive* twinWheelDrive,
-        FrontArmDrive* frontArmDrive,
-        Perception* perc,
-        uint8_t perc_mask,
+        Device* device,
         ActionCall actionCall,
         int vacationTime
     );
@@ -88,10 +76,7 @@ public:
 private:
     std::string mActionName;
     ActionNode* mNextAction;
-    TwinWheelDrive* mTwinWheelDrive;
-    FrontArmDrive* mFrontArmDrive;
-    Perception* mPerc;
-    uint8_t mPercMask;
+    Device* mDevice;
     ActionCall mActionCall;
     int mVacationTime;
 };

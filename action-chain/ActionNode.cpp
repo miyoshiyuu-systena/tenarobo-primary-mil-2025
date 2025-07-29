@@ -6,18 +6,13 @@ using   namespace   spikeapi;
 
 ActionNode::ActionNode(
     std::string actionName,
-    TwinWheelDrive* twinWheelDrive,
-    FrontArmDrive* frontArmDrive,
-    Perception* perc,
-    uint8_t perc_mask,
+    Device* device,
     ActionCall actionCall,
     int vacationTime
 )
     : mActionName(actionName)
-    , mTwinWheelDrive(twinWheelDrive)
-    , mFrontArmDrive(frontArmDrive)
-    , mPerc(perc)
-    , mPercMask(perc_mask)
+    , mNextAction(nullptr)
+    , mDevice(device)
     , mActionCall(actionCall)
     , mVacationTime(vacationTime)
 {
@@ -25,22 +20,18 @@ ActionNode::ActionNode(
 
 ActionNode::~ActionNode()
 {
-    mPerc->setMask(0b11111111);
     Logger::getInstance().logInfo("ActionNode: " + mActionName + " メモリ解放");
 }
 
 void ActionNode::execute()
 {
     Logger::getInstance().logInfo("ActionNode: " + mActionName + " 実行");
-    mPerc->setMask(mPercMask);
     ActionNode* curr_ptr = this;
     ActionNode*& curr_ptr_ref = curr_ptr;
     mActionCall(
         curr_ptr_ref,           // 現在のノード(必ず自分自身のポインタとなる)
         mNextAction,        // 次のノード(自分自身に登録されている次のノードのポインタを渡す)
-        mTwinWheelDrive,    // ツインホイールドライブ
-        mFrontArmDrive,     // フロントアームドライブ
-        mPerc               // 知覚データ
+        mDevice             // デバイス類のポインタ
     );
     dly_tsk(mVacationTime * 1000);
 }
