@@ -58,10 +58,17 @@ typedef struct {
 } PerceptionReport;
 
 /**
+ * カメラの撮影に最適な間隔
+ * [ms]
+ */
+const int cameraInterval = 33;
+
+/**
  * 知覚データを更新して、格納する
  * 
  * @param device デバイスのインスタンス
  * @param report 観測結果を格納する構造体
+ * @param detectInterval 検知間隔[ms]
  * @param mask 格納する情報を制限するマスク（必要なデータだけ取得する）
  * 
  * @note
@@ -71,6 +78,7 @@ typedef struct {
 void writePerceptionReport(
     Device* device,
     PerceptionReport& report,
+    int detectInterval,
     uint8_t mask
 );
 

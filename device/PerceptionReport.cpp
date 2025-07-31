@@ -1,8 +1,14 @@
 #include "PerceptionReport.h"
 #include "CameraManager.h"
 
-void writePerceptionReport(Device* device, PerceptionReport& report, uint8_t mask) {
+void writePerceptionReport(
+    Device* device,
+    PerceptionReport& report,
+    int detectInterval,
+    uint8_t mask
+) {
     static int count = 0;
+    static int prevIndex = -1;
 
     if (mask & PERCEPTION_REPORT_MASK_ULTRASONIC) {
         report.distance = device->ultrasonicSensor.getDistance();
@@ -21,10 +27,13 @@ void writePerceptionReport(Device* device, PerceptionReport& report, uint8_t mas
     }
 
     if (mask & PERCEPTION_REPORT_MASK_IMAGE) {
-        if (count % 10 == 0) {
-            if (CameraManager::getInstance().captureImageNow(report.image)) {
-                CameraManager::getInstance().saveImage(report.image);
-            }
+        /**
+         * cameraInterval = 33 msに1回撮影するように間引く
+         */
+        int index = (int)((count * detectInterval) / cameraInterval);
+        if (index != prevIndex) {
+            CameraManager::getInstance().captureImageNow(report.image);
+            prevIndex = index;
         }
     }
 
