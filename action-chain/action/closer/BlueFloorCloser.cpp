@@ -3,9 +3,9 @@
 #include "ColorSensor.h"
 #include "ICloserGenerator.h"
 
-ICloserGenerator blueFloorCloserGenerator(Device* device) {
-    return [device]() {
-        return new BlueFloorCloser(device);
+ICloserGenerator blueFloorCloserGenerator() {
+    return []() {
+        return new BlueFloorCloser();
     };
 }
 
@@ -16,7 +16,7 @@ static const int S_LOWER_THRESHOLD = 50;
 static const int V_UPPER_THRESHOLD = 100;
 static const int V_LOWER_THRESHOLD = 50;
 
-BlueFloorCloser::BlueFloorCloser(Device* device) : ICloser(device)
+BlueFloorCloser::BlueFloorCloser() : ICloser()
 {
 }
 
@@ -28,13 +28,11 @@ void BlueFloorCloser::init()
 {
 }
 
-bool BlueFloorCloser::isClosed()
+bool BlueFloorCloser::isClosed(PerceptionReport* report)
 {
-    ColorSensor::HSV hsv;
-    mDevice->colorSensor.getHSV(hsv, true);
     return (
-        (H_LOWER_THRESHOLD <= hsv.h && hsv.h <= H_UPPER_THRESHOLD) &&
-        (S_LOWER_THRESHOLD <= hsv.s && hsv.s <= S_UPPER_THRESHOLD) &&
-        (V_LOWER_THRESHOLD <= hsv.v && hsv.v <= V_UPPER_THRESHOLD)
+        (H_LOWER_THRESHOLD <= report->h && report->h <= H_UPPER_THRESHOLD) &&
+        (S_LOWER_THRESHOLD <= report->s && report->s <= S_UPPER_THRESHOLD) &&
+        (V_LOWER_THRESHOLD <= report->v && report->v <= V_UPPER_THRESHOLD)
     );
 }

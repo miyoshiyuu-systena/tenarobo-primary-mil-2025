@@ -2,21 +2,19 @@
 #include "IAssistGenerator.h"
 
 IAssistGenerator slowlyAccelerateAssistGenerator(
-    Device* device,
     int stepCount,
     int stepInterval
 ) {
-    return [device, stepCount, stepInterval]() {
-        return new SlowlyAccelerateAssist(device, stepCount, stepInterval);
+    return [stepCount, stepInterval]() {
+        return new SlowlyAccelerateAssist(stepCount, stepInterval);
     };
 }
 
 SlowlyAccelerateAssist::SlowlyAccelerateAssist(
-    Device* device,
     int stepCount,
     int stepInterval
 ):
-    IAssist(device)
+    IAssist()
     , mStepCount(stepCount)
     , mStepInterval(stepInterval)
 {
@@ -31,7 +29,7 @@ void SlowlyAccelerateAssist::init()
     mStepIndex = 0;
 }
 
-void SlowlyAccelerateAssist::correct(float* speeds)
+void SlowlyAccelerateAssist::correct(float* speeds, PerceptionReport* report)
 {
     int level = (int)(mStepIndex / mStepInterval) + 1;
     if (level > mStepCount) {
