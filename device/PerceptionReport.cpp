@@ -38,12 +38,19 @@ void writePerceptionReport(
         }
     }
 
+    if (mask & PERCEPTION_REPORT_MASK_MOTOR_SPEED) {
+        report.leftMotorSpeed = device->twinWheelDrive.getLeftSpeed();
+        report.rightMotorSpeed = device->twinWheelDrive.getRightSpeed();
+    }
+
     Logger::getInstance().logDebug("=Report=========================================");
     Logger::getInstance().logDebug("distance: " + std::to_string(report.distance));
     Logger::getInstance().logDebug("force: " + std::to_string(report.force));
     Logger::getInstance().logDebug("h: " + std::to_string(report.h));
     Logger::getInstance().logDebug("s: " + std::to_string(report.s));
     Logger::getInstance().logDebug("v: " + std::to_string(report.v));
+    Logger::getInstance().logDebug("leftMotorSpeed: " + std::to_string(report.leftMotorSpeed));
+    Logger::getInstance().logDebug("rightMotorSpeed: " + std::to_string(report.rightMotorSpeed));
     Logger::getInstance().logDebug("================================================");
 
     count++;

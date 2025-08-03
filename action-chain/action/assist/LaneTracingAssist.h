@@ -81,9 +81,14 @@ class LaneTracingAssist : public IAssist
         CalcErrorFunc mCalcError;
 
         /**
+         * 積分飽和の最大値
+         */
+        static constexpr float mIntegralLimit = 0.5f;
+
+        /**
          * エラーヒストリー
          */
-        static const int mTotalHistory = 5; // とりあえず過去5回分
+        static const int mTotalHistory = 5; // とりあえず過去10回分
         float* mErrorHistory;
         int mErrorHistoryIndex;
         float mErrorIntegral;   // 計算の効率化のため前回の値を記憶
