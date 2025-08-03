@@ -49,6 +49,11 @@ public:
      */
     bool isInitialized() const { return m_initialized.load(); }
 
+    /**
+     * 設定を再読み込みして、カメラ設定を更新
+     */
+    void reloadConfig();
+
 private:
     /**
      * プライベートコンストラクタ（シングルトンパターン）
@@ -72,7 +77,6 @@ private:
 
     std::atomic<bool> m_initialized;           ///< カメラ初期化フラグ
     cv::VideoCapture m_cap;                    ///< カメラキャプチャ
-    std::mutex m_imageMutex;                   ///< 画像アクセス用ミューテックス
     std::string m_imageDirectory;              ///< 画像保存ディレクトリ
     std::string m_imageFileNameSuffix;         ///< 画像ファイル名サフィックス
     int m_imageCount;                          ///< 画像カウント

@@ -1,7 +1,7 @@
 #ifndef _I_ASSIST_H_
 #define _I_ASSIST_H_
 
-#include    "device/Device.h"
+#include "device/PerceptionReport.h"
 
 /**
  * 走行補助インターフェース
@@ -10,9 +10,7 @@
 class IAssist
 {
     public:
-        IAssist(
-            Device* device
-        );
+        IAssist();
 
         virtual ~IAssist() = default;
 
@@ -24,11 +22,9 @@ class IAssist
         /**
          * 走行補助を行う
          * @param speeds 次の走行速度[mm/s]（構造体を更新することで次の速度を渡す）
+         * @param report 知覚データ
          */
-        virtual void correct(float* speeds) = 0;
-
-    protected:
-        Device* mDevice;
+        virtual void correct(float* speeds, PerceptionReport* report) = 0;
 };
 
 #endif // _I_ASSIST_H_
