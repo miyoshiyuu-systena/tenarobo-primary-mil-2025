@@ -1,9 +1,5 @@
 #include "GoStraightAction.h"
-#include "IAssist.h"
-#include "ICloser.h"
 #include "spikeapi.h"
-#include "device/Device.h"
-#include "device/PerceptionReport.h"
 #include "logger/Logger.h"
 #include <vector>
 
@@ -22,6 +18,7 @@ ActionCall goStraightActionFactory(
         int count = 0;
         bool isClosed = false;
         PerceptionReport report;
+        uint8_t mask = 0b00000000;
 
         float speeds[2] = {0.0f, 0.0f};
         
@@ -30,6 +27,7 @@ ActionCall goStraightActionFactory(
         for (const auto& assistPtrGenerator : assistPtrGenerators) {
             IAssist* assist = assistPtrGenerator();
             assist->init();
+            mask |= assist->mask;
             assists.push_back(assist);
         }
         
@@ -37,6 +35,7 @@ ActionCall goStraightActionFactory(
         for (const auto& closerPtrGenerator : closerPtrGenerators) {
             ICloser* closer = closerPtrGenerator();
             closer->init();
+            mask |= closer->mask;
             closers.push_back(closer);
         }
         
@@ -50,14 +49,7 @@ ActionCall goStraightActionFactory(
                 device,
                 report,
                 detectInterval,
-                (
-                    PERCEPTION_REPORT_MASK_ULTRASONIC |      //超音波使わない
-                    PERCEPTION_REPORT_MASK_FORCE |           //力センサー使わない
-                    PERCEPTION_REPORT_MASK_COLOR |
-                    PERCEPTION_REPORT_MASK_IMAGE |           //画像使わない
-                    PERCEPTION_REPORT_MASK_MOTOR_SPEED |
-                    0b00000000
-                )
+                mask
             );
             
             // 複数のアシストを順次適用

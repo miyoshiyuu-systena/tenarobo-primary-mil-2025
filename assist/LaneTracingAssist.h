@@ -4,7 +4,7 @@
 #include "IAssist.h"
 #include "CalcErrorFunc.h"
 #include "IAssistGenerator.h"
-#include "device/PerceptionReport.h"
+#include "PerceptionReport.h"
 
 /**
  * 青白線に沿って走行する補助クラスのファクトリー関数
@@ -72,6 +72,11 @@ class LaneTracingAssist : public IAssist
          *  speeds[1]: 右輪の速度[°/s]
          */
         void correct(float* speeds, PerceptionReport* report) override;
+
+        /**
+         * 知覚データのうちカラーセンサ値が必要
+         */
+        static const uint8_t mask = PERCEPTION_REPORT_MASK_COLOR;
 
     private:
         bool mIsRightSide;

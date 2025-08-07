@@ -1,9 +1,8 @@
 #ifndef I_ASSIST_GENERATOR_H
 #define I_ASSIST_GENERATOR_H
 
+#include "IAssist.h"
 #include <functional>
-
-class IAssist;
 
 /**
  * 走行補助クラスのファクトリー関数

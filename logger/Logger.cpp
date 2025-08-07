@@ -1,5 +1,4 @@
 #include "Logger.h"
-#include "../config.h"
 #include <fstream>
 #include <iostream>
 #include <iomanip>

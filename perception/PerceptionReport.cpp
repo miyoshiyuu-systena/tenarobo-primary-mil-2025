@@ -1,6 +1,6 @@
 #include "PerceptionReport.h"
 #include "CameraManager.h"
-#include "logger/Logger.h"
+#include "Logger.h"
 
 void writePerceptionReport(
     Device* device,
@@ -41,9 +41,9 @@ void writePerceptionReport(
         }
     }
 
-    if (mask & PERCEPTION_REPORT_MASK_MOTOR_SPEED) {
-        report.leftMotorSpeed = device->twinWheelDrive.getLeftSpeed();
-        report.rightMotorSpeed = device->twinWheelDrive.getRightSpeed();
+    if (mask & PERCEPTION_REPORT_MASK_MOTOR_ENCODE) {
+        report.leftMotorEncode = device->twinWheelDrive.getLeftEncode();
+        report.rightMotorEncode = device->twinWheelDrive.getRightEncode();
     }
 
     Logger::getInstance().logDebug("=Report=========================================");
@@ -52,8 +52,8 @@ void writePerceptionReport(
     Logger::getInstance().logDebug("h: " + std::to_string(report.h));
     Logger::getInstance().logDebug("s: " + std::to_string(report.s));
     Logger::getInstance().logDebug("v: " + std::to_string(report.v));
-    Logger::getInstance().logDebug("leftMotorSpeed: " + std::to_string(report.leftMotorSpeed));
-    Logger::getInstance().logDebug("rightMotorSpeed: " + std::to_string(report.rightMotorSpeed));
+    Logger::getInstance().logDebug("leftMotorEncode: " + std::to_string(report.leftMotorEncode));
+    Logger::getInstance().logDebug("rightMotorEncode: " + std::to_string(report.rightMotorEncode));
     Logger::getInstance().logDebug("================================================");
 
     count++;

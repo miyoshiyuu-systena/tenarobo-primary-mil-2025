@@ -1,7 +1,5 @@
 #include    "StopAction.h"
 #include    "spikeapi.h"
-#include    "ActionNode.h"
-#include    "device/Device.h"
 
 /**
  * 停止アクションのファクトリー関数

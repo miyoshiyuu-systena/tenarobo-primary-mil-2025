@@ -1,6 +1,5 @@
 #include "CameraManager.h"
-#include "../config.h"
-#include "../logger/Logger.h"
+#include "Logger.h"
 #include "spikeapi.h"
 #include <iostream>
 #include <sys/stat.h>

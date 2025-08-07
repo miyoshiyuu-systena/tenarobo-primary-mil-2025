@@ -1,5 +1,4 @@
 #include "SlowlyAccelerateAssist.h"
-#include "IAssistGenerator.h"
 
 IAssistGenerator slowlyAccelerateAssistGenerator(
     int stepCount,

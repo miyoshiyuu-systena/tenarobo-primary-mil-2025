@@ -99,6 +99,18 @@ public:
      */
     float getRightSpeed() const;
 
+    /**
+     * 左モーターのエンコード数取得
+     * @return エンコード数
+     */
+    int getLeftEncode() const;
+
+    /**
+     * 右モーターのエンコード数取得
+     * @return エンコード数
+     */
+    int getRightEncode() const;
+
 private:
     Motor mLeftMotor;
     Motor mRightMotor;

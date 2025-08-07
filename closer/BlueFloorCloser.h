@@ -21,6 +21,11 @@ class BlueFloorCloser : public ICloser
 
         void init() override;
         bool isClosed(PerceptionReport* report) override;
+
+        /**
+         * 知覚データのうちカラーセンサ値が必要
+         */
+        static const uint8_t mask = PERCEPTION_REPORT_MASK_COLOR;
 };
 
 #endif // _BLUE_FLOOR_CLOSER_H_

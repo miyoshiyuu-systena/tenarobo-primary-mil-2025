@@ -3,7 +3,6 @@
 
 #include "ICloser.h"
 #include "ICloserGenerator.h"
-#include "PerceptionReport.h"
 
 /**
  * 直線を検知したら終了判定を出すクラスのファクトリー関数
@@ -23,12 +22,24 @@ class StraightCloser : public ICloser
         void init() override;
         bool isClosed(PerceptionReport* report) override;
 
+        /**
+         * 知覚データのうち画像が必要
+         */
+        static const uint8_t mask = PERCEPTION_REPORT_MASK_IMAGE;
+
     private:
         /**
          * 正面の直線が連続して観測された回数
+         * @note
+         *  ○回連続して正面に直線がなかったら曲がり角に差し掛かったとみなす
+         *  1回だけだと誤検出しやすいから短い時間にある程度連続して、検出されないことを基準とする
          */
         int mSeqCountIsStraight;
-        static const int SEQ_COUNT_IS_STRAIGHT_MAX = 10;
+        
+        /**
+         * 設定ファイルから連続して直線と判定する最大回数を取得
+         */
+        int getSeqCountIsStraightMax();
 };
 
 #endif // _STRAIGHT_CLOSER_H_

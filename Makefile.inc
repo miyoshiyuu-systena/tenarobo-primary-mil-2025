@@ -12,6 +12,7 @@ APPL_CXXOBJS +=\
 	BlackFloorCloser.o\
 	BlueFloorCloser.o\
 	CurveCloser.o\
+	StraightCloser.o\
 	TimedCloser.o\
 	GoStraightAction.o\
 	GoCurveAction.o\
@@ -37,22 +38,22 @@ include $(EV3RT_SDK_LIB_DIR)/libcpp-spike/Makefile
 endif
 
 APPL_DIRS += \
-	$(mkfile_path)action-chain \
-	$(mkfile_path)action-chain/action \
-	$(mkfile_path)action-chain/action/assist \
-	$(mkfile_path)action-chain/action/closer \
+	$(mkfile_path)action \
+	$(mkfile_path)assist \
+	$(mkfile_path)closer \
 	$(mkfile_path)device \
+	$(mkfile_path)perception \
 	$(mkfile_path)drive \
 	$(mkfile_path)logger \
 	$(mkfile_path)perception \
 	$(mkfile_path)web-camera \
 
 INCLUDES += \
-	-I$(mkfile_path)action-chain \
-	-I$(mkfile_path)action-chain/action \
-	-I$(mkfile_path)action-chain/action/assist \
-	-I$(mkfile_path)action-chain/action/closer \
+	-I$(mkfile_path)action \
+	-I$(mkfile_path)assist \
+	-I$(mkfile_path)closer \
 	-I$(mkfile_path)device \
+	-I$(mkfile_path)perception \
 	-I$(mkfile_path)drive \
 	-I$(mkfile_path)logger \
 	-I$(mkfile_path)perception \

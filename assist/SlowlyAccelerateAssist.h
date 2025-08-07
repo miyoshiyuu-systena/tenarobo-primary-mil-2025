@@ -3,7 +3,6 @@
 
 #include "IAssist.h"
 #include "IAssistGenerator.h"
-#include "device/PerceptionReport.h"
 
 /**
  * ゆっくりと加速する補助のファクトリー関数
@@ -52,6 +51,11 @@ class SlowlyAccelerateAssist : public IAssist
         void init() override;
 
         void correct(float* speeds, PerceptionReport* report) override;
+
+        /**
+         * 知覚データの更新は不要
+         */
+        static const uint8_t mask = 0b00000000;
 
     private:
         int mStepCount;

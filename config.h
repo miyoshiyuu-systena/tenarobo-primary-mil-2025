@@ -124,6 +124,44 @@ public:
     }
     
     /**
+     * float値を取得する
+     * @param key キー
+     * @param defaultValue デフォルト値
+     * @return 設定値（float）
+     */
+    float getFloatValue(const std::string& key, float defaultValue = 0.0f) {
+        std::string strValue = getValue(key, "");
+        if (strValue.empty()) {
+            return defaultValue;
+        }
+        try {
+            return std::stof(strValue);
+        } catch (const std::exception& e) {
+            std::cerr << "設定値 '" << key << "' の値 '" << strValue << "' をfloatに変換できません。デフォルト値 " << defaultValue << " を使用します。" << std::endl;
+            return defaultValue;
+        }
+    }
+    
+    /**
+     * int値を取得する
+     * @param key キー
+     * @param defaultValue デフォルト値
+     * @return 設定値（int）
+     */
+    int getIntValue(const std::string& key, int defaultValue = 0) {
+        std::string strValue = getValue(key, "");
+        if (strValue.empty()) {
+            return defaultValue;
+        }
+        try {
+            return std::stoi(strValue);
+        } catch (const std::exception& e) {
+            std::cerr << "設定値 '" << key << "' の値 '" << strValue << "' をintに変換できません。デフォルト値 " << defaultValue << " を使用します。" << std::endl;
+            return defaultValue;
+        }
+    }
+    
+    /**
      * ログファイルのパスを取得
      */
     std::string getLogFilePath() {

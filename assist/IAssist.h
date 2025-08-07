@@ -1,7 +1,7 @@
 #ifndef _I_ASSIST_H_
 #define _I_ASSIST_H_
 
-#include "device/PerceptionReport.h"
+#include "PerceptionReport.h"
 
 /**
  * 走行補助インターフェース
@@ -25,6 +25,8 @@ class IAssist
          * @param report 知覚データ
          */
         virtual void correct(float* speeds, PerceptionReport* report) = 0;
+
+        static const uint8_t mask = 0b11111111;
 };
 
 #endif // _I_ASSIST_H_

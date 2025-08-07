@@ -5,7 +5,7 @@
 #include <vector>
 #include <memory>
 #include <ctime>
-#include "../config.h"
+#include "config.h"
 
 /**
  * ログレベル列挙型
