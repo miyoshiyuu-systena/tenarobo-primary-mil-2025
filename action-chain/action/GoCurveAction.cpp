@@ -63,7 +63,7 @@ ActionCall goCurveActionFactory(
                     // PERCEPTION_REPORT_MASK_ULTRASONIC |      //超音波使わない
                     // PERCEPTION_REPORT_MASK_FORCE |           //力センサー使わない
                     PERCEPTION_REPORT_MASK_COLOR |
-                    // PERCEPTION_REPORT_MASK_IMAGE |           //画像使わない
+                    PERCEPTION_REPORT_MASK_IMAGE |           //画像使わない
                     // PERCEPTION_REPORT_MASK_MOTOR_SPEED |    //モーター回転速度使わない
                     0b00000000
                 )

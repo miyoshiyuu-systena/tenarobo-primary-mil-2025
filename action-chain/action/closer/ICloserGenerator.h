@@ -1,9 +1,8 @@
 #ifndef I_CLOSER_GENERATOR_H
 #define I_CLOSER_GENERATOR_H
 
+#include "ICloser.h"
 #include <functional>
-
-class ICloser;
 
 /**
  * 終了判定クラスのファクトリー関数

@@ -11,6 +11,7 @@
 #include "action-chain/action/assist/SlowlyAccelerateAssist.h"
 #include "action-chain/action/closer/BlueFloorCloser.h"
 #include "action-chain/action/closer/BlackFloorCloser.h"
+#include "action-chain/action/closer/StraightCloser.h"
 #include "action-chain/action/closer/CurveCloser.h"
 #include "action-chain/action/closer/TimedCloser.h"
 #include "action-chain/action/HachikouAction.h"
@@ -55,108 +56,59 @@ void main_task(intptr_t exinf)   {
         0
     );
 
-    std::vector<IAssistGenerator> assistGenerators1 = {
-        laneTracingAssistGenerator(
-            false,
-            100.0f,
-            10.0f,
-            10.0f,
-            calcBlackWhiteBorderError
-        )
-    };
-    std::vector<ICloserGenerator> closerGenerators1 = {
-        curveCloserGenerator()
-    };
     ActionNode* action1 = new ActionNode(
         "action1: 白黒の直線に沿って走行し、曲がり角に到達したら終了",
         &device,
         goStraightActionFactory(
-            250.0f,
+            500.0f,
             10,
-            assistGenerators1,
-            closerGenerators1
+            {
+                laneTracingAssistGenerator(
+                    false,
+                    100.0f,
+                    0.5f,
+                    10.0f,
+                    calcBlackWhiteBorderError
+                )
+            },
+            {
+                curveCloserGenerator()
+            }
         ),
         0
     );
     action0->setNext(action1);
 
     ActionNode* action2 = new ActionNode(
-        "action2: 停止",
+        "action2: 白黒の曲線に沿って徐行し、直線を検知したら終了",
         &device,
-        stopActionFactory(),
+        goStraightActionFactory(
+            150.0f,
+            10,
+            {
+                laneTracingAssistGenerator(
+                    false,
+                    50.0f,
+                    50.0f,
+                    50.0f,
+                    calcBlackWhiteBorderError
+                )
+            },
+            {
+                straightCloserGenerator()
+            }
+        ),
         0
     );
     action1->setNext(action2);
 
-    // std::vector<IAssistGenerator> assistGenerators2 = {
-    //     laneTracingAssistGenerator(
-    //         true,
-    //         50.0f,
-    //         5.0f,
-    //         5.0f,
-    //         calcBlueWhiteBorderError
-    //     ),
-    //     slowlyAccelerateAssistGenerator(
-    //         10,
-    //         1
-    //     )cd 
-    // };
-    // std::vector<ICloserGenerator> closerGenerators2 = {
-    //     blackFloorCloserGenerator()
-    // };
-    // ActionNode* action2 = new ActionNode(
-    //     "action2: 白青の直線に沿って走行し、黒い床に到達したら終了",
-    //     &device,
-    //     goCurveActionFactory(
-    //         150.0f,
-    //         350.0f,
-    //         false,
-    //         10,
-    //         assistGenerators2,
-    //         closerGenerators2
-    //     ),
-    //     0
-    // );
-    // action1->setNext(action2);
-
-    // std::vector<IAssistGenerator> assistGenerators3 = {
-    //     laneTracingAssistGenerator(
-    //         true,
-    //         25.0f,
-    //         1.0f,
-    //         1.0f,
-    //         calcBlackWhiteBorderError
-    //     ),
-    //     slowlyAccelerateAssistGenerator(
-    //         100,
-    //         1
-    //     )
-    // };
-    // std::vector<ICloserGenerator> closerGenerators3 = {
-    //     blueFloorCloserGenerator()
-    // };
-    // ActionNode* action3 = new ActionNode(
-    //     "action3: 白黒の曲線に沿って走行し、青色の床に到達したら終了",
-    //     &device,
-    //     goCurveActionFactory(
-    //         100.0f,
-    //         150.0f,
-    //         true,
-    //         10,
-    //         assistGenerators3,
-    //         closerGenerators3
-    //     ),
-    //     0
-    // );
-    // action2->setNext(action3);
-
-    // ActionNode* action4 = new ActionNode(
-    //     "action4: 停止",
-    //     &device,
-    //     stopActionFactory(),
-    //     0
-    // );
-    // action3->setNext(action4);
+    ActionNode * action3 = new ActionNode(
+        "action3: とまる",
+        &device,
+        stopActionFactory(),
+        0
+    );
+    action2->setNext(action3);
 
     ActionNode* prevAction = nullptr;
     ActionNode* currentAction = action0;

@@ -1,32 +1,32 @@
-#include    "web-camera/CameraManager.h"
-#include    "CurveCloser.h"
-#include    <cmath>
+#include "web-camera/CameraManager.h"
+#include "StraightCloser.h"
+#include <cmath>
 
-ICloserGenerator curveCloserGenerator() {
+ICloserGenerator straightCloserGenerator() {
     return []() {
-        return new CurveCloser();
-    };
+        return new StraightCloser();
+    }
 }
 
-CurveCloser::CurveCloser() : ICloser()
+StraightCloser::StraightCloser() : ICloser()
 {
-    mSeqCountIsCurve = 0;
+    mSeqCountIsStraight = 0;
 }
 
-CurveCloser::~CurveCloser()
-{
-}
-
-void CurveCloser::init()
+StraightCloser::~StraightCloser()
 {
 }
 
-bool CurveCloser::isClosed(PerceptionReport* report)
+void StraightCloser::init()
+{
+}
+
+bool StraightCloser::isClosed(PerceptionReport* report)
 {
     if (!report->isImageUpdated) {
         return false;
     }
-
+    
     cv::Mat image;
 
     /**
@@ -91,7 +91,7 @@ bool CurveCloser::isClosed(PerceptionReport* report)
     std::vector<cv::Vec4i> lines;
     cv::HoughLinesP(image, lines, 1, CV_PI / 180, 50, 10, 10);
 
-    bool isCurve = true;
+    bool isStraight = false;
     for (const auto& l : lines) {
         /**
         * 線分の始点と終点に着目し、ロボットの足元からスタートしているかどうかを判定する
@@ -104,18 +104,18 @@ bool CurveCloser::isClosed(PerceptionReport* report)
             ((100 < l[0]) && (l[0] < 220) && (l[1] > 200)) ||
             ((100 < l[2]) && (l[2] < 220) && (l[3] > 200))
         ) {
-            isCurve = false;
+            isStraight = true;
             cv::line(report->image, cv::Point(l[0], l[1]), cv::Point(l[2], l[3]), cv::Scalar(0, 0, 255), 2, cv::LINE_AA);
             // line(画像, 始点, 終点, 色(BGR), 太さ, アンチエイリアス)
         }
     }
     CameraManager::getInstance().saveImage(report->image);
 
-    if (isCurve) {
-        mSeqCountIsCurve++;
+    if (isStraight) {
+        mSeqCountIsStraight++;
     } else {
-        mSeqCountIsCurve = 0;
+        mSeqCountIsStraight = 0;
     }
     
-    return mSeqCountIsCurve > SEQ_COUNT_IS_CURVE_MAX;
+    return mSeqCountIsStraight > SEQ_COUNT_IS_STRAIGHT_MAX;
 }
