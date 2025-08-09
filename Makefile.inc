@@ -13,14 +13,20 @@ APPL_CXXOBJS +=\
 	BlueFloorCloser.o\
 	CurveCloser.o\
 	StraightCloser.o\
+	StraightStrictCloser.o\
+	WhiteFloorAndStraightStrictCloser.o\
 	TimedCloser.o\
 	GoStraightAction.o\
 	GoCurveAction.o\
+	PivotTurnAction.o\
+	SpinTurnAction.o\
 	HachikouAction.o\
 	StopAction.o\
+	LaneChangeAction.o\
+	LaneChangeCompleteJudge.o\
 	ActionNode.o\
 	Device.o\
-	PerceptionReport.o\
+	PerceptionReporter.o\
 	CalcCurveDriveSpeed.o\
 	FrontArmDrive.o\
 	TwinWheelDrive.o\

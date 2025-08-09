@@ -16,6 +16,7 @@ ActionNode::ActionNode(
     , mActionCall(actionCall)
     , mVacationTime(vacationTime)
 {
+    Logger::getInstance().logInfo("ActionNode: " + mActionName + " 生成");
 }
 
 ActionNode::~ActionNode()

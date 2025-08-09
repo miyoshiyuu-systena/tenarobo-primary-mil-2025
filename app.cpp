@@ -6,6 +6,9 @@
 #include "HachikouAction.h"
 #include "GoStraightAction.h"
 #include "GoCurveAction.h"
+#include "PivotTurnAction.h"
+#include "SpinTurnAction.h"
+#include "LaneChangeAction.h"
 #include "StopAction.h"
 #include "Device.h"
 #include "LaneTracingAssist.h"
@@ -16,6 +19,8 @@
 #include "BlueFloorCloser.h"
 #include "BlackFloorCloser.h"
 #include "StraightCloser.h"
+#include "StraightStrictCloser.h"
+#include "WhiteFloorAndStraightStrictCloser.h"
 #include "CurveCloser.h"
 #include "TimedCloser.h"
 #include "CameraManager.h"
@@ -57,58 +62,28 @@ void main_task(intptr_t exinf)   {
     );
 
     ActionNode* action1 = new ActionNode(
-        "action1: 白黒の直線に沿って走行し、曲がり角に到達したら終了",
+        "action1: 車線変更",
         &device,
-        goStraightActionFactory(
-            500.0f,
-            10,
-            {
-                laneTracingAssistGenerator(
-                    false,
-                    100.0f,
-                    0.5f,
-                    10.0f,
-                    calcBlackWhiteBorderError
-                )
-            },
-            {
-                curveCloserGenerator()
-            }
+        laneChangeActionFactory(
+            true,
+            {}
         ),
         0
     );
     action0->setNext(action1);
-
-    ActionNode* action2 = new ActionNode(
-        "action2: 白黒の曲線に沿って徐行し、直線を検知したら終了",
-        &device,
-        goStraightActionFactory(
-            150.0f,
-            10,
-            {
-                laneTracingAssistGenerator(
-                    false,
-                    50.0f,
-                    50.0f,
-                    50.0f,
-                    calcBlackWhiteBorderError
-                )
-            },
-            {
-                straightCloserGenerator()
-            }
-        ),
-        0
-    );
-    action1->setNext(action2);
-
-    ActionNode * action3 = new ActionNode(
-        "action3: とまる",
-        &device,
-        stopActionFactory(),
-        0
-    );
-    action2->setNext(action3);
+    
+    // ActionNode* action2 = new ActionNode(
+    //     "action2: 車線変更",
+    //     &device,
+    //     laneChangeActionFactory(
+    //         false,
+    //         {
+    //             whiteFloorAndStraightStrictGenerator()
+    //         }
+    //     ),
+    //     0
+    // );
+    // action1->setNext(action2);
 
     ActionNode* prevAction = nullptr;
     ActionNode* currentAction = action0;

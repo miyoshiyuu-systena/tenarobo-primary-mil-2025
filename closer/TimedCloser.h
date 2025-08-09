@@ -22,13 +22,8 @@ class TimedCloser : public ICloser
         ~TimedCloser();
 
         void init() override;
-        bool isClosed(PerceptionReport* report) override;
+        bool isClosed() override;
 
-        /**
-         * 知覚データの更新は不要
-         */
-        static const uint8_t mask = 0b00000000;
-    
     private:
         int mCount;
         int mMax;
