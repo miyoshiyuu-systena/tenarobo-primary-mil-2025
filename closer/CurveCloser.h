@@ -22,12 +22,7 @@ class CurveCloser : public ICloser
         ~CurveCloser();
 
         void init() override;
-        bool isClosed(PerceptionReport* report) override;
-
-        /**
-         * 知覚データのうち画像が必要
-         */
-        static const uint8_t mask = PERCEPTION_REPORT_MASK_IMAGE;
+        bool isClosed() override;
 
     private:
         /**

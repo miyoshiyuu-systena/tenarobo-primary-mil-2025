@@ -1,6 +1,7 @@
 #include "GoStraightAction.h"
 #include "spikeapi.h"
 #include "logger/Logger.h"
+#include "PerceptionReporter.h"
 #include <vector>
 
 ActionCall goStraightActionFactory(
@@ -17,8 +18,6 @@ ActionCall goStraightActionFactory(
     ) {
         int count = 0;
         bool isClosed = false;
-        PerceptionReport report;
-        uint8_t mask = 0b00000000;
 
         float speeds[2] = {0.0f, 0.0f};
         
@@ -27,7 +26,6 @@ ActionCall goStraightActionFactory(
         for (const auto& assistPtrGenerator : assistPtrGenerators) {
             IAssist* assist = assistPtrGenerator();
             assist->init();
-            mask |= assist->mask;
             assists.push_back(assist);
         }
         
@@ -35,7 +33,6 @@ ActionCall goStraightActionFactory(
         for (const auto& closerPtrGenerator : closerPtrGenerators) {
             ICloser* closer = closerPtrGenerator();
             closer->init();
-            mask |= closer->mask;
             closers.push_back(closer);
         }
         
@@ -45,16 +42,11 @@ ActionCall goStraightActionFactory(
             speeds[1] = speed; // 右輪
 
             // 知覚データを取得
-            writePerceptionReport(
-                device,
-                report,
-                detectInterval,
-                mask
-            );
+            PerceptionReporter::getInstance().update(detectInterval);
             
             // 複数のアシストを順次適用
             for (IAssist* assist : assists) {
-                assist->correct(speeds, &report);
+                assist->correct(speeds);
             }
             
             device->twinWheelDrive.setSpeed(speeds[0], speeds[1]);
@@ -68,7 +60,7 @@ ActionCall goStraightActionFactory(
 
             // 複数の終了判定を順次適用
             for (ICloser* closer : closers) {
-                if (closer->isClosed(&report))
+                if (closer->isClosed())
                     isClosed = true;
             }
             count++;

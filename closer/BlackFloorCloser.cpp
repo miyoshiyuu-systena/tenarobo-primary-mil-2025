@@ -1,4 +1,6 @@
 #include "BlackFloorCloser.h"
+#include "PerceptionReporter.h"
+#include "PerceptionReport.h"
 #include "config.h"
 
 ICloserGenerator blackFloorCloserGenerator() {
@@ -11,7 +13,7 @@ ICloserGenerator blackFloorCloserGenerator() {
  * 設定ファイルから黒床検出のしきい値を取得する関数群
  */
 static int getBlackFloorHUpperThreshold() {
-    return config.getIntValue("blackFloorHUpperThreshold", 255);
+    return config.getIntValue("blackFloorHUpperThreshold", 360);
 }
 
 static int getBlackFloorHLowerThreshold() {
@@ -19,7 +21,7 @@ static int getBlackFloorHLowerThreshold() {
 }
 
 static int getBlackFloorSUpperThreshold() {
-    return config.getIntValue("blackFloorSUpperThreshold", 255);
+    return config.getIntValue("blackFloorSUpperThreshold", 100);
 }
 
 static int getBlackFloorSLowerThreshold() {
@@ -46,7 +48,7 @@ void BlackFloorCloser::init()
 {
 }
 
-bool BlackFloorCloser::isClosed(PerceptionReport* report)
+bool BlackFloorCloser::isClosed()
 {
     static int H_UPPER_THRESHOLD = getBlackFloorHUpperThreshold();
     static int H_LOWER_THRESHOLD = getBlackFloorHLowerThreshold();
@@ -54,10 +56,12 @@ bool BlackFloorCloser::isClosed(PerceptionReport* report)
     static int S_LOWER_THRESHOLD = getBlackFloorSLowerThreshold();
     static int V_UPPER_THRESHOLD = getBlackFloorVUpperThreshold();
     static int V_LOWER_THRESHOLD = getBlackFloorVLowerThreshold();
+
+    PerceptionReport report = PerceptionReporter::getInstance().getLatest();
     
     return (
-        (H_LOWER_THRESHOLD <= report->h && report->h <= H_UPPER_THRESHOLD) &&
-        (S_LOWER_THRESHOLD <= report->s && report->s <= S_UPPER_THRESHOLD) &&
-        (V_LOWER_THRESHOLD <= report->v && report->v <= V_UPPER_THRESHOLD)
+        (H_LOWER_THRESHOLD <= report.h && report.h <= H_UPPER_THRESHOLD) &&
+        (S_LOWER_THRESHOLD <= report.s && report.s <= S_UPPER_THRESHOLD) &&
+        (V_LOWER_THRESHOLD <= report.v && report.v <= V_UPPER_THRESHOLD)
     );
 }

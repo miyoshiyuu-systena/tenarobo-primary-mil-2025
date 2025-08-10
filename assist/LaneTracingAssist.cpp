@@ -1,4 +1,6 @@
 #include "LaneTracingAssist.h"
+#include "PerceptionReporter.h"
+#include "PerceptionReport.h"
 
 IAssistGenerator laneTracingAssistGenerator(
     bool isRightSide,
@@ -40,12 +42,14 @@ void LaneTracingAssist::init()
 {
 }
 
-void LaneTracingAssist::correct(float* speeds, PerceptionReport* report)
+void LaneTracingAssist::correct(float* speeds)
 {
+    PerceptionReport report = PerceptionReporter::getInstance().getLatest();
+
     /**
     * 青白線の境界線からの誤差を計算する
     */
-    float error = mCalcError(report->h, report->s, report->v);
+    float error = mCalcError(report.h, report.s, report.v);
     
     /**
      * 過去のエラー値を集計する

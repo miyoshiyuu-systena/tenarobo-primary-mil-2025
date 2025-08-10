@@ -1,4 +1,6 @@
 #include    "CurveCloser.h"
+#include    "PerceptionReporter.h"
+#include    "PerceptionReport.h"
 #include    "config.h"
 #include    "web-camera/CameraManager.h"
 #include    <cmath>
@@ -27,9 +29,11 @@ int CurveCloser::getSeqCountIsCurveMax()
     return config.getIntValue("seqCountIsCurveMax", 10);
 }
 
-bool CurveCloser::isClosed(PerceptionReport* report)
+bool CurveCloser::isClosed()
 {
-    if (!report->isImageUpdated) {
+    PerceptionReport report = PerceptionReporter::getInstance().getLatest();
+
+    if (!PerceptionReporter::getInstance().isImageUpdated()) {
         return false;
     }
 
@@ -38,7 +42,7 @@ bool CurveCloser::isClosed(PerceptionReport* report)
     /**
      * グレースケールに変換
      */
-     cv::cvtColor(report->image, image, cv::COLOR_BGR2GRAY);
+     cv::cvtColor(report.image, image, cv::COLOR_BGR2GRAY);
 
     /**
      * ガウシアンぼかし
@@ -120,11 +124,10 @@ bool CurveCloser::isClosed(PerceptionReport* report)
             ((lineXMin < l[2]) && (l[2] < lineXMax) && (l[3] > lineYMin))
         ) {
             isCurve = false;
-            cv::line(report->image, cv::Point(l[0], l[1]), cv::Point(l[2], l[3]), cv::Scalar(0, 0, 255), 2, cv::LINE_AA);
+            cv::line(report.image, cv::Point(l[0], l[1]), cv::Point(l[2], l[3]), cv::Scalar(0, 0, 255), 2, cv::LINE_AA);
             // line(画像, 始点, 終点, 色(BGR), 太さ, アンチエイリアス)
         }
     }
-    // CameraManager::getInstance().saveImage(report->image);
 
     if (isCurve) {
         mSeqCountIsCurve++;

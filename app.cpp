@@ -6,6 +6,10 @@
 #include "HachikouAction.h"
 #include "GoStraightAction.h"
 #include "GoCurveAction.h"
+#include "PivotTurnAction.h"
+#include "SpinTurnAction.h"
+#include "LaneChangeAction.h"
+#include "SinpleLaneChangeAction.h"
 #include "StopAction.h"
 #include "Device.h"
 #include "LaneTracingAssist.h"
@@ -16,8 +20,10 @@
 #include "BlueFloorCloser.h"
 #include "BlackFloorCloser.h"
 #include "StraightCloser.h"
+#include "StraightStrictCloser.h"
 #include "CurveCloser.h"
 #include "TimedCloser.h"
+#include "OnRightEdgeCloser.h"
 #include "CameraManager.h"
 
 using namespace spikeapi;
@@ -47,7 +53,7 @@ void main_task(intptr_t exinf)   {
     CameraManager::getInstance().initializeCamera();
 
     ActionNode* action0 = new ActionNode(
-        "action0: 圧力センサを押すまで忠犬ハチ公！！",
+        "action0: Hachikou",
         &device,
         hachikouActionFactory(
             1.0f,
@@ -57,22 +63,24 @@ void main_task(intptr_t exinf)   {
     );
 
     ActionNode* action1 = new ActionNode(
-        "action1: 白黒の直線に沿って走行し、曲がり角に到達したら終了",
+        "action1: 左エッジ直進",
         &device,
         goStraightActionFactory(
-            500.0f,
+            250.0f,
             10,
             {
                 laneTracingAssistGenerator(
                     false,
                     100.0f,
-                    0.5f,
+                    1.0f,
                     10.0f,
                     calcBlackWhiteBorderError
                 )
             },
             {
-                curveCloserGenerator()
+                timedCloserGenerator(
+                    200
+                )
             }
         ),
         0
@@ -80,35 +88,45 @@ void main_task(intptr_t exinf)   {
     action0->setNext(action1);
 
     ActionNode* action2 = new ActionNode(
-        "action2: 白黒の曲線に沿って徐行し、直線を検知したら終了",
+        "action2: 車線変更",
         &device,
-        goStraightActionFactory(
-            150.0f,
-            10,
-            {
-                laneTracingAssistGenerator(
-                    false,
-                    50.0f,
-                    50.0f,
-                    50.0f,
-                    calcBlackWhiteBorderError
-                )
-            },
-            {
-                straightCloserGenerator()
-            }
-        ),
+        simpleLaneChangeActionFactory(true),
         0
     );
     action1->setNext(action2);
 
-    ActionNode * action3 = new ActionNode(
-        "action3: とまる",
+    ActionNode* action3 = new ActionNode(
+        "action3: 右エッジ直進",
+        &device,
+        goStraightActionFactory(
+            250.0f,
+            10,
+            {
+                laneTracingAssistGenerator(
+                    true,
+                    100.0f,
+                    1.0f,
+                    10.0f,
+                    calcBlackWhiteBorderError
+                )
+            },
+            {
+                timedCloserGenerator(
+                    200
+                )
+            }
+        ),
+        0
+    );
+    action2->setNext(action3);
+
+    ActionNode* action4 = new ActionNode(
+        "action4: 止まる",
         &device,
         stopActionFactory(),
         0
     );
-    action2->setNext(action3);
+    action3->setNext(action4);
 
     ActionNode* prevAction = nullptr;
     ActionNode* currentAction = action0;
