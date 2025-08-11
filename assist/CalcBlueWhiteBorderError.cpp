@@ -16,5 +16,5 @@ static float getBlueSaturationIdeal() {
 
 CalcErrorFunc calcBlueWhiteBorderError = [](int h, int s, int v) {
     static float BLUE_SATURATION_IDEAL = getBlueSaturationIdeal();
-    return (s - BLUE_SATURATION_IDEAL) / 100.0f;
+    return (BLUE_SATURATION_IDEAL - s) / 100.0f;
 };

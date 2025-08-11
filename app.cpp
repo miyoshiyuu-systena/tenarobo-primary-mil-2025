@@ -62,11 +62,137 @@ void main_task(intptr_t exinf)   {
         0
     );
 
-    ActionNode* action1 = new ActionNode(
-        "action1: 左エッジ直進",
+    // ActionNode* action1 = new ActionNode(
+    //     "action1: 右エッジ直進",
+    //     &device,
+    //     goStraightActionFactory(
+    //         250.0f,
+    //         10,
+    //         {
+    //             laneTracingAssistGenerator(
+    //                 true,
+    //                 100.0f,
+    //                 1.0f,
+    //                 10.0f,
+    //                 calcBlackWhiteBorderError
+    //             )
+    //         },
+    //         {
+    //             blueFloorCloserGenerator()
+    //         }
+    //     ),
+    //     0
+    // );
+    // action0->setNext(action1);
+
+    // ActionNode* action2 = new ActionNode(
+    //     "action2: 右エッジ直進(青)",
+    //     &device,
+    //     goStraightActionFactory(
+    //         250.0f,
+    //         10,
+    //         {
+    //             laneTracingAssistGenerator(
+    //                 true,
+    //                 100.0f,
+    //                 1.0f,
+    //                 10.0f,
+    //                 calcBlueWhiteBorderError
+    //             )
+    //         },
+    //         {
+    //             blackFloorCloserGenerator()
+    //         }
+    //     ),
+    //     0
+    // );
+    // action1->setNext(action2);
+
+    // ActionNode* action3 = new ActionNode(
+    //     "action3: 右エッジ曲進",
+    //     &device,
+    //     goCurveActionFactory(
+    //         250.0f,
+    //         400.0f,
+    //         true,
+    //         10,
+    //         {
+    //             laneTracingAssistGenerator(
+    //                 true,
+    //                 100.0f,
+    //                 1.0f,
+    //                 10.0f,
+    //                 calcBlackWhiteBorderError
+    //             ),
+    //             slowlyAccelerateAssistGenerator(
+    //                 10,
+    //                 10
+    //             )
+    //         },
+    //         {
+    //             blueFloorCloserGenerator()
+    //         }
+    //     ),
+    //     0
+    // );
+    // action2->setNext(action3);
+
+    ActionNode* action4 = new ActionNode(
+        "action4: 右エッジ曲進(青)",
         &device,
-        goStraightActionFactory(
+        goCurveActionFactory(
             250.0f,
+            400.0f,
+            true,
+            10,
+            {
+                laneTracingAssistGenerator(
+                    true,
+                    100.0f,
+                    1.0f,
+                    10.0f,
+                    calcBlueWhiteBorderError
+                )
+            },
+            {
+                blackFloorCloserGenerator()
+            }
+        ),
+        0
+    );
+    action0->setNext(action4);
+
+    ActionNode* action4_5 = new ActionNode(
+        "action4.5: 停止",
+        &device,
+        stopActionFactory(),
+        1000
+    );
+    action4->setNext(action4_5);
+
+    ActionNode* action5 = new ActionNode(
+        "action5: 車線変更（左）",
+        &device,
+        simpleLaneChangeActionFactory(false),
+        0
+    );
+    action4_5->setNext(action5);
+
+    ActionNode* action5_5 = new ActionNode(
+        "action5.5: 停止",
+        &device,
+        stopActionFactory(),
+        1000
+    );
+    action5->setNext(action5_5);
+
+    ActionNode* action6 = new ActionNode(
+        "action6: 左エッジ曲進",
+        &device,
+        goCurveActionFactory(
+            150.0f,
+            200.0f,
+            false,
             10,
             {
                 laneTracingAssistGenerator(
@@ -78,55 +204,134 @@ void main_task(intptr_t exinf)   {
                 )
             },
             {
-                timedCloserGenerator(
-                    200
-                )
+                blueFloorCloserGenerator()
             }
         ),
         0
     );
-    action0->setNext(action1);
+    action5_5->setNext(action6);
 
-    ActionNode* action2 = new ActionNode(
-        "action2: 車線変更",
-        &device,
-        simpleLaneChangeActionFactory(true),
-        0
-    );
-    action1->setNext(action2);
+    // ActionNode* action7 = new ActionNode(
+    //     "action7: 左エッジ曲進(青)",
+    //     &device,
+    //     goCurveActionFactory(
+    //         150.0f,
+    //         200.0f,
+    //         false,
+    //         10,
+    //         {
+    //             laneTracingAssistGenerator(
+    //                 false,
+    //                 100.0f,
+    //                 1.0f,
+    //                 10.0f,
+    //                 calcBlueWhiteBorderError
+    //             )
+    //         },
+    //         {
+    //             blackFloorCloserGenerator()
+    //         }
+    //     ),
+    //     0
+    // );
+    // action6->setNext(action7);
 
-    ActionNode* action3 = new ActionNode(
-        "action3: 右エッジ直進",
-        &device,
-        goStraightActionFactory(
-            250.0f,
-            10,
-            {
-                laneTracingAssistGenerator(
-                    true,
-                    100.0f,
-                    1.0f,
-                    10.0f,
-                    calcBlackWhiteBorderError
-                )
-            },
-            {
-                timedCloserGenerator(
-                    200
-                )
-            }
-        ),
-        0
-    );
-    action2->setNext(action3);
+    // ActionNode* action8 = new ActionNode(
+    //     "action8: 車線変更（右）",
+    //     &device,
+    //     simpleLaneChangeActionFactory(true),
+    //     0
+    // );
+    // action7->setNext(action8);
 
-    ActionNode* action4 = new ActionNode(
-        "action4: 止まる",
-        &device,
-        stopActionFactory(),
-        0
-    );
-    action3->setNext(action4);
+    // ActionNode* action9 = new ActionNode(
+    //     "action9: 右エッジ曲進",
+    //     &device,
+    //     goCurveActionFactory(
+    //         250.0f,
+    //         400.0f,
+    //         true,
+    //         10,
+    //         {
+    //             laneTracingAssistGenerator(
+    //                 true,
+    //                 100.0f,
+    //                 1.0f,
+    //                 10.0f,
+    //                 calcBlackWhiteBorderError
+    //             ),
+    //             slowlyAccelerateAssistGenerator(
+    //                 10,
+    //                 10
+    //             )
+    //         },
+    //         {
+    //             blueFloorCloserGenerator()
+    //         }
+    //     ),
+    //     0
+    // );
+    // action8->setNext(action9);
+
+    // ActionNode* action10 = new ActionNode(
+    //     "action10: 右エッジ曲進(青)",
+    //     &device,
+    //     goCurveActionFactory(
+    //         250.0f,
+    //         400.0f,
+    //         true,
+    //         10,
+    //         {
+    //             laneTracingAssistGenerator(
+    //                 true,
+    //                 100.0f,
+    //                 1.0f,
+    //                 10.0f,
+    //                 calcBlueWhiteBorderError
+    //             )
+    //         },
+    //         {
+    //             blackFloorCloserGenerator()
+    //         }
+    //     ),
+    //     0
+    // );
+    // action9->setNext(action10);
+
+    // ActionNode* action11 = new ActionNode(
+    //     "action11: 車線変更（左）",
+    //     &device,
+    //     simpleLaneChangeActionFactory(false),
+    //     0
+    // );
+    // action10->setNext(action11);
+
+    // ActionNode* action12 = new ActionNode(
+    //     "action12: 左エッジ直進",
+    //     &device,
+    //     goStraightActionFactory(
+    //         500.0f,
+    //         10,
+    //         {
+    //             slowlyAccelerateAssistGenerator(
+    //                 4,
+    //                 10
+    //             ),
+    //             laneTracingAssistGenerator(
+    //                 false,
+    //                 100.0f,
+    //                 1.0f,
+    //                 10.0f,
+    //                 calcBlackWhiteBorderError
+    //             )
+    //         },
+    //         {
+    //             blueFloorCloserGenerator()
+    //         }
+    //     ),
+    //     0
+    // );
+    // action11->setNext(action12);
 
     ActionNode* prevAction = nullptr;
     ActionNode* currentAction = action0;
