@@ -3,6 +3,7 @@
 
 #include "ICloser.h"
 #include "ICloserGenerator.h"
+#include "Device.h"
 
 /**
  * 黒色の床に近づいたら終了判定を出すクラスのファクトリー関数
@@ -16,11 +17,14 @@ ICloserGenerator blackFloorCloserGenerator();
 class BlackFloorCloser : public ICloser
 {
     public:
-        BlackFloorCloser();
+        BlackFloorCloser(Device*& device);
         ~BlackFloorCloser();
 
         void init() override;
         bool isClosed() override;
+
+    private:
+        Device*& mDevice;
 };
 
 #endif // _BLACK_FLOOR_CLOSER_H_

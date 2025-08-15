@@ -13,7 +13,6 @@ APPL_CXXOBJS +=\
 	BlueFloorCloser.o\
 	CurveCloser.o\
 	StraightCloser.o\
-	StraightStrictCloser.o\
 	OnRightEdgeCloser.o\
 	OnLeftEdgeCloser.o\
 	TimedCloser.o\
@@ -28,13 +27,12 @@ APPL_CXXOBJS +=\
 	SinpleLaneChangeAction.o\
 	ActionNode.o\
 	Device.o\
-	PerceptionReporter.o\
 	CalcCurveDriveSpeed.o\
 	FrontArmDrive.o\
 	TwinWheelDrive.o\
 	Logger.o\
-	CameraManager.o\
 	config.o\
+	ImageAnalysisServer.o\
 
 SRCLANG := c++
 
@@ -50,10 +48,8 @@ APPL_DIRS += \
 	$(mkfile_path)assist \
 	$(mkfile_path)closer \
 	$(mkfile_path)device \
-	$(mkfile_path)perception \
 	$(mkfile_path)drive \
 	$(mkfile_path)logger \
-	$(mkfile_path)perception \
 	$(mkfile_path)web-camera \
 
 INCLUDES += \
@@ -61,20 +57,8 @@ INCLUDES += \
 	-I$(mkfile_path)assist \
 	-I$(mkfile_path)closer \
 	-I$(mkfile_path)device \
-	-I$(mkfile_path)perception \
 	-I$(mkfile_path)drive \
 	-I$(mkfile_path)logger \
-	-I$(mkfile_path)perception \
 	-I$(mkfile_path)web-camera \
-	-I/usr/include/opencv4\
-	-I/usr/include/opencv4/opencv2\
 
 COPTS += -std=gnu++11
-
-# OpenCVがV4L2を使用するように環境変数を設定
-export OPENCV_VIDEOIO_PRIORITY_V4L2=1
-export OPENCV_VIDEOIO_DEBUG=1
-export OPENCV_VIDEOIO_GSTREAMER=0
-
-# OpenCVライブラリの追加
-LIBS += -lopencv_core -lopencv_imgproc -lopencv_imgcodecs -lopencv_videoio

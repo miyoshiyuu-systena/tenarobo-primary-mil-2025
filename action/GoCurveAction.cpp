@@ -1,8 +1,6 @@
 #include "GoCurveAction.h"
 #include "spikeapi.h"
 #include "CalcCurveDriveSpeed.h"
-#include "PerceptionReporter.h"
-#include "PerceptionReport.h"
 #include <vector>
 
 #include "logger/Logger.h"
@@ -31,14 +29,14 @@ ActionCall goCurveActionFactory(
         // 複数のアシストオブジェクトを生成
         std::vector<IAssist*> assists;
         for (const auto& assistPtrGenerator : assistPtrGenerators) {
-            IAssist* assist = assistPtrGenerator();
+            IAssist* assist = assistPtrGenerator(device);
             assist->init();
             assists.push_back(assist);
         }
         
         std::vector<ICloser*> closers;
         for (const auto& closerPtrGenerator : closerPtrGenerators) {
-            ICloser* closer = closerPtrGenerator();
+            ICloser* closer = closerPtrGenerator(device);
             closer->init();
             closers.push_back(closer);
         }
@@ -52,9 +50,6 @@ ActionCall goCurveActionFactory(
                 speeds[0] = baseSpeed[1]; // 左輪（内輪）
                 speeds[1] = baseSpeed[0]; // 右輪（外輪）
             }
-
-            // 知覚データを取得
-            PerceptionReporter::getInstance().update(detectInterval);
             
             // 複数のアシストを順次適用
             for (IAssist* assist : assists) {

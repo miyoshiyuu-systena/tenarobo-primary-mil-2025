@@ -3,6 +3,7 @@
 
 #include "IAssist.h"
 #include <functional>
+#include "Device.h"
 
 /**
  * 走行補助クラスのファクトリー関数
@@ -17,6 +18,6 @@
  * 
  * 組み込みシステムにおけるリアルタイム制御では、このような細やかなメモリ管理が重要。
  */
-typedef std::function<IAssist*()> IAssistGenerator;
+typedef std::function<IAssist*(Device*&)> IAssistGenerator;
 
 #endif

@@ -1,7 +1,5 @@
 #include "SpinTurnAction.h"
 #include "spikeapi.h"
-#include "PerceptionReporter.h"
-#include "PerceptionReport.h"
 
 ActionCall spinTurnActionFactory(
     float angular_speed,
@@ -24,7 +22,7 @@ ActionCall spinTurnActionFactory(
 
         std::vector<ICloser*> closers;
         for (const auto& closerPtrGenerator : closerPtrGenerators) {
-            ICloser* closer = closerPtrGenerator();
+            ICloser* closer = closerPtrGenerator(device);
             closer->init();
             closers.push_back(closer);
         }
@@ -35,8 +33,6 @@ ActionCall spinTurnActionFactory(
             } else {
                 device->twinWheelDrive.rightSpinTurn(angular_speed);
             }
-
-            PerceptionReporter::getInstance().update(detectInterval);
 
             dly_tsk(detectInterval * 1000);
 

@@ -1,7 +1,6 @@
 #include "LaneChangeCompleteJudge.h"
 #include "LaneChangeAction.h"
 #include "spikeapi.h"
-#include "PerceptionReporter.h"
 #include "OnLeftEdgeCloser.h"
 #include "OnRightEdgeCloser.h"
 
@@ -16,15 +15,11 @@ ActionCall laneChangeCompleteJudgeFactory(
         ActionNode*& next_ptr,
         Device*& device
     ) {
-        // 画像を最新にするために初期化する
-        PerceptionReporter::getInstance().init();
-        PerceptionReporter::getInstance().update(10);
-
         bool is_closed = false;
         if (go_right_lane) {
-            is_closed = onRightEdgeCloserGenerator()()->isClosed();
+            is_closed = onRightEdgeCloserGenerator()(device)->isClosed();
         } else {
-            is_closed = onLeftEdgeCloserGenerator()()->isClosed();
+            is_closed = onLeftEdgeCloserGenerator()(device)->isClosed();
         }
 
         if (is_closed) {

@@ -3,6 +3,7 @@
 
 #include    "ICloser.h"
 #include    "ICloserGenerator.h"
+#include    "Device.h"
 
 /**
  * 曲がり角に差し掛かったら終了判定を出すクラスのファクトリー関数
@@ -18,13 +19,18 @@ ICloserGenerator curveCloserGenerator();
 class CurveCloser : public ICloser
 {
     public:
-        CurveCloser();
+        CurveCloser(Device*& device);
         ~CurveCloser();
 
         void init() override;
         bool isClosed() override;
 
     private:
+        /**
+         * デバイスの参照
+         */
+        Device*& mDevice;
+        
         /**
          * 正面の直線を連続して見失った回数
          * @note

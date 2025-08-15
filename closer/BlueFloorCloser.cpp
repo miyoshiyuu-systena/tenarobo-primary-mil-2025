@@ -1,11 +1,14 @@
 #include "BlueFloorCloser.h"
-#include "PerceptionReporter.h"
-#include "PerceptionReport.h"
+#include "ColorSensor.h"
 #include "config.h"
+#include "spikeapi.h"
+#include "Device.h"
+
+using namespace spikeapi;
 
 ICloserGenerator blueFloorCloserGenerator() {
-    return []() {
-        return new BlueFloorCloser();
+    return [](Device*& device) {
+        return new BlueFloorCloser(device);
     };
 }
 
@@ -36,7 +39,9 @@ static int getBlueFloorVLowerThreshold() {
     return config.getIntValue("blueFloorVLowerThreshold", 50);
 }
 
-BlueFloorCloser::BlueFloorCloser() : ICloser()
+BlueFloorCloser::BlueFloorCloser(Device*& device) 
+: ICloser()
+, mDevice(device)
 {
 }
 
@@ -57,11 +62,12 @@ bool BlueFloorCloser::isClosed()
     static int V_UPPER_THRESHOLD = getBlueFloorVUpperThreshold();
     static int V_LOWER_THRESHOLD = getBlueFloorVLowerThreshold();
 
-    PerceptionReport report = PerceptionReporter::getInstance().getLatest();
+    ColorSensor::HSV hsv;
+    mDevice->colorSensor.getHSV(hsv, true);
     
     return (
-        (H_LOWER_THRESHOLD <= report.h && report.h <= H_UPPER_THRESHOLD) &&
-        (S_LOWER_THRESHOLD <= report.s && report.s <= S_UPPER_THRESHOLD) &&
-        (V_LOWER_THRESHOLD <= report.v && report.v <= V_UPPER_THRESHOLD)
+        (H_LOWER_THRESHOLD <= hsv.h && hsv.h <= H_UPPER_THRESHOLD) &&
+        (S_LOWER_THRESHOLD <= hsv.s && hsv.s <= S_UPPER_THRESHOLD) &&
+        (V_LOWER_THRESHOLD <= hsv.v && hsv.v <= V_UPPER_THRESHOLD)
     );
 }

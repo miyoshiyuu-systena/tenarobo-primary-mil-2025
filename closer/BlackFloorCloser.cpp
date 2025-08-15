@@ -1,11 +1,13 @@
 #include "BlackFloorCloser.h"
-#include "PerceptionReporter.h"
-#include "PerceptionReport.h"
 #include "config.h"
+#include "ColorSensor.h"
+#include "spikeapi.h"
+
+using namespace spikeapi;
 
 ICloserGenerator blackFloorCloserGenerator() {
-    return []() {
-        return new BlackFloorCloser();
+    return [](Device*& device) {
+        return new BlackFloorCloser(device);
     };
 }
 
@@ -36,7 +38,9 @@ static int getBlackFloorVLowerThreshold() {
     return config.getIntValue("blackFloorVLowerThreshold", 0);
 }
 
-BlackFloorCloser::BlackFloorCloser() : ICloser()
+BlackFloorCloser::BlackFloorCloser(Device*& device)
+: ICloser()
+, mDevice(device)
 {
 }
 
@@ -57,11 +61,12 @@ bool BlackFloorCloser::isClosed()
     static int V_UPPER_THRESHOLD = getBlackFloorVUpperThreshold();
     static int V_LOWER_THRESHOLD = getBlackFloorVLowerThreshold();
 
-    PerceptionReport report = PerceptionReporter::getInstance().getLatest();
-    
+    ColorSensor::HSV hsv;
+    mDevice->colorSensor.getHSV(hsv, true);
+
     return (
-        (H_LOWER_THRESHOLD <= report.h && report.h <= H_UPPER_THRESHOLD) &&
-        (S_LOWER_THRESHOLD <= report.s && report.s <= S_UPPER_THRESHOLD) &&
-        (V_LOWER_THRESHOLD <= report.v && report.v <= V_UPPER_THRESHOLD)
+        (H_LOWER_THRESHOLD <= hsv.h && hsv.h <= H_UPPER_THRESHOLD) &&
+        (S_LOWER_THRESHOLD <= hsv.s && hsv.s <= S_UPPER_THRESHOLD) &&
+        (V_LOWER_THRESHOLD <= hsv.v && hsv.v <= V_UPPER_THRESHOLD)
     );
 }

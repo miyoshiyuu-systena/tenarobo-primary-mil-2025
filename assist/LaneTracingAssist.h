@@ -4,6 +4,7 @@
 #include "IAssist.h"
 #include "CalcErrorFunc.h"
 #include "IAssistGenerator.h"
+#include "Device.h"
 
 /**
  * 青白線に沿って走行する補助クラスのファクトリー関数
@@ -30,6 +31,11 @@ class LaneTracingAssist : public IAssist
 {
     public:
         LaneTracingAssist(
+            /**
+             * デバイスの参照
+             */
+            Device*& device,
+
             /**
              * 右側に走行するかどうか
              * @note
@@ -72,6 +78,7 @@ class LaneTracingAssist : public IAssist
         void correct(float* speeds) override;
 
     private:
+        Device*& mDevice;
         bool mIsRightSide;
         float mKp;
         float mKi;
