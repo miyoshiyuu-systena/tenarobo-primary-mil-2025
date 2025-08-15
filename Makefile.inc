@@ -17,6 +17,8 @@ APPL_CXXOBJS +=\
 	OnLeftEdgeCloser.o\
 	TimedCloser.o\
 	GateFrontCloser.o\
+	ObstacleCloser.o\
+	NoObstacleCloser.o\
 	GoStraightAction.o\
 	GoCurveAction.o\
 	PivotTurnAction.o\
@@ -27,6 +29,7 @@ APPL_CXXOBJS +=\
 	LaneChangeCompleteJudge.o\
 	SinpleLaneChangeAction.o\
 	ChangeDirectionAction.o\
+	OraOraAction.o\
 	ActionNode.o\
 	Device.o\
 	CalcCurveDriveSpeed.o\

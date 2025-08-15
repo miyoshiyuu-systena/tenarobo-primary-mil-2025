@@ -25,6 +25,9 @@
 #include "CurveCloser.h"
 #include "TimedCloser.h"
 #include "OnRightEdgeCloser.h"
+#include "ObstacleCloser.h"
+#include "NoObstacleCloser.h"
+#include "OraOraAction.h"
 
 using namespace spikeapi;
 
@@ -48,11 +51,11 @@ void main_task(intptr_t exinf)   {
 
     // ロガーインスタンスの取得
     Logger& logger = Logger::getInstance();
-
+    
     bool is_clockwise = true;
 
     ActionNode* root = new ActionNode(
-        "action_root: 背中のボタンを押すまで忠犬ハチ公！！！",
+        "action0: 背中のボタンを押すまで忠犬ハチ公！！！",
         &device,
         hachikouActionFactory(
             1.0f,
@@ -62,18 +65,18 @@ void main_task(intptr_t exinf)   {
     );
 
     ActionNode* action1 = new ActionNode(
-        "action1: ゲート検知",
+        "action1: オラオラ！！ペットボトル、ぶっ飛ばすぜ！！",
         &device,
-        changeDirectionActionFactory(
+        oraOraActionFactory(
             is_clockwise,
             {
-                gateFrontCloserGenerator()
+                noObstacleCloserGenerator(300)
             }
         ),
         0
     );
     root->setNext(action1);
-
+    
     ActionNode* current = root;
     ActionNode* next = nullptr;
 
