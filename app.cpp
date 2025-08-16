@@ -28,6 +28,7 @@
 #include "ObstacleCloser.h"
 #include "NoObstacleCloser.h"
 #include "OraOraAction.h"
+#include "LaneChangeAssist.h"
 
 using namespace spikeapi;
 
@@ -65,17 +66,45 @@ void main_task(intptr_t exinf)   {
     );
 
     ActionNode* action1 = new ActionNode(
-        "action1: オラオラ！！ペットボトル、ぶっ飛ばすぜ！！",
+        "action1: 直線走行",
         &device,
-        oraOraActionFactory(
-            is_clockwise,
+        goStraightActionFactory(
+            250.0f,
+            10,
+            {},
             {
-                noObstacleCloserGenerator(300)
+                timedCloserGenerator(200)
             }
         ),
         0
     );
     root->setNext(action1);
+
+    ActionNode* action2 = new ActionNode(
+        "action2: 最初に車線変更を行う、直線走行",
+        &device,
+        goStraightActionFactory(
+            250.0f,
+            10,
+            {
+                laneChangeAssistGenerator(false),
+            },
+            {
+                timedCloserGenerator(200)
+            }
+        ),
+        0
+    );
+    action1->setNext(action2);
+
+    ActionNode* action3 = new ActionNode(
+        "action3: 停止する",
+        &device,
+        stopActionFactory(),
+        0
+    );
+    action2->setNext(action3);
+
     
     ActionNode* current = root;
     ActionNode* next = nullptr;

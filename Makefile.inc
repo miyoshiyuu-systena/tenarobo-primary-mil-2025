@@ -8,6 +8,7 @@ APPL_CXXOBJS +=\
 	CalcBlueWhiteBorderError.o\
 	LaneTracingAssist.o\
 	SlowlyAccelerateAssist.o\
+	LaneChangeAssist.o\
 	ICloser.o\
 	BlackFloorCloser.o\
 	BlueFloorCloser.o\
