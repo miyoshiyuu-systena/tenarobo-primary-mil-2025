@@ -144,10 +144,10 @@ bool ImageAnalysisServer::responseFrontStraight() {
     return result;
 }
 
-bool ImageAnalysisServer::responseOnRightEdge() {
+bool ImageAnalysisServer::responseTargetCircleInDisplay() {
     sem_wait(sem_analysis_result);
     AnalysisResultPacket* shared_result = static_cast<AnalysisResultPacket*>(shm_analysis_result_ptr);
-    bool result = shared_result->on_right_edge;
+    bool result = shared_result->target_circle_in_display;
     sem_post(sem_analysis_result);
     return result;
 }
@@ -182,4 +182,24 @@ bool ImageAnalysisServer::responseBlueBottleInFront() {
     bool result = shared_result->blue_bottle_in_front;
     sem_post(sem_analysis_result);
     return result;
+}
+
+void ImageAnalysisServer::responseTargetCircleXY(uint16_t& x, uint16_t& y) {
+    sem_wait(sem_analysis_result);
+    AnalysisResultPacket* shared_result = static_cast<AnalysisResultPacket*>(shm_analysis_result_ptr);
+    x = shared_result->target_circle_x;
+    y = shared_result->target_circle_y;
+    sem_post(sem_analysis_result);
+}
+
+void ImageAnalysisServer::responseBlueBottleXY(uint16_t& x, uint16_t& y) {
+    sem_wait(sem_analysis_result);
+    AnalysisResultPacket* shared_result = static_cast<AnalysisResultPacket*>(shm_analysis_result_ptr);
+    x = shared_result->blue_bottle_x;
+    y = shared_result->blue_bottle_y;
+    sem_post(sem_analysis_result);
+}
+
+void ImageAnalysisServer::responseBlueBottleXYStatic(uint16_t& x, uint16_t& y) {
+    ImageAnalysisServer::getInstance().responseBlueBottleXY(x, y);
 }

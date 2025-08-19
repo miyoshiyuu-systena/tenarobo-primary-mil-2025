@@ -3,6 +3,14 @@
 
 #include <cstdint>
 
+const uint16_t IMAGE_WIDTH = 320;
+const uint16_t IMAGE_HEIGHT = 240;
+
+/**
+ * 座標を受け取るコールバック関数の型
+ */
+typedef void (*CoordinateCallback)(uint16_t& x, uint16_t& y);
+
 /**
  * 分析コマンド
  * Python画像分析サーバーとの間で番号と意味の合意を維持し続けなければならない
@@ -10,12 +18,14 @@
 enum AnalysisCommand {
     DO_NOTHING = 0,
     FRONT_STRAIGHT = 1,
-    ON_RIGHT_EDGE = 2,
+    TARGET_CIRCLE_IN_DISPLAY = 2,
     ON_LEFT_EDGE = 3,
     GATE_IN_FRONT = 4,
     RED_BOTTLE_IN_FRONT = 5,
     BLUE_BOTTLE_IN_FRONT = 6,
-    ANALYSIS_COMMAND_MAX = 7
+    TARGET_CIRCLE_XY = 7,
+    BLUE_BOTTLE_XY = 8,
+    ANALYSIS_COMMAND_MAX = 9
 };
 
 /**
@@ -24,13 +34,17 @@ enum AnalysisCommand {
  */
 struct AnalysisResultPacket {
     uint8_t front_straight : 1;
-    uint8_t on_right_edge : 1;
+    uint8_t target_circle_in_display : 1;
     uint8_t on_left_edge : 1;
     uint8_t gate_in_front : 1;
     uint8_t red_bottle_in_front : 1;
     uint8_t blue_bottle_in_front : 1;
-    uint8_t reserved6 : 2; //今は使用していない
-    uint8_t reserved7 : 2; //今は使用していない
+    uint8_t reserved6 : 1; //今は使用していない
+    uint8_t reserved7 : 1; //今は使用していない
+    uint16_t target_circle_x;
+    uint16_t target_circle_y;
+    uint16_t blue_bottle_x;
+    uint16_t blue_bottle_y;
 };
 
 /**
@@ -76,11 +90,11 @@ public:
     bool responseFrontStraight();
 
     /**
-     * 右端に乗っているかどうか,分析結果を読み取る
+     * 画面内にターゲットサークルがあるかどうか,分析結果を読み取る
      * 事前にrequest(enum AnalysisCommand command)を実行しておく必要がある
-     * @return 右端に乗っているかどうか
+     * @return 画面内にターゲットサークルがあるかどうか
      */
-    bool responseOnRightEdge();
+    bool responseTargetCircleInDisplay();
 
     /**
      * 左端に乗っているかどうか,分析結果を読み取る
@@ -109,6 +123,21 @@ public:
      * @return 青いペットボトルがあるかどうか
      */
     bool responseBlueBottleInFront();
+
+    /**
+     * ターゲットサークルの座標を読み取る
+     * 事前にrequest(enum AnalysisCommand command)を実行しておく必要がある
+     * @return ターゲットサークルの座標
+     */
+    void responseTargetCircleXY(uint16_t& x, uint16_t& y);
+
+    /**
+     * 青いペットボトルの座標を読み取る
+     * 事前にrequest(enum AnalysisCommand command)を実行しておく必要がある
+     * @return 青いペットボトルの座標
+     */
+    void responseBlueBottleXY(uint16_t& x, uint16_t& y);
+    static void responseBlueBottleXYStatic(uint16_t& x, uint16_t& y);
 
 private:
     ImageAnalysisServer();

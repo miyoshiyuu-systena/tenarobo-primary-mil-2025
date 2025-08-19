@@ -41,6 +41,22 @@ public:
      */
     float getSpeed() const;
 
+    /**
+     * 前腕の回転角度を取得
+     * @return 前腕の回転角度[°]
+     */
+    int getCount() const;
+
+    /**
+     * 前腕の回転角度をリセット
+     */
+    void resetCount();
+
+    /**
+     * 前腕の回転を停止
+     */
+    void stop();
+
 private:
     Motor mMotor;
 };
