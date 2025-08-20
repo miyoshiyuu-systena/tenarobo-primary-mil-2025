@@ -31,134 +31,83 @@ ActionCall fineChangeDirectionActionFactory(
 
         uint16_t x = 0;
         uint16_t y = 0;
-        int trial = 0;
         int x_diff = 0;
         int y_diff = 0;
         float angle = 0;
+        int trial;
+
+        trial = 0;
 
         /**
-         * 本来はロボットビジョンとキャリブレーションで正確な位置推定ができる
-         * 今回は簡易的なものにとどめる
-         * 画像下部中央を起点とした三角推量で対象物までの水平角度を求める
-         * 
-         * 例
-         * 画像のサイズ320×240
-         * 得られた座標x=230, y=90の時（画像の右上らへん、ロボットの体の右前方遠く）
-         * Tan-1((240 - 90) / (230 - 160))
-         * ここで160というのは画像の横サイズの半分
+         * 大きめの位置調整
+         * 大胆に動かす
          */
-
-        /**
-         * レベル1
-         * やや大きめの角度変更 (20°)ほど
-         */
-        while (trial < 3) { // 検出精度が低く検知できないことがあるため、3回試行する
+        while (trial < 10) {
             coordinateCallback(x, y);
             if (x != 0 && y != 0) {
-                break;
+                x_diff = (int)x - (int)IMAGE_WIDTH / 2;
+                if (x_diff > 90) {
+                    device->twinWheelDrive.leftPivotTurn(45);
+                } else if (x_diff < -90) {
+                    device->twinWheelDrive.rightPivotTurn(45);
+                } else {
+                    /* do nothing */
+                }
             }
             trial++;
             dly_tsk(100 * 1000); // 100ms待機して画像分析の更新を待つ
-        }
-        
-        if (x != 0 && y != 0) {
-            x_diff = (int)x - IMAGE_WIDTH / 2;
-            y_diff = IMAGE_HEIGHT - (int)y;
-            Logger::getInstance().logDebug("FineChangeDirectionAction: x_diff, y_diff: " + std::to_string(x_diff) + ", " + std::to_string(y_diff));
-            
-            angle = atan2(y_diff, x_diff) * 180 / M_PI; // 何この関数
-            Logger::getInstance().logDebug("FineChangeDirectionAction: angle: " + std::to_string(angle));
-            if (angle > 20.0f) {
-                device->twinWheelDrive.leftPivotTurn(90);
-                dly_tsk((int)((angle / 90.0f) * 1000 * 1000));
-                device->twinWheelDrive.stop();
-            } else if (angle < -20.0f) {
-                device->twinWheelDrive.rightPivotTurn(90);
-                dly_tsk((int)((-angle / 90.0f) * 1000 * 1000));
-                device->twinWheelDrive.stop();
-            } else {
-                // 角度が20°以内ならば、何もしない
-            }
-        } else {
-            // 検出できなかったら諦める
+            device->twinWheelDrive.stop();
+            dly_tsk(50 * 1000); // 100ms待機して画像分析の更新を待つ
         }
 
         trial = 0;
 
         /**
-         * レベル2
-         * 普通めの角度変更（10°）ほど
+         * 中頃の位置調整
+         * 中位のスピードで動かす
          */
-         while (trial < 3) {
+        while (trial < 10) {
             coordinateCallback(x, y);
             if (x != 0 && y != 0) {
-                break;
+                x_diff = (int)x - (int)IMAGE_WIDTH / 2;
+                if (x_diff > 45) {
+                    device->twinWheelDrive.leftPivotTurn(30);
+                } else if (x_diff < -45) {
+                    device->twinWheelDrive.rightPivotTurn(30);
+                } else {
+                    /* do nothing */
+                }
             }
             trial++;
             dly_tsk(100 * 1000); // 100ms待機して画像分析の更新を待つ
-         }
+            device->twinWheelDrive.stop();
+            dly_tsk(50 * 1000); // 100ms待機して画像分析の更新を待つ
+        }
 
-         if (x != 0 && y != 0) {
-            x_diff = (int)x - IMAGE_WIDTH / 2;
-            y_diff = IMAGE_HEIGHT - (int)y;
-            Logger::getInstance().logDebug("FineChangeDirectionAction: x_diff, y_diff: " + std::to_string(x_diff) + ", " + std::to_string(y_diff));
+        trial = 0;
 
-            angle = atan2(y_diff, x_diff) * 180 / M_PI;
-            Logger::getInstance().logDebug("FineChangeDirectionAction: angle: " + std::to_string(angle));
-            if (angle > 10.0f) {
-               device->twinWheelDrive.leftPivotTurn(45);
-               dly_tsk((int)((angle / 45.0f) * 1000 * 1000));
-               device->twinWheelDrive.stop();
-            } else if (angle < -10.0f) {
-               device->twinWheelDrive.rightPivotTurn(45);
-               dly_tsk((int)((-angle / 45.0f) * 1000 * 1000));
-               device->twinWheelDrive.stop();
-            } else {
-                // 角度が10°以内ならば、何もしない
-            }
-         } else {
-            // 検出できなかったら諦める
-         }
-
-         trial = 0;
-
-         /**
-          * レベル3
-          * 小さい角度変更（5°）ほど
-          */
-         while (trial < 3) {
+        /**
+         * 小さめの位置調整
+         * 小さいスピードで動かす
+         */
+        while (trial < 10) {
             coordinateCallback(x, y);
             if (x != 0 && y != 0) {
-                break;
+                x_diff = (int)x - (int)IMAGE_WIDTH / 2;
+                if (x_diff > 20) {
+                    device->twinWheelDrive.leftPivotTurn(15);
+                } else if (x_diff < -20) {
+                    device->twinWheelDrive.rightPivotTurn(15);
+                } else {
+                    /* do nothing */
+                }
             }
             trial++;
             dly_tsk(100 * 1000); // 100ms待機して画像分析の更新を待つ
-         }
+            device->twinWheelDrive.stop();
+            dly_tsk(50 * 1000); // 100ms待機して画像分析の更新を待つ
+        }
 
-         if (x != 0 && y != 0) {
-            x_diff = (int)x - IMAGE_WIDTH / 2;
-            y_diff = IMAGE_HEIGHT - (int)y;
-            Logger::getInstance().logDebug("FineChangeDirectionAction: x_diff, y_diff: " + std::to_string(x_diff) + ", " + std::to_string(y_diff));
-
-            angle = atan2(y_diff, x_diff) * 180 / M_PI;
-            Logger::getInstance().logDebug("FineChangeDirectionAction: angle: " + std::to_string(angle));
-            if (angle > 5.0f) {
-               device->twinWheelDrive.leftPivotTurn(30);
-               dly_tsk((int)((angle / 30.0f) * 1000 * 1000));
-               device->twinWheelDrive.stop();
-            } else if (angle < -5.0f) {
-               device->twinWheelDrive.rightPivotTurn(30);
-               dly_tsk((int)((-angle / 30.0f) * 1000 * 1000));
-               device->twinWheelDrive.stop();
-            } else {
-               // 角度が5°以内ならば、何もしない
-            }
-         } else {
-            // 検出できなかったら諦める
-         }
-
-         /**
-          * レベル1-3の動きで大体目標物までの角度が5°以内に収まりそう
-          */
+        ImageAnalysisServer::getInstance().request(DO_NOTHING);
     };
 }   
