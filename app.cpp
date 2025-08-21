@@ -131,7 +131,7 @@ void main_task(intptr_t exinf)   {
         "action5: 後進",
         &device,
         goStraightActionFactory(
-            250.0f,
+            -250.0f,
             10,
             {},
             {
@@ -148,7 +148,7 @@ void main_task(intptr_t exinf)   {
         "action6: 黒線検知場所から少しだけ後進してコース復帰",
         &device,
         goStraightActionFactory(
-            250.0f,
+            -250.0f,
             10,
             {},
             {
