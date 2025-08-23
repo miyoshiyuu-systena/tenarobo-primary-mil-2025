@@ -77,7 +77,7 @@ void main_task(intptr_t exinf)   {
             {},
             {
                 runDistanceCloserGenerator(3000.0f), // 走行距離は仮。実際に計測して決める。なくてもいいかも
-                obstacleCloserGenerator(100)          // ペットボトル検知：1[cm]未満になったら次action
+                obstacleCloserGenerator(100)          // ペットボトル検知：100[mm]未満になったら次action
             }
         ),
         0
@@ -216,7 +216,10 @@ void main_task(intptr_t exinf)   {
     ActionNode* current = root;
     ActionNode* next = nullptr;
 
+    int actionCount = 0;
     do {
+        actionCount++;
+        logger.logInfo("action: " + to_string(actionCount)); // +演算子での結合はよくないけど今は許して
         current->execute();
         next = current->getNext();
         delete current;
