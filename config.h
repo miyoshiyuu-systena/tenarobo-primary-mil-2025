@@ -20,6 +20,7 @@ private:
     const std::string DEFAULT_LOG_PATH = "/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/log-debug/";
     const std::string DEFAULT_LOG_SUFFIX = "default";
     const std::string DEFAULT_IMG_PATH = "/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/";
+    const std::string DEFAULT_COURSE_TYPE = "L";
     
     /**
      * 設定ファイルを解析する
@@ -193,7 +194,21 @@ public:
         }
         return suffix;
     }
-    
+
+    /**
+     * コースタイプを取得
+     * L: true
+     * R: false
+     */
+    bool getCourseType() {
+        std::string courseType = getValue("courseType", DEFAULT_COURSE_TYPE);
+        // 空の場合はデフォルト値を設定
+        if(courseType.empty()){
+            courseType = DEFAULT_COURSE_TYPE;
+        }
+        return (courseType == "L")? true : false;
+    }
+
     /**
      * 設定値を表示（デバッグ用）
      */
