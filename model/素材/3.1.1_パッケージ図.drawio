@@ -87,6 +87,9 @@
             </Array>
           </mxGeometry>
         </mxCell>
+        <mxCell id="OwJzUyaSrS42sOtqSfpu-1" value="pkg パッケージ構成" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;width=187;height=27;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="277" y="456" width="393" height="495" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
