@@ -1,9 +1,12 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.0.6 Chrome/138.0.7204.100 Electron/37.2.3 Safari/537.36" version="28.0.6">
   <diagram name="Page-1" id="2YBvvXClWsGukQMizWep">
-    <mxGraphModel dx="2001" dy="1225" grid="0" gridSize="10" guides="0" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1907" dy="1176" grid="0" gridSize="10" guides="0" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="ugMpZt2pOo3klDPl6ZaC-4" value="走行体" style="rounded=0;whiteSpace=wrap;html=1;fontSize=15;align=center;verticalAlign=top;" parent="1" vertex="1">
+          <mxGeometry x="-167" y="735" width="876" height="708" as="geometry" />
+        </mxCell>
         <mxCell id="yU8MwZ3DH4KPKVIzFgXk-29" value="[old]ダブルループ攻略" style="rounded=0;whiteSpace=wrap;html=1;fontSize=15;align=center;verticalAlign=top;" parent="1" vertex="1">
           <mxGeometry x="400" y="-72" width="573" height="656" as="geometry" />
         </mxCell>
@@ -150,17 +153,17 @@
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="Ec_wlLB0QGWO_4ApjwlY-1" value="バーチャル運転手" style="rounded=0;whiteSpace=wrap;html=1;fontSize=15;align=center;verticalAlign=top;" parent="1" vertex="1">
-          <mxGeometry x="-157" y="758" width="330" height="678" as="geometry" />
+        <mxCell id="Ec_wlLB0QGWO_4ApjwlY-1" value="&amp;lt;&amp;lt;subsystem&amp;gt;&amp;gt;&lt;div&gt;バーチャル運転手&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontSize=15;align=center;verticalAlign=top;" parent="1" vertex="1">
+          <mxGeometry x="-157" y="741" width="330" height="695" as="geometry" />
         </mxCell>
-        <mxCell id="Ec_wlLB0QGWO_4ApjwlY-2" value="走行システム" style="rounded=0;whiteSpace=wrap;html=1;fontSize=15;align=center;verticalAlign=top;" parent="1" vertex="1">
-          <mxGeometry x="181" y="874" width="517" height="562" as="geometry" />
+        <mxCell id="Ec_wlLB0QGWO_4ApjwlY-2" value="&lt;div&gt;&amp;lt;&amp;lt;subsystem&amp;gt;&amp;gt;&lt;/div&gt;走行システム" style="rounded=0;whiteSpace=wrap;html=1;fontSize=15;align=center;verticalAlign=top;" parent="1" vertex="1">
+          <mxGeometry x="181" y="840" width="517" height="596" as="geometry" />
         </mxCell>
         <mxCell id="1Z2mFn8D-_F0uP4egYco-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;endFill=0;fontSize=15;" parent="1" source="Ec_wlLB0QGWO_4ApjwlY-3" target="Ec_wlLB0QGWO_4ApjwlY-4" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="Ec_wlLB0QGWO_4ApjwlY-3" value="競技者" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=15;" parent="1" vertex="1">
-          <mxGeometry x="-205" y="1176" width="30" height="60" as="geometry" />
+          <mxGeometry x="-230" y="1177" width="30" height="60" as="geometry" />
         </mxCell>
         <mxCell id="Ec_wlLB0QGWO_4ApjwlY-4" value="&lt;div&gt;[UC_VD_01]&lt;/div&gt;&lt;div&gt;ダブルループを&lt;/div&gt;&lt;div&gt;攻略する&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=15;" parent="1" vertex="1">
           <mxGeometry x="-142" y="1171" width="140" height="70" as="geometry" />
@@ -354,33 +357,24 @@
         <mxCell id="rOBGRitRa3UyUdC6c6UP-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;fontSize=15;" parent="1" source="rOBGRitRa3UyUdC6c6UP-1" target="Ec_wlLB0QGWO_4ApjwlY-19" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="rOBGRitRa3UyUdC6c6UP-1" value="ライン色を誤認させる&lt;br&gt;&lt;div&gt;演色性をもつ&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;照明&lt;/span&gt;&lt;/div&gt;" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=15;fillColor=#000000;" parent="1" vertex="1">
-          <mxGeometry x="757" y="1295" width="30" height="60" as="geometry" />
+        <mxCell id="rOBGRitRa3UyUdC6c6UP-1" value="照明の&lt;div&gt;色温度&lt;/div&gt;" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=15;fillColor=#000000;" parent="1" vertex="1">
+          <mxGeometry x="742" y="1295" width="30" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="rOBGRitRa3UyUdC6c6UP-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;endFill=0;fontSize=15;" parent="1" source="rOBGRitRa3UyUdC6c6UP-4" target="Ec_wlLB0QGWO_4ApjwlY-20" edge="1">
+        <mxCell id="rOBGRitRa3UyUdC6c6UP-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;endFill=0;fontSize=15;" parent="1" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="185" y="761" />
-              <mxPoint x="185" y="822" />
+              <mxPoint x="578" y="820" />
+              <mxPoint x="578" y="820" />
             </Array>
+            <mxPoint x="732.0000000000005" y="820" as="sourcePoint" />
+            <mxPoint x="71.000000000005" y="820" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="rOBGRitRa3UyUdC6c6UP-4" value="段差やしわにより&lt;div&gt;ライントレースに&lt;/div&gt;&lt;div&gt;悪影響を与えるコース&lt;/div&gt;" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=15;fillColor=#000000;gradientColor=none;" parent="1" vertex="1">
-          <mxGeometry x="250" y="731" width="30" height="60" as="geometry" />
+        <mxCell id="rOBGRitRa3UyUdC6c6UP-4" value="タイヤの摩擦" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=15;fillColor=#000000;gradientColor=none;" parent="1" vertex="1">
+          <mxGeometry x="742" y="794" width="30" height="60" as="geometry" />
         </mxCell>
         <mxCell id="Kz0RgpsThjrAZ5AcEFs3-1" value="uc ダブルループ攻略" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;width=234;height=20;fontSize=16;" parent="1" vertex="1">
-          <mxGeometry x="-228" y="723" width="1087" height="717" as="geometry" />
-        </mxCell>
-        <mxCell id="UruomgLms9kp53AFfHOU-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.711;entryY=0.057;entryDx=0;entryDy=0;endArrow=none;endFill=0;entryPerimeter=0;" parent="1" source="UruomgLms9kp53AFfHOU-8" target="Ec_wlLB0QGWO_4ApjwlY-21" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="598" y="861" />
-              <mxPoint x="105" y="861" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="UruomgLms9kp53AFfHOU-8" value="[緩和UC_VD_01]補足&lt;div&gt;走行体がトレースしているエッジとは逆の方向(右エッジ&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;トレース&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;中であれば左)に逸脱した場合に復帰を目指すユースケース。&lt;/span&gt;&lt;div&gt;&lt;div&gt;走行体がトレースしているエッジ側(右エッジトレース中であれば右)に逸脱した場合はライントレースの制御によりライン側に補正が働く&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;ため自然に復帰することが想定される。&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=note;size=20;whiteSpace=wrap;html=1;fontSize=16;align=left;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
-          <mxGeometry x="359" y="729" width="491" height="120" as="geometry" />
+          <mxGeometry x="-251" y="706" width="1060" height="745" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
