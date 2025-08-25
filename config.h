@@ -196,17 +196,31 @@ public:
     }
 
     /**
-     * コースタイプを取得
+     * コースタイプがLコースか判定
      * L: true
      * R: false
      */
-    bool getCourseType() {
+    bool isLCourse() {
         std::string courseType = getValue("courseType", DEFAULT_COURSE_TYPE);
         // 空の場合はデフォルト値を設定
         if(courseType.empty()){
             courseType = DEFAULT_COURSE_TYPE;
         }
         return (courseType == "L")? true : false;
+    }
+
+    /**
+     * コースタイプがRコースか判定
+     * L: false
+     * R: true
+     */
+    bool isRCourse() {
+        std::string courseType = getValue("courseType", DEFAULT_COURSE_TYPE);
+        // 空の場合はデフォルト値を設定
+        if(courseType.empty()){
+            courseType = DEFAULT_COURSE_TYPE;
+        }
+        return (courseType == "R")? true : false;
     }
 
     /**
