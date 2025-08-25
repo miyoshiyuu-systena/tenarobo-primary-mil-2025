@@ -216,10 +216,7 @@ void main_task(intptr_t exinf)   {
     ActionNode* current = root;
     ActionNode* next = nullptr;
 
-    int actionCount = 0;
     do {
-        actionCount++;
-        logger.logInfo("action: " + to_string(actionCount)); // +演算子での結合はよくないけど今は許して
         current->execute();
         next = current->getNext();
         delete current;
