@@ -23,10 +23,12 @@
 #include "BlackFloorCloser.h"
 #include "StraightCloser.h"
 #include "GateFrontCloser.h"
+#include "TargetInImageCloser.h"
 #include "CurveCloser.h"
 #include "TimedCloser.h"
 #include "OnRightEdgeCloser.h"
 #include "ObstacleCloser.h"
+#include "ObstacleNearCloser.h"
 #include "NoObstacleCloser.h"
 #include "RunDistanceCloser.h"
 #include "OraOraAction.h"
@@ -55,8 +57,8 @@ void main_task(intptr_t exinf)   {
 
     // ロガーインスタンスの取得
     Logger& logger = Logger::getInstance();
-    
-    bool is_clockwise = true;
+
+    bool is_right = true;
 
     ActionNode* root = new ActionNode(
         "action0: 背中のボタンを押すまで忠犬ハチ公！！！",
@@ -82,6 +84,7 @@ void main_task(intptr_t exinf)   {
         ),
         0
     );
+
     root->setNext(action1);
 
     // カーブまでそのまま直進

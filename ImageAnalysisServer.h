@@ -12,6 +12,11 @@ const uint16_t IMAGE_HEIGHT = 240;
 typedef void (*CoordinateCallback)(uint16_t& x, uint16_t& y);
 
 /**
+ * 対象物が画像の視野内に入ったかどうかを返すコールバック関数の型
+ */
+typedef bool (*IsInImageCallback)();
+
+/**
  * 分析コマンド
  * Python画像分析サーバーとの間で番号と意味の合意を維持し続けなければならない
  */
@@ -88,13 +93,14 @@ public:
      * @return 直線が検出されたかどうか
      */
     bool responseFrontStraight();
-
+    static bool responseFrontStraightStatic();
     /**
      * 画面内にターゲットサークルがあるかどうか,分析結果を読み取る
      * 事前にrequest(enum AnalysisCommand command)を実行しておく必要がある
      * @return 画面内にターゲットサークルがあるかどうか
      */
     bool responseTargetCircleInDisplay();
+    static bool responseTargetCircleInDisplayStatic();
 
     /**
      * 左端に乗っているかどうか,分析結果を読み取る
@@ -102,13 +108,14 @@ public:
      * @return 左端に乗っているかどうか
      */
     bool responseOnLeftEdge();
-
+    static bool responseOnLeftEdgeStatic();
     /**
      * 正面にゲートがあるかどうか,分析結果を読み取る
      * 事前にrequest(enum AnalysisCommand command)を実行しておく必要がある
      * @return ゲートがあるかどうか
      */
     bool responseGateInFront();
+    static bool responseGateInFrontStatic();
 
     /**
      * 正面に赤いペットボトルがあるかどうか,分析結果を読み取る
@@ -116,6 +123,7 @@ public:
      * @return 赤いペットボトルがあるかどうか
      */
     bool responseRedBottleInFront();
+    static bool responseRedBottleInFrontStatic();
 
     /**
      * 正面に青いペットボトルがあるかどうか,分析結果を読み取る
@@ -123,6 +131,7 @@ public:
      * @return 青いペットボトルがあるかどうか
      */
     bool responseBlueBottleInFront();
+    static bool responseBlueBottleInFrontStatic();
 
     /**
      * ターゲットサークルの座標を読み取る
@@ -130,6 +139,7 @@ public:
      * @return ターゲットサークルの座標
      */
     void responseTargetCircleXY(uint16_t& x, uint16_t& y);
+    static void responseTargetCircleXYStatic(uint16_t& x, uint16_t& y);
 
     /**
      * 青いペットボトルの座標を読み取る
