@@ -144,12 +144,20 @@ bool ImageAnalysisServer::responseFrontStraight() {
     return result;
 }
 
+bool ImageAnalysisServer::responseFrontStraightStatic() {
+    ImageAnalysisServer::getInstance().responseFrontStraight();
+}
+
 bool ImageAnalysisServer::responseTargetCircleInDisplay() {
     sem_wait(sem_analysis_result);
     AnalysisResultPacket* shared_result = static_cast<AnalysisResultPacket*>(shm_analysis_result_ptr);
     bool result = shared_result->target_circle_in_display;
     sem_post(sem_analysis_result);
     return result;
+}
+
+bool ImageAnalysisServer::responseTargetCircleInDisplayStatic() {
+    ImageAnalysisServer::getInstance().responseTargetCircleInDisplay();
 }
 
 bool ImageAnalysisServer::responseOnLeftEdge() {
@@ -160,12 +168,20 @@ bool ImageAnalysisServer::responseOnLeftEdge() {
     return result;
 }
 
+bool ImageAnalysisServer::responseOnLeftEdgeStatic() {
+    ImageAnalysisServer::getInstance().responseOnLeftEdge();
+}
+
 bool ImageAnalysisServer::responseGateInFront() {
     sem_wait(sem_analysis_result);
     AnalysisResultPacket* shared_result = static_cast<AnalysisResultPacket*>(shm_analysis_result_ptr);
     bool result = shared_result->gate_in_front;
     sem_post(sem_analysis_result);
     return result;
+}
+
+bool ImageAnalysisServer::responseGateInFrontStatic() {
+    ImageAnalysisServer::getInstance().responseGateInFront();
 }
 
 bool ImageAnalysisServer::responseRedBottleInFront() {
@@ -176,6 +192,10 @@ bool ImageAnalysisServer::responseRedBottleInFront() {
     return result;
 }
 
+bool ImageAnalysisServer::responseRedBottleInFrontStatic() {
+    ImageAnalysisServer::getInstance().responseRedBottleInFront();
+}
+
 bool ImageAnalysisServer::responseBlueBottleInFront() {
     sem_wait(sem_analysis_result);
     AnalysisResultPacket* shared_result = static_cast<AnalysisResultPacket*>(shm_analysis_result_ptr);
@@ -184,12 +204,20 @@ bool ImageAnalysisServer::responseBlueBottleInFront() {
     return result;
 }
 
+bool ImageAnalysisServer::responseBlueBottleInFrontStatic() {
+    ImageAnalysisServer::getInstance().responseBlueBottleInFront();
+}
+
 void ImageAnalysisServer::responseTargetCircleXY(uint16_t& x, uint16_t& y) {
     sem_wait(sem_analysis_result);
     AnalysisResultPacket* shared_result = static_cast<AnalysisResultPacket*>(shm_analysis_result_ptr);
     x = shared_result->target_circle_x;
     y = shared_result->target_circle_y;
     sem_post(sem_analysis_result);
+}
+
+void ImageAnalysisServer::responseTargetCircleXYStatic(uint16_t& x, uint16_t& y) {
+    ImageAnalysisServer::getInstance().responseTargetCircleXY(x, y);
 }
 
 void ImageAnalysisServer::responseBlueBottleXY(uint16_t& x, uint16_t& y) {

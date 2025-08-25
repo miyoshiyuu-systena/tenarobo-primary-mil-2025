@@ -168,7 +168,7 @@ def is_front_straight(row_image):
     cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/1_gray.png", image)
 
     ## 画像を2値化
-    image = cv2.inRange(image, (0, 0, 0), (360, 255, 127))
+    image = cv2.inRange(image, 0, 127)
     cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/1_binary.png", image)
 
     ## エッジ検出
