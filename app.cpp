@@ -61,10 +61,10 @@ void main_task(intptr_t exinf)   {
     bool is_right = config.isLCourse(); // Lコースの場合ラインの右側、Rコースの場合ラインの左側を走行
 
     // 直進時の走行速度
-    float straightSpeed = 250.0f;
+    float straightSpeed = 750.0f;
 
     // カーブ時の走行速度
-    float curveSpeed = 150.0f;
+    float curveSpeed = 450.0f;
 
     ActionNode* root = new ActionNode(
         "action0: 背中のボタンを押すまで忠犬ハチ公！！！",
@@ -85,15 +85,15 @@ void main_task(intptr_t exinf)   {
             {
                 laneTracingAssistGenerator(             //足元にガイド線がある場合はそれを活用する
                     is_right,                           //線の右縁にそう
-                    150.0f,                             //比例ゲイン
+                    120.0f,                             //比例ゲイン
                     0.1f,                               //積分ゲイン
                     10.0f,                              //微分ゲイン
                     calcBlackWhiteBorderError           //誤差計算関数(黒い線と白い線の境界を活用する)
                 )
             },
             {
-                runDistanceCloserGenerator(3000.0f),    // 大きめに設定（基本的にはペットボトル検知で終了する想定）
-                obstacleCloserGenerator(150)            // ペットボトル検知：150[mm]未満になったら次action
+                runDistanceCloserGenerator(1400.0f),    // 大きめに設定（基本的にはペットボトル検知で終了する想定）
+                obstacleCloserGenerator(100)            // ペットボトル検知：150[mm]未満になったら次action
             }
         ),
         0
@@ -111,87 +111,20 @@ void main_task(intptr_t exinf)   {
             {
                 laneTracingAssistGenerator(             //足元にガイド線がある場合はそれを活用する
                     is_right,                           //線の右縁にそう
-                    150.0f,                             //比例ゲイン
+                    120.0f,                             //比例ゲイン
                     0.1f,                               //積分ゲイン
                     10.0f,                              //微分ゲイン
                     calcBlackWhiteBorderError           //誤差計算関数(黒い線と白い線の境界を活用する)
                 )
             },
             {
-                runDistanceCloserGenerator(2000.0f),    // カーブまでの走行距離。値は仮。
-                curveCloserGenerator()                  // カーブに差し掛かったら次action
+                runDistanceCloserGenerator(850.0f)     // カーブまでの走行距離。値は仮。
+                // curveCloserGenerator()                  // カーブに差し掛かったら次action
             }
         ),
         0
     );
     action1->setNext(action2);
-
-    // コース外までそのまま直進
-    ActionNode* action3 = new ActionNode(
-        "action3: コース外までそのまま直進",
-        &device,
-        goStraightActionFactory(
-            straightSpeed,
-            10,
-            {},
-            {
-                runDistanceCloserGenerator(200.0f)      // カーブからコース外まで200[mm]と想定
-            }
-        ),
-        0
-    );
-    action2->setNext(action3);
-
-    // 停止（コース外にペットボトルを配置）
-    ActionNode* action4 = new ActionNode(
-        "action4: 停止（コース外にペットボトルを配置）",
-        &device,
-        stopActionFactory(),
-        0
-    );
-    action3->setNext(action4);
-
-    // 後進
-    ActionNode* action5 = new ActionNode(
-        "action5: 後進",
-        &device,
-        goStraightActionFactory(
-            -straightSpeed,
-            10,
-            {},
-            {
-                runDistanceCloserGenerator(200.0f),     // カーブからコース外まで前進した距離と同じだけ後進する。
-                blackFloorCloserGenerator()             // 黒線に差し掛かったら次action
-            }
-        ),
-        0
-    );
-    action4->setNext(action5);
-    
-    // 黒線検知場所から少しだけ後進してコース復帰
-    ActionNode* action6 = new ActionNode(
-        "action6: 黒線検知場所から少しだけ後進してコース復帰",
-        &device,
-        goStraightActionFactory(
-            -straightSpeed,
-            10,
-            {},
-            {
-                runDistanceCloserGenerator(20.0f)       // もしかしたら移動距離をマイナスにしないといけないかも
-            }
-        ),
-        0
-    );
-    action5->setNext(action6);
-
-    // 停止（コース復帰）
-    ActionNode* action7 = new ActionNode(
-        "action7: 停止（コース復帰）",
-        &device,
-        stopActionFactory(),
-        0
-    );
-    action6->setNext(action7);
 
     // 曲線走行（カーブ侵入）
     ActionNode* action8 = new ActionNode(
@@ -199,7 +132,7 @@ void main_task(intptr_t exinf)   {
         &device,
         goCurveActionFactory(
             curveSpeed,
-            50.0f,                                  // 半径は仮。計測して設定
+            180.0f,                                 // 半径は仮。計測して設定
             is_right,                               // 最初のカーブを曲がる方向
             10,
             {
@@ -212,12 +145,13 @@ void main_task(intptr_t exinf)   {
                 )
             },
             {
-                straightCloserGenerator()           // 直線検知
+                straightCloserGenerator(),          // 直線検知
+                runDistanceCloserGenerator(380.0f)  // 走行距離は仮。実際に計測して決める。
             }
         ),
         0
     );
-    action7->setNext(action8);
+    action2->setNext(action8);
 
     // 直線走行
     ActionNode* action9 = new ActionNode(
@@ -229,15 +163,14 @@ void main_task(intptr_t exinf)   {
             {
                 laneTracingAssistGenerator(             //足元にガイド線がある場合はそれを活用する
                     is_right,                           //線の右縁にそう
-                    150.0f,                             //比例ゲイン
+                    120.0f,                             //比例ゲイン
                     0.1f,                               //積分ゲイン
                     10.0f,                              //微分ゲイン
                     calcBlackWhiteBorderError           //誤差計算関数(黒い線と白い線の境界を活用する)
                 )
             },
             {
-                runDistanceCloserGenerator(3000.0f),    // 走行距離は仮。実際に計測して決める。
-                curveCloserGenerator()                  // 次カーブ検知で次action
+                runDistanceCloserGenerator(200.0f)     // 走行距離は仮。実際に計測して決める。
             }
         ),
         0
@@ -267,6 +200,6 @@ void main_task(intptr_t exinf)   {
     logger.writeLogsToFile();
     logger.logInfo("ActionChainサンプルプログラム終了");
     
-    //  タスク終了
+    // タスク終了
     ext_tsk();
 }
