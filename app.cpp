@@ -355,21 +355,36 @@ void main_task(intptr_t exinf)   {
     );
 
     ActionNode* action16 = new ActionNode(
-        "action16: その場で左100度を向く",
+        "action16: その場で左45度を向く",
         &device,
         pivotTurnActionFactory(
             90.0f,
             !is_right,
             10,
             {
-                timedCloserGenerator(75)//なぜか後の回転のほうがよく回る
+                timedCloserGenerator(30)//ペットボトルが無くなった分帰りの方がよく回る
+                                        //その滑りの程度は環境に大きく依存するため、後続の追加回転アクションでカバーする
             }
         ),
         0
     );
 
     ActionNode* action17 = new ActionNode(
-        "action17: 停止する",
+        "action17: その場で左に回転して正面に直線を検知する",
+        &device,
+        pivotTurnActionFactory(
+            20.0f,
+            !is_right,
+            50,
+            {
+                straightCloserGenerator()
+            }
+        ),
+        0
+    );
+
+    ActionNode* action18 = new ActionNode(
+        "action18: 停止する",
         &device,
         stopActionFactory(),
         0
@@ -392,6 +407,7 @@ void main_task(intptr_t exinf)   {
     action14->setNext(action15);
     action15->setNext(action16);
     action16->setNext(action17);
+    action17->setNext(action18);
 
     // ActionNode* action1 = new ActionNode(
     //     "action1: 直線走行",
