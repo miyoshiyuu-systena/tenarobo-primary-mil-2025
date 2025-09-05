@@ -87,7 +87,7 @@ void main_task(intptr_t exinf)   {
                 )
             },
             {
-                obstacleCloserGenerator(80)
+                obstacleCloserGenerator(80) // 障害物がロボットの筐体にベッタリくっついている状態のとき距離75mm程度になる
             }
         ),
         0
