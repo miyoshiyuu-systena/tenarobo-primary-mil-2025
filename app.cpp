@@ -373,14 +373,7 @@ void main_task(intptr_t exinf)   {
     ActionNode* action17 = new ActionNode(
         "action17: その場で左に回転して正面に直線を検知する",
         &device,
-        pivotTurnActionFactory(
-            20.0f,
-            !is_right,
-            50,
-            {
-                straightCloserGenerator()
-            }
-        ),
+        fineChangeDirectionLineActionFactory(!is_right),
         0
     );
 
