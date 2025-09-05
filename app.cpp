@@ -144,14 +144,15 @@ void main_task(intptr_t exinf)   {
                 )
             },
             {
-                straightCloserGenerator()
+                // straightCloserGenerator(),
+                runDistanceCloserGenerator(400)
             }
         ),
         0
     );
 
     ActionNode* action5 = new ActionNode(
-        "action5: 直進する",
+        "action5: 曲がる",
         &device,
         goStraightActionFactory(
             200.0f,
@@ -166,7 +167,7 @@ void main_task(intptr_t exinf)   {
                 )
             },
             {
-                runDistanceCloserGenerator(250)
+                straightCloserGenerator()
             }
         ),
         0
@@ -202,51 +203,20 @@ void main_task(intptr_t exinf)   {
     );
 
     ActionNode* action8 = new ActionNode(
-        "action8: 直進する",
-        &device,
-        goStraightActionFactory(
-            500.0f,
-            10,
-            {},
-            {
-                runDistanceCloserGenerator(760)
-            }
-        ),
-        0
-    );
-
-    ActionNode* action9 = new ActionNode(
-        "action9: 後退する",
-        &device,
-        goStraightActionFactory(
-            -500.0f,
-            10,
-            {},
-            {
-                runDistanceCloserGenerator(760),
-                blackFloorCloserGenerator()
-            }
-        ),
-        0
-    );
-
-    ActionNode* action10 = new ActionNode(
-        "action10: 停止する",
+        "action8: 停止する",
         &device,
         stopActionFactory(),
         0
     );
 
-    root->setNext(action7);
-    // action1->setNext(action2);
-    // action2->setNext(action3);
-    // action3->setNext(action4);
-    // action4->setNext(action5);
-    // action5->setNext(action6);
-    // action6->setNext(action7);
+    root->setNext(action1);
+    action1->setNext(action2);
+    action2->setNext(action3);
+    action3->setNext(action4);
+    action4->setNext(action5);
+    action5->setNext(action6);
+    action6->setNext(action7);
     action7->setNext(action8);
-    action8->setNext(action9);
-    action9->setNext(action10);
 
     // ActionNode* action1 = new ActionNode(
     //     "action1: 直線走行",
