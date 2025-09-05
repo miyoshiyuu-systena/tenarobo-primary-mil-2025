@@ -378,8 +378,6 @@ def main():
             sem_analysis_command.release()
 
 
-            if (count % 100 == 0):
-                print("IAnaS: 分析", command, "を実行しています")
 
             # 分析コマンドがない場合はスキップ
             if (command == ANALYSIS_COMMAND.do_nothing.value):
@@ -390,9 +388,11 @@ def main():
                 shm_analysis_result_map[:] = struct.pack(format_string, 0, 0, 0, 0, 0)
                 sem_analysis_result.release()
                 # 書き込みが完了したらセマフォをアンロック
-                time.sleep(1)
+                time.sleep(0.05)
                 continue
 
+            print("IAnaS: 分析", command, "を実行しています")
+            
             # セマフォをロック
             sem_image.acquire()
 
