@@ -138,7 +138,7 @@ void main_task(intptr_t exinf)   {
                 )
             },
             {
-                runDistanceCloserGenerator(400)
+                runDistanceCloserGenerator(1000)
             }
         ),
         0
