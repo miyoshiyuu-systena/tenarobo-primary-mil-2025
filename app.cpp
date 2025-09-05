@@ -390,7 +390,7 @@ void main_task(intptr_t exinf)   {
         0
     );
 
-    root->setNext(action8);
+    root->setNext(action1);
     action1->setNext(action2);
     action2->setNext(action3);
     action3->setNext(action4);
