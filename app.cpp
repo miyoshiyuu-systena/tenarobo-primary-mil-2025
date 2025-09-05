@@ -92,14 +92,44 @@ void main_task(intptr_t exinf)   {
                 )
             },
             {
-                curveCloserGenerator()
+                // curveCloserGenerator()
+                obstacleCloserGenerator(80)
             }
         ),
         0
     );
 
     ActionNode* action2 = new ActionNode(
-        "action2: 曲がる",
+        "action2: 停止する",
+        &device,
+        stopActionFactory(),
+        0
+    );
+
+    ActionNode* action3 = new ActionNode(
+        "action3: 直進する",
+        &device,
+        goStraightActionFactory(
+            500.0f,
+            50,
+            {
+                laneTracingAssistGenerator(
+                    !is_right,
+                    50.0f,
+                    0.0f,
+                    0.0f,
+                    calcBlackWhiteBorderError
+                )
+            },
+            {
+                curveCloserGenerator()
+            }
+        ),
+        0
+    );
+
+    ActionNode* action4 = new ActionNode(
+        "action4: 曲がる",
         &device,
         goStraightActionFactory(
             200.0f,
@@ -113,13 +143,83 @@ void main_task(intptr_t exinf)   {
                     calcBlackWhiteBorderError
                 )
             },
-            {}
+            {
+                straightCloserGenerator()
+            }
         ),
         0
     );
 
-    root->setNext(action1);
-    action1->setNext(action2);
+    ActionNode* action5 = new ActionNode(
+        "action5: 直進する",
+        &device,
+        goStraightActionFactory(
+            500.0f,
+            10,
+            {
+                laneTracingAssistGenerator(
+                    !is_right,
+                    100.0f,
+                    0.0f,
+                    10.0f,
+                    calcBlackWhiteBorderError
+                )
+            },
+            {
+                runDistanceCloserGenerator(100)
+            }
+        ),
+        0
+    );
+
+    ActionNode* action6 = new ActionNode(
+        "action6: 停止する",
+        &device,
+        stopActionFactory(),
+        0
+    );
+
+    ActionNode* action7 = new ActionNode(
+        "action7: 直進する",
+        &device,
+        goStraightActionFactory(
+            500.0f,
+            50,
+            {
+                laneTracingAssistGenerator(
+                    !is_right,
+                    50.0f,
+                    0.0f,
+                    0.0f,
+                    calcBlackWhiteBorderError
+                ),
+                slowlyAccelerateAssistGenerator(
+                    2,
+                    5
+                )
+            },
+            {
+                // curveCloserGenerator()
+            }
+        ),
+        0
+    );
+
+    ActionNode* action8 = new ActionNode(
+        "action8: 停止する",
+        &device,
+        stopActionFactory(),
+        0
+    );
+
+    root->setNext(action4);
+    // action1->setNext(action2);
+    // action2->setNext(action3);
+    // action3->setNext(action4);
+    action4->setNext(action5);
+    action5->setNext(action6);
+    action6->setNext(action7);
+    action7->setNext(action8);
 
     // ActionNode* action1 = new ActionNode(
     //     "action1: 直線走行",
