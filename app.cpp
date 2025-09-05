@@ -61,12 +61,6 @@ void main_task(intptr_t exinf)   {
 
     bool is_right = config.isLCourse(); // Lコースの場合ラインの右側、Rコースの場合ラインの左側を走行
 
-    // 直進時の走行速度
-    float straightSpeed = 750.0f;
-
-    // カーブ時の走行速度
-    float curveSpeed = 450.0f;
-
     ActionNode* root = new ActionNode(
         "action0: 背中のボタンを押すまで忠犬ハチ公！！！",
         &device,
