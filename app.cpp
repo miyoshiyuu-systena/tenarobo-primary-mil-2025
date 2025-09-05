@@ -80,7 +80,7 @@ void main_task(intptr_t exinf)   {
         "action1: 直線走行",
         &device,
         goStraightActionFactory(
-            straightSpeed / 2.0F,
+            500.0f,
             50,
             {
                 laneTracingAssistGenerator(
