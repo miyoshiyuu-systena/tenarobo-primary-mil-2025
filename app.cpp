@@ -122,6 +122,10 @@ void main_task(intptr_t exinf)   {
         0
     );
 
+    /**
+     * 最初のカーブで脱線する場合は、走行をよく観察し、Kp, Ki, Kdを調整する
+     * 直線に回復する際に脱線する場合はrunDistanceCloserGeneratorの距離を長めにする
+     */
     ActionNode* action4 = new ActionNode(
         "action4: 曲がる",
         &device,
@@ -138,14 +142,21 @@ void main_task(intptr_t exinf)   {
                 )
             },
             {
-                runDistanceCloserGenerator(1000)
+                runDistanceCloserGenerator(1200)
             }
         ),
         0
     );
 
     ActionNode* action5 = new ActionNode(
-        "action5: 曲がる",
+        "action5: 停止する",
+        &device,
+        stopActionFactory(),
+        0
+    );
+
+    ActionNode* action6 = new ActionNode(
+        "action6: 曲がり->直線走行へ移行する",
         &device,
         goStraightActionFactory(
             200.0f,
@@ -161,28 +172,6 @@ void main_task(intptr_t exinf)   {
             },
             {
                 straightCloserGenerator()
-            }
-        ),
-        0
-    );
-
-    ActionNode* action6 = new ActionNode(
-        "action6: 直進する",
-        &device,
-        goStraightActionFactory(
-            200.0f,
-            10,
-            {
-                laneTracingAssistGenerator(
-                    !is_right,
-                    200.0f,
-                    0.1f,
-                    50.0f,
-                    calcBlackWhiteBorderError
-                )
-            },
-            {
-                runDistanceCloserGenerator(200)
             }
         ),
         0
@@ -233,14 +222,14 @@ void main_task(intptr_t exinf)   {
                 )
             },
             {
-                runDistanceCloserGenerator(400)
+                runDistanceCloserGenerator(1200)
             }
         ),
         0
     );
 
     ActionNode* action10 = new ActionNode(
-        "action10: 曲がる",
+        "action10: 曲がり->直線走行へ移行する",
         &device,
         goStraightActionFactory(
             200.0f,
@@ -265,28 +254,6 @@ void main_task(intptr_t exinf)   {
         "action11: 直進する",
         &device,
         goStraightActionFactory(
-            200.0f,
-            10,
-            {
-                laneTracingAssistGenerator(
-                    !is_right,
-                    200.0f,
-                    0.1f,
-                    50.0f,
-                    calcBlackWhiteBorderError
-                )
-            },
-            {
-                runDistanceCloserGenerator(200)
-            }
-        ),
-        0
-    );
-
-    ActionNode* action12 = new ActionNode(
-        "action12: 直進する",
-        &device,
-        goStraightActionFactory(
             500.0f,
             10,
             {
@@ -305,22 +272,22 @@ void main_task(intptr_t exinf)   {
         0
     );
 
-    ActionNode* action13 = new ActionNode(
-        "action13: 少しだけ前進する",
+    ActionNode* action12 = new ActionNode(
+        "action12: 少しだけ前進する",
         &device,
         goStraightActionFactory(
             500.0f,
             10,
             {},
             {
-                runDistanceCloserGenerator(40)
+                runDistanceCloserGenerator(50)
             }
         ),
         0
     );
 
-    ActionNode* action14 = new ActionNode(
-        "action14: その場で右90度を向く",
+    ActionNode* action13 = new ActionNode(
+        "action13: その場で右90度を向く",
         &device,
         pivotTurnActionFactory(
             90.0f,
@@ -333,8 +300,8 @@ void main_task(intptr_t exinf)   {
         0
     );
 
-    ActionNode* action15 = new ActionNode(
-        "action15: 直進する",
+    ActionNode* action14 = new ActionNode(
+        "action14: 直進する",
         &device,
         goStraightActionFactory(
             750.0f,
@@ -347,8 +314,8 @@ void main_task(intptr_t exinf)   {
         0
     );
 
-    ActionNode* action16 = new ActionNode(
-        "action16: 後退する",
+    ActionNode* action15 = new ActionNode(
+        "action15: 後退する",
         &device,
         goStraightActionFactory(
             -250.0f,
@@ -361,8 +328,8 @@ void main_task(intptr_t exinf)   {
         0
     );
 
-    ActionNode* action17 = new ActionNode(
-        "action17: その場で左45度を向く",
+    ActionNode* action16 = new ActionNode(
+        "action16: その場で左45度を向く",
         &device,
         pivotTurnActionFactory(
             90.0f,
@@ -376,15 +343,15 @@ void main_task(intptr_t exinf)   {
         0
     );
 
-    ActionNode* action18 = new ActionNode(
-        "action18: その場で左に回転して正面に直線を検知する",
+    ActionNode* action17 = new ActionNode(
+        "action17: その場で左に回転して正面に直線を検知する",
         &device,
         fineChangeDirectionLineActionFactory(!is_right),
         0
     );
 
-    ActionNode* action19 = new ActionNode(
-        "action19: 停止する",
+    ActionNode* action18 = new ActionNode(
+        "action18: 停止する",
         &device,
         stopActionFactory(),
         0
@@ -408,7 +375,6 @@ void main_task(intptr_t exinf)   {
     action15->setNext(action16);
     action16->setNext(action17);
     action17->setNext(action18);
-    action18->setNext(action19);
 
     ActionNode* current = root;
     ActionNode* next = nullptr;
