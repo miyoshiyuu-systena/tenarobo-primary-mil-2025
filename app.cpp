@@ -314,7 +314,21 @@ void main_task(intptr_t exinf)   {
     );
 
     ActionNode* action13 = new ActionNode(
-        "action13: その場で右90度を向く",
+        "action13: 少しだけ前進する",
+        &device,
+        goStraightActionFactory(
+            500.0f,
+            10,
+            {},
+            {
+                runDistanceCloserGenerator(40)
+            }
+        ),
+        0
+    );
+
+    ActionNode* action14 = new ActionNode(
+        "action14: その場で右90度を向く",
         &device,
         pivotTurnActionFactory(
             90.0f,
@@ -327,8 +341,8 @@ void main_task(intptr_t exinf)   {
         0
     );
 
-    ActionNode* action14 = new ActionNode(
-        "action14: 直進する",
+    ActionNode* action15 = new ActionNode(
+        "action15: 直進する",
         &device,
         goStraightActionFactory(
             750.0f,
@@ -341,8 +355,8 @@ void main_task(intptr_t exinf)   {
         0
     );
 
-    ActionNode* action15 = new ActionNode(
-        "action15: 後退する",
+    ActionNode* action16 = new ActionNode(
+        "action16: 後退する",
         &device,
         goStraightActionFactory(
             -250.0f,
@@ -355,8 +369,8 @@ void main_task(intptr_t exinf)   {
         0
     );
 
-    ActionNode* action16 = new ActionNode(
-        "action16: その場で左45度を向く",
+    ActionNode* action17 = new ActionNode(
+        "action17: その場で左45度を向く",
         &device,
         pivotTurnActionFactory(
             90.0f,
@@ -370,15 +384,15 @@ void main_task(intptr_t exinf)   {
         0
     );
 
-    ActionNode* action17 = new ActionNode(
-        "action17: その場で左に回転して正面に直線を検知する",
+    ActionNode* action18 = new ActionNode(
+        "action18: その場で左に回転して正面に直線を検知する",
         &device,
         fineChangeDirectionLineActionFactory(!is_right),
         0
     );
 
-    ActionNode* action18 = new ActionNode(
-        "action18: 停止する",
+    ActionNode* action19 = new ActionNode(
+        "action19: 停止する",
         &device,
         stopActionFactory(),
         0
@@ -402,6 +416,7 @@ void main_task(intptr_t exinf)   {
     action15->setNext(action16);
     action16->setNext(action17);
     action17->setNext(action18);
+    action18->setNext(action19);
 
     // ActionNode* action1 = new ActionNode(
     //     "action1: 直線走行",
