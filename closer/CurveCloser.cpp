@@ -28,7 +28,7 @@ CurveCloser::~CurveCloser()
 void CurveCloser::init()
 {
     ImageAnalysisServer::getInstance().request(FRONT_STRAIGHT);
-    dly_tsk(50 * 1000);// サーバーが切り替わるまで1サイクル待ち
+    dly_tsk(500 * 1000);// サーバーが切り替わるまで10サイクル待ち
 }
 
 bool CurveCloser::isClosed()
