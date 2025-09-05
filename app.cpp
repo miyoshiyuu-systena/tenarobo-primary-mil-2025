@@ -75,14 +75,14 @@ void main_task(intptr_t exinf)   {
         "action1: 直線走行",
         &device,
         goStraightActionFactory(
-            500.0f,
-            50,
+            800.0f,
+            10,
             {
                 laneTracingAssistGenerator(
                     !is_right,
-                    50.0f,
+                    80.0f,
                     5.0f,
-                    10.0f,
+                    20.0f,
                     calcBlackWhiteBorderError
                 )
             },
