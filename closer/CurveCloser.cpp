@@ -1,6 +1,7 @@
 #include    "CurveCloser.h"
 #include    "config.h"
 #include    "ImageAnalysisServer.h"
+#include    "spikeapi.h"
 #include    <cmath>
 
 ICloserGenerator curveCloserGenerator() {
@@ -9,11 +10,15 @@ ICloserGenerator curveCloserGenerator() {
     };
 }
 
-CurveCloser::CurveCloser(Device*& device)
-: ICloser()
-, mDevice(device)
+CurveCloser::CurveCloser(
+    Device*& device
+)
+    : ICloser()
+    , mDevice(device)
+    , mIsCurveHistory(new int[mTotalHistory]())
+    , mIsCurveCount(0)
+    , mIsCurveHistoryIndex(0)
 {
-    mSeqCountIsCurve = 0;
 }
 
 CurveCloser::~CurveCloser()
@@ -23,11 +28,7 @@ CurveCloser::~CurveCloser()
 void CurveCloser::init()
 {
     ImageAnalysisServer::getInstance().request(FRONT_STRAIGHT);
-}
-
-int CurveCloser::getSeqCountIsCurveMax()
-{
-    return config.getIntValue("seqCountIsCurveMax", 10);
+    dly_tsk(50 * 1000);// サーバーが切り替わるまで1サイクル待ち
 }
 
 bool CurveCloser::isClosed()
@@ -37,11 +38,10 @@ bool CurveCloser::isClosed()
      */
     bool isFrontStraight = ImageAnalysisServer::getInstance().responseFrontStraight();
 
-    if (!isFrontStraight) {
-        mSeqCountIsCurve++;
-    } else {
-        mSeqCountIsCurve = 0;
-    }
+    mIsCurveCount -= mIsCurveHistory[mIsCurveHistoryIndex];
+    mIsCurveCount += (int)isFrontStraight;
+    mIsCurveHistory[mIsCurveHistoryIndex] = (int)isFrontStraight;
+    mIsCurveHistoryIndex = (mIsCurveHistoryIndex + 1) % mTotalHistory;
 
-    return mSeqCountIsCurve > getSeqCountIsCurveMax();
+    return (float)mIsCurveCount > (float)mIsCurveCount * 0.75;
 }

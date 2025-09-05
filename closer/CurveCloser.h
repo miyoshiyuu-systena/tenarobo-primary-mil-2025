@@ -30,19 +30,15 @@ class CurveCloser : public ICloser
          * デバイスの参照
          */
         Device*& mDevice;
-        
+
         /**
-         * 正面の直線を連続して見失った回数
-         * @note
-         *  ○回連続して正面に直線がなかったら曲がり角に差し掛かったとみなす
-         *  1回だけだと誤検出しやすいから短い時間にある程度連続して、検出されないことを基準とする
+         * 判定ヒストリー
          */
-        int mSeqCountIsCurve;
-        
-        /**
-         * 設定ファイルから連続してカーブと判定する最大回数を取得
-         */
-        int getSeqCountIsCurveMax();
+        static const int mTotalHistory = 4; // とりあえず過去4回分
+        int* mIsCurveHistory;               // 0:曲がり角ではない
+                                            // 1:曲がり角
+        int mIsCurveHistoryIndex;
+        int mIsCurveCount;                  // 計算の効率化のため前回の値を記憶
 };
 
 #endif  // _CURVE_CLOSER_H_
