@@ -11,6 +11,7 @@
 #include "LaneChangeAction.h"
 #include "ChangeDirectionAction.h"
 #include "FineChangeDirectionAction.h"
+#include "FineChangeDirectionLineAction.h"
 #include "SinpleLaneChangeAction.h"
 #include "StopAction.h"
 #include "Device.h"
