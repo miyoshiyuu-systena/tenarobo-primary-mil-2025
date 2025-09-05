@@ -154,19 +154,19 @@ void main_task(intptr_t exinf)   {
         "action5: 直進する",
         &device,
         goStraightActionFactory(
-            500.0f,
+            200.0f,
             10,
             {
                 laneTracingAssistGenerator(
                     !is_right,
-                    100.0f,
-                    0.0f,
-                    10.0f,
+                    200.0f,
+                    0.1f,
+                    50.0f,
                     calcBlackWhiteBorderError
                 )
             },
             {
-                runDistanceCloserGenerator(100)
+                runDistanceCloserGenerator(250)
             }
         ),
         0
@@ -188,18 +188,14 @@ void main_task(intptr_t exinf)   {
             {
                 laneTracingAssistGenerator(
                     !is_right,
-                    50.0f,
-                    0.0f,
-                    0.0f,
+                    100.0f,
+                    0.1f,
+                    10.0f,
                     calcBlackWhiteBorderError
-                ),
-                slowlyAccelerateAssistGenerator(
-                    2,
-                    5
                 )
             },
             {
-                // curveCloserGenerator()
+                curveCloserGenerator()
             }
         ),
         0
@@ -212,10 +208,10 @@ void main_task(intptr_t exinf)   {
         0
     );
 
-    root->setNext(action4);
-    // action1->setNext(action2);
-    // action2->setNext(action3);
-    // action3->setNext(action4);
+    root->setNext(action1);
+    action1->setNext(action2);
+    action2->setNext(action3);
+    action3->setNext(action4);
     action4->setNext(action5);
     action5->setNext(action6);
     action6->setNext(action7);
