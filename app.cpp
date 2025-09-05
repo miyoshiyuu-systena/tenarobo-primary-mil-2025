@@ -85,9 +85,9 @@ void main_task(intptr_t exinf)   {
             {
                 laneTracingAssistGenerator(
                     is_right,
-                    120.0f,
-                    0.1f,
-                    10.0f,
+                    50.0f,
+                    0.0f,
+                    0.0f,
                     calcBlackWhiteBorderError
                 )
             },
