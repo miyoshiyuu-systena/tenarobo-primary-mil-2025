@@ -27,11 +27,12 @@ ActionCall fineChangeDirectionLineActionFactory(bool isRight)
             }
 
             if (isRight) {
-                device->twinWheelDrive.leftPivotTurn(30);
+                device->twinWheelDrive.leftPivotTurn(45);
             } else {
-                device->twinWheelDrive.rightPivotTurn(30);
+                device->twinWheelDrive.rightPivotTurn(45);
             }
-            dly_tsk(50 * 1000); // ちょっとだけ回転する
+            dly_tsk(100 * 1000); // ちょっとだけ回転する
+            device->twinWheelDrive.stop();
         }
 
         device->twinWheelDrive.stop();
