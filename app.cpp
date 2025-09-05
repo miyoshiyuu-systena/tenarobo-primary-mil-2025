@@ -81,8 +81,8 @@ void main_task(intptr_t exinf)   {
                 laneTracingAssistGenerator(
                     !is_right,
                     50.0f,
-                    0.0f,
-                    0.0f,
+                    5.0f,
+                    10.0f,
                     calcBlackWhiteBorderError
                 )
             },
@@ -110,8 +110,8 @@ void main_task(intptr_t exinf)   {
                 laneTracingAssistGenerator(
                     !is_right,
                     50.0f,
-                    0.0f,
-                    0.0f,
+                    5.0f,
+                    10.0f,
                     calcBlackWhiteBorderError
                 )
             },
@@ -193,8 +193,8 @@ void main_task(intptr_t exinf)   {
             {
                 laneTracingAssistGenerator(
                     !is_right,
-                    100.0f,
-                    0.1f,
+                    50.0f,
+                    5.0f,
                     10.0f,
                     calcBlackWhiteBorderError
                 )
@@ -259,8 +259,8 @@ void main_task(intptr_t exinf)   {
             {
                 laneTracingAssistGenerator(
                     !is_right,
-                    100.0f,
-                    0.1f,
+                    50.0f,
+                    5.0f,
                     10.0f,
                     calcBlackWhiteBorderError
                 )
