@@ -87,7 +87,6 @@ void main_task(intptr_t exinf)   {
                 )
             },
             {
-                // curveCloserGenerator()
                 obstacleCloserGenerator(80)
             }
         ),
@@ -139,7 +138,6 @@ void main_task(intptr_t exinf)   {
                 )
             },
             {
-                // straightCloserGenerator(),
                 runDistanceCloserGenerator(400)
             }
         ),
