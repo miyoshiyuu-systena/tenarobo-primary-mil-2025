@@ -12,7 +12,6 @@ import posix_ipc
 import time
 import mmap
 import struct
-import matplotlib.pyplot as plt
 from enum import Enum
 
 # 画像の共有メモリの名前
