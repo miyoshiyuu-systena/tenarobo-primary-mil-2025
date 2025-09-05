@@ -84,7 +84,7 @@ void main_task(intptr_t exinf)   {
             50,
             {
                 laneTracingAssistGenerator(
-                    is_right,
+                    !is_right,
                     50.0f,
                     0.0f,
                     0.0f,
@@ -99,9 +99,22 @@ void main_task(intptr_t exinf)   {
     );
 
     ActionNode* action2 = new ActionNode(
-        "action2: 停止する",
+        "action2: 曲がる",
         &device,
-        stopActionFactory(),
+        goStraightActionFactory(
+            200.0f,
+            10,
+            {
+                laneTracingAssistGenerator(
+                    !is_right,
+                    200.0f,
+                    0.1f,
+                    50.0f,
+                    calcBlackWhiteBorderError
+                )
+            },
+            {}
+        ),
         0
     );
 
