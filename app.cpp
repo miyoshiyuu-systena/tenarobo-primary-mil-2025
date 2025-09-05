@@ -174,14 +174,36 @@ void main_task(intptr_t exinf)   {
     );
 
     ActionNode* action6 = new ActionNode(
-        "action6: 停止する",
+        "action6: 直進する",
+        &device,
+        goStraightActionFactory(
+            200.0f,
+            10,
+            {
+                laneTracingAssistGenerator(
+                    !is_right,
+                    200.0f,
+                    0.1f,
+                    50.0f,
+                    calcBlackWhiteBorderError
+                )
+            },
+            {
+                runDistanceCloserGenerator(200)
+            }
+        ),
+        0
+    );
+
+    ActionNode* action7 = new ActionNode(
+        "action7: 停止する",
         &device,
         stopActionFactory(),
         0
     );
 
-    ActionNode* action7 = new ActionNode(
-        "action7: 直進する",
+    ActionNode* action8 = new ActionNode(
+        "action8: 直進する",
         &device,
         goStraightActionFactory(
             500.0f,
@@ -202,8 +224,8 @@ void main_task(intptr_t exinf)   {
         0
     );
 
-    ActionNode* action8 = new ActionNode(
-        "action8: 停止する",
+    ActionNode* action9 = new ActionNode(
+        "action9: 停止する",
         &device,
         stopActionFactory(),
         0
@@ -217,6 +239,7 @@ void main_task(intptr_t exinf)   {
     action5->setNext(action6);
     action6->setNext(action7);
     action7->setNext(action8);
+    action8->setNext(action9);
 
     // ActionNode* action1 = new ActionNode(
     //     "action1: 直線走行",
