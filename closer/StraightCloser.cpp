@@ -2,6 +2,7 @@
 #include "config.h"
 #include <cmath>
 #include "ImageAnalysisServer.h"
+#include "spikeapi.h"
 
 ICloserGenerator straightCloserGenerator() {
     return [](Device*& device) {
