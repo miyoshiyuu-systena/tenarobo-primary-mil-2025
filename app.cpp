@@ -225,21 +225,173 @@ void main_task(intptr_t exinf)   {
     );
 
     ActionNode* action9 = new ActionNode(
-        "action9: 停止する",
+        "action9: 曲がる",
+        &device,
+        goStraightActionFactory(
+            200.0f,
+            10,
+            {
+                laneTracingAssistGenerator(
+                    !is_right,
+                    200.0f,
+                    0.1f,
+                    50.0f,
+                    calcBlackWhiteBorderError
+                )
+            },
+            {
+                runDistanceCloserGenerator(400)
+            }
+        ),
+        0
+    );
+
+    ActionNode* action10 = new ActionNode(
+        "action10: 曲がる",
+        &device,
+        goStraightActionFactory(
+            200.0f,
+            10,
+            {
+                laneTracingAssistGenerator(
+                    !is_right,
+                    200.0f,
+                    0.1f,
+                    50.0f,
+                    calcBlackWhiteBorderError
+                )
+            },
+            {
+                straightCloserGenerator()
+            }
+        ),
+        0
+    );
+
+    ActionNode* action11 = new ActionNode(
+        "action11: 直進する",
+        &device,
+        goStraightActionFactory(
+            200.0f,
+            10,
+            {
+                laneTracingAssistGenerator(
+                    !is_right,
+                    200.0f,
+                    0.1f,
+                    50.0f,
+                    calcBlackWhiteBorderError
+                )
+            },
+            {
+                runDistanceCloserGenerator(200)
+            }
+        ),
+        0
+    );
+
+    ActionNode* action12 = new ActionNode(
+        "action12: 直進する",
+        &device,
+        goStraightActionFactory(
+            500.0f,
+            10,
+            {
+                laneTracingAssistGenerator(
+                    !is_right,
+                    100.0f,
+                    0.1f,
+                    10.0f,
+                    calcBlackWhiteBorderError
+                )
+            },
+            {
+                blueFloorCloserGenerator()
+            }
+        ),
+        0
+    );
+
+    ActionNode* action13 = new ActionNode(
+        "action13: その場で右90度を向く",
+        &device,
+        pivotTurnActionFactory(
+            90.0f,
+            is_right,
+            10,
+            {
+                timedCloserGenerator(100)
+            }
+        ),
+        0
+    );
+
+    ActionNode* action14 = new ActionNode(
+        "action14: 直進する",
+        &device,
+        goStraightActionFactory(
+            750.0f,
+            10,
+            {},
+            {
+                runDistanceCloserGenerator(150)
+            }
+        ),
+        0
+    );
+
+    ActionNode* action15 = new ActionNode(
+        "action15: 後退する",
+        &device,
+        goStraightActionFactory(
+            -250.0f,
+            10,
+            {},
+            {
+                blueFloorCloserGenerator()
+            }
+        ),
+        0
+    );
+
+    ActionNode* action16 = new ActionNode(
+        "action16: その場で左100度を向く",
+        &device,
+        pivotTurnActionFactory(
+            90.0f,
+            !is_right,
+            10,
+            {
+                timedCloserGenerator(75)//なぜか後の回転のほうがよく回る
+            }
+        ),
+        0
+    );
+
+    ActionNode* action17 = new ActionNode(
+        "action17: 停止する",
         &device,
         stopActionFactory(),
         0
     );
 
-    root->setNext(action1);
-    action1->setNext(action2);
-    action2->setNext(action3);
-    action3->setNext(action4);
-    action4->setNext(action5);
-    action5->setNext(action6);
-    action6->setNext(action7);
-    action7->setNext(action8);
-    action8->setNext(action9);
+    root->setNext(action12);
+    // action1->setNext(action2);
+    // action2->setNext(action3);
+    // action3->setNext(action4);
+    // action4->setNext(action5);
+    // action5->setNext(action6);
+    // action6->setNext(action7);
+    // action7->setNext(action8);
+    // action8->setNext(action9);
+    // action9->setNext(action10);
+    // action10->setNext(action11);
+    // action11->setNext(action12);
+    action12->setNext(action13);
+    action13->setNext(action14);
+    action14->setNext(action15);
+    action15->setNext(action16);
+    action16->setNext(action17);
 
     // ActionNode* action1 = new ActionNode(
     //     "action1: 直線走行",
