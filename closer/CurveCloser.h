@@ -37,6 +37,7 @@ class CurveCloser : public ICloser
         static const int mTotalHistory = 6; // とりあえず過去6回分
         int* mIsCurveHistory;               // 0:曲がり角ではない
                                             // 1:曲がり角
+                                            // mTotalHistory回分のisCurveの履歴
         int mIsCurveHistoryIndex;
         int mIsCurveCount;                  // 計算の効率化のため前回の値を記憶
 };
