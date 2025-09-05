@@ -39,9 +39,9 @@ bool CurveCloser::isClosed()
     bool isFrontStraight = ImageAnalysisServer::getInstance().responseFrontStraight();
 
     mIsCurveCount -= mIsCurveHistory[mIsCurveHistoryIndex];
-    mIsCurveCount += (int)isFrontStraight;
-    mIsCurveHistory[mIsCurveHistoryIndex] = (int)isFrontStraight;
+    mIsCurveCount += (int)(!isFrontStraight);
+    mIsCurveHistory[mIsCurveHistoryIndex] = (int)(!isFrontStraight);
     mIsCurveHistoryIndex = (mIsCurveHistoryIndex + 1) % mTotalHistory;
 
-    return (float)mIsCurveCount > (float)mIsCurveCount * 0.75;
+    return (float)mIsCurveCount > (float)mIsCurveCount * 0.75f;
 }
