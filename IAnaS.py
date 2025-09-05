@@ -178,18 +178,18 @@ def is_front_straight(row_image):
 
     ## ハフ変換
     ## 直線を検出する
-    lines = cv2.HoughLinesP(image, 1, np.pi / 180, 20, 25, 10)
+    lines = cv2.HoughLinesP(image, 1, np.pi / 180, 20, 40, 10)
     
     if lines is not None:
         for line in lines:
             x1, y1, x2, y2 = line[0]
             ## ロボットの足元から伸びている直線だけを抽出
             if (
-                ((image.shape[1] * 2 / 5) < x1) and (x1 < (image.shape[1] * 3 / 5)) and ((image.shape[0] * 5 / 7) < y1)
-                or ((image.shape[1] * 2 / 5) < x2) and (x2 < (image.shape[1] * 3 / 5)) and ((image.shape[0] * 5 / 7) < y2)
+                ((image.shape[1] * 2 / 7) < x1) and (x1 < (image.shape[1] * 5 / 7)) and ((image.shape[0] * 4 / 7) < y1)
+                or ((image.shape[1] * 2 / 7) < x2) and (x2 < (image.shape[1] * 5 / 7)) and ((image.shape[0] * 4 / 7) < y2)
             ):
                 ## 正面に向かってまっすぐ伸びている直線だけを抽出
-                if np.abs(np.tan(np.arctan2(x2 - x1, y2 - y1))) < 0.1:
+                if np.abs(np.tan(np.arctan2(x2 - x1, y2 - y1))) < 0.20:
                     is_front_straight = True
                     cv2.line(row_image, (x1, y1), (x2, y2), (127, 255, 0), 2)
 
@@ -498,7 +498,7 @@ def main():
                 print("IAnaS: 開発者はインターフェースを見直して下さい")
 
             count += 1
-            time.sleep(0.1) # 0.1sごとに画像を分析
+            time.sleep(0.05) # 50msごとに画像を分析
 
     finally:
         shm_image_map.close()
