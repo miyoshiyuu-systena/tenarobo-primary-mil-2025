@@ -17,12 +17,12 @@ ActionCall fineChangeDirectionLineActionFactory(bool isRight)
 
         while (true) {
             frontStraightPoint = 0;
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < 4; i++) {
                 frontStraightPoint = frontStraightPoint + (int)(ImageAnalysisServer::getInstance().responseFrontStraight());
                 dly_tsk(60 * 1000); // 60ms待機して画像分析の更新を待つ
             }
-            // 5回中4回直線検知したら十分とする
-            if (frontStraightPoint >= 4) {
+            // 4回中3回直線検知したら十分とする
+            if (frontStraightPoint >= 3) {
                 break;
             }
 
