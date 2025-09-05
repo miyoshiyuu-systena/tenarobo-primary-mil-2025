@@ -23,6 +23,7 @@ CurveCloser::CurveCloser(
 
 CurveCloser::~CurveCloser()
 {
+    ImageAnalysisServer::getInstance().request(DO_NOTHING);
 }
 
 void CurveCloser::init()
