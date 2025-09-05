@@ -43,5 +43,5 @@ bool CurveCloser::isClosed()
     mIsCurveHistory[mIsCurveHistoryIndex] = (int)(!isFrontStraight);
     mIsCurveHistoryIndex = (mIsCurveHistoryIndex + 1) % mTotalHistory;
 
-    return (float)mIsCurveCount > (float)mIsCurveCount * 0.75f;
+    return (float)mIsCurveCount > (float)mTotalHistory * 0.75f;
 }
