@@ -34,7 +34,7 @@ class CurveCloser : public ICloser
         /**
          * 判定ヒストリー
          */
-        static const int mTotalHistory = 4; // とりあえず過去4回分
+        static const int mTotalHistory = 6; // とりあえず過去6回分
         int* mIsCurveHistory;               // 0:曲がり角ではない
                                             // 1:曲がり角
         int mIsCurveHistoryIndex;
