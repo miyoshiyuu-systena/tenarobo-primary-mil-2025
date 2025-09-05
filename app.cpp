@@ -398,18 +398,18 @@ void main_task(intptr_t exinf)   {
         0
     );
 
-    root->setNext(action12);
-    // action1->setNext(action2);
-    // action2->setNext(action3);
-    // action3->setNext(action4);
-    // action4->setNext(action5);
-    // action5->setNext(action6);
-    // action6->setNext(action7);
-    // action7->setNext(action8);
-    // action8->setNext(action9);
-    // action9->setNext(action10);
-    // action10->setNext(action11);
-    // action11->setNext(action12);
+    root->setNext(action8);
+    action1->setNext(action2);
+    action2->setNext(action3);
+    action3->setNext(action4);
+    action4->setNext(action5);
+    action5->setNext(action6);
+    action6->setNext(action7);
+    action7->setNext(action8);
+    action8->setNext(action9);
+    action9->setNext(action10);
+    action10->setNext(action11);
+    action11->setNext(action12);
     action12->setNext(action13);
     action13->setNext(action14);
     action14->setNext(action15);
