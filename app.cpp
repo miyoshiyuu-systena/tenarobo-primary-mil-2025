@@ -588,6 +588,15 @@ void main_task(intptr_t exinf)   {
         0
     );
 
+    action17->setNext(action18);
+    action18->setNext(action19);
+    action19->setNext(action20);
+    action20->setNext(action21);
+    action21->setNext(action22);
+    action22->setNext(action23);
+    action23->setNext(action24);
+    action24->setNext(action25);
+
     ActionNode* current = root;
     ActionNode* next = nullptr;
 
