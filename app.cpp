@@ -109,10 +109,6 @@ void main_task(intptr_t exinf)   {
             500.0f,
             50,
             {
-                slowlyAccelerateAssistGenerator(
-                    10,
-                    10
-                ),
                 laneTracingAssistGenerator(
                     is_right,
                     50.0f,
@@ -193,10 +189,6 @@ void main_task(intptr_t exinf)   {
             500.0f,
             50,
             {
-                slowlyAccelerateAssistGenerator(
-                    10,
-                    10
-                ),
                 laneTracingAssistGenerator(
                     is_right,
                     50.0f,
