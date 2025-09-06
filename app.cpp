@@ -597,6 +597,10 @@ void main_task(intptr_t exinf)   {
     action23->setNext(action24);
     action24->setNext(action25);
 
+    /**
+     * ここからスマートキャリー
+     */
+
     ActionNode* current = root;
     ActionNode* next = nullptr;
 
