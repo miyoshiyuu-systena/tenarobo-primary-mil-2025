@@ -597,6 +597,303 @@ void main_task(intptr_t exinf)   {
      * ここからスマートキャリー
      */
 
+    ActionNode* action26 = new ActionNode(
+       "action26: 左90度を向く",
+       &device,
+       pivotTurnActionFactory(
+           90.0f,
+           !is_right,
+           10,
+           {
+               timedCloserGenerator(100)
+           }
+       ),
+       0
+    );
+
+    ActionNode* action27 = new ActionNode(
+       "action27: 直進する",
+       &device,
+       goStraightActionFactory(
+           800.0f,
+           10,
+           {},
+           {
+               runDistanceCloserGenerator(1000)
+           }
+       ),
+       0
+    );
+    
+    ActionNode* action28 = new ActionNode(
+       "action28: 停止する",
+       &device,
+       stopActionFactory(),
+       0
+    );
+
+    ActionNode* action29 = new ActionNode(
+       "action29: 直進する、ターゲットサークルを視界の中に捉えるまで",
+       &device,
+       goStraightActionFactory(
+           250.0f,
+           50,
+           {},
+           {
+               targetInImageCloserGenerator(TARGET_CIRCLE_IN_DISPLAY)
+           }
+       ),
+       0
+    );
+    
+    ActionNode* action30 = new ActionNode(
+       "action30: 停止する",
+       &device,
+       stopActionFactory(),
+       0
+    );
+
+    ActionNode* action31 = new ActionNode(
+       "action31: その場で細かく角度を変えて、正面にターゲットサークルを見据える",
+       &device,
+       fineChangeDirectionActionFactory(TARGET_CIRCLE_XY),
+       0
+    );
+    
+    ActionNode* action32 = new ActionNode(
+        "action32: ゆっくり前進して画面の中央よりも下にターゲットサークルが来るようにする",
+        &device,
+        goStraightActionFactory(
+            250.0f,
+            50,
+            {},
+            {
+                obstacleNearCloserGenerator(TARGET_CIRCLE_XY)
+            }
+        ),
+        0
+    );
+        
+    ActionNode* action33 = new ActionNode(
+       "action33: その場で細かく角度を変えて、正面にターゲットサークルを見据える",
+       &device,
+       fineChangeDirectionActionFactory(TARGET_CIRCLE_XY),
+       0
+    );
+
+     ActionNode* action34 = new ActionNode(
+        "action34: 直進する",
+        &device,
+        goStraightActionFactory(
+            800.0f,
+            10,
+            {},
+            {
+                runDistanceCloserGenerator(650)//本当は760mmだが、絶対にもっと近いところにあるので、少し短めの650mmで終了判定を出す
+            }
+        ),
+        0
+     );
+
+     ActionNode* action35 = new ActionNode(
+        "action35: 後退する",
+        &device,
+        goStraightActionFactory(
+            -800.0f,
+            10,
+            {},
+            {
+                runDistanceCloserGenerator(150)
+            }
+        ),
+        0
+     );
+
+     ActionNode* action36 = new ActionNode(
+        "action36: 少しだけ右に回転して今置いたペットボトルを視界から外す",
+        &device,
+        pivotTurnActionFactory(
+            90.0f,
+            is_right,
+            10,
+            {
+                timedCloserGenerator(50)
+            }
+        ),
+        0
+     );
+
+     ActionNode* action37 = new ActionNode(
+        "action37: 停止する",
+        &device,
+        stopActionFactory(),
+        0
+     );
+
+     ActionNode* action38 = new ActionNode(
+        "action38: 右に回転しながら青いペットボトルを探す",
+        &device,
+        spinTurnActionFactory(
+            45.0f,
+            is_right,
+            10,
+            {
+                targetInImageCloserGenerator(BLUE_BOTTLE_IN_FRONT)
+            }
+        ),
+        0
+     );
+     
+    ActionNode* action39 = new ActionNode(
+        "action39: 停止する",
+        &device,
+        stopActionFactory(),
+        0
+    );
+
+    ActionNode* action40 = new ActionNode(
+        "action40: 細かく角度を調節して、正面に青いペットボトルを見据える",
+        &device,
+        fineChangeDirectionActionFactory(BLUE_BOTTLE_XY),
+        0
+    );
+
+    ActionNode* action41 = new ActionNode(
+        "action41: ゆっくり前進して画面の中央よりも下に青いペットボトルが来るようにする",
+        &device,
+        goStraightActionFactory(
+            250.0f,
+            50,
+            {},
+            {
+                obstacleNearCloserGenerator(BLUE_BOTTLE_XY)
+            }
+        ),
+        0
+     );
+            
+     ActionNode* action42 = new ActionNode(
+        "action42: 細かく角度を調節して、正面に青いペットボトルを見据える",
+        &device,
+        fineChangeDirectionActionFactory(BLUE_BOTTLE_XY),
+        0
+     );
+
+     ActionNode* action43 = new ActionNode(
+        "action43: 直進してペットボトルを掴む",
+        &device,
+        goStraightActionFactory(
+            800.0f,
+            10,
+            {},
+            {
+                obstacleCloserGenerator(80)
+            }
+        ),
+        0
+     );
+
+     ActionNode* action44 = new ActionNode(
+        "action44: 右90度を向く",
+        &device,
+        pivotTurnActionFactory(
+            90.0f,
+            is_right,
+            10,
+            {
+                timedCloserGenerator(100)
+            }
+        ),
+        0
+     );
+    
+    ActionNode* action45 = new ActionNode(
+        "action45: その場で細かく角度を変えて、正面にターゲットサークルを見据える",
+        &device,
+        fineChangeDirectionActionFactory(TARGET_CIRCLE_XY),
+        0
+    );
+
+    ActionNode* action46 = new ActionNode(
+        "action46: ゆっくり前進して画面の中央よりも下にターゲットサークルが来るようにする",
+        &device,
+        goStraightActionFactory(
+            250.0f,
+            50,
+            {},
+            {
+                obstacleNearCloserGenerator(TARGET_CIRCLE_XY)
+            }
+        ),
+        0
+    );
+
+    ActionNode* action47 = new ActionNode(
+        "action47: その場で細かく角度を変えて、正面にターゲットサークルを見据える",
+        &device,
+        fineChangeDirectionActionFactory(TARGET_CIRCLE_XY),
+        0
+    );
+
+    ActionNode* action48 = new ActionNode(
+        "action48: 直進する",
+        &device,
+        goStraightActionFactory(
+            800.0f,
+            10,
+            {},
+            {
+                runDistanceCloserGenerator(650)//本当は760mmだが、絶対にもっと近いところにあるので、少し短めの650mmで終了判定を出す
+            }
+        ),
+        0
+     );
+
+    ActionNode* action49 = new ActionNode(
+        "action49: 後退する",
+        &device,
+        goStraightActionFactory(
+            -800.0f,
+            10,
+            {},
+            {
+                runDistanceCloserGenerator(150)
+            }
+        ),
+        0
+     );
+
+     ActionNode* action50 = new ActionNode(
+        "action50: 右45度を向く",
+        &device,
+        pivotTurnActionFactory(
+            90.0f,
+            is_right,
+            10,
+            {
+                timedCloserGenerator(50)
+            }
+        ),
+        0
+     );
+
+     ActionNode* action51 = new ActionNode(
+        "action51: 直進する",
+        &device,
+        goStraightActionFactory(
+            250.0f,
+            10,
+            {},
+            {
+                blackFloorCloserGenerator()
+            }
+        ),
+        0
+     );
+
+     root->setNext(action26);
+     action26->setNext(action27);
+
     ActionNode* current = root;
     ActionNode* next = nullptr;
 
