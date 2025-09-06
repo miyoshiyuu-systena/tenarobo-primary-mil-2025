@@ -118,7 +118,8 @@ void main_task(intptr_t exinf)   {
                 )
             },
             {
-                curveCloserGenerator()
+                // curveCloserGenerator()
+                runDistanceCloserGenerator(850)
             }
         ),
         0
@@ -144,7 +145,7 @@ void main_task(intptr_t exinf)   {
                 )
             },
             {
-                runDistanceCloserGenerator(1200)    //十分に確保する
+                runDistanceCloserGenerator(600)    //十分に確保する
                                                     //次のアクションで直線検知クローザーを効果的に作動させるため、カーブを曲がり切って、直線を正面にしないといけない
                                                     //本番はカーブが短い代わりに直線判定が早いため、このくらいがいいのでは？
                                             
@@ -220,7 +221,7 @@ void main_task(intptr_t exinf)   {
                 )
             },
             {
-                runDistanceCloserGenerator(1200)    //十分に確保する
+                runDistanceCloserGenerator(600)    //十分に確保する
                                                     //次のアクションで直線検知クローザーを効果的に作動させるため、カーブを曲がり切って、直線を正面にしないといけない
                                                     //本番はカーブが短い代わりに直線判定が早いため、このくらいがいいのでは？
             }
@@ -308,7 +309,7 @@ void main_task(intptr_t exinf)   {
             10,
             {},
             {
-                runDistanceCloserGenerator(150)
+                runDistanceCloserGenerator(120)
             }
         ),
         0
@@ -318,7 +319,7 @@ void main_task(intptr_t exinf)   {
         "action14: 後退する",
         &device,
         goStraightActionFactory(
-            -250.0f,
+            -150.0f,
             10,
             {},
             {
@@ -385,7 +386,6 @@ void main_task(intptr_t exinf)   {
             250.0f,//250mm/s
             10,//判定間隔10ms
             {
-                laneChangeAssistGenerator(!is_right),
                 laneTracingAssistGenerator(//足元にガイド線がある場合はそれを活用する
                     !is_right,//線の左側にそう
                     100.0f,//比例ゲイン
@@ -570,9 +570,9 @@ void main_task(intptr_t exinf)   {
             {
                 laneTracingAssistGenerator(//足元にガイド線がある場合はそれを活用する
                     is_right,//線の右縁にそう
-                    100.0f,//比例ゲイン
-                    0.0f,//積分ゲイン
-                    100.0f,//微分ゲイン
+                    150.0f,//比例ゲイン
+                    50.0f,//積分ゲイン
+                    50.0f,//微分ゲイン
                     calcBlackWhiteBorderError//誤差計算関数(青い線と白い線の境界を活用する)
                 ),
                 laneChangeAssistGenerator(is_right)//右車線に車線変更する
@@ -601,7 +601,7 @@ void main_task(intptr_t exinf)   {
        "action26: 左90度を向く",
        &device,
        pivotTurnActionFactory(
-           90.0f,
+           150.0f,
            !is_right,
            10,
            {
@@ -797,7 +797,7 @@ void main_task(intptr_t exinf)   {
         "action44: 右90度を向く",
         &device,
         pivotTurnActionFactory(
-            90.0f,
+            150.0f,
             is_right,
             10,
             {
