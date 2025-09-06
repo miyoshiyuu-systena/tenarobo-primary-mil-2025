@@ -374,7 +374,219 @@ void main_task(intptr_t exinf)   {
     action14->setNext(action15);
     action15->setNext(action16);
     action16->setNext(action17);
-    action17->setNext(action18);
+
+    /**
+     * ここからダブルループ
+     */
+    ActionNode* action18 = new ActionNode(
+        "action18: 青い床を直進する、黒い床に差し掛かるまで（ダブルループENTRY）",
+        &device,
+        goStraightActionFactory(
+            250.0f,//250mm/s
+            10,//判定間隔10ms
+            {
+                laneChangeAssistGenerator(!is_right),
+                laneTracingAssistGenerator(//足元にガイド線がある場合はそれを活用する
+                    !is_right,//線の左側にそう
+                    100.0f,//比例ゲイン
+                    0.1f,//積分ゲイン
+                    10.0f,//微分ゲイン
+                    calcBlueWhiteBorderError//誤差計算関数(青い線と白い線の境界を活用する)
+                )
+            },
+            {
+                blackFloorCloserGenerator()//黒い床に差し掛かったら終了判定を出す
+            }
+        ),
+        0
+    );
+
+    ActionNode* action19 = new ActionNode(
+        "action19: 黒い線に沿って旋回する、青い床に差し掛かるまで（大ループ）",
+        &device,
+        goCurveActionFactory(//旋回する
+            250.0f,//速度250mm/s
+            400.0f,//半径400mm,
+            !is_right,//左に旋回する
+            10,//判定間隔10ms
+            {
+                laneTracingAssistGenerator(//足元にガイド線がある場合はそれを活用する
+                    !is_right,//線の左縁にそう
+                    100.0f,//比例ゲイン
+                    0.1f,//積分ゲイン
+                    10.0f,//微分ゲイン
+                    calcBlackWhiteBorderError//誤差計算関数(黒い線と白い線の境界を活用する)
+                ),
+                slowlyAccelerateAssistGenerator(//I制御の効果を高めるためにゆっくり加速する
+                    10,//10段階加速する, 250 / 10 = 25mm/sずつ加速する
+                    10//判定間隔10ms * 10 = 100msに一回ずつ加速する
+                ),
+                laneChangeAssistGenerator(!is_right)    //左車線に車線変更する
+                                                        //これ必要？？？
+            },
+            {
+                blueFloorCloserGenerator()//青い床に差し掛かったら終了判定を出す
+            }
+        ),
+        0
+    );
+
+    ActionNode* action20 = new ActionNode(
+        "action20: 青い線に沿って旋回する、黒い床に差し掛かるまで（大ループ）",
+        &device,
+        goCurveActionFactory(//旋回する
+            250.0f,//速度250mm/s
+            400.0f,//半径400mm,
+            !is_right,//左に旋回する
+            10,//判定間隔10ms
+            {
+                laneTracingAssistGenerator(//足元にガイド線がある場合はそれを活用する
+                    !is_right,//線の左縁にそう
+                    100.0f,//比例ゲイン
+                    0.1f,//積分ゲイン
+                    10.0f,//微分ゲイン
+                    calcBlueWhiteBorderError//誤差計算関数(青い線と白い線の境界を活用する)
+                )
+            },
+            {
+                blackFloorCloserGenerator()//黒い床に差し掛かったら終了判定を出す
+            }
+        ),
+        0
+    );
+
+    ActionNode* action21 = new ActionNode(
+        "action21: 黒い線に沿って旋回する、青い床に差し掛かるまで（小ループ）",
+        &device,
+        goCurveActionFactory(
+            150.0f,//速度150mm/s, 小ループはゆっくり走行しないと、カーブが急すぎて線を逸脱しやすい
+            180.0f,//半径180mm
+            is_right,//右に旋回する
+            10,//判定間隔10ms
+            {
+                laneTracingAssistGenerator(//足元にガイド線がある場合はそれを活用する
+                    is_right,//線の右縁にそう
+                    100.0f,//比例ゲイン
+                    0.1f,//積分ゲイン
+                    10.0f,//微分ゲイン
+                    calcBlackWhiteBorderError//誤差計算関数(黒い線と白い線の境界を活用する)
+                ),
+                slowlyAccelerateAssistGenerator(//I制御の効果を高めるためにゆっくり加速する
+                    10,//10段階加速する, 150 / 10 = 15mm/sずつ加速する
+                    10//判定間隔10ms * 10 = 100msに一回ずつ加速する
+                ),
+                laneChangeAssistGenerator(is_right)//右車線に車線変更する
+            },
+            {
+                blueFloorCloserGenerator()//青い床に差し掛かったら終了判定を出す
+            }
+        ),
+        0
+    );
+
+    ActionNode* action22 = new ActionNode(
+        "action22: 青い線に沿って旋回する、黒い床に差し掛かるまで（小ループ）",
+        &device,
+        goCurveActionFactory(
+            150.0f,//速度150mm/s, 小ループはゆっくり走行しないと、カーブが急すぎて線を逸脱しやすい
+            180.0f,//半径180mm
+            is_right,//右に旋回する
+            10,//判定間隔10ms
+            {
+                laneTracingAssistGenerator(//足元にガイド線がある場合はそれを活用する
+                    is_right,//線の右縁にそう
+                    100.0f,//比例ゲイン
+                    0.1f,//積分ゲイン
+                    10.0f,//微分ゲイン
+                    calcBlueWhiteBorderError//誤差計算関数(青い線と白い線の境界を活用する)
+                )
+            },
+            {
+                blackFloorCloserGenerator()//黒い床に差し掛かったら終了判定を出す
+            }
+        ),
+        0
+    );
+
+    ActionNode* action23 = new ActionNode(
+        "action23: 黒い線に沿って旋回する、青い床に差し掛かるまで(大ループ)",
+        &device,
+        goCurveActionFactory(
+            250.0f,//速度250mm/s
+            400.0f,//半径400mm
+            !is_right,//左に旋回する
+            10,//判定間隔10ms
+            {
+                laneTracingAssistGenerator(//足元にガイド線がある場合はそれを活用する
+                    !is_right,//線の左縁にそう
+                    100.0f,//比例ゲイン
+                    0.1f,//積分ゲイン
+                    10.0f,//微分ゲイン
+                    calcBlackWhiteBorderError//誤差計算関数(黒い線と白い線の境界を活用する)
+                ),
+                slowlyAccelerateAssistGenerator(//I制御の効果を高めるためにゆっくり加速する
+                    10,//10段階加速する, 250 / 10 = 25mm/sずつ加速する
+                    10//判定間隔10ms * 10 = 100msに一回ずつ加速する
+                ),
+                laneChangeAssistGenerator(!is_right)//左車線に車線変更する
+            },
+            {
+                blueFloorCloserGenerator()//青い床に差し掛かったら終了判定を出す
+            }
+        ),
+        0
+    );
+
+    ActionNode* action24 = new ActionNode(
+        "action24: 青い線に沿って旋回する、黒い床に差し掛かるまで（大ループ）",
+        &device,
+        goCurveActionFactory(
+            150.0f,//速度150mm/s
+            400.0f,//半径400mm
+            !is_right,//左に旋回する
+            10,//判定間隔10ms
+            {
+                laneTracingAssistGenerator(//足元にガイド線がある場合はそれを活用する
+                    !is_right,//線の左縁にそう
+                    100.0f,//比例ゲイン
+                    0.1f,//積分ゲイン
+                    10.0f,//微分ゲイン
+                    calcBlueWhiteBorderError//誤差計算関数(青い線と白い線の境界を活用する)
+                )
+            },
+            {
+                blackFloorCloserGenerator()//黒い床に差し掛かったら終了判定を出す
+            }
+        ),
+        0
+    );
+
+    ActionNode* action25 = new ActionNode(
+        "action25: 直進する, 青い床に差し掛かるまで（ダブルループESCAPE）",
+        &device,
+        goStraightActionFactory(
+            150.0f,//速度150mm/s //この間にペットボトルを抱え込むために低速で走行する
+            10,//判定間隔10ms
+            {
+                laneTracingAssistGenerator(//足元にガイド線がある場合はそれを活用する
+                    is_right,//線の右縁にそう
+                    100.0f,//比例ゲイン
+                    0.1f,//積分ゲイン
+                    10.0f,//微分ゲイン
+                    calcBlueWhiteBorderError//誤差計算関数(青い線と白い線の境界を活用する)
+                ),
+                slowlyAccelerateAssistGenerator(//I制御の効果を高めるためにゆっくり加速する
+                    10,//10段階加速する, 150 / 10 = 15mm/sずつ加速する
+                    10//判定間隔10ms * 10 = 100msに一回ずつ加速する
+                ),
+                laneChangeAssistGenerator(is_right)//右車線に車線変更する
+            },
+            {
+                blueFloorCloserGenerator()//青い床に差し掛かったら終了判定を出す
+            }
+        ),
+        0
+    );
 
     ActionNode* current = root;
     ActionNode* next = nullptr;
