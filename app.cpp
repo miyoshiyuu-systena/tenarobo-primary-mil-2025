@@ -573,7 +573,7 @@ void main_task(intptr_t exinf)   {
                     100.0f,//比例ゲイン
                     0.1f,//積分ゲイン
                     10.0f,//微分ゲイン
-                    calcBlueWhiteBorderError//誤差計算関数(青い線と白い線の境界を活用する)
+                    calcBlackWhiteBorderError//誤差計算関数(青い線と白い線の境界を活用する)
                 ),
                 slowlyAccelerateAssistGenerator(//I制御の効果を高めるためにゆっくり加速する
                     10,//10段階加速する, 150 / 10 = 15mm/sずつ加速する
