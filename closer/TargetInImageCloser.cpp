@@ -1,5 +1,6 @@
 #include "TargetInImageCloser.h"
 #include "Logger.h"
+#include "spikeapi.h"
 
 ICloserGenerator targetInImageCloserGenerator(enum AnalysisCommand command) {
     return [command](Device*& device) {
