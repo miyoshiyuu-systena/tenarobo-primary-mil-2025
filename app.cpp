@@ -59,7 +59,7 @@ void main_task(intptr_t exinf)   {
     // ロガーインスタンスの取得
     Logger& logger = Logger::getInstance();
 
-    bool is_right = config.isLCourse(); // Lコースの場合ラインの右側、Rコースの場合ラインの左側を走行
+    bool is_right = config.isRCourse();
 
     Logger::getInstance().logInfo("最初のコーナーを黒い線の外縁でライントレース走行するようにロボットを配置してください。");
 
