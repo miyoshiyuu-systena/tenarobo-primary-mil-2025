@@ -28,6 +28,7 @@ APPL_CXXOBJS +=\
 	PivotTurnAction.o\
 	SpinTurnAction.o\
 	HachikouAction.o\
+	HachikouColorAction.o\
 	StopAction.o\
 	LaneChangeAction.o\
 	LaneChangeCompleteJudge.o\

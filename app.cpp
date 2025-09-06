@@ -4,6 +4,7 @@
 #include "Logger.h"
 #include "ActionNode.h"
 #include "HachikouAction.h"
+#include "HachikouColorAction.h"
 #include "GoStraightAction.h"
 #include "GoCurveAction.h"
 #include "PivotTurnAction.h"
