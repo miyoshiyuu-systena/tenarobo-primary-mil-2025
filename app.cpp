@@ -148,7 +148,7 @@ void main_task(intptr_t exinf)   {
                 )
             },
             {
-                runDistanceCloserGenerator(1000)    //十分に確保する
+                runDistanceCloserGenerator(1200)    //十分に確保する
                                                     //次のアクションで直線検知クローザーを効果的に作動させるため、カーブを曲がり切って、直線を正面にしないといけない
                                                     //本番はカーブが短い代わりに直線判定が早いため、このくらいがいいのでは？
                                             
@@ -206,7 +206,7 @@ void main_task(intptr_t exinf)   {
                 )
             },
             {
-                runDistanceCloserGenerator(1000)    //十分に確保する
+                runDistanceCloserGenerator(1200)    //十分に確保する
                                                     //次のアクションで直線検知クローザーを効果的に作動させるため、カーブを曲がり切って、直線を正面にしないといけない
                                                     //本番はカーブが短い代わりに直線判定が早いため、このくらいがいいのでは？
             }
