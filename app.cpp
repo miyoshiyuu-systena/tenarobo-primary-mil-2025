@@ -891,8 +891,71 @@ void main_task(intptr_t exinf)   {
         0
      );
 
-     root->setNext(action26);
-     action26->setNext(action27);
+    ActionNode* action52 = new ActionNode(
+        "action52: その場で左に回転して正面に直線を検知する",
+        &device,
+        fineChangeDirectionLineActionFactory(!is_right),
+        0
+    );
+
+    ActionNode* action53 = new ActionNode(
+        "action53: 直線に沿って走行する、青い床に差し掛かるまで",
+        &device,
+        goStraightActionFactory(
+            250.0f,
+            10,
+            {
+                laneTracingAssistGenerator(
+                    !is_right,
+                    100.0f,
+                    0.0f,
+                    100.0f,
+                    calcBlackWhiteBorderError
+                )
+            },
+            {
+                blueFloorCloserGenerator()
+            }
+        ),
+        0
+    );
+
+    ActionNode* action54 = new ActionNode(
+        "action54: 停止する",
+        &device,
+        stopActionFactory(),
+        0
+    );
+
+    action25->setNext(action26);
+    action26->setNext(action27);
+    action27->setNext(action28);
+    action28->setNext(action29);
+    action29->setNext(action30);
+    action30->setNext(action31);
+    action31->setNext(action32);
+    action32->setNext(action33);
+    action33->setNext(action34);
+    action34->setNext(action35);
+    action35->setNext(action36);
+    action36->setNext(action37);
+    action37->setNext(action38);
+    action38->setNext(action39);
+    action39->setNext(action40);
+    action40->setNext(action41);
+    action41->setNext(action42);
+    action42->setNext(action43);
+    action43->setNext(action44);
+    action44->setNext(action45);
+    action45->setNext(action46);
+    action46->setNext(action47);
+    action47->setNext(action48);
+    action48->setNext(action49);
+    action49->setNext(action50);
+    action50->setNext(action51);
+    action51->setNext(action52);
+    action52->setNext(action53);
+    action53->setNext(action54);
 
     ActionNode* current = root;
     ActionNode* next = nullptr;
