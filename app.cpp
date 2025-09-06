@@ -562,22 +562,18 @@ void main_task(intptr_t exinf)   {
     );
 
     ActionNode* action25 = new ActionNode(
-        "action25: 直進する, 青い床に差し掛かるまで（ダブルループESCAPE）",
+        "action25: 直進する, 青い床に差し掛かるまで（ダブルループESCAPE）、この間にペットボトルを抱え込む",
         &device,
         goStraightActionFactory(
-            150.0f,//速度150mm/s //この間にペットボトルを抱え込むために低速で走行する
+            250.0f,//速度250mm/s
             10,//判定間隔10ms
             {
                 laneTracingAssistGenerator(//足元にガイド線がある場合はそれを活用する
                     is_right,//線の右縁にそう
                     100.0f,//比例ゲイン
-                    0.1f,//積分ゲイン
-                    10.0f,//微分ゲイン
+                    0.0f,//積分ゲイン
+                    100.0f,//微分ゲイン
                     calcBlackWhiteBorderError//誤差計算関数(青い線と白い線の境界を活用する)
-                ),
-                slowlyAccelerateAssistGenerator(//I制御の効果を高めるためにゆっくり加速する
-                    10,//10段階加速する, 150 / 10 = 15mm/sずつ加速する
-                    10//判定間隔10ms * 10 = 100msに一回ずつ加速する
                 ),
                 laneChangeAssistGenerator(is_right)//右車線に車線変更する
             },
