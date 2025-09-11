@@ -748,6 +748,88 @@ void main_task(intptr_t exinf)   {
     action26->setNext(action27);
     action27->setNext(action28);
 
+    ActionNode* action28_1 = new ActionNode(
+        "action28_1: その場で回転して黒い線の方向を向く",
+        &device,
+        pivotTurnActionFactory(
+            45.0f,
+            is_right,
+            10,
+            {
+                timedCloserGenerator(100)
+            }
+        ),
+        0
+    );
+
+    ActionNode* action29 = new ActionNode(
+        "action29: 直進する、黒い線に突き当たるまで",
+        &device,
+        goStraightActionFactory(
+            500.0f,
+            10,
+            {},
+            {
+                blackFloorCloserGenerator()
+            }
+        ),
+        0
+    );
+
+    ActionNode* action30 = new ActionNode(
+        "action30: その場で左に回転する、正面に直線を検知するまで",
+        &device,
+        pivotTurnActionFactory(
+            45.0f,
+            !is_right,
+            10,
+            {
+                straightCloserGenerator()
+            }
+        ),
+        0
+    );
+
+    ActionNode* action31 = new ActionNode(
+        "action31: 直線に沿って走行する、青い床に差し掛かるまで",
+        &device,
+        goStraightActionFactory(
+            500.0f,
+            10,
+            {
+                laneTracingAssistGenerator(
+                    !is_right,
+                    100.0f,
+                    0.1f,
+                    10.0f,
+                    calcBlackWhiteBorderError
+                ),
+                slowlyAccelerateAssistGenerator(
+                    5,
+                    10
+                )
+            },
+            {
+                blueFloorCloserGenerator()
+            }
+        ),
+        0
+    );
+
+    ActionNode* action32 = new ActionNode(
+        "action32: 停止する",
+        &device,
+        stopActionFactory(),
+        0
+    );
+
+    root->setNext(action28_1);
+    // action28->setNext(action28_1);
+    action28_1->setNext(action29);
+    action29->setNext(action30);
+    action30->setNext(action31);
+    action31->setNext(action32);
+
     ActionNode* current = root;
     ActionNode* next = nullptr;
 
