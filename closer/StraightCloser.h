@@ -29,17 +29,14 @@ class StraightCloser : public ICloser
         Device*& mDevice;
 
         /**
-         * 正面の直線が連続して観測された回数
-         * @note
-         *  ○回連続して正面に直線がなかったら曲がり角に差し掛かったとみなす
-         *  1回だけだと誤検出しやすいから短い時間にある程度連続して、検出されないことを基準とする
+         * 判定ヒストリー
          */
-        int mSeqCountIsStraight;
-        
-        /**
-         * 設定ファイルから連続して直線と判定する最大回数を取得
-         */
-        int getSeqCountIsStraightMax();
+        static const int mTotalHistory = 6; // とりあえず過去6回分
+        int* mIsStraightHistory;            // 0:直線ではない
+                                            // 1:直線
+                                            // mTotalHistory回分のisStraightの履歴
+        int mIsStraightHistoryIndex;
+        int mIsStraightCount;               // 計算の効率化のため前回の値を記憶
 };
 
 #endif // _STRAIGHT_CLOSER_H_

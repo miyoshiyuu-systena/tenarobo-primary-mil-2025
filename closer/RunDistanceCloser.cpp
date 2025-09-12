@@ -4,8 +4,6 @@
 #include "config.h"
 #include <cmath>
 
-#include "Logger.h"
-
 using namespace spikeapi;
 
 ICloserGenerator runDistanceCloserGenerator(float distance) {
@@ -41,9 +39,6 @@ bool RunDistanceCloser::isClosed()
 {
     int currentEncodeLeft = mDevice->twinWheelDrive.getLeftEncode();
     int currentEncodeRight = mDevice->twinWheelDrive.getRightEncode();
-    
-    Logger::getInstance().logDebug("L-encode " + std::to_string(currentEncodeLeft));
-    Logger::getInstance().logDebug("R-encode " + std::to_string(currentEncodeRight));
 
     int encodeLeft = abs(currentEncodeLeft - mStartEncodeLeft);
     int encodeRight = abs(currentEncodeRight - mStartEncodeRight);

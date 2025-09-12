@@ -34,6 +34,7 @@ APPL_CXXOBJS +=\
 	SinpleLaneChangeAction.o\
 	ChangeDirectionAction.o\
 	FineChangeDirectionAction.o\
+	FineChangeDirectionLineAction.o\
 	OraOraAction.o\
 	ActionNode.o\
 	Device.o\

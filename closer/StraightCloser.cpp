@@ -2,6 +2,7 @@
 #include "config.h"
 #include <cmath>
 #include "ImageAnalysisServer.h"
+#include "spikeapi.h"
 
 ICloserGenerator straightCloserGenerator() {
     return [](Device*& device) {
@@ -9,36 +10,39 @@ ICloserGenerator straightCloserGenerator() {
     };
 }
 
-StraightCloser::StraightCloser(Device*& device)
-: ICloser()
-, mDevice(device)
+StraightCloser::StraightCloser(
+    Device*& device
+)
+    : ICloser()
+    , mDevice(device)
+    , mIsStraightHistory(new int[mTotalHistory]())
+    , mIsStraightCount(0)
+    , mIsStraightHistoryIndex(0)
 {
-    mSeqCountIsStraight = 0;
 }
 
 StraightCloser::~StraightCloser()
 {
+    ImageAnalysisServer::getInstance().request(DO_NOTHING);
 }
 
 void StraightCloser::init()
 {
-}
-
-int StraightCloser::getSeqCountIsStraightMax()
-{
-    return config.getIntValue("seqCountIsStraightMax", 10);
+    ImageAnalysisServer::getInstance().request(FRONT_STRAIGHT);
+    dly_tsk(500 * 1000);// サーバーが切り替わるまで10サイクル待ち
 }
 
 bool StraightCloser::isClosed()
 {
-    ImageAnalysisServer::getInstance().request(FRONT_STRAIGHT);
+    /**
+     * ここで画像分析サーバーから分析結果を受け取る
+     */
     bool isFrontStraight = ImageAnalysisServer::getInstance().responseFrontStraight();
 
-    if (isFrontStraight) {
-        mSeqCountIsStraight++;
-    } else {
-        mSeqCountIsStraight = 0;
-    }
+    mIsStraightCount -= mIsStraightHistory[mIsStraightHistoryIndex];
+    mIsStraightCount += (int)(isFrontStraight);
+    mIsStraightHistory[mIsStraightHistoryIndex] = (int)(isFrontStraight);
+    mIsStraightHistoryIndex = (mIsStraightHistoryIndex + 1) % mTotalHistory;
 
-    return mSeqCountIsStraight > getSeqCountIsStraightMax();
+    return (float)mIsStraightCount > (float)mTotalHistory * 0.75f;
 }
