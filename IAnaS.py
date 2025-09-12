@@ -12,6 +12,7 @@ import posix_ipc
 import time
 import mmap
 import struct
+import matplotlib.pyplot as plt
 from enum import Enum
 
 # 画像の共有メモリの名前
@@ -197,94 +198,121 @@ def is_front_straight(row_image):
 
     return is_front_straight
 
+def has_blue_nearby(
+    image,
+    ellipse,
+    margin=8.0,
+    exclude_enlarge_factor=1.3,
+    lower_hsv=np.array([100, 100, 150]),
+    upper_hsv=np.array([140, 255, 255])):
+    """ 付近の青色有無
+
+    Args:
+        image (image): 画像
+        ellipse (Ellipse): 楕円
+        margin (float, optional): 青色探索範囲. Defaults to 8.0.
+        exclude_enlarge_factor (float, optional): 探索除外範囲倍率. Defaults to 1.3.
+        lower_hsv (NDArray, optional): 青色下限HSV値. Defaults to np.array([100, 100, 150]).
+        upper_hsv (NDArray, optional): 青色上限HSV値. Defaults to np.array([140, 255, 255]).
+
+    Returns:
+        bool 付近の青色有無
+    """
+    
+    # 探索範囲を算出し切り出し
+    center = ellipse[0]
+    size = ellipse[1]
+    x, y = int(center[0]), int(center[1])
+    h, w = int(size[0] * margin), int(size[1] * margin)
+    x1 = max(x - w // 2, 0)
+    y1 = max(y - h // 2, 0)
+    x2 = min(x + w // 2, image.shape[1])
+    y2 = min(y + h // 2, image.shape[0])
+    roi = image[y1:y2, x1:x2].copy()
+
+    # 探索除外範囲を塗りつぶしたマスクを作成
+    ellipse_mask = np.zeros(roi.shape[:2], dtype=np.uint8)
+    roi_center = (x - x1, y - y1)
+    excluded_ellipse_size_w = int(size[0] / 2 * exclude_enlarge_factor)
+    excluded_ellipse_size_h = int(size[1] / 2 * exclude_enlarge_factor)
+    cv2.ellipse(ellipse_mask, roi_center, (excluded_ellipse_size_w, excluded_ellipse_size_h), ellipse[2], 0, 360, 255, -1)
+    ellipse_mask = cv2.bitwise_not(ellipse_mask)
+    masked_roi = cv2.bitwise_and(roi, roi, mask=ellipse_mask)
+
+    # BGRからHSV色空間に変換
+    hsv_image = cv2.cvtColor(masked_roi, cv2.COLOR_BGR2HSV)
+    
+    # HSV範囲で青色を抽出し、有無を返却
+    mask = cv2.inRange(hsv_image, lower_hsv, upper_hsv)
+    return np.any(mask > 0)
+
 def get_target_circle_center(image):
-    image3 = cv2.GaussianBlur(image, (5, 5), 0)
-    cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/2_blur.png", image3)
+    """ ターゲットサークルの中心座標取得
 
-    # image4 = cv2.inRange(image3, (50, 50, 95), (255, 255, 125))
-    image4 = cv2.inRange(image3, (50, 50, 40), (255, 255, 100))
-    cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/2_binary.png", image4)
+    Args:
+        image (image): 撮影画像
 
-    contours, _ = cv2.findContours(image4, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    image5 = cv2.cvtColor(image3, cv2.COLOR_RGB2GRAY)
+    Returns:
+        tuple: ターゲットサークルの中心座標(x, y)
+    """
+    
+    # 青色のHSV値でマスクを生成(青色とみなす上限下限の範囲を指定)
+    hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+    lower_blue = np.array([100, 120, 30])
+    upper_blue = np.array([125, 255, 180])
+    mask_blue = cv2.inRange(hsv, lower_blue, upper_blue)
 
-    target_x = 0
-    target_y = 0
+    # 青色部分とそれ以外を分割
+    blue_area = cv2.bitwise_and(image, image, mask=mask_blue)
+    
+    # RGB値に変換して出力
+    blue_rgb = cv2.cvtColor(blue_area, cv2.COLOR_BGR2RGB)
+    cv2.imwrite(f"/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/3_rgb{static_count}.png", blue_rgb)
+    
+    # 画像の縦横サイズを取得
+    height, width = image.shape[:2]
+    height_threshold = int(height * 0.2)
 
-    for contour in contours:
-        ## 輪郭の面積
-        area = cv2.contourArea(contour)
+    # 青色部の輪郭を検出
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    blurred = cv2.GaussianBlur(gray, (3, 3), 0, 5)
+    edges = cv2.Canny(blurred, 50, 150)
+    contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    
+    # 検出された輪郭の件数分繰り返し
+    for cnt in contours:
+        
+        # 点の少ない輪郭は除外        
+        if len(cnt) < 5:
+            continue
 
-        if area > 2:
-            ## 小さすぎるものは除外（面積1はモメントの計算で0になり、0除算のエラーを起こすことがあるので、諦める）
-            ## 重心
-            m = cv2.moments(contour)
+        # 横長でないものは除外
+        x, y, w, h = cv2.boundingRect(cnt)
+        aspect_ratio_hv = h / float(w)
+        aspect_ratio_vh = w / float(h)
+        if aspect_ratio_hv > 0.8 or aspect_ratio_vh > 3.5:
+            continue
 
-            if m['m00'] != 0:
-                ## ちゃんとモメントが得られたものはターゲットサークルの判定に進む
-                x, y= m['m10']/m['m00'] , m['m01']/m['m00']
+        # 輪郭に楕円をフィッティング
+        ellipse = cv2.fitEllipse(cnt)
 
-                # 座標を四捨五入する
-                x = round(x)
-                y = round(y)
+        # 中心のx座標と座標を取得
+        center_x = round(ellipse[0][0])        
+        center_y = round(ellipse[0][1])
+        
+        # 上部にある輪郭は除外
+        if center_y < height_threshold:
+            continue
 
-                if y < (image.shape[0] // 6):
-                    continue
+        # 付近に別の青色がある場合は除外
+        if has_blue_nearby(image, ellipse):
+            continue
+        
+        # 除外されなかった輪郭の中心をターゲットサークルの中心として返却
+        return center_x, center_y
 
-                ## 重心の周辺に輪っかがあることを調べる
-                ## この方法は縁の端っこが画面外の時は検出できない
-                ## 円に一番近い内側の1つの円だけに注目する
-                ## 2, 3重円を検出しようとすると、画面外の問題で検出ハードルが上がってしまう（誤検出は減るだろうね）
-                scan = 1
-                left_peak = 0
-                right_peak = 0
-                prev_left_bright = image5[y, x]
-                prev_prev_left_bright = image5[y, x]
-                prev_right_bright = image5[y, x]
-                prev_prev_right_bright = image5[y, x]
-                while (True):
-                    left = x - scan
-                    right = x + scan
-                    if (left < 0) or (right >= image5.shape[1]):
-                        # 画面外は諦める
-                        break
-
-                    if left_peak == 0:
-                        # まだ左のピークを探索中
-                        # uint8のアンダーフローを防ぐためint型にキャスト
-                        diff_left = (int(image5[y, left]) - int(prev_left_bright)) + (int(prev_left_bright) - int(prev_prev_left_bright))
-                        if diff_left < -3:
-                            left_peak = left
-
-                    if right_peak == 0:
-                        # まだ右のピークを探索中
-                        # uint8のアンダーフローを防ぐためint型にキャスト
-                        diff_right = (int(image5[y, right]) - int(prev_right_bright)) + (int(prev_right_bright) - int(prev_prev_right_bright))
-                        if diff_right < -3:
-                            right_peak = right
-
-                    if (left_peak != 0) and (right_peak != 0):
-                        # 重心の左右の円の縁を検出
-                        if (((right_peak - x) * 0.9) < (x - left_peak)) and ((x - left_peak) < ((right_peak - x) * 1.1)):
-                            # 重心を中心として正円がまとわりついている
-                            # これはターゲットサークルに違いない
-                            target_x = x
-                            target_y = y
-                            cv2.line(image, (x - 5, y - 5), (x + 5, y + 5), (255, 255, 127), 2)
-                            cv2.line(image, (x + 5, y - 5), (x - 5, y + 5), (255, 255, 127), 2)
-                            cv2.imwrite("/home/mil/work/RasPike-ART/sdk/workspace/tenarobo-primary-mil-2025/img-debug/2_target.png", image)
-                        break
-
-                    # 玉ねぎの皮みたいに
-                    # 内側から1枚ずつ円を探してみる
-                    scan = scan + 1
-                    # 前回の明るさを記録する
-                    prev_prev_left_bright = prev_left_bright
-                    prev_left_bright = image5[y, left]
-                    prev_prev_right_bright = prev_right_bright
-                    prev_right_bright = image5[y, right]
-
-    return target_x, target_y
+    # 対象なしの場合は0を返す
+    return 0, 0
 
 def is_target_circle_in_display(image):
     target_x, target_y = get_target_circle_center(image)
