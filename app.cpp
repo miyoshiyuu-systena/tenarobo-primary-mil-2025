@@ -61,6 +61,8 @@ void main_task(intptr_t exinf)   {
 
     bool is_right = config.isLCourse(); // Lコースの場合ラインの右側、Rコースの場合ラインの左側を走行
 
+    Logger::getInstance().logInfo("最初のコーナーを黒い線の外縁でライントレース走行するようにロボットを配置してください。");
+
     ActionNode* root = new ActionNode(
         "action0: 背中のボタンを押すまで忠犬ハチ公！！！",
         &device,
@@ -75,14 +77,14 @@ void main_task(intptr_t exinf)   {
         "action1: 直線走行",
         &device,
         goStraightActionFactory(
-            500.0f,
-            50,
+            800.0f,
+            10,
             {
                 laneTracingAssistGenerator(
-                    !is_right,
-                    50.0f,
-                    0.0f,
-                    0.0f,
+                    is_right,
+                    80.0f,
+                    5.0f,
+                    20.0f,
                     calcBlackWhiteBorderError
                 )
             },
@@ -108,10 +110,10 @@ void main_task(intptr_t exinf)   {
             50,
             {
                 laneTracingAssistGenerator(
-                    !is_right,
+                    is_right,
                     50.0f,
-                    0.0f,
-                    0.0f,
+                    20.0f,
+                    50.0f,
                     calcBlackWhiteBorderError
                 )
             },
@@ -122,62 +124,47 @@ void main_task(intptr_t exinf)   {
         0
     );
 
+    /**
+     * 最初のカーブで脱線する場合は、走行をよく観察し、Kp, Ki, Kdを調整する
+     * 直線に回復する際に脱線する場合はrunDistanceCloserGeneratorの距離を長めにする
+     */
     ActionNode* action4 = new ActionNode(
         "action4: 曲がる",
         &device,
         goStraightActionFactory(
-            200.0f,
+            250.0f,
             10,
             {
                 laneTracingAssistGenerator(
-                    !is_right,
-                    200.0f,
-                    0.1f,
+                    is_right,
+                    150.0f,
+                    50.0f,
                     50.0f,
                     calcBlackWhiteBorderError
                 )
             },
             {
-                runDistanceCloserGenerator(400)
+                runDistanceCloserGenerator(1200)    //十分に確保する
+                                                    //次のアクションで直線検知クローザーを効果的に作動させるため、カーブを曲がり切って、直線を正面にしないといけない
+                                                    //本番はカーブが短い代わりに直線判定が早いため、このくらいがいいのでは？
+                                            
             }
         ),
         0
     );
 
     ActionNode* action5 = new ActionNode(
-        "action5: 曲がる",
+        "action5: 直進する（PIDを緩和して体を正面に向ける）",
         &device,
         goStraightActionFactory(
-            200.0f,
+            250.0f,
             10,
             {
                 laneTracingAssistGenerator(
-                    !is_right,
-                    200.0f,
-                    0.1f,
-                    50.0f,
-                    calcBlackWhiteBorderError
-                )
-            },
-            {
-                straightCloserGenerator()
-            }
-        ),
-        0
-    );
-
-    ActionNode* action6 = new ActionNode(
-        "action6: 直進する",
-        &device,
-        goStraightActionFactory(
-            200.0f,
-            10,
-            {
-                laneTracingAssistGenerator(
-                    !is_right,
-                    200.0f,
-                    0.1f,
-                    50.0f,
+                    is_right,
+                    100.0f,
+                    0.0f,
+                    100.0f,
                     calcBlackWhiteBorderError
                 )
             },
@@ -188,25 +175,25 @@ void main_task(intptr_t exinf)   {
         0
     );
 
-    ActionNode* action7 = new ActionNode(
-        "action7: 停止する",
+    ActionNode* action6 = new ActionNode(
+        "action6: 停止する",
         &device,
         stopActionFactory(),
         0
     );
 
-    ActionNode* action8 = new ActionNode(
-        "action8: 直進する",
+    ActionNode* action7 = new ActionNode(
+        "action7: 直進する",
         &device,
         goStraightActionFactory(
             500.0f,
             50,
             {
                 laneTracingAssistGenerator(
-                    !is_right,
-                    100.0f,
-                    0.1f,
-                    10.0f,
+                    is_right,
+                    50.0f,
+                    20.0f,
+                    50.0f,
                     calcBlackWhiteBorderError
                 )
             },
@@ -217,62 +204,42 @@ void main_task(intptr_t exinf)   {
         0
     );
 
+    ActionNode* action8 = new ActionNode(
+        "action8: 曲がる",
+        &device,
+        goStraightActionFactory(
+            250.0f,
+            10,
+            {
+                laneTracingAssistGenerator(
+                    is_right,
+                    150.0f,
+                    50.0f,
+                    50.0f,
+                    calcBlackWhiteBorderError
+                )
+            },
+            {
+                runDistanceCloserGenerator(1200)    //十分に確保する
+                                                    //次のアクションで直線検知クローザーを効果的に作動させるため、カーブを曲がり切って、直線を正面にしないといけない
+                                                    //本番はカーブが短い代わりに直線判定が早いため、このくらいがいいのでは？
+            }
+        ),
+        0
+    );
+
     ActionNode* action9 = new ActionNode(
-        "action9: 曲がる",
+        "action9: 直進する（PIDを緩和して体を正面に向ける）",
         &device,
         goStraightActionFactory(
-            200.0f,
+            250.0f,
             10,
             {
                 laneTracingAssistGenerator(
-                    !is_right,
-                    200.0f,
-                    0.1f,
-                    50.0f,
-                    calcBlackWhiteBorderError
-                )
-            },
-            {
-                runDistanceCloserGenerator(400)
-            }
-        ),
-        0
-    );
-
-    ActionNode* action10 = new ActionNode(
-        "action10: 曲がる",
-        &device,
-        goStraightActionFactory(
-            200.0f,
-            10,
-            {
-                laneTracingAssistGenerator(
-                    !is_right,
-                    200.0f,
-                    0.1f,
-                    50.0f,
-                    calcBlackWhiteBorderError
-                )
-            },
-            {
-                straightCloserGenerator()
-            }
-        ),
-        0
-    );
-
-    ActionNode* action11 = new ActionNode(
-        "action11: 直進する",
-        &device,
-        goStraightActionFactory(
-            200.0f,
-            10,
-            {
-                laneTracingAssistGenerator(
-                    !is_right,
-                    200.0f,
-                    0.1f,
-                    50.0f,
+                    is_right,
+                    100.0f,
+                    0.0f,
+                    100.0f,
                     calcBlackWhiteBorderError
                 )
             },
@@ -283,18 +250,18 @@ void main_task(intptr_t exinf)   {
         0
     );
 
-    ActionNode* action12 = new ActionNode(
-        "action12: 直進する",
+    ActionNode* action10 = new ActionNode(
+        "action10: 直進する",
         &device,
         goStraightActionFactory(
             500.0f,
             10,
             {
                 laneTracingAssistGenerator(
-                    !is_right,
-                    100.0f,
-                    0.1f,
-                    10.0f,
+                    is_right,
+                    50.0f,
+                    20.0f,
+                    50.0f,
                     calcBlackWhiteBorderError
                 )
             },
@@ -305,22 +272,22 @@ void main_task(intptr_t exinf)   {
         0
     );
 
-    ActionNode* action13 = new ActionNode(
-        "action13: 少しだけ前進する",
+    ActionNode* action11 = new ActionNode(
+        "action11: 少しだけ前進する",
         &device,
         goStraightActionFactory(
             500.0f,
             10,
             {},
             {
-                runDistanceCloserGenerator(40)
+                runDistanceCloserGenerator(50)
             }
         ),
         0
     );
 
-    ActionNode* action14 = new ActionNode(
-        "action14: その場で右90度を向く",
+    ActionNode* action12 = new ActionNode(
+        "action12: その場で右90度を向く",
         &device,
         pivotTurnActionFactory(
             90.0f,
@@ -333,8 +300,8 @@ void main_task(intptr_t exinf)   {
         0
     );
 
-    ActionNode* action15 = new ActionNode(
-        "action15: 直進する",
+    ActionNode* action13 = new ActionNode(
+        "action13: 直進する",
         &device,
         goStraightActionFactory(
             750.0f,
@@ -347,8 +314,8 @@ void main_task(intptr_t exinf)   {
         0
     );
 
-    ActionNode* action16 = new ActionNode(
-        "action16: 後退する",
+    ActionNode* action14 = new ActionNode(
+        "action14: 後退する",
         &device,
         goStraightActionFactory(
             -250.0f,
@@ -361,8 +328,8 @@ void main_task(intptr_t exinf)   {
         0
     );
 
-    ActionNode* action17 = new ActionNode(
-        "action17: その場で左45度を向く",
+    ActionNode* action15 = new ActionNode(
+        "action15: その場で左45度を向く",
         &device,
         pivotTurnActionFactory(
             90.0f,
@@ -376,15 +343,15 @@ void main_task(intptr_t exinf)   {
         0
     );
 
-    ActionNode* action18 = new ActionNode(
-        "action18: その場で左に回転して正面に直線を検知する",
+    ActionNode* action16 = new ActionNode(
+        "action16: その場で左に回転して正面に直線を検知する",
         &device,
         fineChangeDirectionLineActionFactory(!is_right),
         0
     );
 
-    ActionNode* action19 = new ActionNode(
-        "action19: 停止する",
+    ActionNode* action17 = new ActionNode(
+        "action17: 停止する",
         &device,
         stopActionFactory(),
         0
@@ -408,7 +375,6 @@ void main_task(intptr_t exinf)   {
     action15->setNext(action16);
     action16->setNext(action17);
     action17->setNext(action18);
-    action18->setNext(action19);
 
     ActionNode* current = root;
     ActionNode* next = nullptr;
