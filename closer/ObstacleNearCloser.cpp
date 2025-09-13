@@ -17,6 +17,7 @@ ObstacleNearCloser::ObstacleNearCloser(Device*& device, enum AnalysisCommand com
 
 ObstacleNearCloser::~ObstacleNearCloser()
 {
+    ImageAnalysisServer::getInstance().request(DO_NOTHING);
 }
 
 void ObstacleNearCloser::init()
@@ -30,6 +31,9 @@ void ObstacleNearCloser::init()
      */
     switch (mCommand) {
         case BLUE_BOTTLE_XY:
+            ImageAnalysisServer::getInstance().request(mCommand);
+            mCoordinateCallback = ImageAnalysisServer::responseBlueBottleXYStatic;
+            break;
         case TARGET_CIRCLE_XY:
             ImageAnalysisServer::getInstance().request(mCommand);
             mCoordinateCallback = ImageAnalysisServer::responseTargetCircleXYStatic;

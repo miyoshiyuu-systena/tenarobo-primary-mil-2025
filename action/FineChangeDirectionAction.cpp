@@ -24,6 +24,10 @@ ActionCall fineChangeDirectionActionFactory(
                 ImageAnalysisServer::getInstance().request(command);
                 coordinateCallback = ImageAnalysisServer::responseBlueBottleXYStatic;
                 break;
+            case TARGET_CIRCLE_XY:
+                ImageAnalysisServer::getInstance().request(command);
+                coordinateCallback = ImageAnalysisServer::responseTargetCircleXYStatic;
+                break;
             default:
                 return;
         }

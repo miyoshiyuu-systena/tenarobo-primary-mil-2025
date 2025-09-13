@@ -1,5 +1,6 @@
 #include "TargetInImageCloser.h"
 #include "Logger.h"
+#include "spikeapi.h"
 
 ICloserGenerator targetInImageCloserGenerator(enum AnalysisCommand command) {
     return [command](Device*& device) {
@@ -15,12 +16,16 @@ TargetInImageCloser::TargetInImageCloser(Device*& device, enum AnalysisCommand c
 
 TargetInImageCloser::~TargetInImageCloser()
 {
+    ImageAnalysisServer::getInstance().request(DO_NOTHING);
 }
 
 void TargetInImageCloser::init()
 {
     switch (mCommand) {
         case BLUE_BOTTLE_IN_FRONT:
+            ImageAnalysisServer::getInstance().request(mCommand);
+            mIsInImageCallback = ImageAnalysisServer::responseBlueBottleInFrontStatic;
+            break;
         case TARGET_CIRCLE_IN_DISPLAY:
             ImageAnalysisServer::getInstance().request(mCommand);
             mIsInImageCallback = ImageAnalysisServer::responseTargetCircleInDisplayStatic;
@@ -28,6 +33,7 @@ void TargetInImageCloser::init()
         default:
             return;
     }
+    dly_tsk(100 * 1000);
 }
 
 bool TargetInImageCloser::isClosed()
