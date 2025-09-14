@@ -613,7 +613,8 @@ void main_task(intptr_t exinf)   {
     action21->setNext(action22);
     action22->setNext(action23);
     action23->setNext(action24);
-    action24->setNext(action25);
+    action24->setNext(action25A);
+    action25A->setNext(action25B);
 
     /**
      * ここからスマートキャリー
@@ -949,7 +950,7 @@ void main_task(intptr_t exinf)   {
         0
     );
 
-    action25->setNext(action26);
+    action25B->setNext(action26);
     action26->setNext(action27);
     action27->setNext(action28);
     action28->setNext(action29);
