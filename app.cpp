@@ -561,8 +561,8 @@ void main_task(intptr_t exinf)   {
         0
     );
 
-    ActionNode* action25 = new ActionNode(
-        "action25: 直進する, 青い床に差し掛かるまで（ダブルループESCAPE）、この間にペットボトルを抱え込む",
+    ActionNode* action25A = new ActionNode(
+        "action25A: 直進する, 青い床に差し掛かるまで（ダブルループESCAPE）、この間にペットボトルを抱え込む",
         &device,
         goStraightActionFactory(
             250.0f,//速度250mm/s
@@ -576,6 +576,28 @@ void main_task(intptr_t exinf)   {
                     calcBlackWhiteBorderError//誤差計算関数(青い線と白い線の境界を活用する)
                 ),
                 laneChangeAssistGenerator(is_right)//右車線に車線変更する
+            },
+            {
+                runDistanceCloserGenerator(300)
+            }
+        ),
+        0
+    );
+
+    ActionNode* action25B = new ActionNode(
+        "action25B: 直進する, 青い床に差し掛かるまで（ダブルループESCAPE）、この間にペットボトルを抱え込む",
+        &device,
+        goStraightActionFactory(
+            250.0f,//速度250mm/s
+            10,//判定間隔10ms
+            {
+                laneTracingAssistGenerator(//足元にガイド線がある場合はそれを活用する
+                    is_right,//線の右縁にそう
+                    100.0f,//比例ゲイン
+                    0.0f,//積分ゲイン
+                    100.0f,//微分ゲイン
+                    calcBlackWhiteBorderError//誤差計算関数(青い線と白い線の境界を活用する)
+                ),
             },
             {
                 blueFloorCloserGenerator()//青い床に差し掛かったら終了判定を出す
